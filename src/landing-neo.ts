@@ -42,6 +42,20 @@ interface HomeState extends OccupationQueryParams {
   pendingFitView: boolean;
 }
 
+interface VantaDotsEffect {
+  destroy?: () => void;
+  resize?: () => void;
+}
+
+declare global {
+  interface Window {
+    THREE?: unknown;
+    VANTA?: {
+      DOTS?: (options: Record<string, unknown>) => VantaDotsEffect;
+    };
+  }
+}
+
 interface NumberAnimationOptions {
   decimals?: number;
   prefix?: string;
@@ -154,7 +168,8 @@ const els = {
   releaseDataMode: byId<HTMLElement>("releaseDataMode"),
   releaseUpdatedAt: byId<HTMLElement>("releaseUpdatedAt"),
   releaseCoverage: byId<HTMLElement>("releaseCoverage"),
-  releaseSource: byId<HTMLElement>("releaseSource")
+  releaseSource: byId<HTMLElement>("releaseSource"),
+  airsIntroVanta: byId<HTMLElement>("airsIntroVanta")
 };
 
 let clockTimer: number | null = null;
@@ -165,6 +180,8 @@ let revealObserver: IntersectionObserver | null = null;
 let storyObserver: IntersectionObserver | null = null;
 let cameraFrame = 0;
 let quadrantOverlapFrame = 0;
+let introVantaEffect: VantaDotsEffect | null = null;
+let introVantaProfileKey = "";
 const AUTO_LABEL_ROW_LIMIT = 140;
 const UNIVERSE_CANVAS_WIDTH = 1800;
 const UNIVERSE_CANVAS_HEIGHT = 1400;
@@ -203,6 +220,62 @@ const pinchState = {
   anchorWorldX: 0,
   anchorWorldY: 0
 };
+
+function getIntroVantaProfile() {
+  const mobileViewport = window.matchMedia("(max-width: 900px)").matches;
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobile = mobileViewport || coarsePointer;
+
+  return {
+    mobile,
+    reducedMotion,
+    key: `${mobile ? "mobile" : "desktop"}:${reducedMotion ? "reduced" : "motion"}`
+  };
+}
+
+function destroyIntroVanta() {
+  introVantaEffect?.destroy?.();
+  introVantaEffect = null;
+  introVantaProfileKey = "";
+}
+
+function initIntroVanta(force = false) {
+  const host = els.airsIntroVanta;
+  if (!host) return;
+
+  const profile = getIntroVantaProfile();
+  if (!force && introVantaEffect && introVantaProfileKey === profile.key) {
+    introVantaEffect.resize?.();
+    return;
+  }
+
+  destroyIntroVanta();
+
+  host.classList.add("is-static-fallback");
+  if (profile.reducedMotion || !window.THREE || !window.VANTA?.DOTS) {
+    return;
+  }
+
+  introVantaEffect = window.VANTA.DOTS({
+    el: host,
+    mouseControls: !profile.mobile,
+    touchControls: true,
+    gyroControls: false,
+    minHeight: 200,
+    minWidth: 200,
+    scale: 1,
+    scaleMobile: 1,
+    color: 0x7fc1ff,
+    color2: 0x6fe3c2,
+    backgroundColor: 0x06090d,
+    size: profile.mobile ? 1.8 : 2.6,
+    spacing: profile.mobile ? 38 : 30,
+    showLines: false
+  });
+  host.classList.remove("is-static-fallback");
+  introVantaProfileKey = profile.key;
+}
 
 const HOME_COPY = {
   en: {
@@ -1745,17 +1818,21 @@ function bindActions() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     window.setTimeout(() => navigateToDetail(els.downButton.dataset.href || els.detailLink.href), 420);
   });
-  window.addEventListener("scroll", syncScrollProgress, { passive: true });
-  window.addEventListener("resize", () => {
-    syncScrollProgress();
-    if (!state.focusLockedSocCode && state.rows.length) {
-      state.pendingFitView = true;
-      renderUniverse();
-      return;
-    }
-    clampPanToBounds(state.zoom);
-    updateCanvasTransform();
-  });
+window.addEventListener("scroll", syncScrollProgress, { passive: true });
+window.addEventListener("resize", () => {
+  syncScrollProgress();
+  initIntroVanta();
+  if (!state.focusLockedSocCode && state.rows.length) {
+    state.pendingFitView = true;
+    renderUniverse();
+    return;
+  }
+  clampPanToBounds(state.zoom);
+  updateCanvasTransform();
+});
+window.addEventListener("pagehide", () => {
+  destroyIntroVanta();
+});
 }
 
 async function load() {
@@ -1819,6 +1896,7 @@ async function init() {
   refreshStaticLanguage();
   setupLayoutIndices();
   document.body.classList.add("page-ready");
+  initIntroVanta(true);
   bindActions();
   bindUniverseInteractions();
   setupReveals();

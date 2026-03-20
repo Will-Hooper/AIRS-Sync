@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="maze-theme.css">
-  <link rel="modulepreload" href="dist/landing-neo.js?v=20260320-2">
+  <link rel="modulepreload" href="dist/landing-neo.js?v=20260320-4">
   <link rel="modulepreload" href="dist/api-client.js">
   <link rel="modulepreload" href="dist/i18n-neo.js">
   <link rel="modulepreload" href="dist/runtime-config.js">
@@ -61,15 +61,7 @@
   <main class="maze-home" id="top">
     <section class="airs-intro" id="overview">
       <div class="airs-intro__media" aria-hidden="true">
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/Edouard%20Manet,%20A%20Bar%20at%20the%20Folies-Berg%C3%A8reFXD.jpg"
-          alt="Edouard Manet painting at the Folies-Bergere bar"
-          width="1828"
-          height="1440"
-          loading="lazy"
-          fetchpriority="low"
-          decoding="async"
-        >
+        <div class="airs-intro__vanta" id="airsIntroVanta"></div>
       </div>
       <div class="airs-intro__content">
         <div class="airs-intro__panel">
@@ -93,7 +85,7 @@
               <p data-i18n="home.airsIntroUsageText">先看整个职业市场的分布，再缩放到某一个职业，并把 AIRS 分数和当前招聘热度放在一起理解，而不是把分数单独当成预测。</p>
             </article>
           </div>
-          <p class="airs-intro__credit" data-i18n="home.airsIntroCredit">头图：Edouard Manet《A Bar at the Folies-Bergere》，1882。使用 Wikimedia Commons 的公有领域版本。</p>
+          <p class="airs-intro__credit">首屏背景使用 Vanta DOTS 交互粒子效果。</p>
         </div>
       </div>
     </section>
@@ -505,6 +497,8 @@
     </button>
   </main>
 
-  <script type="module" src="dist/landing-neo.js?v=20260320-2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.dots.min.js"></script>
+  <script type="module" src="dist/landing-neo.js?v=20260320-4"></script>
 </body>
 </html>

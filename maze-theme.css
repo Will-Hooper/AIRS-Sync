@@ -44,25 +44,46 @@ button, input, select { font:inherit; }
   background:#06090d;
 }
 .airs-intro__media,
-.airs-intro__media img {
+.airs-intro__vanta {
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
 }
-.airs-intro__media img {
-  object-fit:cover;
-  object-position:center 24%;
-  filter:saturate(.82) brightness(.7) contrast(1.03);
+.airs-intro__media {
+  background:
+    radial-gradient(circle at 16% 18%, rgba(127,193,255,.1), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(111,227,194,.08), transparent 26%),
+    linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
+}
+.airs-intro__vanta {
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(127,193,255,.14), transparent 22%),
+    radial-gradient(circle at 80% 16%, rgba(111,227,194,.12), transparent 24%),
+    radial-gradient(circle at 52% 72%, rgba(255,176,116,.05), transparent 26%),
+    linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
+}
+.airs-intro__vanta canvas {
+  display:block;
+  width:100% !important;
+  height:100% !important;
+}
+.airs-intro__vanta.is-static-fallback {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(127,193,255,.16), transparent 22%),
+    radial-gradient(circle at 80% 16%, rgba(111,227,194,.14), transparent 24%),
+    radial-gradient(circle at 52% 74%, rgba(255,176,116,.05), transparent 26%),
+    linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
 }
 .airs-intro__media::after {
   content:"";
   position:absolute;
   inset:0;
   background:
-    linear-gradient(180deg, rgba(6,9,13,.14) 0%, rgba(6,9,13,.18) 18%, rgba(6,9,13,.62) 62%, rgba(6,9,13,.96) 100%),
-    radial-gradient(circle at 18% 22%, rgba(154,247,194,.14), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(127,193,255,.12), transparent 26%);
+    linear-gradient(180deg, rgba(5,8,13,.18) 0%, rgba(5,8,13,.24) 18%, rgba(5,8,13,.68) 64%, rgba(5,8,13,.97) 100%),
+    radial-gradient(circle at 18% 22%, rgba(111,227,194,.1), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(127,193,255,.1), transparent 28%);
 }
 .airs-intro__content {
   position:relative;
