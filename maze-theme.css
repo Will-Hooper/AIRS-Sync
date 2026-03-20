@@ -44,7 +44,8 @@ button, input, select { font:inherit; }
   background:#06090d;
 }
 .airs-intro__media,
-.airs-intro__vanta {
+.airs-intro__vanta,
+.airs-intro__flare {
   position:absolute;
   inset:0;
   width:100%;
@@ -57,12 +58,54 @@ button, input, select { font:inherit; }
     linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
 }
 .airs-intro__vanta {
+  z-index:0;
   overflow:hidden;
   background:
     radial-gradient(circle at 18% 18%, rgba(127,193,255,.14), transparent 22%),
     radial-gradient(circle at 80% 16%, rgba(111,227,194,.12), transparent 24%),
     radial-gradient(circle at 52% 72%, rgba(255,176,116,.05), transparent 26%),
     linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
+}
+.airs-intro__flare {
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
+}
+.airs-intro__flare::before,
+.airs-intro__flare::after {
+  content:"";
+  position:absolute;
+  pointer-events:none;
+}
+.airs-intro__flare::before {
+  left:-5%;
+  top:20%;
+  width:min(42vw, 520px);
+  height:min(72vh, 820px);
+  opacity:.8;
+  background:
+    radial-gradient(circle at 18% 46%, rgba(255,176,116,.22) 0 3%, transparent 16%),
+    repeating-conic-gradient(
+      from -24deg at 18% 46%,
+      rgba(255,176,116,.92) 0deg 0.75deg,
+      transparent 0.75deg 8.6deg
+    );
+  mask-image:
+    radial-gradient(circle at 18% 46%, rgba(0,0,0,.98) 0 54%, transparent 78%),
+    linear-gradient(90deg, rgba(0,0,0,.98), rgba(0,0,0,.82) 52%, transparent 94%);
+  filter:drop-shadow(0 0 12px rgba(255,176,116,.18));
+  transform:rotate(-2deg);
+}
+.airs-intro__flare::after {
+  left:0;
+  top:18%;
+  width:min(28vw, 320px);
+  height:min(74vh, 840px);
+  opacity:.55;
+  background:
+    radial-gradient(circle at 18% 46%, rgba(255,176,116,.82) 0 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(90deg, transparent 0 12%, rgba(255,176,116,.42) 12% 12.8%, transparent 12.8% 100%) 0 0 / 34px 100%;
+  mask-image:linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.42) 72%, transparent 100%);
 }
 .airs-intro__vanta canvas {
   display:block;
@@ -80,6 +123,7 @@ button, input, select { font:inherit; }
   content:"";
   position:absolute;
   inset:0;
+  z-index:2;
   background:
     linear-gradient(180deg, rgba(5,8,13,.1) 0%, rgba(5,8,13,.16) 18%, rgba(5,8,13,.56) 64%, rgba(5,8,13,.95) 100%),
     radial-gradient(circle at 18% 22%, rgba(111,227,194,.14), transparent 32%),
@@ -87,7 +131,7 @@ button, input, select { font:inherit; }
 }
 .airs-intro__content {
   position:relative;
-  z-index:1;
+  z-index:3;
   display:flex;
   align-items:flex-end;
   min-height:inherit;
@@ -1124,6 +1168,17 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
   .airs-intro__panel { width:100%; }
   .airs-intro__panel h1 { font-size:clamp(1.55rem, 4.2vw, 2.4rem); max-width:720px; }
   .airs-intro__text { max-width:620px; }
+  .airs-intro__flare::before {
+    left:-12%;
+    top:26%;
+    width:min(56vw, 420px);
+    height:min(56vh, 520px);
+    opacity:.62;
+  }
+  .airs-intro__flare::after {
+    width:min(34vw, 220px);
+    opacity:.42;
+  }
   .maze-nav__actions, .maze-lab__head, .maze-lab__spotlight, .detail-panel__head, .detail-score-card__foot { flex-direction:column; align-items:flex-start; }
   .time-card, .maze-lab__score { text-align:left; justify-items:start; }
   .hero-stat-grid, .control-dock, .focus-highlights, .detail-highlight-grid, .task-cloud, .story-mini-grid, .release-card__list, .quadrant-guide__axes, .quadrant-guide__grid { grid-template-columns:1fr; }
@@ -1156,6 +1211,17 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
   .airs-intro__content { padding:164px 0 26px; }
   .airs-intro__panel h1 { font-size:clamp(1.34rem, 8vw, 1.9rem); max-width:100%; }
   .airs-intro__text { max-width:100%; margin-top:12px; font-size:.94rem; line-height:1.7; }
+  .airs-intro__flare::before {
+    left:-22%;
+    top:30%;
+    width:78vw;
+    height:46vh;
+    opacity:.48;
+  }
+  .airs-intro__flare::after {
+    width:42vw;
+    opacity:.3;
+  }
   .risk-ribbon { padding:0 12px; }
   .maze-nav { width:calc(100% - 20px); top:44px; }
   .maze-nav__inner { padding:12px; }
