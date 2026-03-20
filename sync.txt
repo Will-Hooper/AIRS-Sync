@@ -1,0 +1,19 @@
+@echo off
+cd /d %~dp0
+
+set /p msg=请输入本次提交说明: 
+if "%msg%"=="" set msg=update
+
+git add .
+
+git diff --cached --quiet
+if %errorlevel%==0 (
+    echo 没有可提交的改动
+    pause
+    exit /b
+)
+
+git commit -m "%msg%"
+git push
+
+pause
