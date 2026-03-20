@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="maze-theme.css">
-  <link rel="modulepreload" href="dist/landing-neo.js?v=20260320-4">
+  <link rel="stylesheet" href="maze-theme.css?v=20260320-6">
+  <link rel="modulepreload" href="dist/landing-neo.js?v=20260320-5">
   <link rel="modulepreload" href="dist/api-client.js">
   <link rel="modulepreload" href="dist/i18n-neo.js">
   <link rel="modulepreload" href="dist/runtime-config.js">
@@ -59,37 +59,11 @@
   </header>
 
   <main class="maze-home" id="top">
-    <section class="airs-intro" id="overview">
-      <div class="airs-intro__media" aria-hidden="true">
-        <div class="airs-intro__vanta" id="airsIntroVanta"></div>
-        <div class="airs-intro__flare"></div>
-      </div>
-      <div class="airs-intro__content">
-        <div class="airs-intro__panel">
-          <p class="kicker" data-i18n="home.airsIntroKicker">AIRS 是什么</p>
-          <h1 id="airsIntroTitle" data-i18n="home.airsIntroTitle">AIRS 把招聘侧真实信号，转成一张可以直接读懂的 AI 影响图。</h1>
-          <p class="hero-copy__text airs-intro__text" data-i18n="home.airsIntroText">它不是在猜某个职业未来会不会消失，而是在回答一个更直接的问题：当 AI 进入工作流程后，企业现在是否已经开始减少招聘、简化岗位，或重组这个职业的用人方式。</p>
-          <div class="airs-intro__grid">
-            <article class="airs-intro__card">
-              <span data-i18n="home.airsIntroScaleTitle">分数怎么读</span>
-              <strong data-i18n="home.airsIntroScaleValue">0 到 100 分</strong>
-              <p data-i18n="home.airsIntroScaleText">越接近 0 分，说明 AI 对该职业招聘的压缩越明显；越接近 100 分，说明当前招聘仍主要由人工岗位驱动。</p>
-            </article>
-            <article class="airs-intro__card">
-              <span data-i18n="home.airsIntroSignalTitle">分数看什么</span>
-              <strong data-i18n="home.airsIntroSignalValue">招聘侧真实信号</strong>
-              <p data-i18n="home.airsIntroSignalText">AIRS 综合岗位发布量、技能要求变化、任务重写迹象等招聘侧信号，再映射到 BLS SOC 职业分类。</p>
-            </article>
-            <article class="airs-intro__card">
-              <span data-i18n="home.airsIntroUsageTitle">这个页面怎么用</span>
-              <strong data-i18n="home.airsIntroUsageValue">先看全局，再看职业</strong>
-              <p data-i18n="home.airsIntroUsageText">先看整个职业市场的分布，再缩放到某一个职业，并把 AIRS 分数和当前招聘热度放在一起理解，而不是把分数单独当成预测。</p>
-            </article>
-          </div>
-          <p class="airs-intro__credit">首屏背景使用 Vanta DOTS 交互粒子效果。</p>
+      <section class="airs-intro" id="overview" aria-label="Vanta DOTS hero background">
+        <div class="airs-intro__media" aria-hidden="true">
+          <div class="airs-intro__vanta" id="airsIntroVanta"></div>
         </div>
-      </div>
-    </section>
+      </section>
     <section class="maze-lab" id="live-field">
       <section class="maze-lab__frame">
           <div class="maze-lab__head">
@@ -500,6 +474,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.dots.min.js"></script>
-  <script type="module" src="dist/landing-neo.js?v=20260320-4"></script>
+  <script type="module" src="dist/landing-neo.js?v=20260320-5"></script>
 </body>
 </html>

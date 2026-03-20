@@ -37,15 +37,14 @@ button, input, select { font:inherit; }
 .maze-detail { padding:126px 0 96px; }
 .airs-intro {
   position:relative;
-  min-height:clamp(700px, 90vh, 980px);
-  margin:-126px calc(50% - 50vw) 30px;
+  min-height:clamp(560px, 78vh, 860px);
+  margin:-126px calc(50% - 50vw) 24px;
   overflow:hidden;
   border-bottom:1px solid rgba(127,193,255,.14);
   background:#06090d;
 }
 .airs-intro__media,
-.airs-intro__vanta,
-.airs-intro__flare {
+.airs-intro__vanta {
   position:absolute;
   inset:0;
   width:100%;
@@ -53,59 +52,16 @@ button, input, select { font:inherit; }
 }
 .airs-intro__media {
   background:
-    radial-gradient(circle at 16% 18%, rgba(127,193,255,.1), transparent 24%),
-    radial-gradient(circle at 84% 18%, rgba(111,227,194,.08), transparent 26%),
+    radial-gradient(circle at 18% 18%, rgba(127,193,255,.08), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(111,227,194,.06), transparent 26%),
     linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
 }
 .airs-intro__vanta {
-  z-index:0;
   overflow:hidden;
   background:
     radial-gradient(circle at 18% 18%, rgba(127,193,255,.14), transparent 22%),
-    radial-gradient(circle at 80% 16%, rgba(111,227,194,.12), transparent 24%),
-    radial-gradient(circle at 52% 72%, rgba(255,176,116,.05), transparent 26%),
+    radial-gradient(circle at 80% 16%, rgba(111,227,194,.11), transparent 24%),
     linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
-}
-.airs-intro__flare {
-  z-index:1;
-  pointer-events:none;
-  overflow:hidden;
-}
-.airs-intro__flare::before,
-.airs-intro__flare::after {
-  content:"";
-  position:absolute;
-  pointer-events:none;
-}
-.airs-intro__flare::before {
-  left:-5%;
-  top:20%;
-  width:min(42vw, 520px);
-  height:min(72vh, 820px);
-  opacity:.8;
-  background:
-    radial-gradient(circle at 18% 46%, rgba(255,176,116,.22) 0 3%, transparent 16%),
-    repeating-conic-gradient(
-      from -24deg at 18% 46%,
-      rgba(255,176,116,.92) 0deg 0.75deg,
-      transparent 0.75deg 8.6deg
-    );
-  mask-image:
-    radial-gradient(circle at 18% 46%, rgba(0,0,0,.98) 0 54%, transparent 78%),
-    linear-gradient(90deg, rgba(0,0,0,.98), rgba(0,0,0,.82) 52%, transparent 94%);
-  filter:drop-shadow(0 0 12px rgba(255,176,116,.18));
-  transform:rotate(-2deg);
-}
-.airs-intro__flare::after {
-  left:0;
-  top:18%;
-  width:min(28vw, 320px);
-  height:min(74vh, 840px);
-  opacity:.55;
-  background:
-    radial-gradient(circle at 18% 46%, rgba(255,176,116,.82) 0 1px, transparent 1px) 0 0 / 18px 18px,
-    linear-gradient(90deg, transparent 0 12%, rgba(255,176,116,.42) 12% 12.8%, transparent 12.8% 100%) 0 0 / 34px 100%;
-  mask-image:linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.42) 72%, transparent 100%);
 }
 .airs-intro__vanta canvas {
   display:block;
@@ -116,22 +72,21 @@ button, input, select { font:inherit; }
   background:
     radial-gradient(circle at 18% 20%, rgba(127,193,255,.16), transparent 22%),
     radial-gradient(circle at 80% 16%, rgba(111,227,194,.14), transparent 24%),
-    radial-gradient(circle at 52% 74%, rgba(255,176,116,.05), transparent 26%),
     linear-gradient(180deg, #05080d 0%, #08111a 44%, #05080d 100%);
 }
 .airs-intro__media::after {
   content:"";
   position:absolute;
   inset:0;
-  z-index:2;
   background:
-    linear-gradient(180deg, rgba(5,8,13,.1) 0%, rgba(5,8,13,.16) 18%, rgba(5,8,13,.56) 64%, rgba(5,8,13,.95) 100%),
-    radial-gradient(circle at 18% 22%, rgba(111,227,194,.14), transparent 32%),
-    radial-gradient(circle at 82% 18%, rgba(127,193,255,.14), transparent 30%);
+    linear-gradient(180deg, rgba(5,8,13,.08) 0%, rgba(5,8,13,.14) 18%, rgba(5,8,13,.46) 62%, rgba(5,8,13,.88) 100%),
+    radial-gradient(circle at 18% 22%, rgba(111,227,194,.1), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(127,193,255,.1), transparent 32%);
+  pointer-events:none;
 }
 .airs-intro__content {
   position:relative;
-  z-index:3;
+  z-index:1;
   display:flex;
   align-items:flex-end;
   min-height:inherit;
@@ -148,10 +103,12 @@ button, input, select { font:inherit; }
   backdrop-filter:none;
   box-shadow:none;
 }
-.airs-intro__panel > .kicker,
-.airs-intro__grid,
-.airs-intro__credit {
-  display:none;
+.airs-intro__panel > .kicker {
+  display:block;
+  margin:0 0 12px;
+  color:rgba(154,247,194,.82);
+  text-shadow:0 8px 22px rgba(0,0,0,.28);
+  opacity:clamp(.72, calc(var(--intro-progress, 0) * 1.55), 1);
 }
 .airs-intro__panel h1 {
   margin:0;
@@ -174,6 +131,48 @@ button, input, select { font:inherit; }
   opacity:clamp(0, calc(var(--intro-progress, 0) * 1.75 - 0.58), 1);
   transform:translate3d(0, calc((1 - var(--intro-progress, 0)) * 30px), 0);
   will-change:opacity, transform;
+}
+.airs-intro__grid {
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:16px;
+  margin-top:24px;
+  opacity:clamp(0, calc(var(--intro-progress, 0) * 1.6 - .82), 1);
+  transform:translate3d(0, calc((1 - var(--intro-progress, 0)) * 18px), 0);
+}
+.airs-intro__card {
+  padding:18px 18px 16px;
+  border:1px solid rgba(148,168,204,.18);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(17,23,33,.68), rgba(10,14,21,.76));
+  box-shadow:0 14px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px);
+}
+.airs-intro__card span {
+  display:block;
+  color:rgba(154,247,194,.82);
+  font-size:.84rem;
+  letter-spacing:.04em;
+}
+.airs-intro__card strong {
+  display:block;
+  margin-top:10px;
+  font-size:1.06rem;
+  line-height:1.35;
+}
+.airs-intro__card p {
+  margin:10px 0 0;
+  color:rgba(227,235,245,.74);
+  font-size:.93rem;
+  line-height:1.65;
+}
+.airs-intro__credit {
+  display:block;
+  margin:16px 2px 0;
+  color:rgba(152,165,187,.82);
+  font-size:.86rem;
+  line-height:1.6;
+  opacity:clamp(0, calc(var(--intro-progress, 0) * 1.5 - .98), 1);
 }
 .airs-intro + .page-alert {
   margin-top:4px;
@@ -1163,22 +1162,13 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
     flex:1;
     min-width:0;
   }
-  .airs-intro { min-height:760px; }
+  .airs-intro { min-height:680px; }
   .airs-intro__content { width:min(var(--max-width), calc(100% - 20px)); padding:176px 0 34px; }
   .airs-intro__panel { width:100%; }
   .airs-intro__panel h1 { font-size:clamp(1.55rem, 4.2vw, 2.4rem); max-width:720px; }
   .airs-intro__text { max-width:620px; }
-  .airs-intro__flare::before {
-    left:-12%;
-    top:26%;
-    width:min(56vw, 420px);
-    height:min(56vh, 520px);
-    opacity:.62;
-  }
-  .airs-intro__flare::after {
-    width:min(34vw, 220px);
-    opacity:.42;
-  }
+  .airs-intro__grid { grid-template-columns:1fr; gap:12px; margin-top:18px; }
+  .airs-intro__card { padding:16px; border-radius:20px; }
   .maze-nav__actions, .maze-lab__head, .maze-lab__spotlight, .detail-panel__head, .detail-score-card__foot { flex-direction:column; align-items:flex-start; }
   .time-card, .maze-lab__score { text-align:left; justify-items:start; }
   .hero-stat-grid, .control-dock, .focus-highlights, .detail-highlight-grid, .task-cloud, .story-mini-grid, .release-card__list, .quadrant-guide__axes, .quadrant-guide__grid { grid-template-columns:1fr; }
@@ -1207,21 +1197,14 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
 }
 @media (max-width:640px) {
   .maze-home, .maze-detail { padding-top:136px; }
-  .airs-intro { min-height:720px; margin-top:-136px; margin-bottom:22px; }
+  .airs-intro { min-height:560px; margin-top:-136px; margin-bottom:22px; }
   .airs-intro__content { padding:164px 0 26px; }
   .airs-intro__panel h1 { font-size:clamp(1.34rem, 8vw, 1.9rem); max-width:100%; }
   .airs-intro__text { max-width:100%; margin-top:12px; font-size:.94rem; line-height:1.7; }
-  .airs-intro__flare::before {
-    left:-22%;
-    top:30%;
-    width:78vw;
-    height:46vh;
-    opacity:.48;
-  }
-  .airs-intro__flare::after {
-    width:42vw;
-    opacity:.3;
-  }
+  .airs-intro__grid { margin-top:16px; }
+  .airs-intro__card strong { font-size:1rem; }
+  .airs-intro__card p { font-size:.9rem; }
+  .airs-intro__credit { margin-top:14px; font-size:.8rem; }
   .risk-ribbon { padding:0 12px; }
   .maze-nav { width:calc(100% - 20px); top:44px; }
   .maze-nav__inner { padding:12px; }
