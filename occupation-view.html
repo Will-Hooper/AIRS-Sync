@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="airs-environment" content="production">
+  <meta name="airs-strict-data-mode" content="false">
+  <title>AIRS 职业详情</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="maze-theme.css">
+  <link rel="modulepreload" href="dist/occupation-neo.js?v=20260320-1">
+  <link rel="modulepreload" href="dist/api-client.js">
+  <link rel="modulepreload" href="dist/i18n-neo.js">
+  <link rel="modulepreload" href="dist/runtime-config.js">
+  <link rel="modulepreload" href="dist/occupation-translation.js">
+</head>
+<body class="maze-page maze-page--detail">
+  <div class="maze-ambient maze-ambient--detail" aria-hidden="true"></div>
+
+  <header class="maze-nav maze-nav--detail">
+    <div class="maze-nav__inner">
+      <a class="detail-back" href="home.html" data-i18n="detail.back">返回职业全景</a>
+
+      <nav class="maze-nav__links" aria-label="详情页导航" data-i18n-aria-label="detail.detailNavAria">
+        <a href="#detail-overview" data-i18n="detail.navOverview">概览</a>
+        <a href="#detail-breakdown" data-i18n="detail.navBreakdown">分项</a>
+        <a href="#detail-evidence" data-i18n="detail.navEvidence">证据</a>
+      </nav>
+
+      <div class="maze-nav__actions">
+        <a class="maze-nav__cta" href="#detail-breakdown" data-copy="detail_nav_cta">查看分项解读</a>
+        <div class="lang-switch">
+        <span class="lang-switch__label" data-i18n="home.language">语言</span>
+        <div class="lang-switch__actions">
+          <button class="lang-switch__button" data-lang-option="en" type="button">EN</button>
+          <button class="lang-switch__button" data-lang-option="zh" type="button">&#20013;&#25991;</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="maze-detail" id="detail-overview">
+    <section class="detail-hero">
+      <div class="detail-hero__copy">
+        <p class="kicker" data-i18n="detail.kicker">职业详情</p>
+        <h1 id="occupationTitle">正在加载职业...</h1>
+        <section class="detail-hero__definition-card glass-card" aria-label="SOC 定义">
+          <div class="detail-hero__definition-head">
+            <p class="kicker detail-hero__definition-kicker" data-i18n="detail.definitionKicker">SOC 定义</p>
+            <span class="detail-hero__definition-badge">BLS / SOC</span>
+          </div>
+          <p id="occupationDefinition" class="detail-hero__definition">正在读取该职业在 SOC 中的定义。</p>
+        </section>
+        <section class="detail-hero__summary-card glass-card" aria-label="AIRS 解读">
+          <p class="kicker detail-hero__summary-kicker" data-i18n="detail.summaryKicker">AIRS 解读</p>
+          <p id="occupationSummary" class="detail-hero__summary">正在读取这个职业的 AIRS 详情。</p>
+        </section>
+
+        <div class="detail-hero__chips">
+          <span id="occupationSoc" class="detail-chip">SOC --</span>
+          <span id="occupationRegion" class="detail-chip">地区 --</span>
+          <span id="occupationDate" class="detail-chip">日期 --</span>
+        </div>
+
+        <div class="detail-highlight-grid">
+          <article class="detail-highlight glass-card">
+            <span data-i18n="detail.airs">AIRS</span>
+            <strong id="occupationAirs">--</strong>
+          </article>
+          <article class="detail-highlight glass-card">
+            <span data-i18n="detail.openPostings">在招岗位数</span>
+            <strong id="occupationPostings">--</strong>
+          </article>
+          <article class="detail-highlight glass-card">
+            <span data-i18n="detail.twelveMonthDelta">近12个月变化</span>
+            <strong id="detailHeroDelta">--</strong>
+          </article>
+        </div>
+      </div>
+
+      <aside class="detail-score-card glass-card">
+        <span class="detail-score-card__label" data-i18n="detail.scoreCardLabel">当前状态</span>
+        <strong id="occupationAirsMirror">--</strong>
+        <span id="occupationLabel" class="score-pill">--</span>
+        <p class="detail-score-card__note" data-i18n="detail.scoreCardText">这个卡片会固定显示当前职业的核心状态，下面的内容会解释分数为什么落在这里。</p>
+        <div class="detail-score-card__foot">
+          <span data-i18n="detail.openPostings">在招岗位数</span>
+          <strong id="occupationPostingsMirror">--</strong>
+        </div>
+      </aside>
+    </section>
+
+    <section class="detail-story" id="detail-breakdown">
+      <div class="detail-story__lead glass-card">
+        <p class="kicker" data-i18n="detail.breakdownKicker">分项解读</p>
+        <h2 data-i18n="detail.breakdownTitle">这个职业为什么更容易受到 AI 影响</h2>
+        <div class="metric-stack metric-stack--large">
+          <div class="metric-stack__row">
+            <span data-i18n="home.replacement">替代压力</span>
+            <div class="metric-bar"><div id="replacementBar"></div></div>
+            <strong id="replacementValue">--</strong>
+          </div>
+          <div class="metric-stack__row">
+            <span data-i18n="home.augmentation">AI 辅助</span>
+            <div class="metric-bar"><div id="augmentationBar"></div></div>
+            <strong id="augmentationValue">--</strong>
+          </div>
+          <div class="metric-stack__row">
+            <span data-i18n="home.hiring">招聘变化</span>
+            <div class="metric-bar"><div id="hiringBar"></div></div>
+            <strong id="hiringValue">--</strong>
+          </div>
+          <div class="metric-stack__row">
+            <span data-i18n="home.historical">历史趋势</span>
+            <div class="metric-bar"><div id="historicalBar"></div></div>
+            <strong id="historicalValue">--</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-story__rail">
+        <article class="glass-card detail-panel detail-panel--chart">
+          <div class="detail-panel__head">
+            <div>
+              <p class="kicker" data-i18n="detail.trendKicker">趋势</p>
+              <h2 data-i18n="detail.trendTitle">近12个月 AIRS 分数变化</h2>
+            </div>
+            <span id="timelineDelta" class="detail-muted">--</span>
+          </div>
+          <svg id="timelineChart" viewBox="0 0 640 260" preserveAspectRatio="none"></svg>
+        </article>
+
+        <article class="glass-card detail-panel" id="detail-evidence">
+          <p class="kicker" data-i18n="detail.evidenceKicker">证据</p>
+          <h2 data-i18n="detail.evidenceTitle">招聘市场里看到的证据</h2>
+          <div id="evidenceList" class="evidence-list"></div>
+        </article>
+
+        <article class="glass-card detail-panel">
+          <div class="detail-panel__head detail-panel__head--stacked">
+            <div>
+              <p class="kicker" data-i18n="detail.taskKicker">任务暴露</p>
+              <h2 data-i18n="detail.taskTitle">AI 更容易影响这个职业的哪些工作内容</h2>
+            </div>
+            <span id="taskCount" class="detail-panel__badge">--</span>
+          </div>
+          <p id="taskIntro" class="detail-panel__intro" data-i18n="detail.taskIntro">下面这些工作内容更容易先被 AI 辅助、重写或压缩，因此通常会更早反映到招聘要求和岗位结构变化上。</p>
+          <div id="taskCloud" class="task-cloud"></div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="dist/occupation-neo.js?v=20260320-1"></script>
+</body>
+</html>
