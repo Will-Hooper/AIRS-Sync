@@ -786,14 +786,18 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
 
   const today = toIsoDate();
   writeStep("Loading USAJOBS history");
-  const history = (await readJsonFile<HistoryFile>(options.historyPath)) || (
-    options.useExistingHistoryOnly
-      ? null
-      : { source: "USAJOBS", lastRun: today, series: [] }
-  );
-
+  let history = await readJsonFile<HistoryFile>(options.historyPath);
   if (!history) {
-    throw new Error(`History file not found for --useExistingHistoryOnly: ${options.historyPath}`);
+    history = {
+      source: "USAJOBS",
+      lastRun: today,
+      series: []
+    };
+
+    if (options.useExistingHistoryOnly) {
+      writeStep(`USAJOBS history missing; creating empty history at ${options.historyPath}`);
+      await writeJsonFile(options.historyPath, history);
+    }
   }
 
   const seriesIndex = new Map<string, HistorySeriesEntry>();
