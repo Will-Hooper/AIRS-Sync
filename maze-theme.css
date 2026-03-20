@@ -81,9 +81,9 @@ button, input, select { font:inherit; }
   position:absolute;
   inset:0;
   background:
-    linear-gradient(180deg, rgba(5,8,13,.18) 0%, rgba(5,8,13,.24) 18%, rgba(5,8,13,.68) 64%, rgba(5,8,13,.97) 100%),
-    radial-gradient(circle at 18% 22%, rgba(111,227,194,.1), transparent 30%),
-    radial-gradient(circle at 82% 18%, rgba(127,193,255,.1), transparent 28%);
+    linear-gradient(180deg, rgba(5,8,13,.1) 0%, rgba(5,8,13,.16) 18%, rgba(5,8,13,.56) 64%, rgba(5,8,13,.95) 100%),
+    radial-gradient(circle at 18% 22%, rgba(111,227,194,.14), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(127,193,255,.14), transparent 30%);
 }
 .airs-intro__content {
   position:relative;

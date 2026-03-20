@@ -11,6 +11,25 @@ if %errorlevel%==0 (
 )
 
 git commit -m "update"
-git push
+if errorlevel 1 (
+    echo Commit failed
+    pause
+    exit /b
+)
 
+git pull --rebase origin main
+if errorlevel 1 (
+    echo Pull rebase failed
+    pause
+    exit /b
+)
+
+git push origin main
+if errorlevel 1 (
+    echo Push failed
+    pause
+    exit /b
+)
+
+echo Sync completed successfully
 pause

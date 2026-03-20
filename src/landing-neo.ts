@@ -266,11 +266,11 @@ function initIntroVanta(force = false) {
     minWidth: 200,
     scale: 1,
     scaleMobile: 1,
-    color: 0x7fc1ff,
-    color2: 0x6fe3c2,
+    color: 0x8dd4ff,
+    color2: 0x8ff8cf,
     backgroundColor: 0x06090d,
-    size: profile.mobile ? 1.8 : 2.6,
-    spacing: profile.mobile ? 38 : 30,
+    size: profile.mobile ? 2.8 : 4.2,
+    spacing: profile.mobile ? 34 : 24,
     showLines: false
   });
   host.classList.remove("is-static-fallback");
