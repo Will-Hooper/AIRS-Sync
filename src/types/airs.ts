@@ -6,6 +6,15 @@ export interface OccupationTask {
   [key: string]: unknown;
 }
 
+export interface EducationOutcomesSummary {
+  cipCode: string;
+  cipDesc: string;
+  programCount: number;
+  institutionCount: number;
+  median1Y: number | null;
+  median2Y: number | null;
+}
+
 export interface JsonRegionMetrics {
   airs?: number;
   replacement?: number;
@@ -23,6 +32,7 @@ export interface JsonDatasetOccupation {
   titleZh?: string;
   definition?: string;
   definitionZh?: string;
+  educationOutcomes?: EducationOutcomesSummary;
   majorGroup: string;
   label: string;
   summary?: string;
@@ -49,6 +59,7 @@ export interface OccupationRow extends JsonRegionMetrics {
   titleZh?: string;
   definition?: string;
   definitionZh?: string;
+  educationOutcomes?: EducationOutcomesSummary;
   majorGroup: string;
   label: string;
   summary: string;

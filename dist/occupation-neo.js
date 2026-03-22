@@ -40,6 +40,9 @@ const els = {
     occupationLabel: byId("occupationLabel"),
     occupationPostings: byId("occupationPostings"),
     occupationPostingsMirror: byId("occupationPostingsMirror"),
+    occupationMetricLabel: byId("occupationMetricLabel"),
+    occupationMetricLabelMirror: byId("occupationMetricLabelMirror"),
+    occupationMetricNote: byId("occupationMetricNote"),
     detailHeroDelta: byId("detailHeroDelta"),
     replacementBar: byId("replacementBar"),
     augmentationBar: byId("augmentationBar"),
@@ -78,6 +81,52 @@ function displayEvidence(row) { return state.lang === "zh" ? (row.evidenceZh || 
 function displayTaskName(task) { return state.lang === "zh" ? (task.nameZh || task.name) : task.name; }
 function toneFromAirs(airs) { return 214 - (1 - airs / 100) * 170; }
 function copy(language, key) { return DETAIL_COPY[language]?.[key] || DETAIL_COPY.en[key] || key; }
+function formatWholeNumber(value) {
+    return Math.round(value).toLocaleString(locale());
+}
+function formatUsd(value) {
+    return new Intl.NumberFormat(locale(), {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+    }).format(value);
+}
+function resolveMetricDescriptor(row) {
+    const education = row.educationOutcomes;
+    const median2Y = Number(education?.median2Y || 0);
+    if (education && Number.isFinite(median2Y) && median2Y > 0) {
+        return {
+            labelKey: "detail.relatedProgramMedian2Y",
+            noteKey: "detail.scoreCardTextEducation",
+            value: median2Y,
+            formatter: formatUsd
+        };
+    }
+    const median1Y = Number(education?.median1Y || 0);
+    if (education && Number.isFinite(median1Y) && median1Y > 0) {
+        return {
+            labelKey: "detail.relatedProgramMedian1Y",
+            noteKey: "detail.scoreCardTextEducation",
+            value: median1Y,
+            formatter: formatUsd
+        };
+    }
+    const programCount = Number(education?.programCount || 0);
+    if (education && Number.isFinite(programCount) && programCount > 0) {
+        return {
+            labelKey: "detail.relatedProgramSamples",
+            noteKey: "detail.scoreCardTextEducation",
+            value: programCount,
+            formatter: formatWholeNumber
+        };
+    }
+    return {
+        labelKey: "detail.openPostings",
+        noteKey: "detail.scoreCardText",
+        value: Number(row.postings || 0),
+        formatter: formatWholeNumber
+    };
+}
 function renderModeLabel(mode) {
     if (mode === "json")
         return t(state.lang, "home.jsonMode");
@@ -146,6 +195,12 @@ function renderErrorState() {
     els.occupationSoc.textContent = "SOC --";
     els.occupationRegion.textContent = state.region || "--";
     els.occupationDate.textContent = state.date || "--";
+    if (els.occupationMetricLabel)
+        els.occupationMetricLabel.textContent = t(state.lang, "detail.openPostings");
+    if (els.occupationMetricLabelMirror)
+        els.occupationMetricLabelMirror.textContent = t(state.lang, "detail.openPostings");
+    if (els.occupationMetricNote)
+        els.occupationMetricNote.textContent = t(state.lang, "detail.scoreCardText");
     [els.occupationAirs, els.occupationAirsMirror, els.occupationPostings, els.occupationPostingsMirror].forEach((element) => {
         element.dataset.value = "0";
         element.textContent = "--";
@@ -285,8 +340,15 @@ async function renderPage() {
         animateNumber(els.occupationAirs, row.airs);
         animateNumber(els.occupationAirsMirror, row.airs);
         els.occupationLabel.textContent = labelText(state.lang, row.label);
-        animateNumber(els.occupationPostings, row.postings, { formatter: (next) => Math.round(next).toLocaleString(locale()) });
-        animateNumber(els.occupationPostingsMirror, row.postings, { formatter: (next) => Math.round(next).toLocaleString(locale()) });
+        const metric = resolveMetricDescriptor(row);
+        if (els.occupationMetricLabel)
+            els.occupationMetricLabel.textContent = t(state.lang, metric.labelKey);
+        if (els.occupationMetricLabelMirror)
+            els.occupationMetricLabelMirror.textContent = t(state.lang, metric.labelKey);
+        if (els.occupationMetricNote)
+            els.occupationMetricNote.textContent = t(state.lang, metric.noteKey);
+        animateNumber(els.occupationPostings, metric.value, { formatter: metric.formatter });
+        animateNumber(els.occupationPostingsMirror, metric.value, { formatter: metric.formatter });
         setMeter(els.replacementBar, els.replacementValue, row.replacement);
         setMeter(els.augmentationBar, els.augmentationValue, row.augmentation);
         setMeter(els.hiringBar, els.hiringValue, row.hiring);

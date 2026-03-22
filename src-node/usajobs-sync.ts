@@ -61,6 +61,7 @@ interface UsaJobsSyncOptions {
   careerOneStopHistoryPath: string;
   publicJobBoardsHistoryPath: string;
   publicJobBoardsConfigPath: string;
+  collegeScorecardSummaryPath: string;
 }
 
 interface SocMapRule {
@@ -91,6 +92,21 @@ interface BaselineConfig {
     summary?: string;
   };
   codes?: Record<string, BaselineCodeConfig>;
+}
+
+interface CollegeScorecardSummaryRecord {
+  cipCode: string;
+  cipDesc: string;
+  programCount: number;
+  institutionCount: number;
+  median1Y: number | null;
+  median2Y: number | null;
+}
+
+interface CollegeScorecardSummaryFile {
+  source: string;
+  updatedAt: string;
+  cipSummary: CollegeScorecardSummaryRecord[];
 }
 
 interface HistoryDailyPoint {
@@ -419,6 +435,112 @@ function getTitleMajorGroupHint(title: string) {
   return "";
 }
 
+const COLLEGE_SCORECARD_MAJOR_KEYWORDS: Record<string, string[]> = {
+  "Management": ["business", "management", "administration", "commerce", "organizational leadership"],
+  "Business and Financial Operations": ["finance", "accounting", "business", "commerce", "bookkeeping", "tax", "marketing", "management"],
+  "Computer and Mathematical": ["computer", "information", "data", "software", "informatics", "statistics", "mathematics", "cyber"],
+  "Architecture and Engineering": ["engineering", "architecture", "construction", "mechanical", "electrical", "civil", "industrial", "aerospace"],
+  "Life, Physical, and Social Science": ["biology", "chemistry", "physics", "social science", "psychology", "economics", "geography", "science"],
+  "Community and Social Service": ["social work", "human services", "counseling", "community", "public administration"],
+  "Legal": ["law", "legal studies", "criminal justice", "legal professions"],
+  "Educational Instruction and Library": ["education", "teaching", "curriculum", "library", "information science"],
+  "Arts, Design, Entertainment, Sports, and Media": ["design", "drama", "theatre", "acting", "music", "journalism", "communication", "media", "film", "visual and performing arts"],
+  "Healthcare Practitioners and Technical": ["nursing", "health", "medicine", "pharmacy", "public health", "therapeutic", "rehabilitation", "dental"],
+  "Healthcare Support": ["nursing", "health", "medical assisting", "allied health", "rehabilitation", "dental"],
+  "Protective Service": ["criminal justice", "security", "fire protection", "law enforcement", "homeland security"],
+  "Food Preparation and Serving Related": ["culinary", "hospitality", "food science", "restaurant"],
+  "Building and Grounds Cleaning and Maintenance": ["horticulture", "groundskeeping", "environmental services", "facilities"],
+  "Personal Care and Service": ["personal and culinary services", "cosmetology", "hospitality", "consumer services"],
+  "Sales and Related": ["marketing", "sales", "business", "commerce", "retail"],
+  "Office and Administrative Support": ["business", "office administration", "administration", "accounting", "information", "management"],
+  "Farming, Fishing, and Forestry": ["agriculture", "forestry", "fisheries", "animal sciences", "natural resources"],
+  "Construction and Extraction": ["construction", "carpentry", "plumbing", "electrical", "welding", "mining"],
+  "Installation, Maintenance, and Repair": ["industrial technology", "mechanic", "automotive", "aviation maintenance", "electrical"],
+  "Production": ["manufacturing", "industrial technology", "precision production", "welding", "machining"],
+  "Transportation and Material Moving": ["transportation", "aviation", "logistics", "supply chain", "marine transportation"],
+  "Military Specific Occupations": ["security", "criminal justice", "public administration"]
+};
+
+const COLLEGE_SCORECARD_TITLE_RULES: Array<{ pattern: RegExp; keywords: string[] }> = [
+  { pattern: /actors?|performers?|producers? and directors?|music|journalists?|reporters?|editors?|writers?|designers?/i, keywords: ["acting", "drama", "theatre", "journalism", "communication", "film", "design", "visual and performing arts"] },
+  { pattern: /financial|account|audit|tax|budget|bookkeeping|payroll|procurement|purchasing/i, keywords: ["finance", "accounting", "business", "bookkeeping", "tax"] },
+  { pattern: /nurs|physician|doctor|pharmac|dental|therap|medical|health|clinical/i, keywords: ["nursing", "health", "medicine", "pharmacy", "public health", "rehabilitation", "dental"] },
+  { pattern: /software|computer|database|web|cyber|data|statistic|mathematic/i, keywords: ["computer", "information", "software", "data", "statistics", "mathematics", "informatics"] },
+  { pattern: /teacher|instructor|professor|training|library|librarian/i, keywords: ["education", "teaching", "curriculum", "library", "information science"] },
+  { pattern: /attorney|lawyer|judge|legal|paralegal/i, keywords: ["law", "legal studies", "criminal justice"] },
+  { pattern: /security|police|fire|correction|investigat|guard/i, keywords: ["criminal justice", "security", "fire protection", "law enforcement"] },
+  { pattern: /logistic|warehouse|shipping|inventory|transport|distribution|materials handler|stockers?/i, keywords: ["logistics", "supply chain", "transportation", "business"] },
+  { pattern: /architect|engineer|mechanic|maintenance|repair|construction|electric|plumb|welder|machin/i, keywords: ["engineering", "architecture", "construction", "industrial technology", "mechanic", "electrical", "plumbing", "welding"] },
+  { pattern: /social worker|counsel|community service/i, keywords: ["social work", "human services", "counseling"] },
+  { pattern: /chef|cook|food|restaurant|hospitality|lodging/i, keywords: ["culinary", "hospitality", "food science"] },
+  { pattern: /agric|forestry|fish|wildlife|animal/i, keywords: ["agriculture", "forestry", "fisheries", "animal sciences", "natural resources"] }
+];
+
+function uniqueKeywords(values: string[]) {
+  return [...new Set(values.map((value) => normalizeText(value)).filter(Boolean))];
+}
+
+function buildCollegeScorecardKeywords(title: string, majorGroup: string) {
+  const keywords = [
+    ...(COLLEGE_SCORECARD_MAJOR_KEYWORDS[majorGroup] || []),
+    ...title.split(/[^A-Za-z0-9]+/).filter((token) => token.length >= 4)
+  ];
+
+  for (const rule of COLLEGE_SCORECARD_TITLE_RULES) {
+    if (rule.pattern.test(title)) {
+      keywords.push(...rule.keywords);
+    }
+  }
+
+  return uniqueKeywords(keywords);
+}
+
+function scoreCollegeScorecardEntry(entry: CollegeScorecardSummaryRecord, keywords: string[]) {
+  const text = normalizeText(entry.cipDesc);
+  if (!text) return 0;
+
+  let score = 0;
+  for (const keyword of keywords) {
+    if (!keyword) continue;
+    if (text.includes(keyword)) {
+      score += keyword.includes(" ") ? 6 : 3;
+      if (text.startsWith(keyword)) score += 1;
+    }
+  }
+
+  if (/\bgeneral\b|\bother\b/.test(text)) {
+    score -= 1;
+  }
+
+  return score;
+}
+
+function findCollegeScorecardOutcomes(
+  title: string,
+  majorGroup: string,
+  scorecard: CollegeScorecardSummaryFile | null
+) {
+  if (!scorecard?.cipSummary?.length) return null;
+  const keywords = buildCollegeScorecardKeywords(title, majorGroup);
+  if (!keywords.length) return null;
+
+  let best: CollegeScorecardSummaryRecord | null = null;
+  let bestScore = 0;
+
+  for (const entry of scorecard.cipSummary) {
+    const score = scoreCollegeScorecardEntry(entry, keywords);
+    if (
+      score > bestScore ||
+      (score === bestScore && best && entry.programCount > best.programCount)
+    ) {
+      best = entry;
+      bestScore = score;
+    }
+  }
+
+  return bestScore >= 3 ? best : null;
+}
+
 function resolveMajorGroup(categoryName: string, fallbackName: string, socMap: SocMap) {
   if (!categoryName) {
     return fallbackName || "Other";
@@ -735,7 +857,10 @@ function parseOptions(): UsaJobsSyncOptions {
       path.join(dataDir, "public_jobboards_history.json"),
     publicJobBoardsConfigPath:
       getStringArg(args, "publicJobBoardsConfigPath", "publicjobboardsconfigpath") ||
-      path.join(dataDir, "public_jobboards_sources.json")
+      path.join(dataDir, "public_jobboards_sources.json"),
+    collegeScorecardSummaryPath:
+      getStringArg(args, "collegeScorecardSummaryPath", "collegescorecardsummarypath") ||
+      path.join(dataDir, "college_scorecard_cip_summary.json")
   };
 }
 
@@ -907,6 +1032,7 @@ async function main() {
   const socMap = await loadSocMap(options.mapPath);
   writeStep("SOC map loaded");
   const onetData = await loadOnetData(options.onetDataDir);
+  const collegeScorecardSummary = await readJsonFile<CollegeScorecardSummaryFile>(options.collegeScorecardSummaryPath);
   const history = await rebuildHistory(options, socMap);
   const socMaster = await loadSocMaster(options.masterPath, onetData);
   if (!socMaster.length) {
@@ -1190,6 +1316,7 @@ async function main() {
           .slice(0, 5)
           .map((task) => task.text)
       : [];
+    const educationOutcomes = findCollegeScorecardOutcomes(entry.title, majorGroup, collegeScorecardSummary);
 
     occupations.push({
       socCode: entry.socCode,
@@ -1197,6 +1324,7 @@ async function main() {
       titleZh: translateOccupationTitle(entry.title),
       definition: onetMatch?.occupation?.description || "",
       definitionZh: translateOccupationDefinition(entry.title, onetMatch?.occupation?.description || ""),
+      educationOutcomes: educationOutcomes || undefined,
       majorGroup,
       onetCode,
       onetTitle,

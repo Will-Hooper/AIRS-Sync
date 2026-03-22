@@ -582,9 +582,14 @@ function buildChineseSummary(row, englishSummary) {
     return `${row.titleZh || row.title} 属于${chineseGroupLabel(row.majorGroup)}，当前 AIRS 为 ${Number(row.airs || 0).toFixed(1)}，处于“${chineseLabelText(row.label)}”区间。整体看，${chineseImpactSentence(row)}；相对同类岗位，招聘${chineseDemandPhrase(englishSummary)}。`;
 }
 function buildChineseEvidence(row, englishEvidence) {
+    const employmentSignal = Number(row.postings || 0) > 0
+        ? `当前招聘信号：全国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`
+        : row.educationOutcomes
+            ? `当前未抓到稳定公开招聘数；改用高校相关专业结果补充参考：覆盖 ${row.educationOutcomes.institutionCount} 所院校、${row.educationOutcomes.programCount} 条专业结果。`
+            : `当前招聘信号：全国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`;
     return [
         `职业对应：${row.titleZh || row.title}（SOC ${row.socCode}；英文名称：${row.title}），归属于${chineseGroupLabel(row.majorGroup)}。`,
-        `当前招聘信号：全国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`,
+        employmentSignal,
         `影响拆解：替代压力 ${percentLabel(row.replacement)}，岗位改写 ${percentLabel(row.augmentation)}，招聘兑现 ${percentLabel(row.hiring)}，历史累计渗透 ${percentLabel(row.historical)}。`,
         `一句话判断：${chineseImpactSentence(row)}。`
     ];
@@ -599,6 +604,7 @@ function mapJsonOccupation(occupation, region) {
         titleZh: occupation.titleZh,
         definition: occupation.definition || "",
         definitionZh: occupation.definitionZh || translateOccupationDefinition(occupation.title, occupation.definition || ""),
+        educationOutcomes: occupation.educationOutcomes,
         majorGroup: occupation.majorGroup,
         label: occupation.label,
         summary: englishSummary,
