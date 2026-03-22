@@ -8,6 +8,7 @@
   - 用途：每小时拉取最新招聘数据，并重建 `backend/data/airs_data.json`
   - 默认来源：`USAJOBS`
   - 可选来源：`CareerOneStop Jobs V2`
+  - 公开来源：`Greenhouse / Lever / Ashby / SmartRecruiters` 职位看板（默认按 `backend/data/public_jobboards_sources.json` 自动抓取）
   - 频率：每小时一次
   - 时间：每小时 `15` 分运行一次
 
@@ -80,7 +81,15 @@
 
 - `backend/data/usajobs_history.json`
 - `backend/data/careeronestop_history.json`
+- `backend/data/public_jobboards_history.json`
 - `backend/data/airs_data.json`
+
+其中公开职位看板当前默认会抓取：
+
+- `Stripe / Datadog / Coinbase`
+- `Palantir / University of Austin`
+- `OpenAI / Notion / Ramp / Cursor / Perplexity / Mercor / Supabase`
+- `Visa / SmartRecruiters / LVMH`
 
 月更通常会改：
 

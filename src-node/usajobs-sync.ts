@@ -21,6 +21,11 @@ import {
   type CareerOneStopHistoryFile
 } from "./lib/careeronestop";
 import {
+  getPublicJobBoardsProviderOptions,
+  rebuildPublicJobBoardsHistory,
+  type PublicJobBoardsHistoryFile
+} from "./lib/public-jobboards";
+import {
   getDetailedSocOccupations,
   findDetailedSocOccupation,
   findOnetOccupation,
@@ -54,6 +59,8 @@ interface UsaJobsSyncOptions {
   useExistingHistoryOnly: boolean;
   mapPath: string;
   careerOneStopHistoryPath: string;
+  publicJobBoardsHistoryPath: string;
+  publicJobBoardsConfigPath: string;
 }
 
 interface SocMapRule {
@@ -722,7 +729,13 @@ function parseOptions(): UsaJobsSyncOptions {
     mapPath: path.join(dataDir, "usajobs_soc_map.json"),
     careerOneStopHistoryPath:
       getStringArg(args, "careerOneStopHistoryPath", "careeronestophistorypath") ||
-      path.join(dataDir, "careeronestop_history.json")
+      path.join(dataDir, "careeronestop_history.json"),
+    publicJobBoardsHistoryPath:
+      getStringArg(args, "publicJobBoardsHistoryPath", "publicjobboardshistorypath") ||
+      path.join(dataDir, "public_jobboards_history.json"),
+    publicJobBoardsConfigPath:
+      getStringArg(args, "publicJobBoardsConfigPath", "publicjobboardsconfigpath") ||
+      path.join(dataDir, "public_jobboards_sources.json")
   };
 }
 
@@ -834,7 +847,7 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
   return history;
 }
 
-function collectHistoryDates(...histories: Array<HistoryFile | CareerOneStopHistoryFile | null | undefined>) {
+function collectHistoryDates(...histories: Array<HistoryFile | CareerOneStopHistoryFile | PublicJobBoardsHistoryFile | null | undefined>) {
   const values = new Set<string>();
 
   for (const history of histories) {
@@ -920,6 +933,28 @@ async function main() {
     );
   }
 
+  const publicJobBoardsOptions = getPublicJobBoardsProviderOptions(
+    options.publicJobBoardsHistoryPath,
+    options.publicJobBoardsConfigPath,
+    options.useExistingHistoryOnly
+  );
+  let publicJobBoardsHistory: PublicJobBoardsHistoryFile | null = null;
+  try {
+    publicJobBoardsHistory = await rebuildPublicJobBoardsHistory(
+      socMaster.map((entry) => ({
+        socCode: entry.socCode,
+        title: entry.title,
+        majorGroup: entry.majorGroup
+      })),
+      onetData,
+      publicJobBoardsOptions
+    );
+  } catch (error) {
+    console.warn(
+      `Public job boards source skipped: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+
   let baseline = await readJsonFile<BaselineConfig>(options.baselinePath);
   if (!baseline) {
     baseline = newDefaultBaseline();
@@ -927,7 +962,7 @@ async function main() {
   }
   writeStep("Baseline loaded");
 
-  let dates = collectHistoryDates(history, careerOneStopHistory);
+  let dates = collectHistoryDates(history, careerOneStopHistory, publicJobBoardsHistory);
   if (dates.length > 12) {
     dates = dates.slice(-12);
   }
@@ -1013,6 +1048,26 @@ async function main() {
         "CareerOneStop",
         Number(point.count || 0)
       );
+    }
+  }
+
+  for (const entry of publicJobBoardsHistory?.occupations || []) {
+    if (!entry?.socCode || !masterIndex.has(entry.socCode)) {
+      continue;
+    }
+
+    for (const point of entry.daily || []) {
+      addCountByDate(aggregatedDaily, entry.socCode, point.date, Number(point.count || 0));
+      const sourceMap = point.sources || {};
+      for (const [source, count] of Object.entries(sourceMap)) {
+        addSourceCountByDate(
+          aggregatedSourceDaily,
+          entry.socCode,
+          point.date,
+          source,
+          Number(count || 0)
+        );
+      }
     }
   }
 

@@ -7,7 +7,7 @@
 - 职业详情页
 - 纯前端 JSON 数据读取
 - TypeScript 前端运行时
-- TypeScript 数据同步 CLI（USAJOBS / CareerOneStop / O*NET）
+- TypeScript 数据同步 CLI（USAJOBS / CareerOneStop / 公开职位看板 / O*NET）
 
 ## 页面
 
@@ -74,6 +74,22 @@ GitHub Actions 已接入两条自动同步链路：
 
 - `USAJOBS`
 - `CareerOneStop Jobs V2`（配置密钥后自动启用）
+- `公开职位看板`（默认已启用 Greenhouse / Lever / Ashby / SmartRecruiters 的公开板源）
+
+公开职位看板默认源清单在：
+
+- [backend/data/public_jobboards_sources.json](E:\Codex\backend\data\public_jobboards_sources.json)
+
+当前默认公开板源示例包括：
+
+- `Stripe / Datadog / Coinbase`（Greenhouse）
+- `Palantir / University of Austin`（Lever）
+- `OpenAI / Notion / Ramp / Cursor / Perplexity / Mercor / Supabase`（Ashby）
+- `Visa / SmartRecruiters / LVMH`（SmartRecruiters）
+
+公开职位看板历史会写入：
+
+- [backend/data/public_jobboards_history.json](E:\Codex\backend\data\public_jobboards_history.json)
 
 ## API 约定
 
