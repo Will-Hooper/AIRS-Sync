@@ -64,43 +64,40 @@
           <div class="airs-intro__vanta" id="airsIntroVanta"></div>
         </div>
         <div class="airs-intro__content">
-          <div class="airs-intro__hero">
-            <div class="maze-hero__copy airs-intro__copy">
-              <p class="kicker" data-i18n="home.heroKicker">AI 对招聘影响指数</p>
-              <h1 data-i18n="home.heroTitle">把美国全部职业放在一张实时图里，看 AI 对招聘影响最深的是哪些职业。</h1>
-              <p class="hero-copy__text" data-i18n="home.heroText">
-                分数越低，说明 AI 对该职业招聘的压缩越明显；分数越高，说明当前影响越小。你可以先看全局，再缩放到单个职业。
-              </p>
-            </div>
+          <article class="airs-intro-summary__copy">
+            <p class="kicker" data-i18n="home.heroKicker">AI 对招聘影响指数</p>
+            <h1 data-i18n="home.heroTitle">把美国全部职业放在一张实时图里，看 AI 对招聘影响最深的是哪些职业。</h1>
+            <p class="hero-copy__text" data-i18n="home.heroText">
+              分数越低，说明 AI 对该职业招聘的压缩越明显；分数越高，说明当前影响越小。你可以先看全局，再缩放到单个职业。
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="airs-intro-summary">
+        <div class="airs-intro__hero">
+          <article class="hero-stat hero-stat--featured">
+            <span data-i18n="home.averageAirs">平均分</span>
+            <strong id="avgAirs">--</strong>
+          </article>
 
-            <div class="airs-intro__insights">
-              <article class="hero-stat hero-stat--featured">
-                <span data-i18n="home.averageAirs">平均分</span>
-                <strong id="avgAirs">--</strong>
-              </article>
-
-              <div class="airs-intro__stack">
-                <article class="pressure-card">
-                  <span class="pressure-card__index">01</span>
-                  <h2 data-copy="pressure_title_a">风险不是平均分布，而是集中在少数职业。</h2>
-                  <strong id="restructuringRate">--</strong>
-                  <p data-copy="pressure_text_a">目前 AI 对招聘结构的冲击，主要集中在少数职业，不是所有职业一起同步变化。</p>
-                </article>
-                <article class="pressure-card">
-                  <span class="pressure-card__index">02</span>
-                  <h2 data-copy="pressure_title_b">不少职业不是停止招人，而是先改写工作方式。</h2>
-                  <strong id="augmentingRate">--</strong>
-                  <p data-copy="pressure_text_b">很多岗位仍然在招人，但工作内容已经转向 AI 辅助执行，用人规模和岗位要求也在变化。</p>
-                </article>
-                <article class="pressure-card">
-                  <span class="pressure-card__index">03</span>
-                  <h2 data-copy="pressure_title_c">最早的变化，往往先出现在招聘信息里。</h2>
-                  <strong id="mostChangedOccupation">--</strong>
-                  <p id="mostChangedDelta" class="pressure-card__meta">--</p>
-                </article>
-              </div>
-            </div>
-          </div>
+          <article class="pressure-card">
+            <span class="pressure-card__index">01</span>
+            <h2 data-copy="pressure_title_a">风险不是平均分布，而是集中在少数职业。</h2>
+            <strong id="restructuringRate">--</strong>
+            <p data-copy="pressure_text_a">目前 AI 对招聘结构的冲击，主要集中在少数职业，不是所有职业一起同步变化。</p>
+          </article>
+          <article class="pressure-card">
+            <span class="pressure-card__index">02</span>
+            <h2 data-copy="pressure_title_b">不少职业不是停止招人，而是先改写工作方式。</h2>
+            <strong id="augmentingRate">--</strong>
+            <p data-copy="pressure_text_b">很多岗位仍然在招人，但工作内容已经转向 AI 辅助执行，用人规模和岗位要求也在变化。</p>
+          </article>
+          <article class="pressure-card">
+            <span class="pressure-card__index">03</span>
+            <h2 data-copy="pressure_title_c">最早的变化，往往先出现在招聘信息里。</h2>
+            <strong id="mostChangedOccupation">--</strong>
+            <p id="mostChangedDelta" class="pressure-card__meta">--</p>
+          </article>
         </div>
       </section>
     <section class="maze-lab" id="live-field">
@@ -250,7 +247,7 @@
       </div>
     </section>
 
-    <section class="maze-hero maze-hero--focus">
+    <section class="maze-hero maze-hero--analysis" id="signals">
       <aside class="focus-card" id="detail-entry">
         <p class="kicker" data-i18n="home.selectedOccupation">已选职业</p>
         <h2 id="detailTitle" data-i18n="home.selectNode">请选择一个职业节点</h2>
@@ -307,26 +304,25 @@
           <button id="portalButton" class="apple-button apple-button--ghost" type="button" data-i18n="home.smoothEnter">平滑进入</button>
         </div>
       </aside>
-    </section>
+      <div class="signal-grid signal-grid--stacked">
+        <article class="signal-panel">
+          <p class="kicker" data-i18n="home.signalNowKicker">当前解读</p>
+          <h2 id="signalSelectionTitle">--</h2>
+          <p id="signalSelectionSummary" class="signal-panel__text">--</p>
+        </article>
 
-    <section class="signal-grid" id="signals">
-      <article class="signal-panel">
-        <p class="kicker" data-i18n="home.signalNowKicker">当前解读</p>
-        <h2 id="signalSelectionTitle">--</h2>
-        <p id="signalSelectionSummary" class="signal-panel__text">--</p>
-      </article>
+        <article class="signal-panel">
+          <p class="kicker" data-copy="signal_kicker_b">为什么这很重要</p>
+          <h2 data-copy="signal_title_b">关键不只是 AI 是否进入了这个职业，而是它有没有开始减少岗位数量、改变招聘方式。</h2>
+          <p class="signal-panel__text" data-copy="signal_text_b">很多宏观看板只能看到“AI 是否出现”，但 AIRS 更关注“招聘是否已经被改写”。</p>
+        </article>
 
-      <article class="signal-panel">
-        <p class="kicker" data-copy="signal_kicker_b">为什么这很重要</p>
-        <h2 data-copy="signal_title_b">关键不只是 AI 是否进入了这个职业，而是它有没有开始减少岗位数量、改变招聘方式。</h2>
-        <p class="signal-panel__text" data-copy="signal_text_b">很多宏观看板只能看到“AI 是否出现”，但 AIRS 更关注“招聘是否已经被改写”。</p>
-      </article>
-
-      <article class="signal-panel">
-        <p class="kicker" data-copy="signal_kicker_c">下一步</p>
-        <h2 data-copy="signal_title_c">点开一个职业，把当前分析上下文直接带入详情页。</h2>
-        <p class="signal-panel__text" data-copy="signal_text_c">当前选中的职业、日期、地区和语言都会被保留，详情页不会重置你的分析状态。</p>
-      </article>
+        <article class="signal-panel">
+          <p class="kicker" data-copy="signal_kicker_c">下一步</p>
+          <h2 data-copy="signal_title_c">点开一个职业，把当前分析上下文直接带入详情页。</h2>
+          <p class="signal-panel__text" data-copy="signal_text_c">当前选中的职业、日期、地区和语言都会被保留，详情页不会重置你的分析状态。</p>
+        </article>
+      </div>
     </section>
 
     <section class="story-deck" id="story">

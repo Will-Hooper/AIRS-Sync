@@ -225,16 +225,20 @@ function setMeter(bar, label, value) {
     bar.style.width = `${Math.round((value || 0) * 100)}%`;
     label.textContent = Number(value || 0).toFixed(2);
 }
-function renderTimeline(series) {
+function renderTimeline(series, fallbackValue = 0) {
+    const safeSeries = Array.isArray(series) ? series.filter((value) => Number.isFinite(Number(value))).map((value) => Number(value)) : [];
+    const normalizedSeries = safeSeries.length >= 2
+        ? safeSeries
+        : Array.from({ length: 12 }, () => Number(fallbackValue || 0));
     const width = 640;
     const height = 260;
     const padding = 24;
-    const min = Math.min(...series) - 4;
-    const max = Math.max(...series) + 4;
-    const stepX = (width - padding * 2) / (series.length - 1);
-    const points = series.map((value, index) => ({
+    const min = Math.min(...normalizedSeries) - 4;
+    const max = Math.max(...normalizedSeries) + 4;
+    const stepX = (width - padding * 2) / Math.max(normalizedSeries.length - 1, 1);
+    const points = normalizedSeries.map((value, index) => ({
         x: padding + stepX * index,
-        y: height - padding - ((value - min) / (max - min)) * (height - padding * 2)
+        y: height - padding - ((value - min) / Math.max(max - min, 1)) * (height - padding * 2)
     }));
     const linePath = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
     const areaPath = `${linePath} L ${points[points.length - 1].x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
@@ -249,9 +253,9 @@ function renderTimeline(series) {
     <path d="${areaPath}" fill="url(#detailFill)"></path>
     <path d="${linePath}" fill="none" stroke="#0071e3" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></path>
     ${points.map((point) => `<circle cx="${point.x}" cy="${point.y}" r="4" fill="#0071e3"></circle>`).join("")}
-    ${points.map((point, index) => `<text x="${point.x}" y="${height - 6}" text-anchor="middle" font-size="11" fill="#6e6e73">${labels[index]}</text>`).join("")}
+    ${points.map((point, index) => `<text x="${point.x}" y="${height - 6}" text-anchor="middle" font-size="11" fill="#6e6e73">${labels[index] || ""}</text>`).join("")}
   `;
-    const delta = series[series.length - 1] - series[0];
+    const delta = normalizedSeries[normalizedSeries.length - 1] - normalizedSeries[0];
     const deltaText = `${t(state.lang, "home.twelveMonthShort")} ${delta > 0 ? "+" : ""}${delta.toFixed(1)}`;
     els.timelineDelta.textContent = deltaText;
     els.detailHeroDelta.textContent = deltaText;
@@ -287,7 +291,7 @@ async function renderPage() {
         setMeter(els.augmentationBar, els.augmentationValue, row.augmentation);
         setMeter(els.hiringBar, els.hiringValue, row.hiring);
         setMeter(els.historicalBar, els.historicalValue, row.historical);
-        renderTimeline(row.monthlyAirs);
+        renderTimeline(row.monthlyAirs, row.airs);
         els.evidenceList.innerHTML = displayEvidence(row).map((item) => `
       <article class="evidence-item">
         <h4>${t(state.lang, "detail.signal")}</h4>
