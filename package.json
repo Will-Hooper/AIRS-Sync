@@ -8,7 +8,8 @@
     "typecheck:frontend": "tsc -p tsconfig.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
     "sync:usajobs": "node ./dist-node/src-node/usajobs-sync.js",
-    "sync:onet": "node ./dist-node/src-node/onet-sync.js"
+    "sync:onet": "node ./dist-node/src-node/onet-sync.js",
+    "sync:scorecard": "node ./dist-node/src-node/college-scorecard-sync.js"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",

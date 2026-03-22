@@ -20,6 +20,8 @@ dist-node/
 .tmp_onet_ps_wrapper2/
 .tmp_search_check/
 .tmp_soc867_output.json
+.tmp_scorecard/
+.tmp_scorecard_sync/
 edge-dom-home.html
 root-home-check.png
 server-out.log

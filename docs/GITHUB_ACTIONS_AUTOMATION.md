@@ -17,7 +17,12 @@
   - 频率：每月一次
   - 时间：每月 1 日 `03:00 UTC`，即北京时间 `11:00`
 
-两个工作流都会在数据变化时自动提交回仓库。GitHub Pages 会随后自动重新发布页面。
+- `.github/workflows/update-college-scorecard-monthly.yml`
+  - 用途：每月同步美国教育部 `College Scorecard` 的大学 × 专业就业结果
+  - 频率：每月一次
+  - 时间：每月 1 日 `03:30 UTC`，即北京时间 `11:30`
+
+这些工作流都会在数据变化时自动提交回仓库。GitHub Pages 会随后自动重新发布页面。
 
 ## 启用前必须配置的 Secrets
 
@@ -96,6 +101,11 @@
 - `backend/data/onet/*`
 - `backend/data/airs_data.json`
 
+College Scorecard 月更通常会改：
+
+- `backend/data/college_scorecard_programs.json`
+- `backend/data/college_scorecard_cip_summary.json`
+
 ## 你发布后还需要手动做什么
 
 正常情况下，不需要。
@@ -114,5 +124,6 @@
 
 1. `Update AIRS Data Daily` 成功
 2. `Update O-NET Data Monthly` 成功
-3. 仓库里出现新的自动提交
-4. GitHub Pages 页面刷新后能看到更新后的数据
+3. `Update College Scorecard Monthly` 成功
+4. 仓库里出现新的自动提交
+5. GitHub Pages 页面刷新后能看到更新后的数据

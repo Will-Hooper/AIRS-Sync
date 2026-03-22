@@ -7,7 +7,7 @@
 - 职业详情页
 - 纯前端 JSON 数据读取
 - TypeScript 前端运行时
-- TypeScript 数据同步 CLI（USAJOBS / CareerOneStop / 公开职位看板 / O*NET）
+- TypeScript 数据同步 CLI（USAJOBS / CareerOneStop / 公开职位看板 / O*NET / College Scorecard）
 
 ## 页面
 
@@ -46,6 +46,7 @@ npm run build
 ```powershell
 npm run sync:usajobs -- --useExistingHistoryOnly
 npm run sync:onet -- --force
+npm run sync:scorecard
 ```
 
 如果你习惯 PowerShell 旧入口，也可以继续用：
@@ -69,6 +70,7 @@ GitHub Actions 已接入两条自动同步链路：
 
 1. `Update AIRS Data Daily`
 2. `Update O-NET Data Monthly`
+3. `Update College Scorecard Monthly`
 
 其中 `Update AIRS Data Daily` 当前会默认接入：
 
@@ -90,6 +92,14 @@ GitHub Actions 已接入两条自动同步链路：
 公开职位看板历史会写入：
 
 - [backend/data/public_jobboards_history.json](E:\Codex\backend\data\public_jobboards_history.json)
+
+美国大学 × 专业就业结果会写入：
+
+- [backend/data/college_scorecard_programs.json](E:\Codex\backend\data\college_scorecard_programs.json)
+
+美国专业层级汇总会写入：
+
+- [backend/data/college_scorecard_cip_summary.json](E:\Codex\backend\data\college_scorecard_cip_summary.json)
 
 ## API 约定
 
