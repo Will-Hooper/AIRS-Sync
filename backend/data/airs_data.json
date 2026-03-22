@@ -42600,9 +42600,9 @@
     {
       "socCode": "27-3043.00",
       "title": "Writers and Authors",
-      "titleZh": "作家与撰稿人",
+      "titleZh": "作家、编剧与撰稿人",
       "definition": "Originate and prepare written material, such as scripts, stories, advertisements, and other material.",
-      "definitionZh": "在 BLS SOC 中，作家与撰稿人是指从事创意策划、艺术表达、内容制作、表演或视觉传播工作的专业人员。",
+      "definitionZh": "在 BLS SOC 中，作家、编剧与撰稿人是指从事创意策划、艺术表达、内容制作、表演或视觉传播工作的专业人员。",
       "educationOutcomes": {
         "cipCode": "0901",
         "cipDesc": "Communication and Media Studies.",
@@ -42665,23 +42665,23 @@
       "tasks": [
         {
           "name": "Collaborate with other writers on specific projects.",
-          "nameZh": "承担与作家与撰稿人相关的日常处理、编制输出与执行性工作。"
+          "nameZh": "承担与作家、编剧与撰稿人相关的日常处理、编制输出与执行性工作。"
         },
         {
           "name": "Conduct research to obtain factual information and authentic detail, using sources such as newspaper accounts, diaries, and interviews.",
-          "nameZh": "开展与作家与撰稿人相关的信息收集、分析研判与专业判断工作。"
+          "nameZh": "开展与作家、编剧与撰稿人相关的信息收集、分析研判与专业判断工作。"
         },
         {
           "name": "Consult with sales, media and marketing representatives to obtain information on product or service and discuss style and length of advertising written material.",
-          "nameZh": "承担与作家与撰稿人相关的具体专业工作任务。"
+          "nameZh": "承担与作家、编剧与撰稿人相关的具体专业工作任务。"
         },
         {
           "name": "Edit or rewrite existing written material as necessary, and submit written material for approval by supervisor, editor, or publisher.",
-          "nameZh": "承担与作家与撰稿人相关的日常处理、编制输出与执行性工作。"
+          "nameZh": "承担与作家、编剧与撰稿人相关的日常处理、编制输出与执行性工作。"
         },
         {
           "name": "Follow appropriate procedures to get copyrights for completed work.",
-          "nameZh": "承担与作家与撰稿人相关的具体专业工作任务。"
+          "nameZh": "承担与作家、编剧与撰稿人相关的具体专业工作任务。"
         }
       ]
     },

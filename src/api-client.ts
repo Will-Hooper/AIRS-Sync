@@ -165,7 +165,11 @@ const SEARCH_ALIAS_RULES = [
   },
   {
     pattern: /artist|designer|illustrat|media|communication|writer|editor|journalist|public relations|reporter|performer|entertain/i,
-    aliases: ["艺术家", "设计师", "插画师", "编辑", "记者", "媒体人", "传播", "公关", "主持人", "主播", "演员", "表演", "演艺", "影视", "影视表演", "新媒体", "内容运营"]
+    aliases: ["艺术家", "设计师", "插画师", "编辑", "记者", "媒体人", "传播", "公关", "主持人", "主播", "演员", "表演", "演艺", "影视", "影视表演", "新媒体", "内容运营", "作者", "写作"]
+  },
+  {
+    pattern: /writers? and authors?|technical writers?/i,
+    aliases: ["编剧", "剧作家", "作者", "作家", "撰稿人", "写作者", "剧本", "脚本", "文案创作", "故事创作"]
   },
   {
     pattern: /developer|programmer|systems analyst|web developer|software|database administrator|database architect/i,
@@ -231,6 +235,7 @@ const QUERY_EXPANSION_RULES = [
   { pattern: /采购|招采|合同/i, terms: ["purchasing", "procurement", "contracting", "property disposal"] },
   { pattern: /科研|研究员|科学家/i, terms: ["science", "research", "physics", "chemistry", "biology", "economics", "psychology"] },
   { pattern: /艺术家|演员|表演|演艺|影视|影视表演|导演|编导|摄影师|剪辑师|主持人|主播/i, terms: ["actors", "performer", "performing arts", "entertainment", "media", "communication", "producer", "director", "audiovisual"] },
+  { pattern: /编剧|剧作家|剧本|脚本|写作者/i, terms: ["writers and authors", "writer", "author", "screenwriter", "playwright", "scriptwriter", "creative writing"] },
   { pattern: /工程师/i, terms: ["engineer", "engineering", "systems analyst"] },
   { pattern: /建筑师/i, terms: ["architect", "architecture", "naval architect", "landscape architect"] },
   { pattern: /规划师/i, terms: ["planner", "planning", "urban planner"] },
@@ -256,6 +261,11 @@ const QUERY_INTENT_RULES = [
     pattern: /艺术家|演员|表演|演艺|影视|影视表演/i,
     match: /artists?|actors?|performers?|entertainers?|producers? and directors?|art directors?/i,
     boost: 155
+  },
+  {
+    pattern: /编剧|剧作家|剧本|脚本|写作者/i,
+    match: /writers? and authors?/i,
+    boost: 320
   },
   {
     pattern: /导演|编导/i,

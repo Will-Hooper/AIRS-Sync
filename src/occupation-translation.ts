@@ -124,7 +124,7 @@ const TITLE_OVERRIDE_MAP = new Map([
   ["Market Research Analysts and Marketing Specialists", "市场研究分析师与营销专员"],
   ["Public Relations Specialists", "公关专员"],
   ["Editors", "编辑"],
-  ["Writers and Authors", "作家与撰稿人"],
+  ["Writers and Authors", "作家、编剧与撰稿人"],
   ["Graphic Designers", "平面设计师"],
   ["Fine Artists, Including Painters, Sculptors, and Illustrators", "美术艺术家（含画家、雕塑家和插画师）"],
   ["Producers and Directors", "制片人与导演"],
@@ -2137,10 +2137,12 @@ export function translateOccupationTitle(title) {
 
 export function withTranslatedOccupationTitle(row) {
   if (!row) return row;
-  if (!needsOccupationZhTitle(row.title, row.titleZh)) return row;
+  const translated = translateOccupationTitle(row.title);
+  const forceRefreshTitles = new Set(["Writers and Authors"]);
+  if (!forceRefreshTitles.has(String(row.title || "")) && !needsOccupationZhTitle(row.title, row.titleZh)) return row;
   return {
     ...row,
-    titleZh: translateOccupationTitle(row.title)
+    titleZh: translated
   };
 }
 
