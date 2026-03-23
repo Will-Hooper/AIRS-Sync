@@ -180,6 +180,8 @@ let revealObserver: IntersectionObserver | null = null;
 let storyObserver: IntersectionObserver | null = null;
 let cameraFrame = 0;
 let quadrantOverlapFrame = 0;
+let pointerFrame = 0;
+let interactionIdleTimer: number | null = null;
 let introVantaEffect: VantaDotsEffect | null = null;
 let introVantaProfileKey = "";
 const AUTO_LABEL_ROW_LIMIT = 140;
@@ -189,6 +191,8 @@ const UNIVERSE_VIEW_PADDING = 42;
 const UNIVERSE_MIN_ZOOM = 0.28;
 const UNIVERSE_MAX_ZOOM = 4.2;
 const UNIVERSE_NODE_FIT_MARGIN = 28;
+const UNIVERSE_DENSE_MODE_ROW_LIMIT = 280;
+const UNIVERSE_INTERACTION_IDLE_MS = 180;
 const camera = {
   initialized: false,
   zoom: 1,
@@ -220,6 +224,13 @@ const pinchState = {
   anchorWorldX: 0,
   anchorWorldY: 0
 };
+const pointerState = {
+  active: false,
+  clientX: 0,
+  clientY: 0,
+  showTooltip: false
+};
+let hoveredSocCode: string | null = null;
 
 function getIntroVantaProfile() {
   const mobileViewport = window.matchMedia("(max-width: 900px)").matches;
@@ -545,6 +556,60 @@ function isTouchPointer(pointerType?: string) {
   return pointerType === "touch" || pointerType === "pen";
 }
 
+function syncUniversePerformanceState(zoom = camera.zoom) {
+  const dense = state.rows.length > UNIVERSE_DENSE_MODE_ROW_LIMIT && zoom < 1.7;
+  els.occupationUniverse.classList.toggle("is-performance-dense", dense);
+}
+
+function clearInteractionIdleTimer() {
+  if (!interactionIdleTimer) return;
+  window.clearTimeout(interactionIdleTimer);
+  interactionIdleTimer = null;
+}
+
+function releaseUniverseInteractionStateSoon() {
+  clearInteractionIdleTimer();
+  interactionIdleTimer = window.setTimeout(() => {
+    if (dragState.active || pinchState.active || cameraFrame) return;
+    els.occupationUniverse.classList.remove("is-interacting");
+  }, UNIVERSE_INTERACTION_IDLE_MS);
+}
+
+function markUniverseInteracting() {
+  els.occupationUniverse.classList.add("is-interacting");
+  releaseUniverseInteractionStateSoon();
+}
+
+function applyPointerState() {
+  pointerFrame = 0;
+  if (!pointerState.active) return;
+  const rect = els.occupationUniverse.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+
+  const normalizedX = clamp(((pointerState.clientX - rect.left) / rect.width) * 100, 0, 100);
+  const normalizedY = clamp(((pointerState.clientY - rect.top) / rect.height) * 100, 0, 100);
+  state.hoverPointerX = normalizedX;
+  state.hoverPointerY = normalizedY;
+  els.occupationUniverse.style.setProperty("--pointer-x", `${normalizedX.toFixed(2)}%`);
+  els.occupationUniverse.style.setProperty("--pointer-y", `${normalizedY.toFixed(2)}%`);
+
+  if (pointerState.showTooltip && !dragState.active && !pinchState.active) {
+    renderQuadrantTooltip(quadrantFromPointer(normalizedX, normalizedY), pointerState.clientX, pointerState.clientY);
+    return;
+  }
+
+  hideQuadrantTooltip();
+}
+
+function queuePointerUpdate(clientX: number, clientY: number, showTooltip: boolean) {
+  pointerState.active = true;
+  pointerState.clientX = clientX;
+  pointerState.clientY = clientY;
+  pointerState.showTooltip = showTooltip;
+  if (pointerFrame) return;
+  pointerFrame = requestAnimationFrame(applyPointerState);
+}
+
 function labelShouldBeVisible(node) {
   if (!node) return false;
   return (
@@ -715,9 +780,7 @@ function syncFloatingLabels() {
   } else {
     const focusSocCodes = new Set<string>();
     if (state.selectedSocCode) focusSocCodes.add(state.selectedSocCode);
-    const hoveredNode = els.occupationCanvas?.querySelector<HTMLButtonElement>(".occupation-node:hover");
-    const hoveredSoc = hoveredNode?.dataset.soc;
-    if (hoveredSoc) focusSocCodes.add(hoveredSoc);
+    if (hoveredSocCode) focusSocCodes.add(hoveredSocCode);
 
     focusSocCodes.forEach((socCode) => {
       const row = rowsBySoc.get(socCode);
@@ -779,6 +842,10 @@ function queueQuadrantTooltipOverlapSync() {
   quadrantOverlapFrame = requestAnimationFrame(() => {
     quadrantOverlapFrame = 0;
     syncFloatingLabels();
+    if (els.occupationUniverse.classList.contains("is-interacting")) {
+      els.quadrantTooltip?.classList.remove("is-overlapped");
+      return;
+    }
     syncQuadrantTooltipOverlap();
   });
 }
@@ -1221,9 +1288,10 @@ function updateCanvasTransform() {
     camera.offsetX = camera.targetOffsetX;
     camera.offsetY = camera.targetOffsetY;
     camera.initialized = true;
-    els.occupationCanvas.style.transform = `translate(-50%, -50%) translate(${camera.offsetX}px, ${camera.offsetY}px) scale(${camera.zoom})`;
+    els.occupationCanvas.style.transform = `translate3d(-50%, -50%, 0) translate3d(${camera.offsetX}px, ${camera.offsetY}px, 0) scale(${camera.zoom})`;
     els.occupationCanvas.style.setProperty("--node-scale", `${(1 / Math.max(camera.zoom, 0.0001)).toFixed(5)}`);
     els.occupationCanvas.dataset.zoomState = camera.zoom > 1.45 ? "close" : "far";
+    syncUniversePerformanceState(camera.zoom);
     syncFocusLockVisualState();
     updateZoomReadout();
     queueQuadrantTooltipOverlapSync();
@@ -1239,9 +1307,10 @@ function stepCamera() {
   camera.offsetX += (camera.targetOffsetX - camera.offsetX) * lerp;
   camera.offsetY += (camera.targetOffsetY - camera.offsetY) * lerp;
 
-  els.occupationCanvas.style.transform = `translate(-50%, -50%) translate(${camera.offsetX}px, ${camera.offsetY}px) scale(${camera.zoom})`;
+  els.occupationCanvas.style.transform = `translate3d(-50%, -50%, 0) translate3d(${camera.offsetX}px, ${camera.offsetY}px, 0) scale(${camera.zoom})`;
   els.occupationCanvas.style.setProperty("--node-scale", `${(1 / Math.max(camera.zoom, 0.0001)).toFixed(5)}`);
   els.occupationCanvas.dataset.zoomState = camera.zoom > 1.45 ? "close" : "far";
+  syncUniversePerformanceState(camera.zoom);
   syncFocusLockVisualState();
   updateZoomReadout();
   queueQuadrantTooltipOverlapSync();
@@ -1255,12 +1324,14 @@ function stepCamera() {
     camera.zoom = camera.targetZoom;
     camera.offsetX = camera.targetOffsetX;
     camera.offsetY = camera.targetOffsetY;
-    els.occupationCanvas.style.transform = `translate(-50%, -50%) translate(${camera.offsetX}px, ${camera.offsetY}px) scale(${camera.zoom})`;
+    els.occupationCanvas.style.transform = `translate3d(-50%, -50%, 0) translate3d(${camera.offsetX}px, ${camera.offsetY}px, 0) scale(${camera.zoom})`;
     els.occupationCanvas.style.setProperty("--node-scale", `${(1 / Math.max(camera.zoom, 0.0001)).toFixed(5)}`);
+    syncUniversePerformanceState(camera.zoom);
     syncFocusLockVisualState();
     updateZoomReadout();
     queueQuadrantTooltipOverlapSync();
     cameraFrame = 0;
+    releaseUniverseInteractionStateSoon();
     return;
   }
 
@@ -1316,10 +1387,22 @@ function createNodeElement(row) {
     renderUniverse();
     updateSelectedPanel();
   });
-  node.addEventListener("pointerenter", queueQuadrantTooltipOverlapSync);
-  node.addEventListener("pointerleave", queueQuadrantTooltipOverlapSync);
-  node.addEventListener("focus", queueQuadrantTooltipOverlapSync);
-  node.addEventListener("blur", queueQuadrantTooltipOverlapSync);
+  node.addEventListener("pointerenter", () => {
+    hoveredSocCode = node.dataset.soc || null;
+    queueQuadrantTooltipOverlapSync();
+  });
+  node.addEventListener("pointerleave", () => {
+    if (hoveredSocCode === (node.dataset.soc || null)) hoveredSocCode = null;
+    queueQuadrantTooltipOverlapSync();
+  });
+  node.addEventListener("focus", () => {
+    hoveredSocCode = node.dataset.soc || null;
+    queueQuadrantTooltipOverlapSync();
+  });
+  node.addEventListener("blur", () => {
+    if (hoveredSocCode === (node.dataset.soc || null)) hoveredSocCode = null;
+    queueQuadrantTooltipOverlapSync();
+  });
   updateNodeElement(node, row);
   return node;
 }
@@ -1554,20 +1637,7 @@ function zoomAroundViewportCenter(multiplier: number) {
 
 function bindUniverseInteractions() {
   const updatePointer = (event, showTooltip = true) => {
-    const rect = els.occupationUniverse.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    const normalizedX = clamp(x, 0, 100);
-    const normalizedY = clamp(y, 0, 100);
-    state.hoverPointerX = normalizedX;
-    state.hoverPointerY = normalizedY;
-    els.occupationUniverse.style.setProperty("--pointer-x", `${normalizedX.toFixed(2)}%`);
-    els.occupationUniverse.style.setProperty("--pointer-y", `${normalizedY.toFixed(2)}%`);
-    if (showTooltip) {
-      renderQuadrantTooltip(quadrantFromPointer(normalizedX, normalizedY), event.clientX, event.clientY);
-    } else {
-      hideQuadrantTooltip();
-    }
+    queuePointerUpdate(event.clientX, event.clientY, showTooltip);
   };
 
   const pointerEntries = () => [...activePointers.values()];
@@ -1590,6 +1660,7 @@ function bindUniverseInteractions() {
     dragState.pointerId = null;
     dragState.moved = false;
     els.occupationUniverse.classList.add("is-dragging");
+    markUniverseInteracting();
     hideQuadrantTooltip();
   };
 
@@ -1613,6 +1684,7 @@ function bindUniverseInteractions() {
     state.panX = desiredX - (pinchState.anchorWorldX * nextZoom) - focusOffset.x;
     state.panY = desiredY - (pinchState.anchorWorldY * nextZoom) - focusOffset.y;
     clampPanToBounds(nextZoom);
+    markUniverseInteracting();
     updateCanvasTransform();
   };
 
@@ -1633,6 +1705,7 @@ function bindUniverseInteractions() {
     if (dragState.pointerId !== null && event.pointerId !== dragState.pointerId) return;
     dragState.active = false;
     dragState.pointerId = null;
+    releaseUniverseInteractionStateSoon();
     window.setTimeout(() => { dragState.moved = false; }, 0);
   };
 
@@ -1676,6 +1749,7 @@ function bindUniverseInteractions() {
     if (!dragState.moved && Math.hypot(dx, dy) > 6) {
       dragState.moved = true;
       els.occupationUniverse.classList.add("is-dragging");
+      markUniverseInteracting();
       hideQuadrantTooltip();
     }
     if (!dragState.moved) return;
@@ -1683,6 +1757,7 @@ function bindUniverseInteractions() {
     state.panX = dragState.originPanX + dx * dragFactor;
     state.panY = dragState.originPanY + dy * dragFactor;
     clampPanToBounds(state.zoom);
+    markUniverseInteracting();
     updateCanvasTransform();
   });
   els.occupationUniverse.addEventListener("pointerup", endDrag);
@@ -1695,8 +1770,10 @@ function bindUniverseInteractions() {
   });
   els.occupationUniverse.addEventListener("pointerleave", (event) => {
     if (isTouchPointer(event.pointerType) && activePointers.size) return;
+    hoveredSocCode = null;
     els.occupationUniverse.style.setProperty("--pointer-x", "50%");
     els.occupationUniverse.style.setProperty("--pointer-y", "42%");
+    pointerState.active = false;
     hideQuadrantTooltip();
   });
   els.occupationUniverse.addEventListener("click", (event) => {
@@ -1804,14 +1881,18 @@ function bindActions() {
   els.occupationUniverse.addEventListener("wheel", (event) => {
     event.preventDefault();
     const zoomFactor = Math.exp(-event.deltaY * 0.00108);
+    markUniverseInteracting();
     setZoomAroundClient(state.zoom * zoomFactor, event.clientX, event.clientY);
   }, { passive: false });
   els.occupationUniverse.addEventListener("dblclick", () => {
     resetUniverseView(true);
   });
   els.zoomInButton.addEventListener("click", () => zoomAroundViewportCenter(1.2));
+  els.zoomInButton.addEventListener("click", markUniverseInteracting);
   els.zoomOutButton.addEventListener("click", () => zoomAroundViewportCenter(1 / 1.2));
+  els.zoomOutButton.addEventListener("click", markUniverseInteracting);
   els.resetViewButton.addEventListener("click", () => resetUniverseView(true));
+  els.resetViewButton.addEventListener("click", markUniverseInteracting);
   els.portalButton.addEventListener("click", () => navigateToDetail(els.portalButton.dataset.href || els.detailLink.href));
   els.detailLink.addEventListener("click", (event) => { event.preventDefault(); navigateToDetail(els.detailLink.href); });
   els.downButton.addEventListener("click", () => {
