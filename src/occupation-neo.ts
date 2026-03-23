@@ -1,4 +1,4 @@
-import { getOccupationDetail, invalidateDatasetCache } from "./api-client.js";
+import { getOccupationDetail, getOccupations, invalidateDatasetCache } from "./api-client.js";
 import { applyTranslations, getInitialLanguage, labelText, persistLanguage, t } from "./i18n-neo.js";
 import { getRuntimeEnvironment, isStrictDataMode } from "./runtime-config.js";
 import type { Language, OccupationDetailPayload, OccupationRow, OccupationTask } from "./types/airs.js";
@@ -43,6 +43,9 @@ const state: DetailState = {
 let renderToken = 0;
 let revealObserver: IntersectionObserver | null = null;
 let autoRefreshTimer: number | null = null;
+let searchDebounceTimer: number | null = null;
+let searchRenderToken = 0;
+let searchSuggestionsCache: OccupationRow[] = [];
 const numberFrames = new WeakMap<HTMLElement, number>();
 const DETAIL_AUTO_REFRESH_MS = 5 * 60 * 1000;
 
@@ -94,6 +97,8 @@ const els = {
   detailReleaseCoverage: byId<HTMLElement>("detailReleaseCoverage"),
   detailReleaseSource: byId<HTMLElement>("detailReleaseSource"),
   backLink: query<HTMLAnchorElement>(".detail-back"),
+  detailOccupationSearch: byId<HTMLInputElement>("detailOccupationSearch"),
+  detailSearchSuggestions: byId<HTMLElement>("detailSearchSuggestions"),
   languageButtons: queryAll<HTMLButtonElement>("[data-lang-option]")
 };
 
@@ -110,6 +115,8 @@ function displayEvidence(row: OccupationRow) { return state.lang === "zh" ? (row
 function displayTaskName(task: OccupationTask) { return state.lang === "zh" ? (task.nameZh || task.name) : task.name; }
 function toneFromAirs(airs: number) { return 214 - (1 - airs / 100) * 170; }
 function copy(language: Language, key: string) { return DETAIL_COPY[language]?.[key] || DETAIL_COPY.en[key] || key; }
+function displaySearchTitle(row: OccupationRow) { return state.lang === "zh" ? (row.titleZh || row.title) : row.title; }
+function displaySearchSecondary(row: OccupationRow) { return state.lang === "zh" ? row.title : (row.titleZh || row.title); }
 
 function formatWholeNumber(value: number) {
   return Math.round(value).toLocaleString(locale());
@@ -210,6 +217,117 @@ function hidePageAlert() {
   els.pageAlert.hidden = true;
 }
 
+function buildDetailUrl(socCode: string) {
+  const next = new URL("occupation-view.html", window.location.href);
+  next.searchParams.set("soc", socCode);
+  next.searchParams.set("region", state.region || "National");
+  next.searchParams.set("date", state.date || "");
+  next.searchParams.set("lang", state.lang);
+  return next.toString();
+}
+
+function hideSearchSuggestions() {
+  searchSuggestionsCache = [];
+  if (!els.detailSearchSuggestions) return;
+  els.detailSearchSuggestions.hidden = true;
+  els.detailSearchSuggestions.innerHTML = "";
+}
+
+function renderSearchSuggestions(queryText: string, occupations: OccupationRow[]) {
+  if (!els.detailSearchSuggestions) return;
+  searchSuggestionsCache = occupations;
+  if (!queryText.trim()) {
+    hideSearchSuggestions();
+    return;
+  }
+
+  const topMatches = occupations.slice(0, 6);
+  els.detailSearchSuggestions.hidden = false;
+
+  if (!topMatches.length) {
+    els.detailSearchSuggestions.innerHTML = `
+      <div class="search-suggestions__head">
+        <strong>${t(state.lang, "detail.searchSuggestionsTitle")}</strong>
+        <span>${t(state.lang, "home.search")}</span>
+      </div>
+      <p class="search-suggestions__empty">${t(state.lang, "detail.searchSuggestionsEmpty")}</p>
+    `;
+    return;
+  }
+
+  els.detailSearchSuggestions.innerHTML = `
+    <div class="search-suggestions__head">
+      <strong>${t(state.lang, "detail.searchSuggestionsTitle")}</strong>
+      <span>${t(state.lang, "home.search")}</span>
+    </div>
+    <div class="search-suggestions__list">
+      ${topMatches.map((row) => `
+        <button class="search-suggestion" type="button" data-soc="${row.socCode}">
+          <div class="search-suggestion__primary">
+            <strong>${displaySearchTitle(row)}</strong>
+            <span class="search-suggestion__secondary">${displaySearchSecondary(row)}</span>
+          </div>
+          <div class="search-suggestion__meta">
+            <span>${row.socCode}</span>
+            <span>AIRS ${Math.round(Number(row.airs || 0))}</span>
+          </div>
+        </button>
+      `).join("")}
+    </div>
+    <p class="search-suggestions__hint">${t(state.lang, "detail.searchSuggestionsHint")}</p>
+  `;
+
+  els.detailSearchSuggestions.querySelectorAll<HTMLButtonElement>(".search-suggestion").forEach((button) => {
+    button.addEventListener("click", () => {
+      const socCode = button.dataset.soc;
+      if (!socCode) return;
+      hideSearchSuggestions();
+      window.location.href = buildDetailUrl(socCode);
+    });
+  });
+}
+
+async function updateSearchSuggestions(queryText: string) {
+  const normalized = queryText.trim();
+  if (!normalized) {
+    hideSearchSuggestions();
+    return;
+  }
+
+  const token = ++searchRenderToken;
+  const payload = await getOccupations({
+    region: state.region,
+    date: state.date,
+    q: normalized
+  });
+  if (token !== searchRenderToken) return;
+  renderSearchSuggestions(normalized, payload.occupations || []);
+}
+
+async function submitDetailSearch(preferredSoc?: string) {
+  const directSoc = preferredSoc || searchSuggestionsCache[0]?.socCode;
+  if (directSoc) {
+    hideSearchSuggestions();
+    window.location.href = buildDetailUrl(directSoc);
+    return;
+  }
+
+  const queryText = els.detailOccupationSearch?.value?.trim();
+  if (!queryText) return;
+  const payload = await getOccupations({
+    region: state.region,
+    date: state.date,
+    q: queryText
+  });
+  const firstMatch = payload.occupations?.[0];
+  if (!firstMatch) {
+    renderSearchSuggestions(queryText, []);
+    return;
+  }
+  hideSearchSuggestions();
+  window.location.href = buildDetailUrl(firstMatch.socCode);
+}
+
 function renderErrorState() {
   state.dataMode = null;
   state.dataSource = null;
@@ -300,6 +418,12 @@ function refreshStaticLanguage() {
   els.backLink.href = `home.html?lang=${encodeURIComponent(state.lang)}&region=${encodeURIComponent(state.region)}&date=${encodeURIComponent(state.date)}`;
   syncReleaseNotes();
   if (state.loadError) showPageAlert();
+  if (els.detailOccupationSearch) {
+    els.detailOccupationSearch.placeholder = t(state.lang, "home.searchPlaceholder");
+  }
+  if (!els.detailSearchSuggestions?.hidden && els.detailOccupationSearch?.value) {
+    renderSearchSuggestions(els.detailOccupationSearch.value, searchSuggestionsCache);
+  }
 }
 
 function setMeter(bar: HTMLElement, label: HTMLElement, value: number) {
@@ -426,6 +550,42 @@ function bindLanguage() {
   });
 }
 
+function bindDetailSearch() {
+  if (!els.detailOccupationSearch || !els.detailSearchSuggestions) return;
+
+  els.detailOccupationSearch.addEventListener("input", () => {
+    const queryText = els.detailOccupationSearch.value;
+    if (searchDebounceTimer) window.clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = window.setTimeout(() => {
+      void updateSearchSuggestions(queryText);
+    }, 140);
+  });
+
+  els.detailOccupationSearch.addEventListener("focus", () => {
+    if (els.detailOccupationSearch.value.trim()) {
+      void updateSearchSuggestions(els.detailOccupationSearch.value);
+    }
+  });
+
+  els.detailOccupationSearch.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      hideSearchSuggestions();
+      return;
+    }
+    if (event.key === "Enter") {
+      event.preventDefault();
+      void submitDetailSearch();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Node | null;
+    if (!target) return;
+    if (els.detailSearchSuggestions.contains(target) || els.detailOccupationSearch.contains(target)) return;
+    hideSearchSuggestions();
+  });
+}
+
 function syncScrollProgress() {
   const progress = Math.min(1, Math.max(0, window.scrollY / Math.max(window.innerHeight * 0.8, 1)));
   document.documentElement.style.setProperty("--detail-progress", progress.toFixed(3));
@@ -435,6 +595,7 @@ async function init() {
   refreshStaticLanguage();
   document.body.classList.add("page-ready");
   bindLanguage();
+  bindDetailSearch();
   setupReveals();
   syncScrollProgress();
   window.addEventListener("scroll", syncScrollProgress, { passive: true });
