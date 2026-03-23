@@ -1,4 +1,4 @@
-import { translateOccupationDefinition, translateOccupationTask, translateOccupationTitle, withTranslatedOccupationTitle } from "./occupation-translation.js";
+import { translateOccupationDefinition, translateOccupationTasks, translateOccupationTitle, withTranslatedOccupationTitle } from "./occupation-translation.js";
 import type {
   JsonDataset,
   JsonDatasetOccupation,
@@ -668,6 +668,11 @@ function mapJsonOccupation(occupation: JsonDatasetOccupation, region: string): O
   const metrics = regionMetricsFor(occupation, region);
   const englishSummary = occupation.summary || "";
   const englishEvidence = occupation.evidence || [];
+  const translatedTaskNames = translateOccupationTasks(
+    occupation.title,
+    (occupation.tasks || []).map((task) => task.name)
+  );
+
   const translatedRow = withTranslatedOccupationTitle({
     socCode: occupation.socCode,
     title: occupation.title,
@@ -682,9 +687,9 @@ function mapJsonOccupation(occupation: JsonDatasetOccupation, region: string): O
     monthlyAirs: occupation.monthlyAirs || [],
     evidence: englishEvidence,
     evidenceZh: occupation.evidenceZh || englishEvidence,
-    tasks: (occupation.tasks || []).map((task) => ({
+    tasks: (occupation.tasks || []).map((task, index) => ({
       ...task,
-      nameZh: task.nameZh || translateOccupationTask(occupation.title, task.name)
+      nameZh: translatedTaskNames[index] || task.nameZh || task.name
     })),
     regionMetrics: occupation.regions || {},
     ...metrics

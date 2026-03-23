@@ -31,6 +31,7 @@ import {
   findOnetOccupation,
   getKeywordSignal,
   getOnetProfile,
+  getTaskProfile,
   getSocMajorGroupFromCode,
   loadOnetData,
   toDetailedSocCode,
@@ -38,7 +39,7 @@ import {
   type OnetMatch,
   type OnetProfile
 } from "./lib/onet";
-import { translateOccupationDefinition, translateOccupationTask, translateOccupationTitle } from "../src/occupation-translation";
+import { translateOccupationDefinition, translateOccupationTasks, translateOccupationTitle } from "../src/occupation-translation";
 import type { JsonDataset, JsonDatasetOccupation } from "../src/types/airs";
 
 interface UsaJobsSyncOptions {
@@ -711,6 +712,29 @@ function getImpactScore(
   return clampUnit(impact);
 }
 
+function normalizeTaskRating(value: number | undefined | null) {
+  const numeric = Number(value || 0);
+  if (!Number.isFinite(numeric) || numeric <= 0) return 0.5;
+  if (numeric <= 1) return clampUnit(numeric);
+  if (numeric <= 5) return clampUnit(numeric / 5);
+  if (numeric <= 7) return clampUnit(numeric / 7);
+  if (numeric <= 10) return clampUnit(numeric / 10);
+  return clampUnit(numeric / 100);
+}
+
+function getTaskExposureScore(taskText: string, importance: number, relevance: number) {
+  const signals = getTaskProfile(taskText);
+  const importanceNorm = normalizeTaskRating(importance);
+  const relevanceNorm = normalizeTaskRating(relevance);
+  const salience = clampUnit((0.55 * importanceNorm) + (0.45 * relevanceNorm));
+  const exposure = clampUnit(
+    (0.62 * signals.replacement) +
+      (0.23 * signals.augmentation) +
+      (0.15 * (1 - signals.human))
+  );
+  return clampUnit((0.7 * exposure) + (0.3 * salience));
+}
+
 function getAirsSummary(
   replacement: number,
   augmentation: number,
@@ -1314,9 +1338,15 @@ async function main() {
       ? [...onetMatch.occupation.tasks]
           .sort((left, right) => (right.importance * right.relevance) - (left.importance * left.relevance))
           .slice(0, 5)
-          .map((task) => task.text)
+          .map((task) => ({
+            name: task.text,
+            score: Number(getTaskExposureScore(task.text, task.importance, task.relevance).toFixed(2))
+          }))
       : [];
     const educationOutcomes = findCollegeScorecardOutcomes(entry.title, majorGroup, collegeScorecardSummary);
+
+    const taskTexts = taskPreview.map((task) => task.name);
+    const taskTranslations = translateOccupationTasks(entry.title, taskTexts);
 
     occupations.push({
       socCode: entry.socCode,
@@ -1363,9 +1393,10 @@ async function main() {
         mappingEvidence,
         sourceEvidence
       ],
-      tasks: taskPreview.map((name) => ({
-        name,
-        nameZh: translateOccupationTask(entry.title, name)
+      tasks: taskPreview.map((task, index) => ({
+        name: task.name,
+        nameZh: taskTranslations[index],
+        score: task.score
       }))
     });
   }

@@ -250,16 +250,11 @@ button, input, select { font:inherit; }
 .detail-nav-search {
   position:relative;
   min-width:min(360px, 42vw);
-  padding:8px 12px 10px;
+  padding:12px;
   border:1px solid var(--line);
   border-radius:24px;
   background:rgba(255,255,255,.035);
   box-shadow:0 10px 24px rgba(0,0,0,.14);
-}
-.detail-nav-search > span {
-  display:block;
-  margin-bottom:8px;
-  color:var(--muted);
 }
 .detail-nav-search__shell {
   display:flex;

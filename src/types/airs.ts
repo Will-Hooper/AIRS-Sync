@@ -3,6 +3,7 @@ export type Language = "en" | "zh";
 export interface OccupationTask {
   name: string;
   nameZh?: string;
+  score?: number;
   [key: string]: unknown;
 }
 

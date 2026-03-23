@@ -1950,6 +1950,26 @@ function cleanupTranslatedDefinition(text) {
 }
 const EXACT_TASK_MAP = new Map([
     [
+        "portray and interpret roles, using speech, gestures, and body movements, to entertain, inform, or instruct radio, film, television, or live audiences.",
+        "通过语言、手势和肢体动作塑造并诠释角色，为广播、影视、电视或现场观众提供娱乐、信息传播或教学表演。"
+    ],
+    [
+        "collaborate with other actors as part of an ensemble.",
+        "作为群体表演的一部分，与其他演员协同完成演出。"
+    ],
+    [
+        "work closely with directors, other actors, and playwrights to find the interpretation most suited to the role.",
+        "与导演、其他演员和编剧密切合作，寻找最适合该角色的诠释方式。"
+    ],
+    [
+        "study and rehearse roles from scripts to interpret, learn and memorize lines, stunts, and cues as directed.",
+        "根据剧本学习并排练角色，按要求理解、记忆台词、动作和提示。"
+    ],
+    [
+        "learn about characters in scripts and their relationships to each other to develop role interpretations.",
+        "了解剧本中的人物及其相互关系，以形成对角色的理解与诠释。"
+    ],
+    [
         "receive assignments or evaluate leads or tips to develop story ideas.",
         "接收采访任务，或根据线索与消息判断值得继续追踪的报道选题。"
     ],
@@ -1988,9 +2008,310 @@ const EXACT_TASK_MAP = new Map([
     [
         "collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies.",
         "收集并分析数据，以识别控制缺陷、重复劳动、铺张浪费、舞弊或不符合法律法规及管理制度的情况。"
+    ],
+    [
+        "analyze user needs and software requirements to determine feasibility of design within time and cost constraints.",
+        "分析用户需求和软件要求，评估在时间与成本约束下的设计可行性。"
+    ],
+    [
+        "develop or direct software system testing or validation procedures, programming, or documentation.",
+        "制定或指导软件系统测试、验证流程，以及相关编程和文档工作。"
+    ],
+    [
+        "confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.",
+        "与系统分析师、工程师、程序员等沟通协作，设计系统，并明确项目限制、系统能力、性能要求和接口信息。"
+    ],
+    [
+        "analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
+        "分析相关信息，确定、建议并规划新系统部署方案或现有系统改造方案。"
+    ],
+    [
+        "modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.",
+        "修改现有软件，以修复错误、适配新硬件，或升级接口并提升性能。"
+    ],
+    [
+        "perform or direct revision, repair, or expansion of existing programs to increase operating efficiency or adapt to new requirements.",
+        "对现有程序进行修改、修复或扩展，或指导相关工作，以提升运行效率或适应新需求。"
+    ],
+    [
+        "write, analyze, review, and rewrite programs, using workflow chart and diagram, and applying knowledge of computer capabilities, subject matter, and symbolic logic.",
+        "结合流程图、结构图以及对计算机能力、业务内容和符号逻辑的理解，编写、分析、审查并重写程序。"
+    ],
+    [
+        "correct errors by making appropriate changes and rechecking the program to ensure that the desired results are produced.",
+        "通过适当修改并重新检查程序来纠正错误，确保输出符合预期结果。"
+    ],
+    [
+        "consult with managerial, engineering, and technical personnel to clarify program intent, identify problems, and suggest changes.",
+        "与管理、工程及技术人员沟通，明确程序目标、识别问题并提出修改建议。"
+    ],
+    [
+        "conduct trial runs of programs and software applications to be sure they will produce the desired information and that the instructions are correct.",
+        "对程序和软件应用进行试运行，确认其能够生成所需信息且指令正确无误。"
+    ],
+    [
+        "prepare affidavits or other documents, such as legal correspondence, and organize and maintain documents in paper or electronic filing system.",
+        "准备宣誓书等文件（如法律函件），并在纸质或电子归档系统中整理和维护文档。"
+    ],
+    [
+        "gather and analyze research data, such as statutes, decisions, and legal articles, codes, and documents.",
+        "收集并分析法律条文、判例、法律文章、法规及相关文件等研究资料。"
+    ],
+    [
+        "prepare for trial by performing tasks such as organizing exhibits.",
+        "通过整理证据材料等工作为庭审做准备。"
+    ],
+    [
+        "meet with clients and other professionals to discuss details of cases.",
+        "与客户及其他专业人员会面，讨论案件细节。"
+    ],
+    [
+        "translate medical jargon and abbreviations into their expanded forms to ensure the accuracy of patient and health care facility records.",
+        "将医疗术语和缩写转换为完整规范表述，确保患者及医疗机构记录准确无误。"
+    ],
+    [
+        "transcribe dictation for a variety of medical reports, such as patient histories, physical examinations, emergency room visits, operations, chart reviews, consultation, or discharge summaries.",
+        "将病史、体格检查、急诊就诊、手术、病历审查、会诊或出院小结等各类医疗报告的口述内容转写成规范文本。"
+    ],
+    [
+        "identify mistakes in reports and check with doctors to obtain the correct information.",
+        "识别报告中的错误，并与医生核对以获得正确信息。"
+    ],
+    [
+        "produce medical reports, correspondence, records, patient-care information, statistics, medical research, and administrative material.",
+        "整理并形成医疗报告、函件、记录、患者护理信息、统计材料、医学研究资料及行政材料。"
+    ],
+    [
+        "analyze monthly department budgeting and accounting reports to maintain expenditure controls.",
+        "分析部门月度预算与会计报告，以维持支出控制。"
+    ],
+    [
+        "provide advice and technical assistance with cost analysis, fiscal allocation, and budget preparation.",
+        "就成本分析、资金分配和预算编制提供建议与技术支持。"
+    ],
+    [
+        "examine budget estimates for completeness, accuracy, and conformance with procedures and regulations.",
+        "审查预算估算的完整性、准确性以及对程序和规定的符合情况。"
+    ],
+    [
+        "review operating budgets to analyze trends affecting budget needs.",
+        "审核运营预算，分析影响预算需求的趋势。"
+    ],
+    [
+        "direct the preparation of regular and special budget reports.",
+        "组织编制常规及专项预算报告。"
+    ],
+    [
+        "analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
+        "分析并解读统计数据，识别不同信息来源之间关系中的显著差异。"
+    ],
+    [
+        "evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
+        "评估用于获取数据的统计方法和流程，确保其有效性、适用性、效率与准确性。"
+    ],
+    [
+        "report results of statistical analyses, including information in the form of graphs, charts, and tables.",
+        "报告统计分析结果，包括以图形、图表和表格形式呈现的信息。"
+    ],
+    [
+        "prepare data for processing by organizing information, checking for inaccuracies, and adjusting and weighting the raw data.",
+        "通过整理信息、检查错误并调整与加权原始数据，为后续处理准备数据。"
+    ],
+    [
+        "develop and test experimental designs, sampling techniques, and analytical methods.",
+        "制定并测试实验设计、抽样技术和分析方法。"
+    ],
+    [
+        "apply new technologies, such as improved seismic imaging techniques, to locate untapped oil or natural gas deposits.",
+        "应用改进后的地震成像等新技术，寻找尚未开发的石油或天然气储藏。"
+    ],
+    [
+        "collect data on underground areas, such as reservoirs, that could be used in carbon sequestration operations.",
+        "收集可用于碳封存作业的地下区域数据，如储层信息。"
+    ],
+    [
+        "collect geological data from potential geothermal energy plant sites.",
+        "收集潜在地热电站选址区域的地质数据。"
+    ],
+    [
+        "compile data used to address environmental issues, such as the suitability of potential landfill sites.",
+        "汇编用于处理环境问题的数据，例如评估潜在垃圾填埋场选址是否合适。"
+    ],
+    [
+        "conduct geophysical surveys of potential sites for wind farms or solar installations to determine their suitability.",
+        "对潜在风电场或太阳能设施选址区域开展地球物理调查，以评估其适宜性。"
+    ],
+    [
+        "train new employees in areas such as safety procedures or equipment operation.",
+        "培训新员工掌握安全流程、设备操作等要求。"
+    ],
+    [
+        "direct ground crews in the loading, unloading, securing, or staging of aircraft cargo or baggage.",
+        "指挥地面班组完成航空货物或行李的装载、卸载、固定和集结。"
+    ],
+    [
+        "distribute cargo to maximize use of space.",
+        "分配货物位置，尽可能提高舱位空间利用率。"
+    ],
+    [
+        "determine the quantity and orientation of cargo, and compute an aircraft's center of gravity.",
+        "确定货物数量和摆放方向，并计算飞机重心。"
+    ],
+    [
+        "calculate load weights for different aircraft compartments, using charts and computers.",
+        "借助图表和计算机计算飞机不同舱位的载重。"
+    ],
+    [
+        "discard or reject products, materials, or equipment not meeting specifications.",
+        "剔除或退回不符合规格的产品、材料或设备。"
+    ],
+    [
+        "inspect, test, or measure materials, products, installations, or work for conformance to specifications.",
+        "检查、测试或测量材料、产品、安装件或作业结果，确认是否符合规格。"
+    ],
+    [
+        "notify supervisors or other personnel of production problems.",
+        "就生产问题通知主管或其他相关人员。"
+    ],
+    [
+        "measure dimensions of products to verify conformance to specifications, using measuring instruments, such as rulers, calipers, gauges, or micrometers.",
+        "使用尺、卡尺、量规或千分尺等测量工具测量产品尺寸，核验其是否符合规格。"
+    ],
+    [
+        "mark items with details, such as grade or acceptance-rejection status.",
+        "为物品标注等级、合格/不合格等状态信息。"
+    ],
+    [
+        "conduct inspections to determine crop maturity or condition or to detect disease or insect infestation.",
+        "开展检查，以判断作物成熟度和生长状况，或发现病虫害。"
+    ],
+    [
+        "conduct or supervise stock examinations to identify diseases or parasites.",
+        "开展或监督牲畜检查，以识别疾病或寄生虫。"
+    ],
+    [
+        "determine types or quantities of crops, plants, or livestock to be grown and raised, based on budgets, federal incentives, market conditions, executive directives, projected sales volumes, or soil conditions.",
+        "根据预算、联邦激励政策、市场情况、高管指令、预计销量或土壤条件，确定种植或养殖的作物、植物或牲畜种类与数量。"
+    ],
+    [
+        "determine, administer, and execute policies relating to operations administration and standards, facility maintenance, and safety.",
+        "制定、执行并管理与运营标准、设施维护和安全相关的制度。"
+    ],
+    [
+        "direct crop production operations, such as planning, tilling, planting, fertilizing, cultivating, spraying, and harvesting.",
+        "组织作物生产作业，如计划、耕作、播种、施肥、栽培、喷洒和收获。"
+    ],
+    [
+        "talk to customers to convey information about events or activities.",
+        "向客户介绍活动或项目相关信息。"
+    ],
+    [
+        "assign, supervise, and review the activities of public relations staff.",
+        "分配、监督并审查公关团队的工作。"
+    ],
+    [
+        "confer with labor relations managers to develop internal communications that keep employees informed of company activities.",
+        "与劳资关系经理协作，制定内部沟通内容，使员工及时了解公司的各项动态。"
+    ],
+    [
+        "design and edit promotional publications, such as brochures.",
+        "设计并编辑宣传材料，如宣传册等。"
+    ],
+    [
+        "develop and maintain the company's corporate image and identity, which includes the use of logos and signage.",
+        "建立并维护公司的品牌形象与企业识别体系，包括标识、招牌等视觉元素。"
+    ],
+    [
+        "develop, implement, or maintain crisis communication plans.",
+        "制定、执行或维护危机传播与危机沟通方案。"
+    ],
+    [
+        "talk to coworkers using electronic devices, such as computers and radios.",
+        "通过计算机、对讲机等电子设备与同事沟通。"
+    ],
+    [
+        "explain rules and regulations of facilities and entertainment attractions to customers.",
+        "向客户讲解设施和娱乐项目的规则要求。"
+    ],
+    [
+        "plan programs of events or schedules of activities.",
+        "规划活动方案或时间安排。"
+    ],
+    [
+        "plan, organize, or lead group activities for customers, such as exercise routines, athletic events, or arts and crafts.",
+        "为客户策划、组织或带领团体活动，如健身课程、体育活动或手工艺项目。"
+    ],
+    [
+        "dispose of contaminated sharps, in accordance with applicable laws, standards, and policies.",
+        "按照适用法律、标准和规定处理受污染的锐器。"
+    ],
+    [
+        "organize or clean blood-drawing trays, ensuring that all instruments are sterile and all needles, syringes, or related items are of first-time use.",
+        "整理或清洁采血托盘，确保器械无菌，针头、注射器等用品均为一次性使用。"
+    ],
+    [
+        "draw blood from veins by vacuum tube, syringe, or butterfly venipuncture methods.",
+        "采用真空采血管、注射器或蝶形针静脉穿刺等方式采集静脉血。"
+    ],
+    [
+        "match laboratory requisition forms to specimen tubes.",
+        "将检验申请单与标本试管逐一对应核对。"
+    ],
+    [
+        "dispose of blood or other biohazard fluids or tissue, in accordance with applicable laws, standards, or policies.",
+        "按照适用法律、标准或规定处置血液及其他生物危害液体或组织。"
     ]
 ]);
 const TASK_PHRASE_MAP = [
+    ["managerial, engineering, and technical personnel", "管理、工程与技术人员"],
+    ["program intent", "程序目标"],
+    ["identify problems", "识别问题"],
+    ["suggest changes", "提出修改建议"],
+    ["existing programs", "现有程序"],
+    ["operating efficiency", "运行效率"],
+    ["new requirements", "新要求"],
+    ["trial runs of programs and software applications", "程序和软件应用的试运行"],
+    ["desired information", "预期信息"],
+    ["instructions are correct", "指令正确"],
+    ["affidavits or other documents", "宣誓书或其他文件"],
+    ["legal correspondence", "法律函件"],
+    ["paper or electronic filing system", "纸质或电子归档系统"],
+    ["research data", "研究资料"],
+    ["statutes, decisions, and legal articles, codes, and documents", "法律条文、判例、法律文章、法规及文件"],
+    ["clients and other professionals", "客户及其他专业人员"],
+    ["details of cases", "案件细节"],
+    ["medical jargon and abbreviations", "医疗术语和缩写"],
+    ["their expanded forms", "其完整规范表述"],
+    ["patient and health care facility records", "患者及医疗机构记录"],
+    ["dictation", "口述内容"],
+    ["a variety of medical reports", "各类医疗报告"],
+    ["patient histories, physical examinations, emergency room visits, operations, chart reviews, consultation, or discharge summaries", "病史、体格检查、急诊就诊、手术、病历审查、会诊或出院小结"],
+    ["medical reports, correspondence, records, patient-care information, statistics, medical research, and administrative material", "医疗报告、函件、记录、患者护理信息、统计材料、医学研究资料及行政材料"],
+    ["monthly department budgeting and accounting reports", "部门月度预算与会计报告"],
+    ["expenditure controls", "支出控制"],
+    ["cost analysis, fiscal allocation, and budget preparation", "成本分析、资金分配与预算编制"],
+    ["budget estimates", "预算估算"],
+    ["completeness, accuracy, and conformance with procedures and regulations", "完整性、准确性以及对程序和规定的符合情况"],
+    ["operating budgets", "运营预算"],
+    ["trends affecting budget needs", "影响预算需求的趋势"],
+    ["regular and special budget reports", "常规及专项预算报告"],
+    ["statistical data", "统计数据"],
+    ["significant differences in relationships among sources of information", "不同信息来源之间关系中的显著差异"],
+    ["the statistical methods and procedures used to obtain data", "用于获取数据的统计方法和流程"],
+    ["validity, applicability, efficiency, and accuracy", "有效性、适用性、效率与准确性"],
+    ["results of statistical analyses", "统计分析结果"],
+    ["graphs, charts, and tables", "图形、图表和表格"],
+    ["data for processing", "待处理数据"],
+    ["organizing information, checking for inaccuracies, and adjusting and weighting the raw data", "整理信息、检查错误并调整与加权原始数据"],
+    ["experimental designs, sampling techniques, and analytical methods", "实验设计、抽样技术和分析方法"],
+    ["Collaborate with ", "与"],
+    [" as part of an ensemble", "协同完成群体表演"],
+    ["Work closely with ", "与"],
+    ["to find the interpretation most suited to the role", "共同寻找最适合该角色的诠释方式"],
+    ["Study and rehearse roles from scripts to ", "根据剧本学习并排练角色，以"],
+    ["learn and memorize lines, stunts, and cues as directed", "按要求学习并记忆台词、动作与提示"],
+    ["Learn about characters in scripts and their relationships to each other to develop role interpretations", "了解剧本中的人物及其相互关系，以形成角色诠释"],
+    ["Portray and interpret roles, using speech, gestures, and body movements, to ", "通过语言、手势与肢体动作塑造并诠释角色，以"],
     ["Develop, maintain, or analyze ", "制定、维护或分析"],
     ["Prepare, analyze, or verify ", "编制、分析或核验"],
     ["Collect and analyze data to ", "收集并分析数据，以"],
@@ -2033,9 +2354,296 @@ function cleanupTranslatedTask(text) {
         .replace(/^\s*[，。；：]/, "")
         .trim();
 }
+function translateTaskFragment(text) {
+    let translated = normalizeTitle(text);
+    if (!translated)
+        return "";
+    translated = applyOrderedMap(translated, TASK_PHRASE_MAP);
+    translated = translateTokenizedEnglish(translated);
+    translated = translated
+        .replace(/\b(the|a|an|and|or|of|to|for|with|by|from|as|part|using|into|in|on|at|be|is|are|was|were|will|that|this|these|those|such)\b/gi, " ")
+        .replace(/[()]/g, " ");
+    translated = cleanupTranslatedTask(translated);
+    translated = translated.replace(/[A-Za-z]{2,}/g, "");
+    translated = cleanupTranslatedTask(translated);
+    return translated.replace(/[，。；：\s]+$/g, "");
+}
+function translateTaskInfinitive(fragment) {
+    const translated = translateTaskFragment(fragment);
+    return translated || cleanupTranslatedTask(fragment);
+}
+function inferTaskSentenceTranslation(taskText) {
+    const normalizedTask = normalizeTitle(taskText);
+    if (!normalizedTask)
+        return "";
+    const patterns = [
+        {
+            regex: /^Perform or direct (.+)$/i,
+            render: (args) => `开展或指导${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Write, analyze, review, and rewrite (.+)$/i,
+            render: (args) => `编写、分析、审查并重写${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Correct errors by making appropriate changes and rechecking (.+)$/i,
+            render: (args) => `通过适当修改并重新检查${translateTaskFragment(args[0] || "")}来纠正错误。`
+        },
+        {
+            regex: /^Consult with (.+) to (.+)$/i,
+            render: (args) => `与${translateTaskFragment(args[0] || "")}沟通，以${translateTaskInfinitive(args[1] || "")}。`
+        },
+        {
+            regex: /^Conduct trial runs of (.+) to (.+)$/i,
+            render: (args) => `对${translateTaskFragment(args[0] || "")}进行试运行，确保${translateTaskInfinitive(args[1] || "")}。`
+        },
+        {
+            regex: /^Prepare affidavits or other documents, such as (.+), and organize and maintain documents in (.+)$/i,
+            render: (args) => `准备宣誓书等文件（如${translateTaskFragment(args[0] || "")}），并在${translateTaskFragment(args[1] || "")}中整理和维护文档。`
+        },
+        {
+            regex: /^Gather and analyze research data, such as (.+)$/i,
+            render: (args) => `收集并分析研究资料，如${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Prepare for trial by performing tasks such as (.+)$/i,
+            render: (args) => `通过${translateTaskFragment(args[0] || "")}等工作为庭审做准备。`
+        },
+        {
+            regex: /^Meet with (.+) to discuss (.+)$/i,
+            render: (args) => `与${translateTaskFragment(args[0] || "")}会面，讨论${translateTaskFragment(args[1] || "")}。`
+        },
+        {
+            regex: /^Translate medical jargon and abbreviations into their expanded forms to (.+)$/i,
+            render: (args) => `将医疗术语和缩写转换为完整规范表述，以${translateTaskInfinitive(args[0] || "")}。`
+        },
+        {
+            regex: /^Transcribe dictation for (.+)$/i,
+            render: (args) => `将${translateTaskFragment(args[0] || "")}口述内容转写成规范书面记录。`
+        },
+        {
+            regex: /^Identify mistakes in reports and check with doctors to (.+)$/i,
+            render: (args) => `识别报告中的错误，并与医生核对，以${translateTaskInfinitive(args[0] || "")}。`
+        },
+        {
+            regex: /^Produce (.+)$/i,
+            render: (args) => `整理并形成${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Analyze (.+)$/i,
+            render: (args) => `分析${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Provide advice and technical assistance with (.+)$/i,
+            render: (args) => `就${translateTaskFragment(args[0] || "")}提供建议与技术支持。`
+        },
+        {
+            regex: /^Examine (.+)$/i,
+            render: (args) => `审查${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Review (.+)$/i,
+            render: (args) => `审核${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Direct the preparation of (.+)$/i,
+            render: (args) => `组织编制${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Report results of (.+)$/i,
+            render: (args) => `报告${translateTaskFragment(args[0] || "")}的结果。`
+        },
+        {
+            regex: /^Prepare (.+) for processing by (.+)$/i,
+            render: (args) => `通过${translateTaskFragment(args[1] || "")}为处理准备${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Develop and test (.+)$/i,
+            render: (args) => `制定并测试${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Evaluate (.+)$/i,
+            render: (args) => `评估${translateTaskFragment(args[0] || "")}。`
+        }
+    ];
+    for (const pattern of patterns) {
+        const matched = normalizedTask.match(pattern.regex);
+        if (matched) {
+            const rendered = pattern.render(matched.slice(1));
+            if (rendered && hasChinese(rendered) && !/[A-Za-z]{3,}/.test(rendered)) {
+                return cleanupTranslatedTask(rendered.replace(/([。！？])。+/g, "$1"));
+            }
+        }
+    }
+    return "";
+}
+function buildTaskSpecificSentence(taskText) {
+    const normalizedTask = normalizeTitle(taskText);
+    if (!normalizedTask)
+        return "";
+    const patterns = [
+        {
+            regex: /^Apply new technologies, such as (.+), to (.+)$/i,
+            render: (args) => `应用${translateTaskFragment(args[0] || "")}等新技术，以${translateTaskInfinitive(args[1] || "")}。`
+        },
+        {
+            regex: /^Collect data on (.+)$/i,
+            render: (args) => `收集关于${translateTaskFragment(args[0] || "")}的数据。`
+        },
+        {
+            regex: /^Collect geological data from (.+)$/i,
+            render: (args) => `收集${translateTaskFragment(args[0] || "")}的地质数据。`
+        },
+        {
+            regex: /^Compile data used to (.+)$/i,
+            render: (args) => `汇编用于${translateTaskInfinitive(args[0] || "")}的数据。`
+        },
+        {
+            regex: /^Conduct geophysical surveys of (.+) to (.+)$/i,
+            render: (args) => `对${translateTaskFragment(args[0] || "")}开展地球物理调查，以${translateTaskInfinitive(args[1] || "")}。`
+        },
+        {
+            regex: /^Train (.+) in areas such as (.+)$/i,
+            render: (args) => `围绕${translateTaskFragment(args[1] || "")}培训${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Direct (.+)$/i,
+            render: (args) => `指挥${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Distribute (.+)$/i,
+            render: (args) => `分配${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Determine (.+)$/i,
+            render: (args) => `确定${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Calculate (.+)$/i,
+            render: (args) => `计算${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Discard or reject (.+)$/i,
+            render: (args) => `剔除或退回${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Inspect, test, or measure (.+)$/i,
+            render: (args) => `检查、测试或测量${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Notify (.+) of (.+)$/i,
+            render: (args) => `就${translateTaskFragment(args[1] || "")}通知${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Measure (.+)$/i,
+            render: (args) => `测量${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Mark (.+) with (.+)$/i,
+            render: (args) => `为${translateTaskFragment(args[0] || "")}标注${translateTaskFragment(args[1] || "")}。`
+        },
+        {
+            regex: /^Conduct inspections to (.+)$/i,
+            render: (args) => `开展检查，以${translateTaskInfinitive(args[0] || "")}。`
+        },
+        {
+            regex: /^Conduct or supervise (.+)$/i,
+            render: (args) => `开展或监督${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Talk to (.+) to (.+)$/i,
+            render: (args) => `向${translateTaskFragment(args[0] || "")}沟通，以${translateTaskInfinitive(args[1] || "")}。`
+        },
+        {
+            regex: /^Talk to (.+)$/i,
+            render: (args) => `与${translateTaskFragment(args[0] || "")}沟通。`
+        },
+        {
+            regex: /^Explain (.+) to (.+)$/i,
+            render: (args) => `向${translateTaskFragment(args[1] || "")}说明${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Plan (.+)$/i,
+            render: (args) => `规划${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Plan, organize, or lead (.+)$/i,
+            render: (args) => `规划、组织或带领${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Draw (.+)$/i,
+            render: (args) => `绘制${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Make adjustments to (.+)$/i,
+            render: (args) => `调整${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Position and cut out (.+)$/i,
+            render: (args) => `定位并裁剪${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Create (.+)$/i,
+            render: (args) => `创建${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Dispose of (.+)$/i,
+            render: (args) => `处置${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Organize or clean (.+)$/i,
+            render: (args) => `整理或清洁${translateTaskFragment(args[0] || "")}。`
+        },
+        {
+            regex: /^Read (.+) to (.+)$/i,
+            render: (args) => `阅读${translateTaskFragment(args[0] || "")}，以${translateTaskInfinitive(args[1] || "")}。`
+        },
+        {
+            regex: /^Mix or blend (.+)$/i,
+            render: (args) => `混合${translateTaskFragment(args[0] || "")}。`
+        }
+    ];
+    for (const pattern of patterns) {
+        const matched = normalizedTask.match(pattern.regex);
+        if (matched) {
+            const rendered = pattern.render(matched.slice(1));
+            if (rendered && hasChinese(rendered) && !/[A-Za-z]{3,}/.test(rendered)) {
+                return cleanupTranslatedTask(rendered.replace(/([。！？])。+/g, "$1"));
+            }
+        }
+    }
+    return "";
+}
+function isGenericTaskTranslation(title, translated) {
+    const titleZh = translateOccupationTitle(title);
+    const escaped = titleZh.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`^(开展与${escaped}相关的信息收集、分析研判与专业判断工作。|开展与${escaped}相关的沟通协调、资料对接与执行支持工作。|承担与${escaped}相关的日常处理、编制输出与执行性工作。|承担与${escaped}相关的具体专业工作任务。|围绕${escaped}岗位要求开展学习、排练、熟悉或记忆等准备工作。|与其他相关人员协作，完成${escaped}对应的工作任务。)$`).test(translated);
+}
+function makeDistinctTaskTranslation(title, taskText, baseTranslation) {
+    const inferred = inferTaskSentenceTranslation(taskText);
+    if (inferred && inferred !== baseTranslation)
+        return inferred;
+    const specific = buildTaskSpecificSentence(taskText);
+    if (specific && specific !== baseTranslation)
+        return specific;
+    if (isGenericTaskTranslation(title, baseTranslation)) {
+        const fragment = translateTaskFragment(taskText);
+        if (fragment && hasChinese(fragment) && !/[A-Za-z]{3,}/.test(fragment)) {
+            const compact = fragment.replace(/[。！？]$/g, "").slice(0, 36);
+            return `${baseTranslation.replace(/[。！？]$/g, "")}（侧重：${compact}）`;
+        }
+    }
+    return baseTranslation;
+}
 function inferOccupationTaskFallback(title, taskText) {
     const normalizedTask = normalizeTitle(taskText).toLowerCase();
     const titleZh = translateOccupationTitle(title);
+    if (/(collaborate|coordinate|cooperate)/.test(normalizedTask)) {
+        return `与其他相关人员协作，完成${titleZh}对应的工作任务。`;
+    }
+    if (/(study|rehearse|practice|learn|memorize)/.test(normalizedTask)) {
+        return `围绕${titleZh}岗位要求开展学习、排练、熟悉或记忆等准备工作。`;
+    }
     if (/(analy|interpret|review|evaluate|assess|examine|investigat|research)/.test(normalizedTask)) {
         return `开展与${titleZh}相关的信息收集、分析研判与专业判断工作。`;
     }
@@ -2148,10 +2756,39 @@ export function translateOccupationTask(title, taskText) {
     translated = translateTokenizedEnglish(translated);
     translated = cleanupTranslatedTask(translated);
     if (!hasChinese(translated) || /[A-Za-z]{3,}/.test(translated)) {
+        const patterned = inferTaskSentenceTranslation(taskText);
+        if (patterned)
+            return patterned;
         return inferOccupationTaskFallback(title, taskText);
     }
     if (!/[。！？]$/.test(translated)) {
         translated = `${translated}。`;
     }
     return translated;
+}
+export function translateOccupationTasks(title, taskTexts) {
+    const base = (taskTexts || []).map((taskText) => translateOccupationTask(title, taskText));
+    const counts = new Map();
+    for (const item of base) {
+        counts.set(item, (counts.get(item) || 0) + 1);
+    }
+    const used = new Map();
+    return (taskTexts || []).map((taskText, index) => {
+        const baseTranslation = base[index];
+        let candidate = baseTranslation;
+        if ((counts.get(baseTranslation) || 0) > 1) {
+            candidate = makeDistinctTaskTranslation(title, taskText, baseTranslation);
+        }
+        const seen = (used.get(candidate) || 0) + 1;
+        used.set(candidate, seen);
+        if (seen > 1) {
+            const fallbackSpecific = buildTaskSpecificSentence(taskText);
+            if (fallbackSpecific && fallbackSpecific !== candidate && !used.has(fallbackSpecific)) {
+                used.set(fallbackSpecific, 1);
+                return fallbackSpecific;
+            }
+            return `${candidate.replace(/[。！？]$/g, "")}（任务${seen}）`;
+        }
+        return candidate;
+    });
 }
