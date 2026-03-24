@@ -36,6 +36,13 @@ export interface JsonDatasetOccupation {
   educationOutcomes?: EducationOutcomesSummary;
   majorGroup: string;
   label: string;
+  airs?: number;
+  replacement?: number;
+  augmentation?: number;
+  hiring?: number;
+  historical?: number;
+  postings?: number;
+  postingSources?: Record<string, number>;
   summary?: string;
   summaryZh?: string;
   monthlyAirs?: number[];
@@ -46,11 +53,18 @@ export interface JsonDatasetOccupation {
   [key: string]: unknown;
 }
 
+export interface JsonDatasetSummary {
+  avgAirs: number;
+  highRiskCount: number;
+  occupationCount: number;
+}
+
 export interface JsonDataset {
   dates?: string[];
   regions?: string[];
   labels?: string[];
   groups?: string[];
+  summary?: JsonDatasetSummary;
   occupations: JsonDatasetOccupation[];
 }
 

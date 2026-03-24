@@ -1361,6 +1361,13 @@ async function main() {
       onetMatchScore,
       featureSource: mappedSources ? `${profileSource}_soc_master` : `soc_master_${profileSource}`,
       label,
+      airs,
+      replacement: Number(replacement.toFixed(3)),
+      augmentation: Number(augmentation.toFixed(3)),
+      hiring: Number(hiring.toFixed(3)),
+      historical: Number(historical.toFixed(3)),
+      postings,
+      postingSources,
       summary: summaryEn,
       summaryZh,
       regions: {
@@ -1403,19 +1410,33 @@ async function main() {
 
   writeStep(`Prepared ${masterSnapshots.length} SOC detailed occupation snapshots`);
 
+  const normalizedOccupations = occupations.map((occupation) => ({
+    ...occupation,
+    titleZh: translateOccupationTitle(occupation.title)
+  })).sort((left, right) => {
+    const leftAirs = Number(left.regions?.[options.region]?.airs || left.airs || 0);
+    const rightAirs = Number(right.regions?.[options.region]?.airs || right.airs || 0);
+    return leftAirs - rightAirs;
+  });
+
+  const avgAirs = safeAverage(
+    normalizedOccupations.map((occupation) => Number(occupation.airs ?? occupation.regions?.[options.region]?.airs))
+  );
+  const highRiskCount = normalizedOccupations.filter((occupation) =>
+    occupation.label === "high_risk" || occupation.label === "restructuring"
+  ).length;
+
   const output: JsonDataset = {
     dates,
     regions,
     labels,
     groups,
-    occupations: occupations.map((occupation) => ({
-      ...occupation,
-      titleZh: translateOccupationTitle(occupation.title)
-    })).sort((left, right) => {
-      const leftAirs = Number(left.regions?.[options.region]?.airs || 0);
-      const rightAirs = Number(right.regions?.[options.region]?.airs || 0);
-      return leftAirs - rightAirs;
-    })
+    summary: {
+      avgAirs: Number(avgAirs.toFixed(1)),
+      highRiskCount,
+      occupationCount: normalizedOccupations.length
+    },
+    occupations: normalizedOccupations
   };
 
   writeStep("Writing output JSON");

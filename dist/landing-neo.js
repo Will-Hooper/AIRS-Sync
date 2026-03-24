@@ -1341,10 +1341,28 @@ function renderUniverse() {
     els.occupationCanvas.replaceChildren(fragment);
     updateCanvasTransform();
 }
+function computeFallbackSummary() {
+    const rowsWithAirs = state.rows.filter((row) => Number.isFinite(Number(row.airs)));
+    const avgAirs = rowsWithAirs.length
+        ? rowsWithAirs.reduce((sum, row) => sum + Number(row.airs), 0) / rowsWithAirs.length
+        : 0;
+    const highRiskCount = state.rows.filter((row) => row.label === "high_risk" || row.label === "restructuring").length;
+    return {
+        avgAirs,
+        highRiskCount,
+        occupationCount: state.rows.length
+    };
+}
 function renderSummary(summary) {
-    animateNumber(els.avgAirs, summary.avgAirs, { decimals: 1 });
-    animateNumber(els.highRiskCount, summary.highRiskCount, { formatter: (next) => `${Math.round(next)}` });
-    animateNumber(els.occupationCount, summary.occupationCount, { formatter: (next) => `${Math.round(next)}` });
+    const fallbackSummary = computeFallbackSummary();
+    const safeSummary = {
+        avgAirs: Number.isFinite(Number(summary?.avgAirs)) ? Number(summary.avgAirs) : fallbackSummary.avgAirs,
+        highRiskCount: Number.isFinite(Number(summary?.highRiskCount)) ? Number(summary.highRiskCount) : fallbackSummary.highRiskCount,
+        occupationCount: Number.isFinite(Number(summary?.occupationCount)) ? Number(summary.occupationCount) : fallbackSummary.occupationCount
+    };
+    animateNumber(els.avgAirs, safeSummary.avgAirs, { decimals: 1 });
+    animateNumber(els.highRiskCount, safeSummary.highRiskCount, { formatter: (next) => `${Math.round(next)}` });
+    animateNumber(els.occupationCount, safeSummary.occupationCount, { formatter: (next) => `${Math.round(next)}` });
     if (!state.rows.length) {
         els.restructuringRate.textContent = "--";
         els.augmentingRate.textContent = "--";
@@ -1355,7 +1373,17 @@ function renderSummary(summary) {
     const restructuringCount = state.rows.filter((row) => row.label === "restructuring" || row.label === "high_risk").length;
     const augmentingCount = state.rows.filter((row) => row.label === "augmenting").length;
     const biggestMove = [...state.rows]
-        .map((row) => ({ ...row, delta: row.monthlyAirs[row.monthlyAirs.length - 1] - row.monthlyAirs[0] }))
+        .map((row) => {
+        const monthly = Array.isArray(row.monthlyAirs) ? row.monthlyAirs : [];
+        if (monthly.length < 2)
+            return null;
+        const start = Number(monthly[0]);
+        const end = Number(monthly[monthly.length - 1]);
+        if (!Number.isFinite(start) || !Number.isFinite(end))
+            return null;
+        return { ...row, delta: end - start };
+    })
+        .filter(Boolean)
         .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))[0];
     animateNumber(els.restructuringRate, (restructuringCount / state.rows.length) * 100, { formatter: (next) => `${Math.round(next)}%` });
     animateNumber(els.augmentingRate, (augmentingCount / state.rows.length) * 100, { formatter: (next) => `${Math.round(next)}%` });
@@ -1844,6 +1872,15 @@ async function load() {
     }
 }
 async function init() {
+    try {
+        if ("scrollRestoration" in window.history) {
+            window.history.scrollRestoration = "manual";
+        }
+    }
+    catch { }
+    if (!window.location.hash) {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
     refreshStaticLanguage();
     setupLayoutIndices();
     document.body.classList.add("page-ready");
