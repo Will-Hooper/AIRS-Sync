@@ -1878,9 +1878,14 @@ async function init() {
         }
     }
     catch { }
-    if (!window.location.hash) {
+    const resetHomeScroll = () => {
+        if (window.location.hash)
+            return;
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    }
+    };
+    resetHomeScroll();
+    window.requestAnimationFrame(() => resetHomeScroll());
+    window.addEventListener("pageshow", () => resetHomeScroll(), { once: true });
     refreshStaticLanguage();
     setupLayoutIndices();
     document.body.classList.add("page-ready");
