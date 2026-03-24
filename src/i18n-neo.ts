@@ -10,6 +10,7 @@ const TEXT = {
       visitorLocale: "Visitor locale",
       heroKicker: "AI Recruitment Stability Score",
       heroTitle: "A live field of every occupation shows where AI is merely assisting, and where hiring has already been structurally compressed.",
+      heroTitleHtml: "A live field of every occupation shows where AI is merely assisting,<br>and where hiring has already been structurally compressed.",
       heroText: "Start with the entire labor market. Use the wheel to zoom toward one occupation and watch the same field turn into a specific hiring profile.",
       airsIntroKicker: "What AIRS Measures",
       airsIntroTitle: "AIRS stands for AI Recruitment Stability Score.",
@@ -222,6 +223,7 @@ const TEXT = {
       visitorLocale: "当前所在地",
       heroKicker: "AI 对招聘影响指数",
       heroTitle: "看清每一种职业，正被AI辅助，还是被AI压缩。",
+      heroTitleHtml: "看清每一种职业，正被AI辅助，<br>还是被AI压缩。",
       heroText: "AIRS是AI Recruitment Stability Score的缩写，即“AI招聘稳定指数”。它不是在猜某个职业未来会不会消失，而是在回答一个更直接的问题：当 AI 进入工作流程后，企业现在是否已经开始减少招聘、简化岗位，或重组这个职业的用人方式。",
       airsIntroKicker: "AIRS 是什么",
       airsIntroTitle: "AIRS是AI Recruitment Stability Score的缩写，即“AI招聘稳定指数”。",
@@ -461,6 +463,9 @@ export function persistLanguage(language) {
 export function applyTranslations(root, language) {
   root.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = t(language, element.dataset.i18n);
+  });
+  root.querySelectorAll("[data-i18n-html]").forEach((element) => {
+    element.innerHTML = t(language, element.dataset.i18nHtml);
   });
   root.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
     element.setAttribute("placeholder", t(language, element.dataset.i18nPlaceholder));

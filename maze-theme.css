@@ -101,7 +101,7 @@ button, input, select { font:inherit; }
 .airs-intro-summary__copy {
   display:grid;
   gap:14px;
-  max-width:840px;
+  max-width:1180px;
 }
 .airs-intro-summary__copy .kicker {
   margin:0;
@@ -110,11 +110,14 @@ button, input, select { font:inherit; }
 }
 .airs-intro-summary__copy h1 {
   margin:0;
-  max-width:780px;
+  max-width:1120px;
   font-size:clamp(2.45rem, 5.35vw, 4.85rem);
   line-height:.97;
   letter-spacing:-.055em;
   text-shadow:0 18px 34px rgba(0,0,0,.42);
+}
+.airs-intro-summary__copy h1 br {
+  display:block;
 }
 .airs-intro-summary__copy .hero-copy__text {
   margin-top:0;
@@ -1346,8 +1349,8 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
   .airs-intro-summary { width:min(var(--max-width), calc(100% - 20px)); margin:18px auto 14px; }
   .airs-intro__content { width:min(var(--max-width), calc(100% - 20px)); padding:108px 0 24px; }
   .airs-intro__hero { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
-  .airs-intro-summary__copy { gap:12px; max-width:720px; }
-  .airs-intro-summary__copy h1 { font-size:clamp(2.5rem, 8vw, 4.3rem); max-width:680px; }
+  .airs-intro-summary__copy { gap:12px; max-width:980px; }
+  .airs-intro-summary__copy h1 { font-size:clamp(2.5rem, 8vw, 4.3rem); max-width:920px; }
   .airs-intro-summary__copy .hero-copy__text { max-width:600px; font-size:1rem; }
   .hero-stat-grid--relocated { grid-template-columns:1fr; }
   .maze-hero--analysis { grid-template-columns:1fr; }
