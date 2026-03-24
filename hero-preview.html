@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hero Preview</title>
+  <link rel="stylesheet" href="maze-theme.css" />
+  <style>
+    :root {
+      --max-width: 1240px;
+      --ink: #f4f7ff;
+      --muted: rgba(214,223,238,.9);
+      --line: rgba(127,193,255,.14);
+      --blue: #7fc1ff;
+      --mint: #6fe3c2;
+      --warm: #ffb066;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,.22);
+      --shadow: 0 22px 44px rgba(0,0,0,.28);
+    }
+    html, body { margin:0; background:#05080d; overflow:hidden; }
+    body { color:var(--ink); font-family:"Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .maze-home { opacity:1 !important; transform:none !important; width:100%; padding:0; margin:0; }
+    .maze-nav, .risk-ribbon, .airs-intro-summary { display:none !important; }
+    .airs-intro { min-height:420px; margin:0; }
+  </style>
+</head>
+<body class="page-ready">
+  <main class="maze-home">
+    <section class="airs-intro" aria-label="Hero preview">
+      <div class="airs-intro__media" aria-hidden="true">
+        <div class="airs-intro__vanta is-static-fallback"></div>
+      </div>
+      <div class="airs-intro__content">
+        <article class="airs-intro-summary__copy">
+          <p class="kicker">AI 对招聘影响指数</p>
+          <h1>看清每一种职业，正被AI辅助，还是被AI压缩。</h1>
+          <p class="hero-copy__text">AIRS是AI Recruitment Stability Score的缩写，即“AI招聘稳定指数”。它不是在猜某个职业未来会不会消失，而是在回答一个更直接的问题：当 AI 进入工作流程后，企业现在是否已经开始减少招聘、简化岗位，或重组这个职业的用人方式。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

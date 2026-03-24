@@ -95,29 +95,33 @@ button, input, select { font:inherit; }
   min-height:100%;
   margin:0 auto;
   display:flex;
-  align-items:flex-end;
-  padding:118px 0 26px;
+  align-items:center;
+  padding:110px 0 30px;
 }
 .airs-intro-summary__copy {
-  max-width:1100px;
+  display:grid;
+  gap:14px;
+  max-width:840px;
 }
 .airs-intro-summary__copy .kicker {
-  margin:0 0 12px;
+  margin:0;
   color:rgba(154,247,194,.82);
   text-shadow:0 8px 22px rgba(0,0,0,.28);
 }
 .airs-intro-summary__copy h1 {
   margin:0;
-  max-width:1040px;
-  font-size:clamp(2.9rem, 6vw, 5.4rem);
-  line-height:.94;
-  letter-spacing:-.07em;
+  max-width:780px;
+  font-size:clamp(2.45rem, 5.35vw, 4.85rem);
+  line-height:.97;
+  letter-spacing:-.055em;
   text-shadow:0 18px 34px rgba(0,0,0,.42);
 }
 .airs-intro-summary__copy .hero-copy__text {
-  margin-top:18px;
-  max-width:900px;
+  margin-top:0;
+  max-width:760px;
   color:rgba(214,223,238,.9);
+  font-size:clamp(.98rem, 1.08vw, 1.08rem);
+  line-height:1.68;
   text-shadow:0 10px 24px rgba(0,0,0,.4);
 }
 .airs-intro__hero {
@@ -1340,10 +1344,11 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
   }
   .airs-intro { min-height:380px; }
   .airs-intro-summary { width:min(var(--max-width), calc(100% - 20px)); margin:18px auto 14px; }
-  .airs-intro__content { width:min(var(--max-width), calc(100% - 20px)); padding:112px 0 24px; }
+  .airs-intro__content { width:min(var(--max-width), calc(100% - 20px)); padding:108px 0 24px; }
   .airs-intro__hero { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
-  .airs-intro-summary__copy h1 { font-size:clamp(2.7rem, 8vw, 4.6rem); max-width:720px; }
-  .airs-intro-summary__copy .hero-copy__text { max-width:620px; }
+  .airs-intro-summary__copy { gap:12px; max-width:720px; }
+  .airs-intro-summary__copy h1 { font-size:clamp(2.5rem, 8vw, 4.3rem); max-width:680px; }
+  .airs-intro-summary__copy .hero-copy__text { max-width:600px; font-size:1rem; }
   .hero-stat-grid--relocated { grid-template-columns:1fr; }
   .maze-hero--analysis { grid-template-columns:1fr; }
   .maze-nav__actions, .maze-lab__head, .maze-lab__spotlight, .detail-panel__head { flex-direction:column; align-items:flex-start; }
@@ -1386,9 +1391,10 @@ select:focus, input:focus, .lang-switch__button:focus-visible, .view-switch__but
   .maze-home, .maze-detail { padding-top:136px; }
   .airs-intro { min-height:310px; margin-top:-136px; margin-bottom:0; }
   .airs-intro-summary { margin:16px auto 12px; }
-  .airs-intro__content { padding:104px 0 20px; }
-  .airs-intro-summary__copy h1 { font-size:clamp(2rem, 10vw, 3rem); max-width:100%; }
-  .airs-intro-summary__copy .hero-copy__text { max-width:100%; margin-top:12px; font-size:.94rem; line-height:1.7; }
+  .airs-intro__content { align-items:flex-end; padding:100px 0 18px; }
+  .airs-intro-summary__copy { gap:10px; max-width:100%; }
+  .airs-intro-summary__copy h1 { font-size:clamp(1.9rem, 9.6vw, 2.85rem); max-width:100%; line-height:.98; }
+  .airs-intro-summary__copy .hero-copy__text { max-width:100%; font-size:.93rem; line-height:1.68; }
   .airs-intro__hero { grid-template-columns:1fr; gap:12px; }
   .hero-stat--featured { min-height:auto; }
   .airs-intro__hero .pressure-card { padding:16px; }
