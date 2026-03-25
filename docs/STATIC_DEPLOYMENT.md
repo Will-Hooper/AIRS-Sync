@@ -1,62 +1,110 @@
 # Static Deployment
 
-## 当前架构
+## 当前发布形态
 
-当前网站已经改成纯前端模式：
+当前网站已经重构为：
 
-- 页面直接读取 `backend/data/airs_data.json`
-- 不再依赖 `/api/*` 后端接口
-- 详情页和首页都从同一个 JSON 文件取数
-- 数据更新通过 `src-node` 下的 Node + TypeScript CLI 与 GitHub Actions 完成
+- `React + React Router + Tailwind + TypeScript` 前端
+- `Vite` 打包输出到 [spa](E:\Codex\spa)
+- `Node + TypeScript` CLI 负责生成 [backend/data](E:\Codex\backend\data) 下的 JSON 数据
 
-## 你发布时必须带上的文件
+网站线上运行时是纯静态站，不需要在线后端 API。
 
-至少要带上这些：
+## 发布时必须带上的内容
 
-- `home.html`
-- `occupation-view.html`
-- `maze-theme.css`
-- `landing-neo.js`
-- `occupation-neo.js`
-- `i18n-neo.js`
-- `api-client.js`
-- `occupation-translation.js`
-- `runtime-config.js`
-- `backend/data/airs_data.json`
+最关键的是这三部分：
 
-最简单的做法就是直接发布整个 `E:\Codex` 目录。
+1. SPA 构建产物
+   - [spa/index.html](E:\Codex\spa\index.html)
+   - [spa/assets](E:\Codex\spa\assets)
 
-## 适合的发布方式
+2. 数据文件
+   - [backend/data/airs_data.json](E:\Codex\backend\data\airs_data.json)
+   - 以及前端读取到的其他 JSON
 
-现在可以使用任何纯静态托管方式：
+3. 根目录兼容入口
+   - [index.html](E:\Codex\index.html)
+   - [home.html](E:\Codex\home.html)
+   - [occupation-view.html](E:\Codex\occupation-view.html)
+   - [occupation.html](E:\Codex\occupation.html)
 
-- GitHub Pages
-- Netlify
-- Vercel
-- 任何能直接托管 HTML / CSS / JS / JSON 文件的服务
+这些入口页会自动跳转到：
 
-## 本地预览
+- `./spa/index.html#/`
+- `./spa/index.html#/occupation/...`
 
-项目仍保留本地静态预览脚本：
+## 推荐上传方式
+
+如果你是发布到 GitHub Pages，推荐至少上传：
+
+- [spa](E:\Codex\spa)
+- [backend](E:\Codex\backend)
+- [index.html](E:\Codex\index.html)
+- [home.html](E:\Codex\home.html)
+- [occupation-view.html](E:\Codex\occupation-view.html)
+- [occupation.html](E:\Codex\occupation.html)
+- [README.md](E:\Codex\README.md)
+
+如果你是整个仓库直接发布，也可以直接上传整个项目目录，但要注意不要把本地缓存和临时文件一起带上。
+
+## 不要上传
+
+- `node_modules`
+- `dist-node`
+- `.tmp_*`
+- `.edge-headless`
+- `server-out.log`
+- `server-err.log`
+- `backend/data/onet/.cache`
+- 任何本地调试截图
+
+## 本地验证
+
+安装依赖：
+
+```powershell
+npm install
+```
+
+构建：
+
+```powershell
+npm run build
+```
+
+本地静态预览：
 
 ```powershell
 .\preview.ps1
 ```
 
-然后打开：
+然后访问：
 
-`http://localhost:8090/home.html`
+- [http://localhost:8090/home.html](http://localhost:8090/home.html)
 
 ## 数据更新
 
-静态站本身没有后端服务，但数据会通过 Node CLI 重建：
+网站本身不带后端服务，但数据会通过 Node CLI 重建：
 
 ```powershell
-npm install
-npm run build
 npm run sync:usajobs -- --useExistingHistoryOnly
 npm run sync:onet -- --force
 npm run sync:scorecard
 ```
 
-如果你使用 GitHub Pages，推荐直接依赖仓库内的 GitHub Actions 自动更新工作流。
+如果你使用 GitHub Pages，更推荐直接依赖 GitHub Actions 自动更新，不需要每次手动执行。
+
+## GitHub Pages 建议
+
+如果你是仓库根目录发布，至少确认：
+
+- `spa/index.html` 已存在
+- `backend/data/airs_data.json` 可访问
+- 根目录 `home.html` 能正确跳到 `spa/index.html#/`
+
+上线后建议手动检查这几个地址：
+
+- `/home.html`
+- `/spa/index.html`
+- `/backend/data/airs_data.json`
+- `/occupation-view.html?soc=43-3099.00&lang=zh`
