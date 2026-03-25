@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --page-bg: #070d14;
+  --panel-bg: rgba(15, 23, 33, 0.88);
+  --panel-border: rgba(144, 195, 255, 0.14);
+  --text-primary: #f2f6ff;
+  --text-secondary: #9eabbf;
+  --accent-mint: #8ef0cf;
+  --accent-blue: #8bc8ff;
+  --accent-orange: #ff9a47;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(127, 193, 255, 0.16), transparent 38%),
+    radial-gradient(circle at 80% 15%, rgba(111, 227, 194, 0.1), transparent 30%),
+    linear-gradient(180deg, #070d14 0%, #050a11 100%);
+  color: var(--text-primary);
+  font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+@layer components {
+  .airs-shell {
+    @apply min-h-screen px-4 pb-20 pt-6 md:px-6 lg:px-8;
+  }
+
+  .airs-page {
+    @apply mx-auto flex w-full max-w-[1560px] flex-col gap-6;
+  }
+
+  .airs-panel {
+    @apply rounded-[30px] border border-white/10 bg-slate-950/70 shadow-[0_30px_120px_rgba(2,8,15,0.35)] backdrop-blur-xl;
+    border-color: var(--panel-border);
+    background-color: var(--panel-bg);
+  }
+
+  .airs-kicker {
+    @apply text-xs uppercase tracking-[0.34em] text-cyan-200/80;
+  }
+
+  .airs-title-xl {
+    @apply text-4xl font-semibold leading-[0.95] tracking-[-0.05em] text-white md:text-6xl xl:text-[7rem];
+  }
+
+  .airs-title-lg {
+    @apply text-2xl font-semibold tracking-[-0.04em] text-white md:text-4xl;
+  }
+
+  .airs-copy {
+    color: var(--text-secondary);
+    @apply text-sm leading-8 md:text-base;
+  }
+
+  .airs-chip {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium text-white/80;
+    border-color: rgba(142, 240, 207, 0.22);
+    background: rgba(8, 20, 29, 0.72);
+  }
+
+  .airs-button {
+    @apply inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium transition hover:-translate-y-0.5;
+    border-color: rgba(142, 240, 207, 0.28);
+    background: rgba(17, 34, 46, 0.76);
+  }
+
+  .airs-button-primary {
+    @apply inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium text-slate-950 transition hover:-translate-y-0.5;
+    background: linear-gradient(135deg, var(--accent-mint), var(--accent-blue));
+    border-color: transparent;
+  }
+
+  .airs-input {
+    @apply w-full rounded-[22px] border border-white/10 bg-black/15 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-cyan-200/40;
+  }
+
+  .airs-divider {
+    @apply h-px w-full bg-white/8;
+  }
+}
+
+@layer utilities {
+  .bg-airs-grid {
+    background-image:
+      linear-gradient(rgba(139, 200, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 200, 255, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}

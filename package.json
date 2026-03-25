@@ -2,21 +2,36 @@
   "private": true,
   "scripts": {
     "build": "npm run build:frontend && npm run build:node",
-    "build:frontend": "tsc -p tsconfig.json",
+    "build:frontend": "vite build",
     "build:node": "tsc -p tsconfig.node.json",
     "typecheck": "npm run typecheck:frontend && npm run typecheck:node",
-    "typecheck:frontend": "tsc -p tsconfig.json --noEmit",
+    "typecheck:frontend": "tsc -p tsconfig.frontend.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
+    "dev:frontend": "vite --host",
+    "preview:frontend": "vite preview --host",
     "sync:usajobs": "node ./dist-node/src-node/usajobs-sync.js",
     "sync:onet": "node ./dist-node/src-node/onet-sync.js",
     "sync:scorecard": "node ./dist-node/src-node/college-scorecard-sync.js"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
-    "csv-parse": "^6.1.0"
+    "csv-parse": "^6.1.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.2",
+    "three": "^0.183.2",
+    "vanta": "^0.5.24"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^24.6.1",
-    "typescript": "^5.9.3"
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.2"
   }
 }

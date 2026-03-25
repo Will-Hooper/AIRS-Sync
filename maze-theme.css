@@ -507,7 +507,7 @@ button, input, select { font:inherit; }
   display:grid;
   justify-items:end;
   gap:10px;
-  pointer-events:none;
+  pointer-events:auto;
 }
 .universe-stage__zoom-badge {
   min-width:72px;
@@ -521,6 +521,7 @@ button, input, select { font:inherit; }
   font-size:.78rem;
   letter-spacing:.08em;
   text-align:center;
+  pointer-events:none;
 }
 .universe-stage__controls {
   display:grid;

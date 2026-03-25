@@ -28,7 +28,8 @@ const state = {
     loadError: null,
     dataMode: null,
     dataSource: null,
-    pendingFitView: true
+    pendingFitView: true,
+    manualViewControl: false
 };
 const els = {
     riskTickerTrack: byId("riskTickerTrack"),
@@ -1088,6 +1089,10 @@ function currentFocusLock() {
         return null;
     return state.rows.find((row) => row.socCode === state.focusLockedSocCode) || null;
 }
+function engageManualUniverseControl() {
+    state.manualViewControl = true;
+    state.pendingFitView = false;
+}
 function syncFocusLockVisualState() {
     const locked = Boolean(state.focusLockedSocCode);
     els.occupationUniverse.classList.toggle("is-focus-locked", locked);
@@ -1256,6 +1261,7 @@ function createNodeElement(row) {
         if (!socCode)
             return;
         const isSameFocused = socCode === state.focusLockedSocCode;
+        engageManualUniverseControl();
         state.selectedSocCode = socCode;
         state.focusLockedSocCode = isSameFocused ? null : socCode;
         state.zoom = Math.max(state.zoom, 1.45);
@@ -1487,6 +1493,7 @@ function setViewMode(mode, options = {}) {
         return;
     const { zoom = VIEW_PRESETS[mode] ?? state.zoom, resetPan = true, preserveStory = false } = options;
     state.viewMode = mode;
+    state.manualViewControl = true;
     state.zoom = zoom;
     if (resetPan) {
         state.panX = 0;
@@ -1513,6 +1520,7 @@ function activateStoryStep(stepId) {
     setViewMode(scene.viewMode, { zoom: scene.zoom, preserveStory: true, resetPan: true });
 }
 function resetUniverseView(unlockFocus = true) {
+    state.manualViewControl = false;
     state.panX = 0;
     state.panY = 0;
     state.pendingFitView = true;
@@ -1572,6 +1580,7 @@ function bindUniverseInteractions() {
         state.zoom = nextZoom;
         state.panX = desiredX - (pinchState.anchorWorldX * nextZoom) - focusOffset.x;
         state.panY = desiredY - (pinchState.anchorWorldY * nextZoom) - focusOffset.y;
+        engageManualUniverseControl();
         clampPanToBounds(nextZoom);
         markUniverseInteracting();
         updateCanvasTransform();
@@ -1646,6 +1655,7 @@ function bindUniverseInteractions() {
         const dragFactor = isCompactViewport() ? 0.86 : 1;
         state.panX = dragState.originPanX + dx * dragFactor;
         state.panY = dragState.originPanY + dy * dragFactor;
+        engageManualUniverseControl();
         clampPanToBounds(state.zoom);
         markUniverseInteracting();
         updateCanvasTransform();
@@ -1696,16 +1706,7 @@ function setupStoryObserver() {
     if (!els.storyCards.length)
         return;
     storyObserver?.disconnect();
-    storyObserver = new IntersectionObserver((entries) => {
-        const visible = entries
-            .filter((entry) => entry.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible)
-            return;
-        const stepId = visible.target.dataset.storyStep;
-        if (stepId && stepId !== state.storyStep)
-            activateStoryStep(stepId);
-    }, { threshold: [0.35, 0.55, 0.75], rootMargin: "-12% 0px -28% 0px" });
+    storyObserver = null;
     els.storyCards.forEach((card) => {
         card.tabIndex = 0;
         card.addEventListener("click", () => activateStoryStep(card.dataset.storyStep));
@@ -1715,7 +1716,6 @@ function setupStoryObserver() {
                 activateStoryStep(card.dataset.storyStep);
             }
         });
-        storyObserver.observe(card);
     });
 }
 function bindActions() {
@@ -1775,18 +1775,33 @@ function bindActions() {
     els.occupationUniverse.addEventListener("wheel", (event) => {
         event.preventDefault();
         const zoomFactor = Math.exp(-event.deltaY * 0.00108);
+        engageManualUniverseControl();
         markUniverseInteracting();
         setZoomAroundClient(state.zoom * zoomFactor, event.clientX, event.clientY);
     }, { passive: false });
     els.occupationUniverse.addEventListener("dblclick", () => {
         resetUniverseView(true);
     });
-    els.zoomInButton.addEventListener("click", () => zoomAroundViewportCenter(1.2));
-    els.zoomInButton.addEventListener("click", markUniverseInteracting);
-    els.zoomOutButton.addEventListener("click", () => zoomAroundViewportCenter(1 / 1.2));
-    els.zoomOutButton.addEventListener("click", markUniverseInteracting);
-    els.resetViewButton.addEventListener("click", () => resetUniverseView(true));
-    els.resetViewButton.addEventListener("click", markUniverseInteracting);
+    els.zoomInButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        engageManualUniverseControl();
+        markUniverseInteracting();
+        zoomAroundViewportCenter(1.2);
+    });
+    els.zoomOutButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        engageManualUniverseControl();
+        markUniverseInteracting();
+        zoomAroundViewportCenter(1 / 1.2);
+    });
+    els.resetViewButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        markUniverseInteracting();
+        resetUniverseView(true);
+    });
     els.portalButton.addEventListener("click", () => navigateToDetail(els.portalButton.dataset.href || els.detailLink.href));
     els.detailLink.addEventListener("click", (event) => { event.preventDefault(); navigateToDetail(els.detailLink.href); });
     els.downButton.addEventListener("click", () => {
@@ -1797,7 +1812,7 @@ function bindActions() {
     window.addEventListener("resize", () => {
         syncScrollProgress();
         initIntroVanta();
-        if (!state.focusLockedSocCode && state.rows.length) {
+        if (!state.manualViewControl && !state.focusLockedSocCode && state.rows.length) {
             state.pendingFitView = true;
             renderUniverse();
             return;
@@ -1838,6 +1853,7 @@ async function load() {
             els.dataModeLabel.textContent = renderModeLabel(summary.mode);
         }
         syncReleaseNotes(summary.mode, summary.updatedAt, state.dataSource);
+        state.manualViewControl = false;
         state.rows = payload.occupations.slice();
         if (!state.focusLockedSocCode) {
             state.pendingFitView = true;

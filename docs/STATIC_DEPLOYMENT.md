@@ -7,6 +7,7 @@
 - 页面直接读取 `backend/data/airs_data.json`
 - 不再依赖 `/api/*` 后端接口
 - 详情页和首页都从同一个 JSON 文件取数
+- 数据更新通过 `src-node` 下的 Node + TypeScript CLI 与 GitHub Actions 完成
 
 ## 你发布时必须带上的文件
 
@@ -29,32 +30,33 @@
 
 现在可以使用任何纯静态托管方式：
 
-- IIS 静态站点
 - GitHub Pages
 - Netlify
 - Vercel
 - 任何能直接托管 HTML / CSS / JS / JSON 文件的服务
 
-## IIS 最短路径
+## 本地预览
 
-1. 站点物理路径指向 `E:\Codex`
-2. 使用根目录下的 `web.config`
-3. 绑定域名和 HTTPS
-4. 打开 `/home.html` 验证页面
-5. 直接访问 `/backend/data/airs_data.json`，确认 JSON 能打开
+项目仍保留本地静态预览脚本：
 
-## 数据更新方式
+```powershell
+.\preview.ps1
+```
 
-以后更新数据，不需要改前端代码，只需要替换这个文件：
+然后打开：
 
-- `backend/data/airs_data.json`
+`http://localhost:8090/home.html`
 
-如果你继续用 USAJOBS 同步脚本，更新完后重新上传这个 JSON 即可。
+## 数据更新
 
-## 上线后检查
+静态站本身没有后端服务，但数据会通过 Node CLI 重建：
 
-1. 首页能正常打开
-2. 职业场能缩放、拖拽、点击
-3. 筛选和搜索能正常工作
-4. 详情页能正常打开
-5. `/backend/data/airs_data.json` 返回 `200`
+```powershell
+npm install
+npm run build
+npm run sync:usajobs -- --useExistingHistoryOnly
+npm run sync:onet -- --force
+npm run sync:scorecard
+```
+
+如果你使用 GitHub Pages，推荐直接依赖仓库内的 GitHub Actions 自动更新工作流。

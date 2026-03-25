@@ -1,148 +1,188 @@
 # AIRS 可视化网站
 
-这是一个可直接演示、可静态发布、并带自动数据同步链路的 AIRS 网站，现已包含：
+这是一个基于 `React + React Router + Tailwind + TypeScript` 的 AIRS 静态网站，当前架构分为两部分：
 
-- 总览仪表盘
-- 日期/地区/SOC 大类/标签筛选
-- 职业详情页
-- 纯前端 JSON 数据读取
-- TypeScript 前端运行时
-- TypeScript 数据同步 CLI（USAJOBS / CareerOneStop / 公开职位看板 / O*NET / College Scorecard）
+- 前端 SPA：负责首页、职业详情页、交互视图与多语言界面
+- Node + TypeScript 数据同步 CLI：负责生成 `backend/data/*.json`
 
-## 页面
+网站最终以纯静态形式发布，不依赖在线后端 API。
 
-- [home.html](E:\Codex\home.html)：新首页入口
-- [occupation-view.html](E:\Codex\occupation-view.html)：新职业详情页
-- [index.html](E:\Codex\index.html)：旧版页面，当前不作为根入口
+## 当前结构
 
-## 核心文件
+- [frontend](E:\Codex\frontend)
+  React 前端工程根目录
+- [frontend/src](E:\Codex\frontend\src)
+  前端源码
+- [spa](E:\Codex\spa)
+  Vite 构建后的静态产物
+- [src-node](E:\Codex\src-node)
+  数据同步与 JSON 生成源码
+- [backend/data](E:\Codex\backend\data)
+  网站运行时读取的数据文件
 
-- [src](E:\Codex\src)：前端 TypeScript 源码
-- [dist](E:\Codex\dist)：前端编译产物
-- [src-node](E:\Codex\src-node)：Node + TypeScript 数据同步源码
-- [backend/data/airs_data.json](E:\Codex\backend\data\airs_data.json)：网站当前读取的数据文件
-- [backend/usajobs_sync.ps1](E:\Codex\backend\usajobs_sync.ps1)：PowerShell 兼容入口，会优先转发到 Node CLI
-- [backend/onet_sync.ps1](E:\Codex\backend\onet_sync.ps1)：PowerShell 兼容入口，会优先转发到 Node CLI
-- [sql/api_queries.sql](E:\Codex\sql\api_queries.sql)：API 查询示例
-- [sql/warehouse_views.sql](E:\Codex\sql\warehouse_views.sql)：数仓视图示例
+## 页面入口
 
-## 运行
+真正运行的站点是 SPA，入口文件为：
 
-先编译前端与 Node CLI：
+- [spa/index.html](E:\Codex\spa\index.html)
+
+仓库根目录保留了兼容跳转页，便于 GitHub Pages 和旧链接继续工作：
+
+- [index.html](E:\Codex\index.html)
+- [home.html](E:\Codex\home.html)
+- [occupation-view.html](E:\Codex\occupation-view.html)
+- [occupation.html](E:\Codex\occupation.html)
+
+这些文件会自动跳转到：
+
+- `./spa/index.html#/`
+- `./spa/index.html#/occupation/...`
+
+## 前端技术栈
+
+- `React`
+- `React Router`
+- `Tailwind CSS`
+- `TypeScript`
+- `Vite`
+
+关键文件：
+
+- [frontend/src/main.tsx](E:\Codex\frontend\src\main.tsx)
+- [frontend/src/router.tsx](E:\Codex\frontend\src\router.tsx)
+- [frontend/src/pages/HomePage.tsx](E:\Codex\frontend\src\pages\HomePage.tsx)
+- [frontend/src/pages/OccupationPage.tsx](E:\Codex\frontend\src\pages\OccupationPage.tsx)
+- [frontend/src/styles.css](E:\Codex\frontend\src\styles.css)
+
+## 数据文件
+
+网站当前主要读取：
+
+- [backend/data/airs_data.json](E:\Codex\backend\data\airs_data.json)
+
+辅助数据包括：
+
+- [backend/data/soc_detailed_master.json](E:\Codex\backend\data\soc_detailed_master.json)
+- [backend/data/public_jobboards_sources.json](E:\Codex\backend\data\public_jobboards_sources.json)
+- [backend/data/public_jobboards_history.json](E:\Codex\backend\data\public_jobboards_history.json)
+- [backend/data/college_scorecard_programs.json](E:\Codex\backend\data\college_scorecard_programs.json)
+- [backend/data/college_scorecard_cip_summary.json](E:\Codex\backend\data\college_scorecard_cip_summary.json)
+
+## 本地开发
+
+安装依赖：
 
 ```powershell
 npm install
+```
+
+前端类型检查：
+
+```powershell
+npm run typecheck:frontend
+```
+
+前端开发模式：
+
+```powershell
+npm run dev:frontend
+```
+
+前端构建：
+
+```powershell
+npm run build:frontend
+```
+
+完整构建：
+
+```powershell
 npm run build
 ```
 
-本地预览站：
+## 本地静态预览
+
+如果你想按接近 GitHub Pages 的方式预览：
 
 ```powershell
 .\preview.ps1
 ```
 
-前端数据重建：
+然后打开：
+
+- [http://localhost:8090/home.html](http://localhost:8090/home.html)
+
+## 数据重建
+
+构建 Node CLI：
+
+```powershell
+npm run build:node
+```
+
+重建招聘数据：
 
 ```powershell
 npm run sync:usajobs -- --useExistingHistoryOnly
+```
+
+更新 O-NET：
+
+```powershell
 npm run sync:onet -- --force
+```
+
+更新美国大学专业就业结果：
+
+```powershell
 npm run sync:scorecard
 ```
 
-如果你习惯 PowerShell 旧入口，也可以继续用：
+## 自动更新
 
-```powershell
-.\backend\usajobs_sync.ps1 -UseExistingHistoryOnly
-.\sync_onet.ps1 -Force
-```
-
-然后访问 [http://localhost:8090/home.html](http://localhost:8090/home.html)。
-
-当前根路由默认打开 [home.html](E:\Codex\home.html)。
-
-## 数据说明
-
-当前网站为纯前端静态站，直接读取：
-
-- [backend/data/airs_data.json](E:\Codex\backend\data\airs_data.json)
-
-GitHub Actions 已接入两条自动同步链路：
+GitHub Actions 已接入三条自动更新链路：
 
 1. `Update AIRS Data Daily`
 2. `Update O-NET Data Monthly`
 3. `Update College Scorecard Monthly`
 
-其中 `Update AIRS Data Daily` 当前会默认接入：
+详见：
+
+- [docs/GITHUB_ACTIONS_AUTOMATION.md](E:\Codex\docs\GITHUB_ACTIONS_AUTOMATION.md)
+
+## 发布
+
+当前推荐发布方式是纯静态托管：
+
+- `GitHub Pages`
+- `Netlify`
+- `Vercel`
+
+发布时要以 [spa](E:\Codex\spa) 产物为核心，并确保：
+
+- `spa/assets/*` 已上传
+- `backend/data/*.json` 已上传
+- 根目录兼容入口页已上传
+
+详见：
+
+- [docs/STATIC_DEPLOYMENT.md](E:\Codex\docs\STATIC_DEPLOYMENT.md)
+
+## 数据来源
+
+当前默认会整合这些来源：
 
 - `USAJOBS`
-- `CareerOneStop Jobs V2`（配置密钥后自动启用）
-- `公开职位看板`（默认已启用 Greenhouse / Lever / Ashby / SmartRecruiters 的公开板源）
+- `CareerOneStop Jobs V2`（配置密钥后启用）
+- 公开 ATS 职位板：
+  - `Greenhouse`
+  - `Lever`
+  - `Ashby`
+  - `SmartRecruiters`
+- `O*NET`
+- `College Scorecard`
 
-公开职位看板默认源清单在：
+## 说明
 
-- [backend/data/public_jobboards_sources.json](E:\Codex\backend\data\public_jobboards_sources.json)
-
-当前默认公开板源示例包括：
-
-- `Stripe / Datadog / Coinbase`（Greenhouse）
-- `Palantir / University of Austin`（Lever）
-- `OpenAI / Notion / Ramp / Cursor / Perplexity / Mercor / Supabase`（Ashby）
-- `Visa / SmartRecruiters / LVMH`（SmartRecruiters）
-
-公开职位看板历史会写入：
-
-- [backend/data/public_jobboards_history.json](E:\Codex\backend\data\public_jobboards_history.json)
-
-美国大学 × 专业就业结果会写入：
-
-- [backend/data/college_scorecard_programs.json](E:\Codex\backend\data\college_scorecard_programs.json)
-
-美国专业层级汇总会写入：
-
-- [backend/data/college_scorecard_cip_summary.json](E:\Codex\backend\data\college_scorecard_cip_summary.json)
-
-## API 约定
-
-建议提供以下接口：
-
-1. `GET /api/airs/summary?date=2026-03-08&region=National`
-2. `GET /api/airs/occupations?date=2026-03-08&region=National&majorGroup=...&label=...&q=...`
-3. `GET /api/airs/{soc_code}?date=2026-03-08&region=National`
-
-## 真实接入方式
-
-如果你的后端已经能输出 `mart_airs_daily`、`occupation_daily_features` 聚合结果，前端基本不需要重写，只要保证接口字段和 `api-client.js` 的预期一致即可。
-
-总览列表项建议至少返回：
-
-```json
-{
-  "socCode": "43-9021",
-  "title": "Data Entry Keyers",
-  "majorGroup": "Office and Administrative Support",
-  "label": "high_risk",
-  "summary": "职业解释文本",
-  "airs": 12,
-  "replacement": 0.94,
-  "augmentation": 0.31,
-  "hiring": 0.91,
-  "historical": 0.84,
-  "postings": 510,
-  "monthlyAirs": [24, 23, 22, 21, 19, 18, 17, 16, 15, 14, 13, 12]
-}
-```
-
-## 部署说明
-
-更完整的部署步骤见 [docs/DEPLOYMENT.md](E:\Codex\docs\DEPLOYMENT.md)。
-
-接口字段定义见 [docs/API_CONTRACT.md](E:\Codex\docs\API_CONTRACT.md)。
-
-正式上线前检查清单见 [docs/RELEASE_CHECKLIST.md](E:\Codex\docs\RELEASE_CHECKLIST.md)。
-
-## Production Templates
-
-- Reverse-proxy deployment guide: [docs/PRODUCTION_DEPLOYMENT.md](E:\Codex\docs\PRODUCTION_DEPLOYMENT.md)
-- IIS config template: [deploy/iis/web.config](E:\Codex\deploy\iis\web.config)
-- Nginx config template: [deploy/nginx/airs.conf](E:\Codex\deploy\nginx\airs.conf)
-- Windows backend runner: [deploy/windows/run-backend.ps1](E:\Codex\deploy\windows\run-backend.ps1)
+当前仓库已经不再以传统后端服务作为运行前提。  
+网站本身是静态 SPA，数据通过离线同步脚本生成并提交回仓库。
