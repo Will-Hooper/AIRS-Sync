@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIRS H5 Occupation</title>
+  <script>
+    (function redirectMobileOccupation() {
+      const params = new URLSearchParams(window.location.search);
+      const soc = params.get("soc") || "";
+      params.delete("soc");
+      const query = params.toString();
+      const target = new URL("../spa/index.html", window.location.href);
+      const hash = soc
+        ? `#/m/occupation/${encodeURIComponent(soc)}${query ? `?${query}` : ""}`
+        : `#/m/occupation${query ? `?${query}` : ""}`;
+      window.location.replace(`${target.toString()}${hash}`);
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=../spa/index.html#/m/occupation">
+  </noscript>
+</head>
+<body></body>
+</html>

@@ -14,5 +14,5 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src-node/**/*.ts", "src/types/**/*.ts"]
+  "include": ["src-node/**/*.ts", "src/types/**/*.ts", "services/**/*.ts"]
 }

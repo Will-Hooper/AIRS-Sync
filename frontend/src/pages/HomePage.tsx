@@ -1,9 +1,11 @@
-import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { startTransition, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { HeroSection } from "../components/home/HeroSection";
 import { UniverseMap } from "../components/home/UniverseMap";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
+import { SiteFooter } from "../components/shared/SiteFooter";
 import { getOccupations, getSummary } from "../lib/api";
+import { trackSearchEvent } from "../lib/analytics";
 import { formatDateTime, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
@@ -51,6 +53,7 @@ export function HomePage() {
   const [now, setNow] = useState(() => new Date());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const trackedDesktopQueryRef = useRef("");
 
   const copy = messages[language];
   const deferredQuery = useDeferredValue(query);
@@ -116,6 +119,17 @@ export function HomePage() {
   useEffect(() => {
     updateParamState(searchParams, setSearchParams, { q: deferredQuery.trim() || undefined });
   }, [deferredQuery]);
+
+  useEffect(() => {
+    const normalized = deferredQuery.trim();
+    if (!normalized || trackedDesktopQueryRef.current === normalized) return;
+    trackedDesktopQueryRef.current = normalized;
+    void trackSearchEvent({
+      query: normalized,
+      language,
+      source: "desktop-home"
+    });
+  }, [deferredQuery, language]);
 
   const selectedOccupation = occupations.find((occupation) => occupation.socCode === selectedSocCode) || occupations[0] || null;
 
@@ -402,9 +416,12 @@ export function HomePage() {
                   <p className="mt-2 text-lg font-medium text-white">{formatNumber(summary?.occupationCount || occupations.length, 0, language)}</p>
                 </div>
               </div>
+              <p className="mt-5 text-sm leading-7 text-white/48">{copy.socSourceNote}</p>
             </article>
           </aside>
         </section>
+
+        <SiteFooter language={language} />
       </div>
     </div>
   );

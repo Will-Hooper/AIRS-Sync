@@ -6,14 +6,16 @@
   <title>AIRS Occupation</title>
   <script>
     (function redirectLegacyOccupation() {
+      const hostname = window.location.hostname.toLowerCase();
+      const isMobileHost = hostname === "m.localhost" || hostname.startsWith("m.");
       const params = new URLSearchParams(window.location.search);
       const soc = params.get("soc") || "";
       params.delete("soc");
       const query = params.toString();
       const target = new URL("./spa/index.html", window.location.href);
       const hash = soc
-        ? `#/occupation/${encodeURIComponent(soc)}${query ? `?${query}` : ""}`
-        : `#/occupation${query ? `?${query}` : ""}`;
+        ? `${isMobileHost ? "#/m/occupation/" : "#/occupation/"}${encodeURIComponent(soc)}${query ? `?${query}` : ""}`
+        : `${isMobileHost ? "#/m/occupation" : "#/occupation"}${query ? `?${query}` : ""}`;
       window.location.replace(`${target.toString()}${hash}`);
     })();
   </script>

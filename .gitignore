@@ -27,3 +27,7 @@ root-home-check.png
 server-out.log
 server-err.log
 node_modules/
+services/analytics/data/*
+!services/analytics/data/.gitkeep
+services/analytics/reports/*
+!services/analytics/reports/.gitkeep

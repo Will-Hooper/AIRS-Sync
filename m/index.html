@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIRS H5</title>
+  <script>
+    (function redirectMobileHome() {
+      const target = new URL("../spa/index.html", window.location.href);
+      const query = window.location.search || "";
+      window.location.replace(`${target.toString()}#/m${query}`);
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=../spa/index.html#/m">
+  </noscript>
+</head>
+<body></body>
+</html>

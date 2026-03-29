@@ -5,7 +5,18 @@ type VantaEffect = {
   destroy: () => void;
 };
 
-export function useVantaDots(target: React.RefObject<HTMLElement | null>) {
+interface VantaDotsOptions {
+  color?: number;
+  color2?: number;
+  backgroundColor?: number;
+  spacingDesktop?: number;
+  spacingMobile?: number;
+  sizeDesktop?: number;
+  sizeMobile?: number;
+  showLines?: boolean;
+}
+
+export function useVantaDots(target: React.RefObject<HTMLElement | null>, options: VantaDotsOptions = {}) {
   useEffect(() => {
     const element = target.current;
     if (!element) return;
@@ -28,12 +39,12 @@ export function useVantaDots(target: React.RefObject<HTMLElement | null>) {
         mouseControls: !window.matchMedia("(pointer: coarse)").matches,
         touchControls: true,
         gyroControls: false,
-        backgroundColor: 0x060b12,
-        color: 0x7fc1ff,
-        color2: 0x6fe3c2,
-        spacing: window.innerWidth < 768 ? 30 : 22,
-        size: window.innerWidth < 768 ? 2.2 : 3.1,
-        showLines: true
+        backgroundColor: options.backgroundColor ?? 0x060b12,
+        color: options.color ?? 0x7fc1ff,
+        color2: options.color2 ?? 0x6fe3c2,
+        spacing: window.innerWidth < 768 ? (options.spacingMobile ?? 30) : (options.spacingDesktop ?? 22),
+        size: window.innerWidth < 768 ? (options.sizeMobile ?? 2.2) : (options.sizeDesktop ?? 3.1),
+        showLines: options.showLines ?? true
       });
     });
 
@@ -41,5 +52,5 @@ export function useVantaDots(target: React.RefObject<HTMLElement | null>) {
       disposed = true;
       effect?.destroy();
     };
-  }, [target]);
+  }, [target, options.backgroundColor, options.color, options.color2, options.showLines, options.sizeDesktop, options.sizeMobile, options.spacingDesktop, options.spacingMobile]);
 }

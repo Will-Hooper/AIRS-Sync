@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
 import { SearchCombobox } from "../components/shared/SearchCombobox";
+import { SiteFooter } from "../components/shared/SiteFooter";
 import { getOccupationDetail } from "../lib/api";
+import { trackSearchEvent } from "../lib/analytics";
 import { formatCurrency, formatNumber } from "../lib/format";
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationDetailPayload, OccupationRow } from "../lib/types";
@@ -139,6 +141,14 @@ export function OccupationPage() {
             <SearchCombobox
               language={language}
               placeholder={copy.detailSearchPlaceholder}
+              onCommit={(query, selected) => {
+                void trackSearchEvent({
+                  query,
+                  source: "desktop-detail",
+                  language,
+                  occupation: selected
+                });
+              }}
               onSelect={(nextOccupation: OccupationRow) => {
                 navigate(`/occupation/${encodeURIComponent(nextOccupation.socCode)}?lang=${language}`);
               }}
@@ -331,6 +341,8 @@ export function OccupationPage() {
             </article>
           </aside>
         </section>
+
+        <SiteFooter language={language} />
       </div>
     </div>
   );

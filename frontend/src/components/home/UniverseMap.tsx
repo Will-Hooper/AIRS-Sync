@@ -235,9 +235,14 @@ export function UniverseMap({
 
       <div
         ref={containerRef}
-        className="relative isolate h-[560px] overflow-hidden bg-[radial-gradient(circle_at_20%_0%,rgba(127,193,255,0.1),transparent_34%),linear-gradient(180deg,rgba(7,13,20,0.5),rgba(7,13,20,0.85))]"
+        className="relative isolate h-[560px] touch-none overflow-hidden overscroll-contain bg-[radial-gradient(circle_at_20%_0%,rgba(127,193,255,0.1),transparent_34%),linear-gradient(180deg,rgba(7,13,20,0.5),rgba(7,13,20,0.85))]"
+        onWheelCapture={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
         onWheel={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           const factor = event.deltaY > 0 ? 1 / 1.12 : 1.12;
           zoomAt(factor, event.clientX, event.clientY);
         }}

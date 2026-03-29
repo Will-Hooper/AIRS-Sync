@@ -11,11 +11,18 @@
     "preview:frontend": "vite preview --host",
     "sync:usajobs": "node ./dist-node/src-node/usajobs-sync.js",
     "sync:onet": "node ./dist-node/src-node/onet-sync.js",
-    "sync:scorecard": "node ./dist-node/src-node/college-scorecard-sync.js"
+    "sync:scorecard": "node ./dist-node/src-node/college-scorecard-sync.js",
+    "analytics:server": "node ./dist-node/services/analytics/server.js",
+    "analytics:report": "node ./dist-node/services/analytics/run-report.js",
+    "analytics:email": "node ./dist-node/services/analytics/send-report-email.js"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
     "csv-parse": "^6.1.0",
+    "express": "^5.2.1",
+    "geoip-lite": "^2.0.1",
+    "nodemailer": "^8.0.4",
+    "qrcode": "^1.5.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.2",
@@ -24,7 +31,10 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.2",
+    "@types/express": "^5.0.6",
+    "@types/geoip-lite": "^1.4.4",
     "@types/node": "^24.6.1",
+    "@types/nodemailer": "^7.0.11",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",

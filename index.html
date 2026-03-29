@@ -6,9 +6,12 @@
   <title>AIRS</title>
   <script>
     (function redirectToSpa() {
+      const hostname = window.location.hostname.toLowerCase();
+      const isMobileHost = hostname === "m.localhost" || hostname.startsWith("m.");
       const target = new URL("./spa/index.html", window.location.href);
       const query = window.location.search || "";
-      window.location.replace(`${target.toString()}#/${query}`);
+      const hash = isMobileHost ? "#/m" : "#/";
+      window.location.replace(`${target.toString()}${hash}${query}`);
     })();
   </script>
   <noscript>

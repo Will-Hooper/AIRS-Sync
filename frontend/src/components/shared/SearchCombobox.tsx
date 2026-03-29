@@ -8,6 +8,7 @@ interface SearchComboboxProps {
   placeholder: string;
   value?: string;
   onSelect: (occupation: OccupationRow) => void;
+  onCommit?: (query: string, occupation?: OccupationRow | null) => void;
   className?: string;
 }
 
@@ -16,6 +17,7 @@ export function SearchCombobox({
   placeholder,
   value = "",
   onSelect,
+  onCommit,
   className = ""
 }: SearchComboboxProps) {
   const [query, setQuery] = useState(value);
@@ -46,6 +48,7 @@ export function SearchCombobox({
 
   const submitFirstMatch = () => {
     if (suggestions[0]) {
+      onCommit?.(query, suggestions[0]);
       onSelect(suggestions[0]);
       setOpen(false);
     }
@@ -78,6 +81,7 @@ export function SearchCombobox({
               type="button"
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => {
+                onCommit?.(query, occupation);
                 onSelect(occupation);
                 setOpen(false);
               }}
