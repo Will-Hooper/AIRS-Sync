@@ -24,6 +24,7 @@ export interface CareerOneStopHistoryOccupationEntry {
 export interface CareerOneStopHistoryFile {
   source: string;
   lastRun: string;
+  lastRunAt?: string;
   location: string;
   days: number;
   occupations: CareerOneStopHistoryOccupationEntry[];
@@ -207,9 +208,11 @@ export async function rebuildCareerOneStopHistory(
   }
 
   const today = toIsoDate();
+  const nowIso = new Date().toISOString();
   const seedHistory: CareerOneStopHistoryFile = existing || {
     source: "CareerOneStop Jobs V2",
     lastRun: today,
+    lastRunAt: nowIso,
     location: options.location,
     days: options.days,
     occupations: []
@@ -267,6 +270,7 @@ export async function rebuildCareerOneStopHistory(
   const nextHistory: CareerOneStopHistoryFile = {
     source: "CareerOneStop Jobs V2",
     lastRun: today,
+    lastRunAt: nowIso,
     location: options.location,
     days: options.days,
     occupations: [...existingIndex.values()].sort((left, right) => left.socCode.localeCompare(right.socCode))

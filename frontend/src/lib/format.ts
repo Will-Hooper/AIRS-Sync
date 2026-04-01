@@ -32,3 +32,13 @@ export function formatDateTime(value: Date, language: AppLanguage = "zh") {
     day: "2-digit"
   }).format(value);
 }
+
+export function formatDateTimeValue(
+  value: string | number | Date | null | undefined,
+  language: AppLanguage = "zh"
+) {
+  if (value == null || value === "") return "--";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return "--";
+  return formatDateTime(date, language);
+}

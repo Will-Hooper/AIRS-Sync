@@ -185,11 +185,13 @@ npm run sync:scorecard
 
 ## 自动更新
 
-GitHub Actions 已接入三条自动更新链路：
+GitHub Actions 已接入五条自动更新链路：
 
-1. `Update AIRS Data Daily`
-2. `Update O-NET Data Monthly`
-3. `Update College Scorecard Monthly`
+1. `Update Recruitment Data Hourly`
+2. `Update AIRS Full Daily`
+3. `Update O-NET Data Quarterly`
+4. `Update College Scorecard Yearly`
+5. `Update Analytics Report Every 3 Days`
 
 详见：
 

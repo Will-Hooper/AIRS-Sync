@@ -1,19 +1,19 @@
-name: Update AIRS Data Hourly
+name: Update AIRS Full Daily
 
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '15 * * * *'
+    - cron: '20 2 * * *'
 
 permissions:
   contents: write
 
 concurrency:
-  group: airs-data-sync
+  group: airs-full-daily
   cancel-in-progress: false
 
 jobs:
-  update-usajobs:
+  update-airs-full:
     runs-on: windows-latest
 
     steps:
@@ -49,7 +49,7 @@ jobs:
         shell: pwsh
         run: npm run build:node
 
-      - name: Rebuild AIRS data from enabled recruitment sources
+      - name: Recalculate full AIRS dataset
         shell: pwsh
         env:
           USAJOBS_API_KEY: ${{ secrets.USAJOBS_API_KEY }}
@@ -58,11 +58,19 @@ jobs:
           CAREERONESTOP_USER_ID: ${{ secrets.CAREERONESTOP_USER_ID }}
           CAREERONESTOP_LOCATION: ${{ vars.CAREERONESTOP_LOCATION }}
         run: |
-          node ./dist-node/src-node/usajobs-sync.js `
+          $logPath = Join-Path $env:RUNNER_TEMP "airs-full-daily.log"
+          & node ./dist-node/src-node/usajobs-sync.js `
             --apiKey $env:USAJOBS_API_KEY `
-            --userEmail $env:USAJOBS_USER_EMAIL
+            --userEmail $env:USAJOBS_USER_EMAIL `
+            --syncMode full 2>&1 | Tee-Object -FilePath $logPath
+          $nodeExit = $LASTEXITCODE
+          if ($nodeExit -ne 0) {
+            exit $nodeExit
+          }
+          "## AIRS 每日完整重算" >> $env:GITHUB_STEP_SUMMARY
+          "- 日志文件: airs-full-daily.log" >> $env:GITHUB_STEP_SUMMARY
 
-      - name: Commit updated JSON data
+      - name: Commit rebuilt AIRS dataset
         shell: powershell
         run: |
           $paths = @(
@@ -81,5 +89,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- $paths
-          git commit -m "chore(data): hourly AIRS update"
+          git commit -m "chore(data): daily AIRS full rebuild"
           git push
+
+      - name: Upload daily rebuild log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: airs-full-daily-log
+          path: ${{ runner.temp }}/*.log
+          if-no-files-found: ignore
+
+      - name: Write daily failure summary
+        if: failure()
+        shell: pwsh
+        run: |
+          "## AIRS 每日完整重算失败" >> $env:GITHUB_STEP_SUMMARY
+          "- 请检查 airs-full-daily-log artifact 和 Actions 日志。" >> $env:GITHUB_STEP_SUMMARY

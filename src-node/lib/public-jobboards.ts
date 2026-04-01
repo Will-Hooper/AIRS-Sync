@@ -43,6 +43,7 @@ export interface PublicJobBoardsHistoryOccupationEntry {
 export interface PublicJobBoardsHistoryFile {
   source: string;
   lastRun: string;
+  lastRunAt?: string;
   locationScope: string;
   minMatchScore: number;
   activeSources: Array<{
@@ -495,9 +496,11 @@ export async function rebuildPublicJobBoardsHistory(
   }
 
   const today = toIsoDate();
+  const nowIso = new Date().toISOString();
   const seedHistory: PublicJobBoardsHistoryFile = existing || {
     source: config.source || "Public job boards (Greenhouse + Lever + Ashby + SmartRecruiters)",
     lastRun: today,
+    lastRunAt: nowIso,
     locationScope: config.locationScope || "US",
     minMatchScore: Number(config.minMatchScore || options.minMatchScore || 0.44),
     activeSources: [],
@@ -596,6 +599,7 @@ export async function rebuildPublicJobBoardsHistory(
 
   seedHistory.source = config.source || "Public job boards (Greenhouse + Lever + Ashby + SmartRecruiters)";
   seedHistory.lastRun = today;
+  seedHistory.lastRunAt = nowIso;
   seedHistory.locationScope = config.locationScope || "US";
   seedHistory.minMatchScore = effectiveMinMatchScore;
   seedHistory.activeSources = enabledSources.map((source) => ({

@@ -1,0 +1,108 @@
+name: Update Recruitment Data Hourly
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '15 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: airs-recruitment-hourly
+  cancel-in-progress: false
+
+jobs:
+  update-recruitment:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Validate USAJOBS secrets
+        shell: powershell
+        env:
+          USAJOBS_API_KEY: ${{ secrets.USAJOBS_API_KEY }}
+          USAJOBS_USER_EMAIL: ${{ secrets.USAJOBS_USER_EMAIL }}
+        run: |
+          if (-not $env:USAJOBS_API_KEY) {
+            throw "Missing repository secret: USAJOBS_API_KEY"
+          }
+          if (-not $env:USAJOBS_USER_EMAIL) {
+            throw "Missing repository secret: USAJOBS_USER_EMAIL"
+          }
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        shell: pwsh
+        run: npm ci
+
+      - name: Build Node sync CLI
+        shell: pwsh
+        run: npm run build:node
+
+      - name: Refresh recruitment histories and publish hourly JSON
+        shell: pwsh
+        env:
+          USAJOBS_API_KEY: ${{ secrets.USAJOBS_API_KEY }}
+          USAJOBS_USER_EMAIL: ${{ secrets.USAJOBS_USER_EMAIL }}
+          CAREERONESTOP_API_TOKEN: ${{ secrets.CAREERONESTOP_API_TOKEN }}
+          CAREERONESTOP_USER_ID: ${{ secrets.CAREERONESTOP_USER_ID }}
+          CAREERONESTOP_LOCATION: ${{ vars.CAREERONESTOP_LOCATION }}
+        run: |
+          $logPath = Join-Path $env:RUNNER_TEMP "airs-hourly-sync.log"
+          & node ./dist-node/src-node/usajobs-sync.js `
+            --apiKey $env:USAJOBS_API_KEY `
+            --userEmail $env:USAJOBS_USER_EMAIL `
+            --syncMode hourly 2>&1 | Tee-Object -FilePath $logPath
+          $nodeExit = $LASTEXITCODE
+          if ($nodeExit -ne 0) {
+            exit $nodeExit
+          }
+          "## AIRS 小时级招聘更新" >> $env:GITHUB_STEP_SUMMARY
+          "- 日志文件: airs-hourly-sync.log" >> $env:GITHUB_STEP_SUMMARY
+
+      - name: Commit updated JSON data
+        shell: powershell
+        run: |
+          $paths = @(
+            "backend/data/airs_data.json",
+            "backend/data/usajobs_history.json",
+            "backend/data/careeronestop_history.json",
+            "backend/data/public_jobboards_history.json",
+            "backend/data/airs_baseline.json"
+          )
+          $pending = git status --porcelain -- $paths
+          if (-not $pending) {
+            Write-Host "No AIRS data changes to commit."
+            exit 0
+          }
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- $paths
+          git commit -m "chore(data): hourly recruitment sync"
+          git push
+
+      - name: Upload hourly sync log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: airs-hourly-sync-log
+          path: ${{ runner.temp }}/*.log
+          if-no-files-found: ignore
+
+      - name: Write hourly failure summary
+        if: failure()
+        shell: pwsh
+        run: |
+          "## AIRS 小时级招聘更新失败" >> $env:GITHUB_STEP_SUMMARY
+          "- 请检查 airs-hourly-sync-log artifact 和 Actions 日志。" >> $env:GITHUB_STEP_SUMMARY

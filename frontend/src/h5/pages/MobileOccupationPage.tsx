@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { DataFreshnessPanel } from "../../components/shared/DataFreshnessPanel";
 import { LanguageSwitch } from "../../components/shared/LanguageSwitch";
 import { SearchCombobox } from "../../components/shared/SearchCombobox";
 import { SiteFooter } from "../../components/shared/SiteFooter";
@@ -79,6 +80,8 @@ export function MobileOccupationPage() {
         occupation,
         averageAirs,
         language,
+        generatedAt: payload?.generatedAt,
+        sourceUpdatedAt: payload?.sourceUpdatedAt,
         siteUrl: typeof window !== "undefined" ? window.location.href : undefined
       });
       const response = await fetch(dataUrl);
@@ -131,6 +134,15 @@ export function MobileOccupationPage() {
                   <span className="airs-chip">{labelText(language, occupation.label)}</span>
                 </div>
               </div>
+
+              <DataFreshnessPanel
+                compact
+                language={language}
+                generatedAt={payload?.generatedAt}
+                sourceUpdatedAt={payload?.sourceUpdatedAt}
+                datasetVersion={payload?.datasetVersion}
+                syncStatus={payload?.syncStatus}
+              />
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-[28px] border border-white/10 bg-black/15 px-5 py-6">

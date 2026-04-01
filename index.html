@@ -6,6 +6,10 @@
   <title>AIRS</title>
   <script>
     (function redirectToSpa() {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
       const hostname = window.location.hostname.toLowerCase();
       const isMobileHost = hostname === "m.localhost" || hostname.startsWith("m.");
       const target = new URL("./spa/index.html", window.location.href);

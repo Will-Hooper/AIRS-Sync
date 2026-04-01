@@ -3,6 +3,7 @@ import {
   clampRange,
   clampUnit,
   empiricalPercentile,
+  fileExists,
   getBooleanArg,
   getNumberArg,
   getStringArg,
@@ -40,11 +41,17 @@ import {
   type OnetProfile
 } from "./lib/onet";
 import { translateOccupationDefinition, translateOccupationTasks, translateOccupationTitle } from "../src/occupation-translation";
-import type { JsonDataset, JsonDatasetOccupation } from "../src/types/airs";
+import type {
+  DatasetSourceUpdatedAt,
+  DatasetSyncStatus,
+  JsonDataset,
+  JsonDatasetOccupation
+} from "../src/types/airs";
 
 interface UsaJobsSyncOptions {
   apiKey: string;
   userEmail: string;
+  syncMode: "hourly" | "full";
   datePosted: number;
   resultsPerPage: number;
   maxPages: number;
@@ -125,6 +132,7 @@ interface HistorySeriesEntry {
 interface HistoryFile {
   source: string;
   lastRun: string;
+  lastRunAt?: string;
   series: HistorySeriesEntry[];
 }
 
@@ -849,6 +857,8 @@ function parseOptions(): UsaJobsSyncOptions {
   const apiKey = normalizeSecretValue(getStringArg(args, "apiKey", "apikey")) || normalizeSecretValue(process.env.USAJOBS_API_KEY);
   const userEmail = normalizeSecretValue(getStringArg(args, "userEmail", "useremail")) || normalizeSecretValue(process.env.USAJOBS_USER_EMAIL);
   const useExistingHistoryOnly = getBooleanArg(args, "useExistingHistoryOnly", "useexistinghistoryonly");
+  const syncModeRaw = (getStringArg(args, "syncMode", "syncmode") || "full").toLowerCase();
+  const syncMode = syncModeRaw === "hourly" ? "hourly" : "full";
 
   if (!useExistingHistoryOnly && (!apiKey || !userEmail)) {
     throw new Error("Missing USAJOBS credentials. Set --apiKey/--userEmail or env USAJOBS_API_KEY/USAJOBS_USER_EMAIL.");
@@ -859,6 +869,7 @@ function parseOptions(): UsaJobsSyncOptions {
   return {
     apiKey,
     userEmail,
+    syncMode,
     datePosted: getNumberArg(args, ["datePosted", "dateposted"], 1),
     resultsPerPage,
     maxPages: getNumberArg(args, ["maxPages", "maxpages"], 20),
@@ -947,12 +958,14 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
   }
 
   const today = toIsoDate();
+  const nowIso = new Date().toISOString();
   writeStep("Loading USAJOBS history");
   let history = await readJsonFile<HistoryFile>(options.historyPath);
   if (!history) {
     history = {
       source: "USAJOBS",
       lastRun: today,
+      lastRunAt: nowIso,
       series: []
     };
 
@@ -990,10 +1003,130 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
 
     history.series = [...seriesIndex.values()].sort((left, right) => left.code.localeCompare(right.code));
     history.lastRun = today;
+    history.lastRunAt = nowIso;
     await writeJsonFile(options.historyPath, history);
   }
 
   return history;
+}
+
+function getIsoOrNull(value: string | null | undefined) {
+  if (!value) return null;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+}
+
+function toIsoFromDateOnly(value: string | null | undefined) {
+  if (!value) return null;
+  return getIsoOrNull(`${value}T00:00:00Z`);
+}
+
+async function readOnetUpdatedAt(onetDataDir: string) {
+  const metaPath = path.join(onetDataDir, "sync_meta.json");
+  const meta = await readJsonFile<{ syncedAt?: string }>(metaPath);
+  return getIsoOrNull(meta?.syncedAt || null);
+}
+
+async function readAnalyticsUpdatedAt(scriptRoot: string) {
+  const reportPath = path.resolve(scriptRoot, "..", "services", "analytics", "reports", "latest-report.html");
+  if (!(await fileExists(reportPath))) {
+    return null;
+  }
+
+  const { stat } = await import("node:fs/promises");
+  const info = await stat(reportPath);
+  return info.mtime.toISOString();
+}
+
+function getLatestTimestamp(values: Array<string | null | undefined>) {
+  const normalized = values
+    .map((value) => getIsoOrNull(value))
+    .filter((value): value is string => Boolean(value))
+    .sort();
+  return normalized.length ? normalized[normalized.length - 1] : null;
+}
+
+function getJobStatus(updatedAt: string | null, freshnessHours: number, successMessage: string) {
+  if (!updatedAt) {
+    return {
+      ok: false,
+      updatedAt: null,
+      message: `${successMessage}; no timestamp available.`
+    };
+  }
+
+  const ageMs = Date.now() - new Date(updatedAt).getTime();
+  const stale = ageMs > freshnessHours * 60 * 60 * 1000;
+  return {
+    ok: !stale,
+    updatedAt,
+    message: stale ? `${successMessage}; currently stale.` : successMessage
+  };
+}
+
+function buildSyncStatus(syncMode: "hourly" | "full", sourceUpdatedAt: DatasetSourceUpdatedAt): DatasetSyncStatus {
+  const recruitment = getJobStatus(sourceUpdatedAt.recruitment || null, 2, "Recruitment sources synced");
+  const airs = getJobStatus(sourceUpdatedAt.airs || null, 30, "AIRS scores rebuilt");
+  const onet = getJobStatus(sourceUpdatedAt.onet || null, 24 * 120, "O*NET reference available");
+  const collegeScorecard = getJobStatus(sourceUpdatedAt.collegeScorecard || null, 24 * 400, "College Scorecard reference available");
+  const analytics = getJobStatus(sourceUpdatedAt.analytics || null, 24 * 4, "Analytics report available");
+  const jobs = { recruitment, airs, onet, collegeScorecard, analytics };
+  const failures = Object.values(jobs).filter((job) => !job.ok);
+
+  return {
+    overall: failures.length ? "warning" : "ok",
+    mode: syncMode,
+    message: failures.length
+      ? `${failures.length} dataset channel(s) are stale or missing.`
+      : "All dataset channels are within expected freshness windows.",
+    jobs
+  };
+}
+
+function mergeHourlyOccupations(
+  current: JsonDatasetOccupation[],
+  previous: JsonDatasetOccupation[] | undefined,
+  region: string
+) {
+  const previousBySoc = new Map((previous || []).map((occupation) => [occupation.socCode, occupation]));
+  return current.map((occupation) => {
+    const prior = previousBySoc.get(occupation.socCode);
+    if (!prior) {
+      return occupation;
+    }
+
+    const priorRegionMetrics = prior.regions?.[region] || {};
+    const nextRegionMetrics = occupation.regions?.[region] || {};
+    return {
+      ...occupation,
+      label: prior.label || occupation.label,
+      airs: prior.airs ?? occupation.airs,
+      replacement: prior.replacement ?? occupation.replacement,
+      augmentation: prior.augmentation ?? occupation.augmentation,
+      hiring: prior.hiring ?? occupation.hiring,
+      historical: prior.historical ?? occupation.historical,
+      summary: prior.summary || occupation.summary,
+      summaryZh: prior.summaryZh || occupation.summaryZh,
+      monthlyAirs: prior.monthlyAirs || occupation.monthlyAirs,
+      evidence: prior.evidence || occupation.evidence,
+      evidenceZh: prior.evidenceZh || occupation.evidenceZh,
+      tasks: prior.tasks || occupation.tasks,
+      regions: {
+        ...(prior.regions || {}),
+        [region]: {
+          ...priorRegionMetrics,
+          ...nextRegionMetrics,
+          airs: priorRegionMetrics.airs ?? prior.airs ?? nextRegionMetrics.airs,
+          replacement: priorRegionMetrics.replacement ?? prior.replacement ?? nextRegionMetrics.replacement,
+          augmentation: priorRegionMetrics.augmentation ?? prior.augmentation ?? nextRegionMetrics.augmentation,
+          hiring: priorRegionMetrics.hiring ?? prior.hiring ?? nextRegionMetrics.hiring,
+          historical: priorRegionMetrics.historical ?? prior.historical ?? nextRegionMetrics.historical,
+          postings: nextRegionMetrics.postings ?? occupation.postings,
+          postingSources: nextRegionMetrics.postingSources ?? occupation.postingSources
+        }
+      }
+    } satisfies JsonDatasetOccupation;
+  });
 }
 
 function collectHistoryDates(...histories: Array<HistoryFile | CareerOneStopHistoryFile | PublicJobBoardsHistoryFile | null | undefined>) {
@@ -1053,6 +1186,8 @@ function addSourceCountByDate(
 
 async function main() {
   const options = parseOptions();
+  const previousDataset = await readJsonFile<JsonDataset>(options.outputPath);
+  const scriptRoot = path.resolve(__dirname, "..", "..", "backend");
   const socMap = await loadSocMap(options.mapPath);
   writeStep("SOC map loaded");
   const onetData = await loadOnetData(options.onetDataDir);
@@ -1410,7 +1545,7 @@ async function main() {
 
   writeStep(`Prepared ${masterSnapshots.length} SOC detailed occupation snapshots`);
 
-  const normalizedOccupations = occupations.map((occupation) => ({
+  let normalizedOccupations: JsonDatasetOccupation[] = occupations.map((occupation) => ({
     ...occupation,
     titleZh: translateOccupationTitle(occupation.title)
   })).sort((left, right) => {
@@ -1419,14 +1554,43 @@ async function main() {
     return leftAirs - rightAirs;
   });
 
-  const avgAirs = safeAverage(
-    normalizedOccupations.map((occupation) => Number(occupation.airs ?? occupation.regions?.[options.region]?.airs))
-  );
-  const highRiskCount = normalizedOccupations.filter((occupation) =>
-    occupation.label === "high_risk" || occupation.label === "restructuring"
-  ).length;
+  if (options.syncMode === "hourly" && previousDataset?.occupations?.length) {
+    normalizedOccupations = mergeHourlyOccupations(normalizedOccupations, previousDataset.occupations, options.region);
+  }
+
+  const avgAirs = options.syncMode === "hourly" && previousDataset?.summary
+    ? Number(previousDataset.summary.avgAirs || 0)
+    : safeAverage(
+        normalizedOccupations.map((occupation) => Number(occupation.airs ?? occupation.regions?.[options.region]?.airs))
+      );
+  const highRiskCount = options.syncMode === "hourly" && previousDataset?.summary
+    ? Number(previousDataset.summary.highRiskCount || 0)
+    : normalizedOccupations.filter((occupation) =>
+        occupation.label === "high_risk" || occupation.label === "restructuring"
+      ).length;
+
+  const generatedAt = new Date().toISOString();
+  const sourceUpdatedAt: DatasetSourceUpdatedAt = {
+    recruitment: getLatestTimestamp([
+      history.lastRunAt || toIsoFromDateOnly(history.lastRun),
+      careerOneStopHistory?.lastRunAt || toIsoFromDateOnly(careerOneStopHistory?.lastRun),
+      publicJobBoardsHistory?.lastRunAt || toIsoFromDateOnly(publicJobBoardsHistory?.lastRun)
+    ]),
+    airs: options.syncMode === "full"
+      ? generatedAt
+      : getIsoOrNull(previousDataset?.sourceUpdatedAt?.airs || previousDataset?.generatedAt || null),
+    onet: await readOnetUpdatedAt(options.onetDataDir),
+    collegeScorecard: getIsoOrNull(collegeScorecardSummary?.updatedAt || null),
+    analytics: await readAnalyticsUpdatedAt(scriptRoot)
+  };
+  const datasetVersion = `${generatedAt.replace(/[-:.TZ]/g, "").slice(0, 14)}-${options.syncMode}`;
+  const syncStatus = buildSyncStatus(options.syncMode, sourceUpdatedAt);
 
   const output: JsonDataset = {
+    generatedAt,
+    sourceUpdatedAt,
+    datasetVersion,
+    syncStatus,
     dates,
     regions,
     labels,

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { DataFreshnessPanel } from "../../components/shared/DataFreshnessPanel";
 import { LanguageSwitch } from "../../components/shared/LanguageSwitch";
 import { SiteFooter } from "../../components/shared/SiteFooter";
 import { SearchCombobox } from "../../components/shared/SearchCombobox";
@@ -7,6 +8,7 @@ import { getSummary } from "../../lib/api";
 import { trackSearchEvent } from "../../lib/analytics";
 import { formatDateTime, formatNumber } from "../../lib/format";
 import { getInitialLanguage, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../../lib/i18n";
+import type { SummaryPayload } from "../../lib/types";
 import { MobileBottomHero } from "../components/MobileBottomHero";
 
 export function MobileHomePage() {
@@ -15,7 +17,7 @@ export function MobileHomePage() {
   const [language, setLanguage] = useState<AppLanguage>(() =>
     normalizeLanguage(searchParams.get("lang") || getInitialLanguage(window.location.search))
   );
-  const [summaryAverage, setSummaryAverage] = useState<number | null>(null);
+  const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [query, setQuery] = useState("");
   const [now, setNow] = useState(() => new Date());
 
@@ -32,10 +34,10 @@ export function MobileHomePage() {
     let cancelled = false;
     getSummary()
       .then((payload) => {
-        if (!cancelled) setSummaryAverage(payload.avgAirs);
+        if (!cancelled) setSummary(payload);
       })
       .catch(() => {
-        if (!cancelled) setSummaryAverage(null);
+        if (!cancelled) setSummary(null);
       });
     return () => {
       cancelled = true;
@@ -97,9 +99,18 @@ export function MobileHomePage() {
             <div className="rounded-[32px] border border-white/10 bg-black/15 px-5 py-8">
               <p className="text-sm text-white/52">{copy.h5AverageLabel}</p>
               <p className="mt-5 text-[5rem] font-semibold leading-none tracking-[-0.08em] text-white">
-                {formatNumber(summaryAverage, 1, language)}
+                {formatNumber(summary?.avgAirs, 1, language)}
               </p>
             </div>
+
+            <DataFreshnessPanel
+              compact
+              language={language}
+              generatedAt={summary?.generatedAt}
+              sourceUpdatedAt={summary?.sourceUpdatedAt}
+              datasetVersion={summary?.datasetVersion}
+              syncStatus={summary?.syncStatus}
+            />
 
             <div className="flex items-center justify-center gap-3">
               <button type="button" className="airs-button-primary" onClick={() => navigate(`/?lang=${language}`)}>

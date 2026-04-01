@@ -1,15 +1,15 @@
-name: Update College Scorecard Monthly
+name: Update College Scorecard Yearly
 
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '30 3 1 * *'
+    - cron: '30 3 15 1 *'
 
 permissions:
   contents: write
 
 concurrency:
-  group: college-scorecard-sync
+  group: college-scorecard-yearly
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +38,15 @@ jobs:
 
       - name: Refresh College Scorecard program outcomes
         shell: pwsh
-        run: node ./dist-node/src-node/college-scorecard-sync.js
+        run: |
+          $logPath = Join-Path $env:RUNNER_TEMP "college-scorecard-yearly.log"
+          & node ./dist-node/src-node/college-scorecard-sync.js 2>&1 | Tee-Object -FilePath $logPath
+          $nodeExit = $LASTEXITCODE
+          if ($nodeExit -ne 0) {
+            exit $nodeExit
+          }
+          "## College Scorecard 年度同步" >> $env:GITHUB_STEP_SUMMARY
+          "- 日志文件: college-scorecard-yearly.log" >> $env:GITHUB_STEP_SUMMARY
 
       - name: Commit updated College Scorecard data
         shell: pwsh
@@ -56,5 +64,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- $paths
-          git commit -m "chore(data): monthly College Scorecard refresh"
+          git commit -m "chore(data): yearly College Scorecard refresh"
           git push
+
+      - name: Upload College Scorecard log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: college-scorecard-yearly-log
+          path: ${{ runner.temp }}/*.log
+          if-no-files-found: ignore
+
+      - name: Write College Scorecard failure summary
+        if: failure()
+        shell: pwsh
+        run: |
+          "## College Scorecard 年度同步失败" >> $env:GITHUB_STEP_SUMMARY
+          "- 请检查 college-scorecard-yearly-log artifact 和 Actions 日志。" >> $env:GITHUB_STEP_SUMMARY

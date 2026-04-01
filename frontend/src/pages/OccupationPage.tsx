@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
 import { SearchCombobox } from "../components/shared/SearchCombobox";
+import { DataFreshnessPanel } from "../components/shared/DataFreshnessPanel";
 import { SiteFooter } from "../components/shared/SiteFooter";
 import { getOccupationDetail } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
@@ -337,6 +338,16 @@ export function OccupationPage() {
                     {formatNumber(occupation?.educationOutcomes?.programCount || 0, 0, language)}
                   </p>
                 </div>
+              </div>
+              <div className="mt-6">
+                <DataFreshnessPanel
+                  compact
+                  language={language}
+                  generatedAt={payload?.generatedAt}
+                  sourceUpdatedAt={payload?.sourceUpdatedAt}
+                  datasetVersion={payload?.datasetVersion}
+                  syncStatus={payload?.syncStatus}
+                />
               </div>
             </article>
           </aside>

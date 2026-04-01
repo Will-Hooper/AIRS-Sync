@@ -1,7 +1,8 @@
-import { startTransition, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { startTransition, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { HeroSection } from "../components/home/HeroSection";
 import { UniverseMap } from "../components/home/UniverseMap";
+import { DataFreshnessPanel } from "../components/shared/DataFreshnessPanel";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
 import { SiteFooter } from "../components/shared/SiteFooter";
 import { getOccupations, getSummary } from "../lib/api";
@@ -69,8 +70,23 @@ export function HomePage() {
     return () => window.clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  useLayoutEffect(() => {
+    const resetScroll = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    resetScroll();
+    const frame = window.requestAnimationFrame(resetScroll);
+    const timeout = window.setTimeout(resetScroll, 64);
+    window.addEventListener("pageshow", resetScroll);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+      window.removeEventListener("pageshow", resetScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -415,6 +431,16 @@ export function HomePage() {
                   <p className="text-sm text-white/45">{language === "zh" ? "纳入职业数" : "Occupations in view"}</p>
                   <p className="mt-2 text-lg font-medium text-white">{formatNumber(summary?.occupationCount || occupations.length, 0, language)}</p>
                 </div>
+              </div>
+              <div className="mt-4">
+                <DataFreshnessPanel
+                  compact
+                  language={language}
+                  generatedAt={summary?.generatedAt}
+                  sourceUpdatedAt={summary?.sourceUpdatedAt}
+                  datasetVersion={summary?.datasetVersion}
+                  syncStatus={summary?.syncStatus}
+                />
               </div>
               <p className="mt-5 text-sm leading-7 text-white/48">{copy.socSourceNote}</p>
             </article>

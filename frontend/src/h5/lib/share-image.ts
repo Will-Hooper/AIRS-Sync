@@ -1,12 +1,14 @@
 import QRCode from "qrcode";
-import { formatCurrency, formatNumber } from "../../lib/format";
+import { formatCurrency, formatDateTimeValue, formatNumber } from "../../lib/format";
 import type { AppLanguage } from "../../lib/i18n";
-import type { OccupationRow } from "../../lib/types";
+import type { DatasetSourceUpdatedAt, OccupationRow } from "../../lib/types";
 
 interface ShareImageOptions {
   occupation: OccupationRow;
   averageAirs: number;
   language: AppLanguage;
+  generatedAt?: string;
+  sourceUpdatedAt?: DatasetSourceUpdatedAt;
   siteUrl?: string;
 }
 
@@ -19,6 +21,8 @@ export async function renderOccupationShareImage({
   occupation,
   averageAirs,
   language,
+  generatedAt,
+  sourceUpdatedAt,
   siteUrl = siteUrlFromWindow()
 }: ShareImageOptions) {
   const canvas = document.createElement("canvas");
@@ -130,6 +134,22 @@ export async function renderOccupationShareImage({
   context.fillStyle = "rgba(242,246,255,0.8)";
   context.font = "500 22px 'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif";
   wrapText(context, language === "zh" ? "扫码进入网站" : "Scan to open the site", 770, 1740, 220, 30);
+
+  context.fillStyle = "rgba(242,246,255,0.62)";
+  context.font = "400 22px 'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif";
+  context.fillText(
+    `${language === "zh" ? "图片生成时间" : "Image generated"}：${formatDateTimeValue(new Date(), language)}`,
+    84,
+    1840
+  );
+  context.fillText(
+    `${language === "zh" ? "数据更新时间" : "Dataset updated"}：${formatDateTimeValue(
+      generatedAt || sourceUpdatedAt?.recruitment || sourceUpdatedAt?.airs,
+      language
+    )}`,
+    84,
+    1876
+  );
 
   return canvas.toDataURL("image/png");
 }

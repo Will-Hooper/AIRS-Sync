@@ -27,10 +27,14 @@ export class AirsDataUnavailableError extends Error {
 }
 
 function updatedAtFromDataset(dataset: JsonDataset) {
-  const lastDate = Array.isArray(dataset?.dates) && dataset.dates.length
-    ? dataset.dates[dataset.dates.length - 1]
-    : null;
-  return lastDate ? `${lastDate}T12:00:00-05:00` : new Date().toISOString();
+  return dataset.generatedAt
+    || dataset.sourceUpdatedAt?.recruitment
+    || dataset.sourceUpdatedAt?.airs
+    || (
+      Array.isArray(dataset?.dates) && dataset.dates.length
+        ? `${dataset.dates[dataset.dates.length - 1]}T12:00:00-05:00`
+        : new Date().toISOString()
+    );
 }
 
 function uniqueStrings(values: unknown[] = []) {
@@ -729,6 +733,10 @@ function summarizeRows(rows: OccupationRow[], updatedAt: string): SummaryPayload
     mode: "json",
     source: "json",
     updatedAt,
+    generatedAt: undefined,
+    sourceUpdatedAt: undefined,
+    datasetVersion: undefined,
+    syncStatus: undefined,
     date: "",
     avgAirs: rows.reduce((sum, row) => sum + Number(row.airs || 0), 0) / (rows.length || 1),
     highRiskCount: rows.filter((row) => row.label === "high_risk").length,
@@ -795,6 +803,10 @@ export async function getSummary(params: OccupationQueryParams = {}): Promise<Su
 
   return {
     ...summarizeRows(rows, updatedAt),
+    generatedAt: dataset.generatedAt,
+    sourceUpdatedAt: dataset.sourceUpdatedAt,
+    datasetVersion: dataset.datasetVersion,
+    syncStatus: dataset.syncStatus,
     date: resolveDate(params.date, meta.dates)
   };
 }
@@ -813,6 +825,10 @@ export async function getOccupations(params: OccupationQueryParams = {}): Promis
     mode: "json",
     source: "json",
     updatedAt: updatedAtFromDataset(dataset),
+    generatedAt: dataset.generatedAt,
+    sourceUpdatedAt: dataset.sourceUpdatedAt,
+    datasetVersion: dataset.datasetVersion,
+    syncStatus: dataset.syncStatus,
     date,
     dates: meta.dates,
     regions: meta.regions,
@@ -833,6 +849,10 @@ export async function getOccupationDetail(socCode: string, params: OccupationQue
     mode: "json",
     source: "json",
     updatedAt: updatedAtFromDataset(dataset),
+    generatedAt: dataset.generatedAt,
+    sourceUpdatedAt: dataset.sourceUpdatedAt,
+    datasetVersion: dataset.datasetVersion,
+    syncStatus: dataset.syncStatus,
     date,
     dates: meta.dates,
     regions: meta.regions,

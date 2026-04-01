@@ -1,0 +1,102 @@
+name: Update Analytics Report Every 3 Days
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 1 */3 * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: airs-analytics-tri-daily
+  cancel-in-progress: false
+
+jobs:
+  analytics-report:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        shell: pwsh
+        run: npm ci
+
+      - name: Build Node sync CLI
+        shell: pwsh
+        run: npm run build:node
+
+      - name: Generate tri-daily analytics report
+        shell: pwsh
+        run: |
+          $logPath = Join-Path $env:RUNNER_TEMP "airs-analytics-tri-daily.log"
+          & npm run analytics:report 2>&1 | Tee-Object -FilePath $logPath
+          $npmExit = $LASTEXITCODE
+          if ($npmExit -ne 0) {
+            exit $npmExit
+          }
+          "## AIRS 三日统计报表" >> $env:GITHUB_STEP_SUMMARY
+          "- 日志文件: airs-analytics-tri-daily.log" >> $env:GITHUB_STEP_SUMMARY
+
+      - name: Send tri-daily analytics email
+        if: ${{ secrets.SMTP_HOST != '' && secrets.SMTP_USER != '' && secrets.SMTP_PASS != '' }}
+        shell: pwsh
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+        run: npm run analytics:email
+
+      - name: Note missing SMTP settings
+        if: ${{ secrets.SMTP_HOST == '' || secrets.SMTP_USER == '' || secrets.SMTP_PASS == '' }}
+        shell: pwsh
+        run: |
+          "## AIRS 三日统计报表" >> $env:GITHUB_STEP_SUMMARY
+          "- 报表已生成，但 SMTP secrets 缺失，未发送邮件。" >> $env:GITHUB_STEP_SUMMARY
+
+      - name: Commit latest analytics report
+        shell: pwsh
+        run: |
+          $paths = @(
+            "services/analytics/reports/latest-report.html",
+            "services/analytics/reports/latest-report.json"
+          )
+          $pending = git status --porcelain -- $paths
+          if (-not $pending) {
+            Write-Host "No analytics report changes to commit."
+            exit 0
+          }
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- $paths
+          git commit -m "chore(analytics): tri-daily report refresh"
+          git push
+
+      - name: Upload analytics log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: airs-analytics-tri-daily-log
+          path: ${{ runner.temp }}/*.log
+          if-no-files-found: ignore
+
+      - name: Write analytics failure summary
+        if: failure()
+        shell: pwsh
+        run: |
+          "## AIRS 三日统计报表失败" >> $env:GITHUB_STEP_SUMMARY
+          "- 请检查 airs-analytics-tri-daily-log artifact 和 Actions 日志。" >> $env:GITHUB_STEP_SUMMARY

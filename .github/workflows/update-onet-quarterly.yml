@@ -1,15 +1,15 @@
-name: Update O-NET Data Monthly
+name: Update O-NET Data Quarterly
 
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '0 3 1 * *'
+    - cron: '0 3 1 1,4,7,10 *'
 
 permissions:
   contents: write
 
 concurrency:
-  group: airs-data-sync
+  group: airs-onet-quarterly
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +38,15 @@ jobs:
 
       - name: Refresh local O-NET files and rebuild AIRS JSON
         shell: pwsh
-        run: node ./dist-node/src-node/onet-sync.js --force
+        run: |
+          $logPath = Join-Path $env:RUNNER_TEMP "airs-onet-quarterly.log"
+          & node ./dist-node/src-node/onet-sync.js --force 2>&1 | Tee-Object -FilePath $logPath
+          $nodeExit = $LASTEXITCODE
+          if ($nodeExit -ne 0) {
+            exit $nodeExit
+          }
+          "## O*NET 季度同步" >> $env:GITHUB_STEP_SUMMARY
+          "- 日志文件: airs-onet-quarterly.log" >> $env:GITHUB_STEP_SUMMARY
 
       - name: Commit updated O-NET and AIRS data
         shell: pwsh
@@ -59,5 +67,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- $paths
-          git commit -m "chore(data): monthly O-NET refresh"
+          git commit -m "chore(data): quarterly O-NET refresh"
           git push
+
+      - name: Upload O-NET sync log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: airs-onet-quarterly-log
+          path: ${{ runner.temp }}/*.log
+          if-no-files-found: ignore
+
+      - name: Write O-NET failure summary
+        if: failure()
+        shell: pwsh
+        run: |
+          "## O*NET 季度同步失败" >> $env:GITHUB_STEP_SUMMARY
+          "- 请检查 airs-onet-quarterly-log artifact 和 Actions 日志。" >> $env:GITHUB_STEP_SUMMARY

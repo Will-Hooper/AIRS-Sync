@@ -1,4 +1,45 @@
 {
+  "generatedAt": "2026-03-31T17:37:54.588Z",
+  "sourceUpdatedAt": {
+    "recruitment": "2026-03-22T00:00:00.000Z",
+    "airs": "2026-03-31T17:37:54.588Z",
+    "onet": "2026-03-20T03:36:53.026Z",
+    "collegeScorecard": "2026-03-22T00:00:00.000Z",
+    "analytics": "2026-03-25T17:36:34.052Z"
+  },
+  "datasetVersion": "20260331173754-full",
+  "syncStatus": {
+    "overall": "warning",
+    "mode": "full",
+    "message": "2 dataset channel(s) are stale or missing.",
+    "jobs": {
+      "recruitment": {
+        "ok": false,
+        "updatedAt": "2026-03-22T00:00:00.000Z",
+        "message": "Recruitment sources synced; currently stale."
+      },
+      "airs": {
+        "ok": true,
+        "updatedAt": "2026-03-31T17:37:54.588Z",
+        "message": "AIRS scores rebuilt"
+      },
+      "onet": {
+        "ok": true,
+        "updatedAt": "2026-03-20T03:36:53.026Z",
+        "message": "O*NET reference available"
+      },
+      "collegeScorecard": {
+        "ok": true,
+        "updatedAt": "2026-03-22T00:00:00.000Z",
+        "message": "College Scorecard reference available"
+      },
+      "analytics": {
+        "ok": false,
+        "updatedAt": "2026-03-25T17:36:34.052Z",
+        "message": "Analytics report available; currently stale."
+      }
+    }
+  },
   "dates": [
     "2026-03-11",
     "2026-03-22"
