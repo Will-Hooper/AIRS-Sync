@@ -80,11 +80,10 @@ export function MobileHomePage() {
         </header>
 
         <section data-h5-numbered-box className="h5-numbered h5-panel flex flex-1 flex-col justify-between overflow-hidden px-5 py-7">
-          <div className="space-y-5 text-center">
-            <div className="space-y-3">
+          <div className="space-y-4 text-center">
+            <div className="space-y-2">
               <p className="h5-kicker">{copy.appName}</p>
               <h1 className="text-4xl font-semibold leading-tight tracking-[-0.06em] text-white">{copy.homeTitle}</h1>
-              {copy.homeIntro ? <p className="mx-auto max-w-[32rem] text-sm leading-7 text-white/62">{copy.homeIntro}</p> : null}
             </div>
 
             <div className="mx-auto max-w-[420px] space-y-4">
@@ -132,13 +131,11 @@ export function MobileHomePage() {
                   contentClassName="min-h-[188px] p-6"
                 />
               </div>
+              <div className="h-px bg-white/8" />
+              <H5Footer language={language} embedded />
             </div>
           </H5NumberedBox>
         </section>
-
-        <H5NumberedBox>
-          <H5Footer language={language} />
-        </H5NumberedBox>
       </div>
     </div>
   );

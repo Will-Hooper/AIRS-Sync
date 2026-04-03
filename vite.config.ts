@@ -43,7 +43,7 @@ function serveBackendData() {
 
 export default defineConfig({
   root: "frontend",
-  base: "./",
+  base: "/",
   plugins: [react(), serveBackendData()],
   server: {
     port: 5173
@@ -52,13 +52,10 @@ export default defineConfig({
     port: 4173
   },
   build: {
-    outDir: "../spa",
+    outDir: "../dist",
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        desktop: path.resolve(__dirname, "frontend/index.html"),
-        h5: path.resolve(__dirname, "frontend/m/index.html")
-      }
+      input: path.resolve(__dirname, "frontend/index.html")
     }
   }
 });
