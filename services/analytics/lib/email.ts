@@ -28,7 +28,7 @@ function readMailConfig(): MailConfig | null {
 
 export async function sendAnalyticsReportEmail(
   report: AnalyticsReportArtifacts,
-  to = "neo17571875@gmail.com"
+  to = process.env.ANALYTICS_REPORT_TO?.trim() || "airsindex@qq.com"
 ) {
   const config = readMailConfig();
   if (!config) {

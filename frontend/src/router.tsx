@@ -1,10 +1,9 @@
 import { Suspense, lazy, type ReactNode } from "react";
 import { createHashRouter } from "react-router-dom";
 
+// Desktop-only route tree. H5 routes live in src/h5/router.tsx.
 const HomePage = lazy(() => import("./pages/HomePage").then((module) => ({ default: module.HomePage })));
 const OccupationPage = lazy(() => import("./pages/OccupationPage").then((module) => ({ default: module.OccupationPage })));
-const MobileHomePage = lazy(() => import("./h5/pages/MobileHomePage").then((module) => ({ default: module.MobileHomePage })));
-const MobileOccupationPage = lazy(() => import("./h5/pages/MobileOccupationPage").then((module) => ({ default: module.MobileOccupationPage })));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));
 
 function withSuspense(element: ReactNode) {
@@ -27,18 +26,6 @@ export const router = createHashRouter([
   {
     path: "/occupation/:socCode",
     element: withSuspense(<OccupationPage />)
-  },
-  {
-    path: "/m",
-    element: withSuspense(<MobileHomePage />)
-  },
-  {
-    path: "/m/occupation",
-    element: withSuspense(<MobileOccupationPage />)
-  },
-  {
-    path: "/m/occupation/:socCode",
-    element: withSuspense(<MobileOccupationPage />)
   },
   {
     path: "*",

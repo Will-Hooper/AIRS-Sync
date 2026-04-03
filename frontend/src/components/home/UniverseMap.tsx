@@ -16,6 +16,9 @@ interface UniverseMapProps {
     zoomIn: string;
     zoomOut: string;
     resetView: string;
+    fullscreenEnter: string;
+    fullscreenExit: string;
+    viewModesKicker: string;
     axisX: string;
     axisY: string;
     modes: Record<ViewMode, string>;
@@ -55,6 +58,7 @@ export function UniverseMap({
   emptyText,
   labels
 }: UniverseMapProps) {
+  const panelRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("market");
   const [camera, setCamera] = useState<CameraState>({ scale: 1, x: 0, y: 0 });
@@ -62,6 +66,7 @@ export function UniverseMap({
   const [hoveredSocCode, setHoveredSocCode] = useState<string | null>(null);
   const [dragState, setDragState] = useState<null | { startX: number; startY: number; cameraX: number; cameraY: number }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const points = useMemo<RenderPoint[]>(() => {
     const majorGroups = [...new Set(occupations.map((occupation) => occupation.majorGroup))];
@@ -156,6 +161,26 @@ export function UniverseMap({
     });
   }, [bounds, hasInteracted, viewport]);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement === panelRef.current);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  useEffect(() => {
+    const nextOverflow = isFullscreen ? "hidden" : "";
+    document.documentElement.style.overflow = nextOverflow;
+    document.body.style.overflow = nextOverflow;
+
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [isFullscreen]);
+
   const projectPoint = (point: RenderPoint) => ({
     x: point.x * camera.scale + camera.x,
     y: point.y * camera.scale + camera.y
@@ -181,6 +206,18 @@ export function UniverseMap({
     setHasInteracted(true);
   };
 
+  const toggleFullscreen = async () => {
+    const host = panelRef.current;
+    if (!host) return;
+
+    if (document.fullscreenElement === host) {
+      await document.exitFullscreen();
+      return;
+    }
+
+    await host.requestFullscreen();
+  };
+
   if (!occupations.length) {
     return (
       <div className="flex min-h-[480px] items-center justify-center rounded-[28px] border border-white/8 bg-black/15 text-white/50">
@@ -190,10 +227,13 @@ export function UniverseMap({
   }
 
   return (
-    <div className="airs-panel overflow-hidden">
+    <div
+      ref={panelRef}
+      className={`airs-panel overflow-hidden ${isFullscreen ? "flex h-full flex-col rounded-none border-transparent bg-slate-950/95" : ""}`}
+    >
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/8 px-6 py-4">
         <div>
-          <p className="airs-kicker">Map modes</p>
+          <p className="airs-kicker">{labels.viewModesKicker}</p>
           <div className="mt-2 inline-flex rounded-full border border-white/10 bg-black/15 p-1">
             {(["market", "group", "label"] as ViewMode[]).map((mode) => (
               <button
@@ -213,6 +253,9 @@ export function UniverseMap({
         </div>
 
         <div className="flex items-center gap-2">
+          <button type="button" className="airs-button" onClick={() => void toggleFullscreen()}>
+            {isFullscreen ? labels.fullscreenExit : labels.fullscreenEnter}
+          </button>
           <button type="button" className="airs-button" onClick={() => zoomAt(1.18, viewport.width / 2, viewport.height / 2)}>
             {labels.zoomIn}
           </button>
@@ -235,7 +278,7 @@ export function UniverseMap({
 
       <div
         ref={containerRef}
-        className="relative isolate h-[560px] touch-none overflow-hidden overscroll-contain bg-[radial-gradient(circle_at_20%_0%,rgba(127,193,255,0.1),transparent_34%),linear-gradient(180deg,rgba(7,13,20,0.5),rgba(7,13,20,0.85))]"
+        className={`relative isolate touch-none overflow-hidden overscroll-contain bg-[radial-gradient(circle_at_20%_0%,rgba(127,193,255,0.1),transparent_34%),linear-gradient(180deg,rgba(7,13,20,0.5),rgba(7,13,20,0.85))] ${isFullscreen ? "min-h-0 flex-1 h-auto" : "h-[560px]"}`}
         onWheelCapture={(event) => {
           event.preventDefault();
           event.stopPropagation();

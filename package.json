@@ -4,6 +4,7 @@
     "build": "npm run build:frontend && npm run build:node",
     "build:frontend": "vite build",
     "build:node": "tsc -p tsconfig.node.json",
+    "check:h5-boundary": "node ./scripts/check-h5-boundary.mjs",
     "typecheck": "npm run typecheck:frontend && npm run typecheck:node",
     "typecheck:frontend": "tsc -p tsconfig.frontend.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",

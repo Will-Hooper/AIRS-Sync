@@ -53,6 +53,12 @@ export default defineConfig({
   },
   build: {
     outDir: "../spa",
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        desktop: path.resolve(__dirname, "frontend/index.html"),
+        h5: path.resolve(__dirname, "frontend/m/index.html")
+      }
+    }
   }
 });

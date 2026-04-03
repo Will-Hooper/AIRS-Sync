@@ -5,6 +5,8 @@ type VantaEffect = {
   destroy: () => void;
 };
 
+type VantaFactory = (options: Record<string, unknown>) => VantaEffect;
+
 interface VantaDotsOptions {
   color?: number;
   color2?: number;
@@ -14,6 +16,22 @@ interface VantaDotsOptions {
   sizeDesktop?: number;
   sizeMobile?: number;
   showLines?: boolean;
+}
+
+function resolveVantaFactory(module: unknown): VantaFactory | null {
+  const candidates = [
+    module,
+    (module as { default?: unknown } | undefined)?.default,
+    (module as { default?: { default?: unknown } } | undefined)?.default?.default
+  ];
+
+  for (const candidate of candidates) {
+    if (typeof candidate === "function") {
+      return candidate as VantaFactory;
+    }
+  }
+
+  return null;
 }
 
 export function useVantaDots(target: React.RefObject<HTMLElement | null>, options: VantaDotsOptions = {}) {
@@ -31,7 +49,7 @@ export function useVantaDots(target: React.RefObject<HTMLElement | null>, option
     (window as typeof window & { THREE?: typeof THREE }).THREE = THREE;
 
     import("vanta/dist/vanta.dots.min").then((module) => {
-      const factory = (module as { default?: (options: Record<string, unknown>) => VantaEffect }).default;
+      const factory = resolveVantaFactory(module);
       if (!factory || disposed || !target.current) return;
 
       effect = factory({

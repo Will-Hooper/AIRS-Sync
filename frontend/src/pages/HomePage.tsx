@@ -4,12 +4,14 @@ import { HeroSection } from "../components/home/HeroSection";
 import { UniverseMap } from "../components/home/UniverseMap";
 import { DataFreshnessPanel } from "../components/shared/DataFreshnessPanel";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
+import { NumberedBox } from "../components/shared/NumberedBox";
 import { SiteFooter } from "../components/shared/SiteFooter";
 import { getOccupations, getSummary } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
 import { formatDateTime, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
+import { useNumberedBoxes } from "../lib/useNumberedBoxes";
 
 function buildFilters(params: URLSearchParams, query: string): OccupationQueryParams {
   return {
@@ -55,6 +57,7 @@ export function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const trackedDesktopQueryRef = useRef("");
+  const pageRef = useRef<HTMLDivElement | null>(null);
 
   const copy = messages[language];
   const deferredQuery = useDeferredValue(query);
@@ -147,6 +150,17 @@ export function HomePage() {
     });
   }, [deferredQuery, language]);
 
+  useNumberedBoxes(pageRef, [
+    occupations.length,
+    selectedSocCode,
+    summary?.avgAirs,
+    summary?.highRiskCount,
+    summary?.occupationCount,
+    language,
+    loading,
+    error
+  ]);
+
   const selectedOccupation = occupations.find((occupation) => occupation.socCode === selectedSocCode) || occupations[0] || null;
 
   const rewriteShare = useMemo(() => {
@@ -181,7 +195,7 @@ export function HomePage() {
 
   return (
     <div className="airs-shell">
-      <div className="airs-page">
+      <div ref={pageRef} className="airs-page">
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="airs-kicker">{copy.appName}</p>
@@ -190,10 +204,12 @@ export function HomePage() {
           <LanguageSwitch language={language} onChange={setLanguage} />
         </div>
 
-        <HeroSection kicker={copy.heroKicker} titleLines={copy.heroTitleLines} text={copy.heroText} />
+        <NumberedBox>
+          <HeroSection kicker={copy.heroKicker} titleLines={copy.heroTitleLines} text={copy.heroText} />
+        </NumberedBox>
 
-        <section className="grid gap-4 xl:grid-cols-4">
-          <article className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
+        <section className="order-2 grid gap-4 xl:grid-cols-4">
+          <article data-numbered-box className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
             <div className="flex items-center justify-between gap-3">
               <p className="text-sm text-white/70">{copy.summaryCards[0].label}</p>
               <span className="airs-chip">{copy.summaryCards[0].code}</span>
@@ -210,7 +226,7 @@ export function HomePage() {
             </div>
           </article>
 
-          <article className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
+          <article data-numbered-box className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
             <div className="flex items-center justify-between gap-3">
               <p className="airs-kicker">{copy.summaryCards[1].code}</p>
               <span className="airs-chip">{copy.summaryCards[1].label}</span>
@@ -222,7 +238,7 @@ export function HomePage() {
             </div>
           </article>
 
-          <article className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
+          <article data-numbered-box className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
             <div className="flex items-center justify-between gap-3">
               <p className="airs-kicker">{copy.summaryCards[2].code}</p>
               <span className="airs-chip">{copy.summaryCards[2].label}</span>
@@ -234,7 +250,7 @@ export function HomePage() {
             </div>
           </article>
 
-          <article className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
+          <article data-numbered-box className="airs-panel flex min-h-[220px] flex-col gap-6 px-6 py-6">
             <div className="flex items-center justify-between gap-3">
               <p className="airs-kicker">{copy.summaryCards[3].code}</p>
               <span className="airs-chip">{copy.summaryCards[3].label}</span>
@@ -247,8 +263,8 @@ export function HomePage() {
           </article>
         </section>
 
-        <section className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.9fr)]">
-          <div className="airs-panel px-6 py-6 md:px-8">
+        <section className="order-1 grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.9fr)]">
+          <div data-numbered-box className="airs-panel px-6 py-6 md:px-8">
             <div className="flex flex-col gap-5 border-b border-white/8 pb-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="max-w-4xl">
@@ -270,7 +286,7 @@ export function HomePage() {
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.date}</span>
                   <select
-                    className="airs-input appearance-none"
+                    className="airs-input airs-select appearance-none"
                     value={searchParams.get("date") || ""}
                     onChange={(event) => updateParamState(searchParams, setSearchParams, { date: event.target.value || undefined })}
                   >
@@ -286,7 +302,7 @@ export function HomePage() {
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.region}</span>
                   <select
-                    className="airs-input appearance-none"
+                    className="airs-input airs-select appearance-none"
                     value={searchParams.get("region") || ""}
                     onChange={(event) => updateParamState(searchParams, setSearchParams, { region: event.target.value || undefined })}
                   >
@@ -302,7 +318,7 @@ export function HomePage() {
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.group}</span>
                   <select
-                    className="airs-input appearance-none"
+                    className="airs-input airs-select appearance-none"
                     value={searchParams.get("majorGroup") || "all"}
                     onChange={(event) =>
                       updateParamState(searchParams, setSearchParams, {
@@ -322,7 +338,7 @@ export function HomePage() {
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.label}</span>
                   <select
-                    className="airs-input appearance-none"
+                    className="airs-input airs-select appearance-none"
                     value={searchParams.get("label") || "all"}
                     onChange={(event) =>
                       updateParamState(searchParams, setSearchParams, {
@@ -340,7 +356,7 @@ export function HomePage() {
                 </label>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-sm text-white/55">{copy.searchPlaceholder}</span>
+                  <span className="text-sm text-white/55">{copy.searchLabel}</span>
                   <input
                     className="airs-input"
                     value={query}
@@ -367,6 +383,9 @@ export function HomePage() {
                     zoomIn: copy.zoomIn,
                     zoomOut: copy.zoomOut,
                     resetView: copy.resetView,
+                    fullscreenEnter: copy.fullscreenEnter,
+                    fullscreenExit: copy.fullscreenExit,
+                    viewModesKicker: copy.viewModesKicker,
                     axisX: copy.axisX,
                     axisY: copy.axisY,
                     modes: {
@@ -381,7 +400,7 @@ export function HomePage() {
           </div>
 
           <aside className="grid gap-6">
-            <article className="airs-panel px-6 py-6">
+            <article data-numbered-box className="airs-panel px-6 py-6">
               <p className="airs-kicker">{copy.currentFocus}</p>
               {selectedOccupation ? (
                 <div className="mt-4 space-y-4">
@@ -414,7 +433,7 @@ export function HomePage() {
               )}
             </article>
 
-            <article className="airs-panel px-6 py-6">
+            <article data-numbered-box className="airs-panel px-6 py-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="airs-kicker">{copy.localTime}</p>
@@ -423,16 +442,16 @@ export function HomePage() {
                 <span className="airs-chip">{Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
               </div>
               <div className="mt-6 grid gap-3">
-                <div className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
+                <div data-numbered-box className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
                   <p className="text-sm text-white/45">{language === "zh" ? "最新数据日期" : "Latest data date"}</p>
                   <p className="mt-2 text-lg font-medium text-white">{summary?.date || "--"}</p>
                 </div>
-                <div className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
+                <div data-numbered-box className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
                   <p className="text-sm text-white/45">{language === "zh" ? "纳入职业数" : "Occupations in view"}</p>
                   <p className="mt-2 text-lg font-medium text-white">{formatNumber(summary?.occupationCount || occupations.length, 0, language)}</p>
                 </div>
               </div>
-              <div className="mt-4">
+              <div data-numbered-box className="mt-4">
                 <DataFreshnessPanel
                   compact
                   language={language}
@@ -447,7 +466,9 @@ export function HomePage() {
           </aside>
         </section>
 
-        <SiteFooter language={language} />
+        <div className="order-3">
+          <SiteFooter language={language} />
+        </div>
       </div>
     </div>
   );

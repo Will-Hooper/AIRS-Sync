@@ -4,7 +4,7 @@
 
 - 前端 SPA：负责首页、职业详情页、交互视图与多语言界面
 - Node + TypeScript 数据同步 CLI：负责生成 `backend/data/*.json`
-- 独立移动端 H5：位于 [frontend/src/h5](E:\Codex\frontend\src\h5)，通过 `/m/...` 独立入口访问
+- 独立移动端 H5：位于 [frontend/src/h5](E:\Codex\frontend\src\h5)，通过 [frontend/m/index.html](E:\Codex\frontend\m\index.html) 独立入口访问
 - 本地统计服务：位于 [services/analytics](E:\Codex\services\analytics)，负责搜索埋点、IP 地域识别、三天报表与邮件发送
 
 网站最终以纯静态形式发布，不依赖在线后端 API。
@@ -44,15 +44,10 @@
 - `./spa/index.html#/`
 - `./spa/index.html#/occupation/...`
 
-另外，移动端 H5 提供独立入口：
+另外，移动端 H5 提供独立构建入口：
 
-- [m/index.html](E:\Codex\m\index.html)
-- [m/occupation.html](E:\Codex\m\occupation.html)
-
-它们会分别跳转到：
-
-- `./spa/index.html#/m`
-- `./spa/index.html#/m/occupation/...`
+- [frontend/m/index.html](E:\Codex\frontend\m\index.html)
+- [spa/m/index.html](E:\Codex\spa\m\index.html)
 
 正式上线时，根目录入口还支持按子域名自动分流：
 
@@ -77,8 +72,15 @@
 - [frontend/src/pages/OccupationPage.tsx](E:\Codex\frontend\src\pages\OccupationPage.tsx)
 - [frontend/src/h5/pages/MobileHomePage.tsx](E:\Codex\frontend\src\h5\pages\MobileHomePage.tsx)
 - [frontend/src/h5/pages/MobileOccupationPage.tsx](E:\Codex\frontend\src\h5\pages\MobileOccupationPage.tsx)
-- [frontend/src/h5/lib/share-image.ts](E:\Codex\frontend\src\h5\lib\share-image.ts)
+- [frontend/src/h5/share/share-image.ts](E:\Codex\frontend\src\h5\share\share-image.ts)
 - [frontend/src/styles.css](E:\Codex\frontend\src\styles.css)
+
+## H5 边界
+
+H5 目录已作为独立模块封边，详见：
+
+- [H5-BOUNDARY.md](E:\Codex\H5-BOUNDARY.md)
+- [frontend/src/h5/README.md](E:\Codex\frontend\src\h5\README.md)
 
 ## 数据文件
 
@@ -248,7 +250,7 @@ npm run build:frontend
 
 默认收件人：
 
-- `neo17571875@gmail.com`
+- `airsindex@qq.com`
 
 ### 每 3 天自动执行
 
