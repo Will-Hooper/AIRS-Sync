@@ -1,0 +1,1631 @@
+{
+  "source": "Public job boards (Greenhouse + Lever + Ashby + SmartRecruiters)",
+  "lastRun": "2026-03-22",
+  "locationScope": "US",
+  "minMatchScore": 0.44,
+  "activeSources": [
+    {
+      "label": "Stripe",
+      "provider": "greenhouse",
+      "key": "stripe",
+      "organization": "Stripe",
+      "kind": "company"
+    },
+    {
+      "label": "Datadog",
+      "provider": "greenhouse",
+      "key": "datadog",
+      "organization": "Datadog",
+      "kind": "company"
+    },
+    {
+      "label": "Coinbase",
+      "provider": "greenhouse",
+      "key": "coinbase",
+      "organization": "Coinbase",
+      "kind": "company"
+    },
+    {
+      "label": "Palantir",
+      "provider": "lever",
+      "key": "palantir",
+      "organization": "Palantir",
+      "kind": "company"
+    },
+    {
+      "label": "University of Austin",
+      "provider": "lever",
+      "key": "uaustin",
+      "organization": "University of Austin",
+      "kind": "university"
+    },
+    {
+      "label": "OpenAI",
+      "provider": "ashby",
+      "key": "openai",
+      "organization": "OpenAI",
+      "kind": "company"
+    },
+    {
+      "label": "Notion",
+      "provider": "ashby",
+      "key": "notion",
+      "organization": "Notion",
+      "kind": "company"
+    },
+    {
+      "label": "Ramp",
+      "provider": "ashby",
+      "key": "ramp",
+      "organization": "Ramp",
+      "kind": "company"
+    },
+    {
+      "label": "Cursor",
+      "provider": "ashby",
+      "key": "cursor",
+      "organization": "Cursor",
+      "kind": "company"
+    },
+    {
+      "label": "Perplexity",
+      "provider": "ashby",
+      "key": "perplexity",
+      "organization": "Perplexity",
+      "kind": "company"
+    },
+    {
+      "label": "Mercor",
+      "provider": "ashby",
+      "key": "mercor",
+      "organization": "Mercor",
+      "kind": "company"
+    },
+    {
+      "label": "Supabase",
+      "provider": "ashby",
+      "key": "supabase",
+      "organization": "Supabase",
+      "kind": "company"
+    },
+    {
+      "label": "Visa",
+      "provider": "smartrecruiters",
+      "key": "Visa",
+      "organization": "Visa",
+      "kind": "company"
+    },
+    {
+      "label": "SmartRecruiters",
+      "provider": "smartrecruiters",
+      "key": "smartrecruiters",
+      "organization": "SmartRecruiters",
+      "kind": "company"
+    },
+    {
+      "label": "LVMH",
+      "provider": "smartrecruiters",
+      "key": "LVMH",
+      "organization": "LVMH",
+      "kind": "company"
+    }
+  ],
+  "occupations": [
+    {
+      "socCode": "11-1011.00",
+      "title": "Chief Executives",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Stripe": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-1021.00",
+      "title": "General and Operations Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 12,
+          "sources": {
+            "Stripe": 2,
+            "Datadog": 1,
+            "Coinbase": 2,
+            "OpenAI": 1,
+            "Notion": 2,
+            "Ramp": 2,
+            "Visa": 1,
+            "SmartRecruiters": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-2011.00",
+      "title": "Advertising and Promotions Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 60,
+          "sources": {
+            "Stripe": 8,
+            "Datadog": 22,
+            "OpenAI": 2,
+            "Notion": 6,
+            "Ramp": 5,
+            "Cursor": 9,
+            "Perplexity": 1,
+            "Visa": 7
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-2021.00",
+      "title": "Marketing Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 129,
+          "sources": {
+            "Stripe": 18,
+            "Datadog": 26,
+            "Coinbase": 19,
+            "OpenAI": 15,
+            "Notion": 3,
+            "Ramp": 9,
+            "Perplexity": 2,
+            "Mercor": 2,
+            "Visa": 34,
+            "SmartRecruiters": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-2022.00",
+      "title": "Sales Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 27,
+          "sources": {
+            "Datadog": 12,
+            "Coinbase": 2,
+            "Palantir": 2,
+            "OpenAI": 2,
+            "Notion": 1,
+            "Ramp": 2,
+            "Cursor": 1,
+            "Visa": 4,
+            "SmartRecruiters": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-2032.00",
+      "title": "Public Relations Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Visa": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-2033.00",
+      "title": "Fundraising Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "University of Austin": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3012.00",
+      "title": "Administrative Services Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Palantir": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3013.00",
+      "title": "Facilities Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Datadog": 2,
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3021.00",
+      "title": "Computer and Information Systems Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "Palantir": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3031.00",
+      "title": "Financial Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Palantir": 1,
+            "Ramp": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3051.00",
+      "title": "Industrial Production Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Ramp": 1,
+            "Visa": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3061.00",
+      "title": "Purchasing Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Visa": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3071.00",
+      "title": "Transportation, Storage, and Distribution Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3111.00",
+      "title": "Compensation and Benefits Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "OpenAI": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-3131.00",
+      "title": "Training and Development Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 4,
+          "sources": {
+            "Visa": 4
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9031.00",
+      "title": "Education and Childcare Administrators, Preschool and Daycare",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9033.00",
+      "title": "Education Administrators, Postsecondary",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 4,
+          "sources": {
+            "Visa": 4
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9041.00",
+      "title": "Architectural and Engineering Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 15,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 1,
+            "OpenAI": 4,
+            "Notion": 1,
+            "Ramp": 1,
+            "Perplexity": 1,
+            "Mercor": 1,
+            "Visa": 5
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9072.00",
+      "title": "Entertainment and Recreation Managers, Except Gambling",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Stripe": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9141.00",
+      "title": "Property, Real Estate, and Community Association Managers",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9199.00",
+      "title": "Managers, All Other",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 20,
+          "sources": {
+            "Stripe": 3,
+            "Coinbase": 2,
+            "Palantir": 3,
+            "OpenAI": 5,
+            "Ramp": 1,
+            "Cursor": 1,
+            "Visa": 5
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1023.00",
+      "title": "Purchasing Agents, Except Wholesale, Retail, and Farm Products",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Perplexity": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1041.00",
+      "title": "Compliance Officers",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Stripe": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1051.00",
+      "title": "Cost Estimators",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 16,
+          "sources": {
+            "Datadog": 2,
+            "Coinbase": 2,
+            "Palantir": 4,
+            "OpenAI": 2,
+            "Notion": 1,
+            "Visa": 5
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1071.00",
+      "title": "Human Resources Specialists",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 8,
+          "sources": {
+            "OpenAI": 3,
+            "Notion": 2,
+            "Ramp": 1,
+            "Mercor": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1074.00",
+      "title": "Farm Labor Contractors",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Cursor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1075.00",
+      "title": "Labor Relations Specialists",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Perplexity": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1081.00",
+      "title": "Logisticians",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 30,
+          "sources": {
+            "Datadog": 1,
+            "Coinbase": 3,
+            "Palantir": 9,
+            "OpenAI": 6,
+            "Notion": 1,
+            "Ramp": 1,
+            "Perplexity": 1,
+            "Mercor": 1,
+            "Visa": 7
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1111.00",
+      "title": "Management Analysts",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Visa": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1121.00",
+      "title": "Meeting, Convention, and Event Planners",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1131.00",
+      "title": "Fundraisers",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "University of Austin": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1141.00",
+      "title": "Compensation, Benefits, and Job Analysis Specialists",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1161.00",
+      "title": "Market Research Analysts and Marketing Specialists",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 4,
+          "sources": {
+            "Stripe": 1,
+            "OpenAI": 2,
+            "Ramp": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-1199.00",
+      "title": "Business Operations Specialists, All Other",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 6,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 2,
+            "Palantir": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-2011.00",
+      "title": "Accountants and Auditors",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-2051.00",
+      "title": "Financial and Investment Analysts",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 5,
+          "sources": {
+            "Coinbase": 1,
+            "Visa": 4
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-2054.00",
+      "title": "Financial Risk Specialists",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 5,
+          "sources": {
+            "Coinbase": 2,
+            "OpenAI": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-2061.00",
+      "title": "Financial Examiners",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Coinbase": 1,
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-2082.00",
+      "title": "Tax Preparers",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Stripe": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "13-2099.00",
+      "title": "Financial Specialists, All Other",
+      "majorGroup": "Business and Financial Operations",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 6,
+          "sources": {
+            "Stripe": 1,
+            "OpenAI": 4,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1211.00",
+      "title": "Computer Systems Analysts",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Datadog": 1,
+            "Ramp": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1212.00",
+      "title": "Information Security Analysts",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Coinbase": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1221.00",
+      "title": "Computer and Information Research Scientists",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 8,
+          "sources": {
+            "Datadog": 1,
+            "OpenAI": 6,
+            "Cursor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1231.00",
+      "title": "Computer Network Support Specialists",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1232.00",
+      "title": "Computer User Support Specialists",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1241.00",
+      "title": "Computer Network Architects",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 92,
+          "sources": {
+            "Stripe": 6,
+            "Datadog": 3,
+            "Coinbase": 2,
+            "Palantir": 12,
+            "OpenAI": 29,
+            "Notion": 5,
+            "Ramp": 4,
+            "Cursor": 1,
+            "Perplexity": 5,
+            "Mercor": 2,
+            "Visa": 23
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1242.00",
+      "title": "Database Administrators",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Perplexity": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1243.00",
+      "title": "Database Architects",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 11,
+          "sources": {
+            "Coinbase": 2,
+            "OpenAI": 1,
+            "Notion": 2,
+            "Cursor": 1,
+            "Mercor": 1,
+            "Visa": 4
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1244.00",
+      "title": "Network and Computer Systems Administrators",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1252.00",
+      "title": "Software Developers",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 297,
+          "sources": {
+            "Stripe": 3,
+            "Datadog": 10,
+            "Coinbase": 29,
+            "Palantir": 55,
+            "OpenAI": 94,
+            "Notion": 13,
+            "Ramp": 17,
+            "Cursor": 14,
+            "Perplexity": 13,
+            "Mercor": 5,
+            "Visa": 44
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1253.00",
+      "title": "Software Quality Assurance Analysts and Testers",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Visa": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1255.00",
+      "title": "Web and Digital Interface Designers",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 12,
+          "sources": {
+            "Palantir": 2,
+            "OpenAI": 2,
+            "Cursor": 1,
+            "Visa": 7
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1299.00",
+      "title": "Computer Occupations, All Other",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 42,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 1,
+            "Coinbase": 4,
+            "Palantir": 11,
+            "OpenAI": 14,
+            "Notion": 2,
+            "Ramp": 2,
+            "Cursor": 1,
+            "Perplexity": 4,
+            "Mercor": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-2021.00",
+      "title": "Mathematicians",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 14,
+          "sources": {
+            "OpenAI": 11,
+            "Notion": 1,
+            "Perplexity": 1,
+            "Mercor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-2031.00",
+      "title": "Operations Research Analysts",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Palantir": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-2051.00",
+      "title": "Data Scientists",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 31,
+          "sources": {
+            "Stripe": 1,
+            "Coinbase": 5,
+            "OpenAI": 16,
+            "Ramp": 2,
+            "Cursor": 1,
+            "Perplexity": 1,
+            "Mercor": 1,
+            "Visa": 4
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-1011.00",
+      "title": "Architects, Except Landscape and Naval",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 4,
+          "sources": {
+            "OpenAI": 1,
+            "Ramp": 1,
+            "Perplexity": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2011.00",
+      "title": "Aerospace Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 5,
+          "sources": {
+            "OpenAI": 1,
+            "Ramp": 2,
+            "Cursor": 1,
+            "Perplexity": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2021.00",
+      "title": "Agricultural Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 20,
+          "sources": {
+            "Datadog": 1,
+            "OpenAI": 16,
+            "Cursor": 1,
+            "Mercor": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2041.00",
+      "title": "Chemical Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Visa": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2061.00",
+      "title": "Computer Hardware Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 19,
+          "sources": {
+            "Datadog": 1,
+            "Coinbase": 1,
+            "OpenAI": 2,
+            "Visa": 15
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2072.00",
+      "title": "Electronics Engineers, Except Computer",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 5,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 1,
+            "Palantir": 1,
+            "OpenAI": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2111.00",
+      "title": "Health and Safety Engineers, Except Mining Safety Engineers and Inspectors",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2112.00",
+      "title": "Industrial Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "OpenAI": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2141.00",
+      "title": "Mechanical Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 5,
+          "sources": {
+            "Stripe": 1,
+            "OpenAI": 3,
+            "Notion": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2199.00",
+      "title": "Engineers, All Other",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "OpenAI": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-3013.00",
+      "title": "Mechanical Drafters",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 18,
+          "sources": {
+            "Stripe": 2,
+            "Datadog": 2,
+            "Coinbase": 1,
+            "Palantir": 5,
+            "OpenAI": 6,
+            "Ramp": 1,
+            "Cursor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-3023.00",
+      "title": "Electrical and Electronic Engineering Technologists and Technicians",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-3024.00",
+      "title": "Electro-Mechanical and Mechatronics Technologists and Technicians",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-3027.00",
+      "title": "Mechanical Engineering Technologists and Technicians",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Ramp": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "19-3022.00",
+      "title": "Survey Researchers",
+      "majorGroup": "Life, Physical, and Social Science",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "OpenAI": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "19-3033.00",
+      "title": "Clinical and Counseling Psychologists",
+      "majorGroup": "Life, Physical, and Social Science",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "23-1011.00",
+      "title": "Lawyers",
+      "majorGroup": "Legal",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 29,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 2,
+            "Coinbase": 3,
+            "Palantir": 8,
+            "University of Austin": 1,
+            "OpenAI": 7,
+            "Notion": 1,
+            "Ramp": 1,
+            "Perplexity": 1,
+            "Visa": 4
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "23-2011.00",
+      "title": "Paralegals and Legal Assistants",
+      "majorGroup": "Legal",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Coinbase": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "25-1125.00",
+      "title": "History Teachers, Postsecondary",
+      "majorGroup": "Educational Instruction and Library",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "University of Austin": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "27-1011.00",
+      "title": "Art Directors",
+      "majorGroup": "Arts, Design, Entertainment, Sports, and Media",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "27-1024.00",
+      "title": "Graphic Designers",
+      "majorGroup": "Arts, Design, Entertainment, Sports, and Media",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "University of Austin": 1,
+            "Cursor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "27-2012.00",
+      "title": "Producers and Directors",
+      "majorGroup": "Arts, Design, Entertainment, Sports, and Media",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 66,
+          "sources": {
+            "Stripe": 4,
+            "Datadog": 4,
+            "Coinbase": 5,
+            "Palantir": 2,
+            "University of Austin": 1,
+            "OpenAI": 24,
+            "Notion": 2,
+            "Ramp": 3,
+            "Mercor": 1,
+            "Visa": 20
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "27-3041.00",
+      "title": "Editors",
+      "majorGroup": "Arts, Design, Entertainment, Sports, and Media",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "27-3042.00",
+      "title": "Technical Writers",
+      "majorGroup": "Arts, Design, Entertainment, Sports, and Media",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Palantir": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "27-4012.00",
+      "title": "Broadcast Technicians",
+      "majorGroup": "Arts, Design, Entertainment, Sports, and Media",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Stripe": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "29-1122.00",
+      "title": "Occupational Therapists",
+      "majorGroup": "Healthcare Practitioners and Technical",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Palantir": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "31-1132.00",
+      "title": "Orderlies",
+      "majorGroup": "Healthcare Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "41-1012.00",
+      "title": "First-Line Supervisors of Non-Retail Sales Workers",
+      "majorGroup": "Sales and Related",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Notion": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "41-2011.00",
+      "title": "Cashiers",
+      "majorGroup": "Sales and Related",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Coinbase": 2
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "41-2031.00",
+      "title": "Retail Salespersons",
+      "majorGroup": "Sales and Related",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 1,
+            "Ramp": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "41-9031.00",
+      "title": "Sales Engineers",
+      "majorGroup": "Sales and Related",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 10,
+          "sources": {
+            "Datadog": 9,
+            "Cursor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "43-1011.00",
+      "title": "First-Line Supervisors of Office and Administrative Support Workers",
+      "majorGroup": "Office and Administrative Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 14,
+          "sources": {
+            "Datadog": 2,
+            "Coinbase": 3,
+            "OpenAI": 3,
+            "Notion": 1,
+            "Ramp": 4,
+            "SmartRecruiters": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "43-4011.00",
+      "title": "Brokerage Clerks",
+      "majorGroup": "Office and Administrative Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Coinbase": 1,
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "43-4051.00",
+      "title": "Customer Service Representatives",
+      "majorGroup": "Office and Administrative Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Ramp": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "43-4151.00",
+      "title": "Order Clerks",
+      "majorGroup": "Office and Administrative Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "43-6011.00",
+      "title": "Executive Secretaries and Executive Administrative Assistants",
+      "majorGroup": "Office and Administrative Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 4,
+          "sources": {
+            "Coinbase": 1,
+            "Palantir": 1,
+            "Ramp": 1,
+            "Mercor": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "43-9081.00",
+      "title": "Proofreaders and Copy Markers",
+      "majorGroup": "Office and Administrative Support",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "University of Austin": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "53-2022.00",
+      "title": "Airfield Operations Specialists",
+      "majorGroup": "Transportation and Material Moving",
+      "daily": [
+        {
+          "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "Ramp": 2
+          }
+        }
+      ]
+    }
+  ]
+}

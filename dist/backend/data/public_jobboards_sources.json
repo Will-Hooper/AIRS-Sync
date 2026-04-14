@@ -1,0 +1,127 @@
+{
+  "source": "Public job boards (Greenhouse + Lever + Ashby + SmartRecruiters)",
+  "locationScope": "US",
+  "minMatchScore": 0.44,
+  "sources": [
+    {
+      "provider": "greenhouse",
+      "key": "stripe",
+      "organization": "Stripe",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "greenhouse",
+      "key": "datadog",
+      "organization": "Datadog",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "greenhouse",
+      "key": "coinbase",
+      "organization": "Coinbase",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "lever",
+      "key": "palantir",
+      "organization": "Palantir",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "lever",
+      "key": "uaustin",
+      "organization": "University of Austin",
+      "kind": "university",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "openai",
+      "organization": "OpenAI",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "notion",
+      "organization": "Notion",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "ramp",
+      "organization": "Ramp",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "cursor",
+      "organization": "Cursor",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "perplexity",
+      "organization": "Perplexity",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "mercor",
+      "organization": "Mercor",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "ashby",
+      "key": "supabase",
+      "organization": "Supabase",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "smartrecruiters",
+      "key": "Visa",
+      "organization": "Visa",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "smartrecruiters",
+      "key": "smartrecruiters",
+      "organization": "SmartRecruiters",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    },
+    {
+      "provider": "smartrecruiters",
+      "key": "LVMH",
+      "organization": "LVMH",
+      "kind": "company",
+      "enabled": true,
+      "usOnly": true
+    }
+  ]
+}

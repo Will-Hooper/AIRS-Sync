@@ -1,0 +1,2886 @@
+{
+  "source": "U.S. Department of Education College Scorecard (Field of Study)",
+  "updatedAt": "2026-03-22",
+  "cipSummary": [
+    {
+      "cipCode": "0100",
+      "cipDesc": "Agriculture, General.",
+      "programCount": 70,
+      "institutionCount": 63,
+      "median1Y": 37028,
+      "median2Y": 34919
+    },
+    {
+      "cipCode": "0101",
+      "cipDesc": "Agricultural Business and Management.",
+      "programCount": 125,
+      "institutionCount": 114,
+      "median1Y": 42123,
+      "median2Y": 41937
+    },
+    {
+      "cipCode": "0102",
+      "cipDesc": "Agricultural Mechanization.",
+      "programCount": 37,
+      "institutionCount": 34,
+      "median1Y": 46087,
+      "median2Y": 45852
+    },
+    {
+      "cipCode": "0103",
+      "cipDesc": "Agricultural Production Operations.",
+      "programCount": 42,
+      "institutionCount": 40,
+      "median1Y": 32467,
+      "median2Y": 31133
+    },
+    {
+      "cipCode": "0104",
+      "cipDesc": "Agricultural and Food Products Processing.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 44835,
+      "median2Y": 44933
+    },
+    {
+      "cipCode": "0105",
+      "cipDesc": "Agricultural and Domestic Animal Services.",
+      "programCount": 21,
+      "institutionCount": 20,
+      "median1Y": 25360,
+      "median2Y": 24615
+    },
+    {
+      "cipCode": "0106",
+      "cipDesc": "Applied Horticulture and Horticultural Business Services.",
+      "programCount": 50,
+      "institutionCount": 45,
+      "median1Y": 34704,
+      "median2Y": 31848
+    },
+    {
+      "cipCode": "0107",
+      "cipDesc": "International Agriculture.",
+      "programCount": 6,
+      "institutionCount": 5,
+      "median1Y": 35143,
+      "median2Y": 31781
+    },
+    {
+      "cipCode": "0108",
+      "cipDesc": "Agricultural Public Services.",
+      "programCount": 22,
+      "institutionCount": 21,
+      "median1Y": 40089,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "0109",
+      "cipDesc": "Animal Sciences.",
+      "programCount": 108,
+      "institutionCount": 96,
+      "median1Y": 29840,
+      "median2Y": 28960
+    },
+    {
+      "cipCode": "0110",
+      "cipDesc": "Food Science and Technology.",
+      "programCount": 53,
+      "institutionCount": 45,
+      "median1Y": 48041,
+      "median2Y": 42682
+    },
+    {
+      "cipCode": "0111",
+      "cipDesc": "Plant Sciences.",
+      "programCount": 80,
+      "institutionCount": 70,
+      "median1Y": 39153,
+      "median2Y": 37280
+    },
+    {
+      "cipCode": "0112",
+      "cipDesc": "Soil Sciences.",
+      "programCount": 9,
+      "institutionCount": 9,
+      "median1Y": 43240,
+      "median2Y": 43519
+    },
+    {
+      "cipCode": "0113",
+      "cipDesc": "Agriculture/Veterinary Preparatory Programs.",
+      "programCount": 13,
+      "institutionCount": 12,
+      "median1Y": 27476,
+      "median2Y": 27631
+    },
+    {
+      "cipCode": "0180",
+      "cipDesc": "Veterinary Medicine.",
+      "programCount": 36,
+      "institutionCount": 28,
+      "median1Y": 81796,
+      "median2Y": 77715
+    },
+    {
+      "cipCode": "0181",
+      "cipDesc": "Veterinary Biomedical and Clinical Sciences.",
+      "programCount": 12,
+      "institutionCount": 12,
+      "median1Y": 57110,
+      "median2Y": 51269
+    },
+    {
+      "cipCode": "0183",
+      "cipDesc": "Veterinary/Animal Health Technologies/Technicians.",
+      "programCount": 176,
+      "institutionCount": 160,
+      "median1Y": 29250,
+      "median2Y": 28598
+    },
+    {
+      "cipCode": "0199",
+      "cipDesc": "Agriculture, Agriculture Operations, and Related Sciences, Other.",
+      "programCount": 9,
+      "institutionCount": 8,
+      "median1Y": 42424,
+      "median2Y": 42124
+    },
+    {
+      "cipCode": "0301",
+      "cipDesc": "Natural Resources Conservation and Research.",
+      "programCount": 443,
+      "institutionCount": 389,
+      "median1Y": 34288,
+      "median2Y": 33335
+    },
+    {
+      "cipCode": "0302",
+      "cipDesc": "Natural Resources Management and Policy.",
+      "programCount": 73,
+      "institutionCount": 64,
+      "median1Y": 39369,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "0303",
+      "cipDesc": "Fishing and Fisheries Sciences and Management.",
+      "programCount": 18,
+      "institutionCount": 17,
+      "median1Y": 31133,
+      "median2Y": 29594
+    },
+    {
+      "cipCode": "0305",
+      "cipDesc": "Forestry.",
+      "programCount": 57,
+      "institutionCount": 44,
+      "median1Y": 39099,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "0306",
+      "cipDesc": "Wildlife and Wildlands Science and Management.",
+      "programCount": 55,
+      "institutionCount": 54,
+      "median1Y": 28055,
+      "median2Y": 26436
+    },
+    {
+      "cipCode": "0399",
+      "cipDesc": "Natural Resources and Conservation, Other.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 28816,
+      "median2Y": 25851
+    },
+    {
+      "cipCode": "0402",
+      "cipDesc": "Architecture.",
+      "programCount": 194,
+      "institutionCount": 122,
+      "median1Y": 51500,
+      "median2Y": 50071
+    },
+    {
+      "cipCode": "0403",
+      "cipDesc": "City/Urban, Community and Regional Planning.",
+      "programCount": 92,
+      "institutionCount": 74,
+      "median1Y": 51795,
+      "median2Y": 52107
+    },
+    {
+      "cipCode": "0404",
+      "cipDesc": "Environmental Design.",
+      "programCount": 16,
+      "institutionCount": 15,
+      "median1Y": 41379,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "0405",
+      "cipDesc": "Interior Architecture.",
+      "programCount": 27,
+      "institutionCount": 26,
+      "median1Y": 46869,
+      "median2Y": 44021
+    },
+    {
+      "cipCode": "0406",
+      "cipDesc": "Landscape Architecture.",
+      "programCount": 51,
+      "institutionCount": 45,
+      "median1Y": 47944,
+      "median2Y": 47885
+    },
+    {
+      "cipCode": "0408",
+      "cipDesc": "Architectural History and Criticism.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 46087,
+      "median2Y": 39230
+    },
+    {
+      "cipCode": "0409",
+      "cipDesc": "Architectural Sciences and Technology.",
+      "programCount": 29,
+      "institutionCount": 23,
+      "median1Y": 52681,
+      "median2Y": 44776
+    },
+    {
+      "cipCode": "0410",
+      "cipDesc": "Real Estate Development.",
+      "programCount": 8,
+      "institutionCount": 7,
+      "median1Y": 81518,
+      "median2Y": 85467
+    },
+    {
+      "cipCode": "0499",
+      "cipDesc": "Architecture and Related Services, Other.",
+      "programCount": 10,
+      "institutionCount": 10,
+      "median1Y": 42139,
+      "median2Y": 39447
+    },
+    {
+      "cipCode": "0501",
+      "cipDesc": "Area Studies.",
+      "programCount": 165,
+      "institutionCount": 144,
+      "median1Y": 35060,
+      "median2Y": 33325
+    },
+    {
+      "cipCode": "0502",
+      "cipDesc": "Ethnic, Cultural Minority, Gender, and Group Studies.",
+      "programCount": 160,
+      "institutionCount": 153,
+      "median1Y": 29685,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "0901",
+      "cipDesc": "Communication and Media Studies.",
+      "programCount": 960,
+      "institutionCount": 844,
+      "median1Y": 34495,
+      "median2Y": 34288
+    },
+    {
+      "cipCode": "0904",
+      "cipDesc": "Journalism.",
+      "programCount": 268,
+      "institutionCount": 237,
+      "median1Y": 33993,
+      "median2Y": 33032
+    },
+    {
+      "cipCode": "0907",
+      "cipDesc": "Radio, Television, and Digital Communication.",
+      "programCount": 205,
+      "institutionCount": 193,
+      "median1Y": 30707,
+      "median2Y": 29350
+    },
+    {
+      "cipCode": "0909",
+      "cipDesc": "Public Relations, Advertising, and Applied Communication.",
+      "programCount": 266,
+      "institutionCount": 236,
+      "median1Y": 38704,
+      "median2Y": 37822
+    },
+    {
+      "cipCode": "0910",
+      "cipDesc": "Publishing.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 42682,
+      "median2Y": 42682
+    },
+    {
+      "cipCode": "0999",
+      "cipDesc": "Communication, Journalism, and Related Programs, Other.",
+      "programCount": 49,
+      "institutionCount": 47,
+      "median1Y": 37924,
+      "median2Y": 35594
+    },
+    {
+      "cipCode": "1001",
+      "cipDesc": "Communications Technology/Technician.",
+      "programCount": 10,
+      "institutionCount": 10,
+      "median1Y": 25967,
+      "median2Y": 29250
+    },
+    {
+      "cipCode": "1002",
+      "cipDesc": "Audiovisual Communications Technologies/Technicians.",
+      "programCount": 128,
+      "institutionCount": 111,
+      "median1Y": 24140,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "1003",
+      "cipDesc": "Graphic Communications.",
+      "programCount": 135,
+      "institutionCount": 129,
+      "median1Y": 28019,
+      "median2Y": 28960
+    },
+    {
+      "cipCode": "1099",
+      "cipDesc": "Communications Technologies/Technicians and Support Services, Other.",
+      "programCount": 6,
+      "institutionCount": 6,
+      "median1Y": 29323,
+      "median2Y": 29080
+    },
+    {
+      "cipCode": "1101",
+      "cipDesc": "Computer and Information Sciences, General.",
+      "programCount": 907,
+      "institutionCount": 763,
+      "median1Y": 52733,
+      "median2Y": 52733
+    },
+    {
+      "cipCode": "1102",
+      "cipDesc": "Computer Programming.",
+      "programCount": 157,
+      "institutionCount": 137,
+      "median1Y": 44189,
+      "median2Y": 47260
+    },
+    {
+      "cipCode": "1103",
+      "cipDesc": "Data Processing.",
+      "programCount": 35,
+      "institutionCount": 35,
+      "median1Y": 29685,
+      "median2Y": 33788
+    },
+    {
+      "cipCode": "1104",
+      "cipDesc": "Information Science/Studies.",
+      "programCount": 290,
+      "institutionCount": 208,
+      "median1Y": 57544,
+      "median2Y": 60839
+    },
+    {
+      "cipCode": "1105",
+      "cipDesc": "Computer Systems Analysis.",
+      "programCount": 69,
+      "institutionCount": 69,
+      "median1Y": 59011,
+      "median2Y": 57544
+    },
+    {
+      "cipCode": "1106",
+      "cipDesc": "Data Entry/Microcomputer Applications.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 28146,
+      "median2Y": 26739
+    },
+    {
+      "cipCode": "1107",
+      "cipDesc": "Computer Science.",
+      "programCount": 463,
+      "institutionCount": 401,
+      "median1Y": 65758,
+      "median2Y": 66325
+    },
+    {
+      "cipCode": "1108",
+      "cipDesc": "Computer Software and Media Applications.",
+      "programCount": 240,
+      "institutionCount": 191,
+      "median1Y": 31839,
+      "median2Y": 33446
+    },
+    {
+      "cipCode": "1109",
+      "cipDesc": "Computer Systems Networking and Telecommunications.",
+      "programCount": 303,
+      "institutionCount": 248,
+      "median1Y": 41274,
+      "median2Y": 42012
+    },
+    {
+      "cipCode": "1110",
+      "cipDesc": "Computer/Information Technology Administration and Management.",
+      "programCount": 509,
+      "institutionCount": 438,
+      "median1Y": 42682,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "1199",
+      "cipDesc": "Computer and Information Sciences and Support Services, Other.",
+      "programCount": 35,
+      "institutionCount": 35,
+      "median1Y": 46966,
+      "median2Y": 42682
+    },
+    {
+      "cipCode": "1203",
+      "cipDesc": "Funeral Service and Mortuary Science.",
+      "programCount": 54,
+      "institutionCount": 49,
+      "median1Y": 36149,
+      "median2Y": 36674
+    },
+    {
+      "cipCode": "1204",
+      "cipDesc": "Cosmetology and Related Personal Grooming Services.",
+      "programCount": 1459,
+      "institutionCount": 1362,
+      "median1Y": 17118,
+      "median2Y": 16657
+    },
+    {
+      "cipCode": "1205",
+      "cipDesc": "Culinary Arts and Related Services.",
+      "programCount": 416,
+      "institutionCount": 318,
+      "median1Y": 25735,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "1299",
+      "cipDesc": "Personal and Culinary Services, Other.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 21234,
+      "median2Y": 19472
+    },
+    {
+      "cipCode": "1301",
+      "cipDesc": "Education, General.",
+      "programCount": 462,
+      "institutionCount": 375,
+      "median1Y": 47260,
+      "median2Y": 46816
+    },
+    {
+      "cipCode": "1302",
+      "cipDesc": "Bilingual, Multilingual, and Multicultural Education.",
+      "programCount": 37,
+      "institutionCount": 36,
+      "median1Y": 56415,
+      "median2Y": 55512
+    },
+    {
+      "cipCode": "1303",
+      "cipDesc": "Curriculum and Instruction.",
+      "programCount": 317,
+      "institutionCount": 269,
+      "median1Y": 49240,
+      "median2Y": 49652
+    },
+    {
+      "cipCode": "1304",
+      "cipDesc": "Educational Administration and Supervision.",
+      "programCount": 885,
+      "institutionCount": 633,
+      "median1Y": 57398,
+      "median2Y": 57105
+    },
+    {
+      "cipCode": "1305",
+      "cipDesc": "Educational/Instructional Media Design.",
+      "programCount": 146,
+      "institutionCount": 137,
+      "median1Y": 52107,
+      "median2Y": 51482
+    },
+    {
+      "cipCode": "1306",
+      "cipDesc": "Educational Assessment, Evaluation, and Research.",
+      "programCount": 17,
+      "institutionCount": 16,
+      "median1Y": 56234,
+      "median2Y": 54894
+    },
+    {
+      "cipCode": "1307",
+      "cipDesc": "International and Comparative Education.",
+      "programCount": 10,
+      "institutionCount": 10,
+      "median1Y": 50324,
+      "median2Y": 50227
+    },
+    {
+      "cipCode": "1309",
+      "cipDesc": "Social and Philosophical Foundations of Education.",
+      "programCount": 17,
+      "institutionCount": 16,
+      "median1Y": 53775,
+      "median2Y": 51482
+    },
+    {
+      "cipCode": "1310",
+      "cipDesc": "Special Education and Teaching.",
+      "programCount": 651,
+      "institutionCount": 500,
+      "median1Y": 44468,
+      "median2Y": 43798
+    },
+    {
+      "cipCode": "1311",
+      "cipDesc": "Student Counseling and Personnel Services.",
+      "programCount": 397,
+      "institutionCount": 365,
+      "median1Y": 43798,
+      "median2Y": 44077
+    },
+    {
+      "cipCode": "1312",
+      "cipDesc": "Teacher Education and Professional Development, Specific Levels and Methods.",
+      "programCount": 1638,
+      "institutionCount": 1239,
+      "median1Y": 37088,
+      "median2Y": 37241
+    },
+    {
+      "cipCode": "1313",
+      "cipDesc": "Teacher Education and Professional Development, Specific Subject Areas.",
+      "programCount": 900,
+      "institutionCount": 661,
+      "median1Y": 40685,
+      "median2Y": 39969
+    },
+    {
+      "cipCode": "1314",
+      "cipDesc": "Teaching English or French as a Second or Foreign Language.",
+      "programCount": 108,
+      "institutionCount": 101,
+      "median1Y": 49019,
+      "median2Y": 47260
+    },
+    {
+      "cipCode": "1315",
+      "cipDesc": "Teaching Assistants/Aides.",
+      "programCount": 15,
+      "institutionCount": 15,
+      "median1Y": 22234,
+      "median2Y": 20824
+    },
+    {
+      "cipCode": "1399",
+      "cipDesc": "Education, Other.",
+      "programCount": 107,
+      "institutionCount": 96,
+      "median1Y": 44418,
+      "median2Y": 44716
+    },
+    {
+      "cipCode": "1401",
+      "cipDesc": "Engineering, General.",
+      "programCount": 116,
+      "institutionCount": 111,
+      "median1Y": 63625,
+      "median2Y": 65061
+    },
+    {
+      "cipCode": "1402",
+      "cipDesc": "Aerospace, Aeronautical and Astronautical Engineering.",
+      "programCount": 101,
+      "institutionCount": 68,
+      "median1Y": 68880,
+      "median2Y": 67748
+    },
+    {
+      "cipCode": "1403",
+      "cipDesc": "Agricultural Engineering.",
+      "programCount": 30,
+      "institutionCount": 28,
+      "median1Y": 57641,
+      "median2Y": 56415
+    },
+    {
+      "cipCode": "1404",
+      "cipDesc": "Architectural Engineering.",
+      "programCount": 18,
+      "institutionCount": 16,
+      "median1Y": 67324,
+      "median2Y": 66782
+    },
+    {
+      "cipCode": "1405",
+      "cipDesc": "Biomedical/Medical Engineering.",
+      "programCount": 179,
+      "institutionCount": 129,
+      "median1Y": 63005,
+      "median2Y": 63005
+    },
+    {
+      "cipCode": "1406",
+      "cipDesc": "Ceramic Sciences and Engineering.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 63005,
+      "median2Y": 57318
+    },
+    {
+      "cipCode": "1407",
+      "cipDesc": "Chemical Engineering.",
+      "programCount": 180,
+      "institutionCount": 162,
+      "median1Y": 68537,
+      "median2Y": 68079
+    },
+    {
+      "cipCode": "1408",
+      "cipDesc": "Civil Engineering.",
+      "programCount": 350,
+      "institutionCount": 246,
+      "median1Y": 63275,
+      "median2Y": 63005
+    },
+    {
+      "cipCode": "1409",
+      "cipDesc": "Computer Engineering.",
+      "programCount": 247,
+      "institutionCount": 224,
+      "median1Y": 71531,
+      "median2Y": 71734
+    },
+    {
+      "cipCode": "1410",
+      "cipDesc": "Electrical, Electronics and Communications Engineering.",
+      "programCount": 400,
+      "institutionCount": 303,
+      "median1Y": 71575,
+      "median2Y": 70917
+    },
+    {
+      "cipCode": "1411",
+      "cipDesc": "Engineering Mechanics.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 65320,
+      "median2Y": 71575
+    },
+    {
+      "cipCode": "1412",
+      "cipDesc": "Engineering Physics.",
+      "programCount": 12,
+      "institutionCount": 12,
+      "median1Y": 59954,
+      "median2Y": 59124
+    },
+    {
+      "cipCode": "1413",
+      "cipDesc": "Engineering Science.",
+      "programCount": 21,
+      "institutionCount": 21,
+      "median1Y": 64940,
+      "median2Y": 63998
+    },
+    {
+      "cipCode": "1414",
+      "cipDesc": "Environmental/Environmental Health Engineering.",
+      "programCount": 65,
+      "institutionCount": 60,
+      "median1Y": 56641,
+      "median2Y": 54035
+    },
+    {
+      "cipCode": "1418",
+      "cipDesc": "Materials Engineering",
+      "programCount": 56,
+      "institutionCount": 49,
+      "median1Y": 67101,
+      "median2Y": 65114
+    },
+    {
+      "cipCode": "1419",
+      "cipDesc": "Mechanical Engineering.",
+      "programCount": 432,
+      "institutionCount": 313,
+      "median1Y": 67660,
+      "median2Y": 66728
+    },
+    {
+      "cipCode": "1420",
+      "cipDesc": "Metallurgical Engineering.",
+      "programCount": 4,
+      "institutionCount": 4,
+      "median1Y": 68579,
+      "median2Y": 67420
+    },
+    {
+      "cipCode": "1421",
+      "cipDesc": "Mining and Mineral Engineering.",
+      "programCount": 13,
+      "institutionCount": 12,
+      "median1Y": 73267,
+      "median2Y": 73994
+    },
+    {
+      "cipCode": "1422",
+      "cipDesc": "Naval Architecture and Marine Engineering.",
+      "programCount": 7,
+      "institutionCount": 6,
+      "median1Y": 75518,
+      "median2Y": 79605
+    },
+    {
+      "cipCode": "1423",
+      "cipDesc": "Nuclear Engineering.",
+      "programCount": 22,
+      "institutionCount": 18,
+      "median1Y": 66915,
+      "median2Y": 66287
+    },
+    {
+      "cipCode": "1424",
+      "cipDesc": "Ocean Engineering.",
+      "programCount": 4,
+      "institutionCount": 4,
+      "median1Y": 62278,
+      "median2Y": 63600
+    },
+    {
+      "cipCode": "1425",
+      "cipDesc": "Petroleum Engineering.",
+      "programCount": 26,
+      "institutionCount": 23,
+      "median1Y": 75069,
+      "median2Y": 75547
+    },
+    {
+      "cipCode": "1427",
+      "cipDesc": "Systems Engineering.",
+      "programCount": 40,
+      "institutionCount": 33,
+      "median1Y": 97293,
+      "median2Y": 95739
+    },
+    {
+      "cipCode": "1428",
+      "cipDesc": "Textile Sciences and Engineering.",
+      "programCount": 2,
+      "institutionCount": 1,
+      "median1Y": 46908,
+      "median2Y": 43479
+    },
+    {
+      "cipCode": "1432",
+      "cipDesc": "Polymer/Plastics Engineering.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 65491,
+      "median2Y": 69728
+    },
+    {
+      "cipCode": "1433",
+      "cipDesc": "Construction Engineering.",
+      "programCount": 20,
+      "institutionCount": 19,
+      "median1Y": 71351,
+      "median2Y": 71295
+    },
+    {
+      "cipCode": "1434",
+      "cipDesc": "Forest Engineering.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 53984,
+      "median2Y": 53608
+    },
+    {
+      "cipCode": "1435",
+      "cipDesc": "Industrial Engineering.",
+      "programCount": 121,
+      "institutionCount": 98,
+      "median1Y": 69991,
+      "median2Y": 69338
+    },
+    {
+      "cipCode": "1436",
+      "cipDesc": "Manufacturing Engineering.",
+      "programCount": 28,
+      "institutionCount": 27,
+      "median1Y": 65711,
+      "median2Y": 68499
+    },
+    {
+      "cipCode": "1437",
+      "cipDesc": "Operations Research.",
+      "programCount": 9,
+      "institutionCount": 6,
+      "median1Y": 94408,
+      "median2Y": 85096
+    },
+    {
+      "cipCode": "1438",
+      "cipDesc": "Surveying Engineering.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 57318,
+      "median2Y": 59722
+    },
+    {
+      "cipCode": "1439",
+      "cipDesc": "Geological/Geophysical Engineering.",
+      "programCount": 10,
+      "institutionCount": 7,
+      "median1Y": 56596,
+      "median2Y": 60004
+    },
+    {
+      "cipCode": "1441",
+      "cipDesc": "Electromechanical Engineering.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 70456,
+      "median2Y": 67380
+    },
+    {
+      "cipCode": "1442",
+      "cipDesc": "Mechatronics, Robotics, and Automation Engineering.",
+      "programCount": 8,
+      "institutionCount": 7,
+      "median1Y": 72440,
+      "median2Y": 63004
+    },
+    {
+      "cipCode": "1443",
+      "cipDesc": "Biochemical Engineering.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 53810,
+      "median2Y": 61807
+    },
+    {
+      "cipCode": "1445",
+      "cipDesc": "Biological/Biosystems Engineering.",
+      "programCount": 9,
+      "institutionCount": 9,
+      "median1Y": 50439,
+      "median2Y": 46087
+    },
+    {
+      "cipCode": "1499",
+      "cipDesc": "Engineering, Other.",
+      "programCount": 41,
+      "institutionCount": 35,
+      "median1Y": 71673,
+      "median2Y": 69990
+    },
+    {
+      "cipCode": "1500",
+      "cipDesc": "Engineering Technology, General.",
+      "programCount": 76,
+      "institutionCount": 72,
+      "median1Y": 52107,
+      "median2Y": 52107
+    },
+    {
+      "cipCode": "1501",
+      "cipDesc": "Architectural Engineering Technologies/Technicians.",
+      "programCount": 18,
+      "institutionCount": 18,
+      "median1Y": 47573,
+      "median2Y": 45082
+    },
+    {
+      "cipCode": "1502",
+      "cipDesc": "Civil Engineering Technologies/Technicians.",
+      "programCount": 43,
+      "institutionCount": 43,
+      "median1Y": 53984,
+      "median2Y": 51065
+    },
+    {
+      "cipCode": "1503",
+      "cipDesc": "Electrical Engineering Technologies/Technicians.",
+      "programCount": 220,
+      "institutionCount": 200,
+      "median1Y": 49683,
+      "median2Y": 48432
+    },
+    {
+      "cipCode": "1504",
+      "cipDesc": "Electromechanical Instrumentation and Maintenance Technologies/Technicians.",
+      "programCount": 126,
+      "institutionCount": 118,
+      "median1Y": 53914,
+      "median2Y": 52107
+    },
+    {
+      "cipCode": "1505",
+      "cipDesc": "Environmental Control Technologies/Technicians.",
+      "programCount": 143,
+      "institutionCount": 129,
+      "median1Y": 33993,
+      "median2Y": 33237
+    },
+    {
+      "cipCode": "1506",
+      "cipDesc": "Industrial Production Technologies/Technicians.",
+      "programCount": 167,
+      "institutionCount": 157,
+      "median1Y": 51273,
+      "median2Y": 50251
+    },
+    {
+      "cipCode": "1507",
+      "cipDesc": "Quality Control and Safety Technologies/Technicians.",
+      "programCount": 47,
+      "institutionCount": 40,
+      "median1Y": 64706,
+      "median2Y": 59666
+    },
+    {
+      "cipCode": "1508",
+      "cipDesc": "Mechanical Engineering Related Technologies/Technicians.",
+      "programCount": 119,
+      "institutionCount": 113,
+      "median1Y": 55286,
+      "median2Y": 54928
+    },
+    {
+      "cipCode": "1509",
+      "cipDesc": "Mining and Petroleum Technologies/Technicians.",
+      "programCount": 17,
+      "institutionCount": 16,
+      "median1Y": 52107,
+      "median2Y": 48432
+    },
+    {
+      "cipCode": "1510",
+      "cipDesc": "Construction Engineering Technologies.",
+      "programCount": 57,
+      "institutionCount": 53,
+      "median1Y": 63997,
+      "median2Y": 63997
+    },
+    {
+      "cipCode": "1511",
+      "cipDesc": "Engineering-Related Technologies.",
+      "programCount": 17,
+      "institutionCount": 17,
+      "median1Y": 57318,
+      "median2Y": 53108
+    },
+    {
+      "cipCode": "1512",
+      "cipDesc": "Computer Engineering Technologies/Technicians.",
+      "programCount": 93,
+      "institutionCount": 91,
+      "median1Y": 39009,
+      "median2Y": 40485
+    },
+    {
+      "cipCode": "1513",
+      "cipDesc": "Drafting/Design Engineering Technologies/Technicians.",
+      "programCount": 121,
+      "institutionCount": 117,
+      "median1Y": 41025,
+      "median2Y": 41140
+    },
+    {
+      "cipCode": "1514",
+      "cipDesc": "Nuclear Engineering Technologies/Technicians.",
+      "programCount": 5,
+      "institutionCount": 5,
+      "median1Y": 84653,
+      "median2Y": 94408
+    },
+    {
+      "cipCode": "1515",
+      "cipDesc": "Engineering-Related Fields.",
+      "programCount": 95,
+      "institutionCount": 78,
+      "median1Y": 73148,
+      "median2Y": 74576
+    },
+    {
+      "cipCode": "1516",
+      "cipDesc": "Nanotechnology.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 47260,
+      "median2Y": null
+    },
+    {
+      "cipCode": "1517",
+      "cipDesc": "Energy Systems Technologies/Technicians.",
+      "programCount": 21,
+      "institutionCount": 20,
+      "median1Y": 58089,
+      "median2Y": 47260
+    },
+    {
+      "cipCode": "1599",
+      "cipDesc": "Engineering Technologies/Technicians, Other.",
+      "programCount": 31,
+      "institutionCount": 31,
+      "median1Y": 54713,
+      "median2Y": 51482
+    },
+    {
+      "cipCode": "1601",
+      "cipDesc": "Linguistic, Comparative, and Related Language Studies and Services.",
+      "programCount": 160,
+      "institutionCount": 150,
+      "median1Y": 29685,
+      "median2Y": 27772
+    },
+    {
+      "cipCode": "1603",
+      "cipDesc": "East Asian Languages, Literatures, and Linguistics.",
+      "programCount": 46,
+      "institutionCount": 46,
+      "median1Y": 29685,
+      "median2Y": 31147
+    },
+    {
+      "cipCode": "1604",
+      "cipDesc": "Slavic, Baltic and Albanian Languages, Literatures, and Linguistics.",
+      "programCount": 6,
+      "institutionCount": 6,
+      "median1Y": 33993,
+      "median2Y": 32391
+    },
+    {
+      "cipCode": "1605",
+      "cipDesc": "Germanic Languages, Literatures, and Linguistics.",
+      "programCount": 18,
+      "institutionCount": 18,
+      "median1Y": 33993,
+      "median2Y": 33014
+    },
+    {
+      "cipCode": "1609",
+      "cipDesc": "Romance Languages, Literatures, and Linguistics.",
+      "programCount": 386,
+      "institutionCount": 368,
+      "median1Y": 32569,
+      "median2Y": 32273
+    },
+    {
+      "cipCode": "1611",
+      "cipDesc": "Middle/Near Eastern and Semitic Languages, Literatures, and Linguistics.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 39549,
+      "median2Y": 36848
+    },
+    {
+      "cipCode": "1612",
+      "cipDesc": "Classics and Classical Languages, Literatures, and Linguistics.",
+      "programCount": 13,
+      "institutionCount": 13,
+      "median1Y": 29283,
+      "median2Y": 26933
+    },
+    {
+      "cipCode": "1616",
+      "cipDesc": "American Sign Language.",
+      "programCount": 42,
+      "institutionCount": 40,
+      "median1Y": 29685,
+      "median2Y": 29232
+    },
+    {
+      "cipCode": "1699",
+      "cipDesc": "Foreign Languages, Literatures, and Linguistics, Other.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 39841,
+      "median2Y": 33637
+    },
+    {
+      "cipCode": "1901",
+      "cipDesc": "Family and Consumer Sciences/Human Sciences, General.",
+      "programCount": 73,
+      "institutionCount": 63,
+      "median1Y": 31021,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "1902",
+      "cipDesc": "Family and Consumer Sciences/Human Sciences Business Services.",
+      "programCount": 10,
+      "institutionCount": 9,
+      "median1Y": 42073,
+      "median2Y": 39502
+    },
+    {
+      "cipCode": "1904",
+      "cipDesc": "Family and Consumer Economics and Related Studies.",
+      "programCount": 25,
+      "institutionCount": 22,
+      "median1Y": 39729,
+      "median2Y": 39214
+    },
+    {
+      "cipCode": "1905",
+      "cipDesc": "Foods, Nutrition, and Related Services.",
+      "programCount": 103,
+      "institutionCount": 87,
+      "median1Y": 34127,
+      "median2Y": 32707
+    },
+    {
+      "cipCode": "1906",
+      "cipDesc": "Housing and Human Environments.",
+      "programCount": 9,
+      "institutionCount": 9,
+      "median1Y": 39271,
+      "median2Y": 42283
+    },
+    {
+      "cipCode": "1907",
+      "cipDesc": "Human Development, Family Studies, and Related Services.",
+      "programCount": 443,
+      "institutionCount": 387,
+      "median1Y": 26933,
+      "median2Y": 28381
+    },
+    {
+      "cipCode": "1909",
+      "cipDesc": "Apparel and Textiles.",
+      "programCount": 65,
+      "institutionCount": 60,
+      "median1Y": 36938,
+      "median2Y": 35327
+    },
+    {
+      "cipCode": "1999",
+      "cipDesc": "Family and Consumer Sciences/Human Sciences, Other.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 28882,
+      "median2Y": 50563
+    },
+    {
+      "cipCode": "2200",
+      "cipDesc": "Non-Professional General Legal Studies (Undergraduate).",
+      "programCount": 74,
+      "institutionCount": 61,
+      "median1Y": 38621,
+      "median2Y": 37748
+    },
+    {
+      "cipCode": "2201",
+      "cipDesc": "Law.",
+      "programCount": 231,
+      "institutionCount": 222,
+      "median1Y": 59288,
+      "median2Y": 57318
+    },
+    {
+      "cipCode": "2202",
+      "cipDesc": "Legal Research and Advanced Professional Studies.",
+      "programCount": 58,
+      "institutionCount": 54,
+      "median1Y": 59293,
+      "median2Y": 63749
+    },
+    {
+      "cipCode": "2203",
+      "cipDesc": "Legal Support Services.",
+      "programCount": 448,
+      "institutionCount": 343,
+      "median1Y": 31083,
+      "median2Y": 30771
+    },
+    {
+      "cipCode": "2299",
+      "cipDesc": "Legal Professions and Studies, Other.",
+      "programCount": 49,
+      "institutionCount": 43,
+      "median1Y": 42309,
+      "median2Y": 44591
+    },
+    {
+      "cipCode": "2301",
+      "cipDesc": "English Language and Literature, General.",
+      "programCount": 951,
+      "institutionCount": 785,
+      "median1Y": 29685,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "2313",
+      "cipDesc": "Rhetoric and Composition/Writing Studies.",
+      "programCount": 330,
+      "institutionCount": 272,
+      "median1Y": 32124,
+      "median2Y": 31405
+    },
+    {
+      "cipCode": "2314",
+      "cipDesc": "Literature.",
+      "programCount": 13,
+      "institutionCount": 13,
+      "median1Y": 29685,
+      "median2Y": 27874
+    },
+    {
+      "cipCode": "2399",
+      "cipDesc": "English Language and Literature/Letters, Other.",
+      "programCount": 22,
+      "institutionCount": 22,
+      "median1Y": 32747,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "2401",
+      "cipDesc": "Liberal Arts and Sciences, General Studies and Humanities.",
+      "programCount": 1640,
+      "institutionCount": 1463,
+      "median1Y": 27553,
+      "median2Y": 26353
+    },
+    {
+      "cipCode": "2501",
+      "cipDesc": "Library Science and Administration.",
+      "programCount": 64,
+      "institutionCount": 60,
+      "median1Y": 42940,
+      "median2Y": 43128
+    },
+    {
+      "cipCode": "2503",
+      "cipDesc": "Library and Archives Assisting.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 17412,
+      "median2Y": 14627
+    },
+    {
+      "cipCode": "2599",
+      "cipDesc": "Library Science, Other.",
+      "programCount": 5,
+      "institutionCount": 5,
+      "median1Y": 48112,
+      "median2Y": 49136
+    },
+    {
+      "cipCode": "2601",
+      "cipDesc": "Biology, General.",
+      "programCount": 1141,
+      "institutionCount": 1047,
+      "median1Y": 29232,
+      "median2Y": 28598
+    },
+    {
+      "cipCode": "2602",
+      "cipDesc": "Biochemistry, Biophysics and Molecular Biology.",
+      "programCount": 192,
+      "institutionCount": 184,
+      "median1Y": 33993,
+      "median2Y": 32925
+    },
+    {
+      "cipCode": "2603",
+      "cipDesc": "Botany/Plant Biology.",
+      "programCount": 12,
+      "institutionCount": 11,
+      "median1Y": 29323,
+      "median2Y": 23761
+    },
+    {
+      "cipCode": "2604",
+      "cipDesc": "Cell/Cellular Biology and Anatomical Sciences.",
+      "programCount": 57,
+      "institutionCount": 49,
+      "median1Y": 35190,
+      "median2Y": 34526
+    },
+    {
+      "cipCode": "2605",
+      "cipDesc": "Microbiological Sciences and Immunology.",
+      "programCount": 80,
+      "institutionCount": 74,
+      "median1Y": 35594,
+      "median2Y": 35060
+    },
+    {
+      "cipCode": "2607",
+      "cipDesc": "Zoology/Animal Biology.",
+      "programCount": 67,
+      "institutionCount": 58,
+      "median1Y": 26208,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "2608",
+      "cipDesc": "Genetics.",
+      "programCount": 31,
+      "institutionCount": 28,
+      "median1Y": 59124,
+      "median2Y": 36717
+    },
+    {
+      "cipCode": "2609",
+      "cipDesc": "Physiology, Pathology and Related Sciences.",
+      "programCount": 87,
+      "institutionCount": 78,
+      "median1Y": 29956,
+      "median2Y": 29902
+    },
+    {
+      "cipCode": "2610",
+      "cipDesc": "Pharmacology and Toxicology.",
+      "programCount": 12,
+      "institutionCount": 11,
+      "median1Y": 37352,
+      "median2Y": 42908
+    },
+    {
+      "cipCode": "2611",
+      "cipDesc": "Biomathematics, Bioinformatics, and Computational Biology.",
+      "programCount": 28,
+      "institutionCount": 25,
+      "median1Y": 70848,
+      "median2Y": 69002
+    },
+    {
+      "cipCode": "2612",
+      "cipDesc": "Biotechnology.",
+      "programCount": 50,
+      "institutionCount": 49,
+      "median1Y": 45169,
+      "median2Y": 45500
+    },
+    {
+      "cipCode": "2613",
+      "cipDesc": "Ecology, Evolution, Systematics, and Population Biology.",
+      "programCount": 126,
+      "institutionCount": 98,
+      "median1Y": 30538,
+      "median2Y": 28598
+    },
+    {
+      "cipCode": "2615",
+      "cipDesc": "Neurobiology and Neurosciences.",
+      "programCount": 102,
+      "institutionCount": 97,
+      "median1Y": 28598,
+      "median2Y": 30409
+    },
+    {
+      "cipCode": "2699",
+      "cipDesc": "Biological and Biomedical Sciences, Other.",
+      "programCount": 38,
+      "institutionCount": 34,
+      "median1Y": 32391,
+      "median2Y": 29995
+    },
+    {
+      "cipCode": "2701",
+      "cipDesc": "Mathematics.",
+      "programCount": 508,
+      "institutionCount": 472,
+      "median1Y": 45263,
+      "median2Y": 43798
+    },
+    {
+      "cipCode": "2703",
+      "cipDesc": "Applied Mathematics.",
+      "programCount": 93,
+      "institutionCount": 81,
+      "median1Y": 58673,
+      "median2Y": 58673
+    },
+    {
+      "cipCode": "2705",
+      "cipDesc": "Statistics.",
+      "programCount": 88,
+      "institutionCount": 75,
+      "median1Y": 61516,
+      "median2Y": 62509
+    },
+    {
+      "cipCode": "2799",
+      "cipDesc": "Mathematics and Statistics, Other.",
+      "programCount": 13,
+      "institutionCount": 13,
+      "median1Y": 47260,
+      "median2Y": 52107
+    },
+    {
+      "cipCode": "2805",
+      "cipDesc": "Military Science and Operational Studies.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": null,
+      "median2Y": 58673
+    },
+    {
+      "cipCode": "2806",
+      "cipDesc": "Security Policy and Strategy.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": null,
+      "median2Y": 57798
+    },
+    {
+      "cipCode": "2902",
+      "cipDesc": "Intelligence, Command Control and Information Operations.",
+      "programCount": 10,
+      "institutionCount": 7,
+      "median1Y": 59917,
+      "median2Y": 47776
+    },
+    {
+      "cipCode": "2903",
+      "cipDesc": "Military Applied Sciences.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 55512,
+      "median2Y": 56415
+    },
+    {
+      "cipCode": "2904",
+      "cipDesc": "Military Systems and Maintenance Technology.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 38289,
+      "median2Y": null
+    },
+    {
+      "cipCode": "2999",
+      "cipDesc": "Military Technologies and Applied Sciences, Other.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 57318,
+      "median2Y": 54869
+    },
+    {
+      "cipCode": "3000",
+      "cipDesc": "Multi-/Interdisciplinary Studies, General.",
+      "programCount": 74,
+      "institutionCount": 70,
+      "median1Y": 31848,
+      "median2Y": 32071
+    },
+    {
+      "cipCode": "3001",
+      "cipDesc": "Biological and Physical Sciences.",
+      "programCount": 116,
+      "institutionCount": 116,
+      "median1Y": 28598,
+      "median2Y": 28598
+    },
+    {
+      "cipCode": "3005",
+      "cipDesc": "Peace Studies and Conflict Resolution.",
+      "programCount": 34,
+      "institutionCount": 31,
+      "median1Y": 44796,
+      "median2Y": 42682
+    },
+    {
+      "cipCode": "3006",
+      "cipDesc": "Systems Science and Theory.",
+      "programCount": 13,
+      "institutionCount": 12,
+      "median1Y": 58221,
+      "median2Y": 50856
+    },
+    {
+      "cipCode": "3008",
+      "cipDesc": "Mathematics and Computer Science.",
+      "programCount": 9,
+      "institutionCount": 9,
+      "median1Y": 79081,
+      "median2Y": 82354
+    },
+    {
+      "cipCode": "3010",
+      "cipDesc": "Biopsychology.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 38313,
+      "median2Y": 35330
+    },
+    {
+      "cipCode": "3011",
+      "cipDesc": "Gerontology.",
+      "programCount": 29,
+      "institutionCount": 28,
+      "median1Y": 35060,
+      "median2Y": 37569
+    },
+    {
+      "cipCode": "3012",
+      "cipDesc": "Historic Preservation and Conservation.",
+      "programCount": 9,
+      "institutionCount": 8,
+      "median1Y": 38829,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "3014",
+      "cipDesc": "Museology/Museum Studies.",
+      "programCount": 22,
+      "institutionCount": 20,
+      "median1Y": 36311,
+      "median2Y": 36356
+    },
+    {
+      "cipCode": "3015",
+      "cipDesc": "Science, Technology and Society.",
+      "programCount": 13,
+      "institutionCount": 12,
+      "median1Y": 45696,
+      "median2Y": 55390
+    },
+    {
+      "cipCode": "3016",
+      "cipDesc": "Accounting and Computer Science.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 39927,
+      "median2Y": 35060
+    },
+    {
+      "cipCode": "3017",
+      "cipDesc": "Behavioral Sciences.",
+      "programCount": 61,
+      "institutionCount": 60,
+      "median1Y": 31877,
+      "median2Y": 31015
+    },
+    {
+      "cipCode": "3018",
+      "cipDesc": "Natural Sciences.",
+      "programCount": 16,
+      "institutionCount": 16,
+      "median1Y": 29685,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "3019",
+      "cipDesc": "Nutrition Sciences.",
+      "programCount": 78,
+      "institutionCount": 68,
+      "median1Y": 33993,
+      "median2Y": 32925
+    },
+    {
+      "cipCode": "3020",
+      "cipDesc": "International/Global Studies.",
+      "programCount": 119,
+      "institutionCount": 114,
+      "median1Y": 33032,
+      "median2Y": 33459
+    },
+    {
+      "cipCode": "3021",
+      "cipDesc": "Holocaust and Related Studies.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": null,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "3022",
+      "cipDesc": "Classical and Ancient Studies.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 21508,
+      "median2Y": 23818
+    },
+    {
+      "cipCode": "3023",
+      "cipDesc": "Intercultural/Multicultural and Diversity Studies.",
+      "programCount": 11,
+      "institutionCount": 11,
+      "median1Y": 34704,
+      "median2Y": 32111
+    },
+    {
+      "cipCode": "3025",
+      "cipDesc": "Cognitive Science.",
+      "programCount": 26,
+      "institutionCount": 26,
+      "median1Y": 35594,
+      "median2Y": 37208
+    },
+    {
+      "cipCode": "3026",
+      "cipDesc": "Cultural Studies/Critical Theory and Analysis.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 29685,
+      "median2Y": 27765
+    },
+    {
+      "cipCode": "3027",
+      "cipDesc": "Human Biology.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 33779,
+      "median2Y": 31189
+    },
+    {
+      "cipCode": "3028",
+      "cipDesc": "Dispute Resolution.",
+      "programCount": 10,
+      "institutionCount": 10,
+      "median1Y": 53723,
+      "median2Y": 61278
+    },
+    {
+      "cipCode": "3030",
+      "cipDesc": "Computational Science.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 74961,
+      "median2Y": 67660
+    },
+    {
+      "cipCode": "3031",
+      "cipDesc": "Human Computer Interaction.",
+      "programCount": 13,
+      "institutionCount": 10,
+      "median1Y": 64505,
+      "median2Y": 69732
+    },
+    {
+      "cipCode": "3032",
+      "cipDesc": "Marine Sciences.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 30765,
+      "median2Y": 29568
+    },
+    {
+      "cipCode": "3033",
+      "cipDesc": "Sustainability Studies.",
+      "programCount": 26,
+      "institutionCount": 25,
+      "median1Y": 40467,
+      "median2Y": 38871
+    },
+    {
+      "cipCode": "3099",
+      "cipDesc": "Multi/Interdisciplinary Studies, Other.",
+      "programCount": 360,
+      "institutionCount": 326,
+      "median1Y": 36002,
+      "median2Y": 34882
+    },
+    {
+      "cipCode": "3101",
+      "cipDesc": "Parks, Recreation and Leisure Studies.",
+      "programCount": 79,
+      "institutionCount": 74,
+      "median1Y": 32747,
+      "median2Y": 30409
+    },
+    {
+      "cipCode": "3103",
+      "cipDesc": "Parks, Recreation and Leisure Facilities Management.",
+      "programCount": 97,
+      "institutionCount": 80,
+      "median1Y": 33216,
+      "median2Y": 31495
+    },
+    {
+      "cipCode": "3105",
+      "cipDesc": "Health and Physical Education/Fitness.",
+      "programCount": 943,
+      "institutionCount": 753,
+      "median1Y": 31374,
+      "median2Y": 30926
+    },
+    {
+      "cipCode": "3106",
+      "cipDesc": "Outdoor Education.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 31851,
+      "median2Y": 26353
+    },
+    {
+      "cipCode": "3199",
+      "cipDesc": "Parks, Recreation, Leisure, and Fitness Studies, Other.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 29685,
+      "median2Y": 28508
+    },
+    {
+      "cipCode": "3201",
+      "cipDesc": "Basic Skills and Developmental/Remedial Education.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 29685,
+      "median2Y": 29340
+    },
+    {
+      "cipCode": "3401",
+      "cipDesc": "Health-Related Knowledge and Skills.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 28055,
+      "median2Y": 24983
+    },
+    {
+      "cipCode": "3601",
+      "cipDesc": "Leisure and Recreational Activities.",
+      "programCount": 6,
+      "institutionCount": 6,
+      "median1Y": 23937,
+      "median2Y": 22721
+    },
+    {
+      "cipCode": "3800",
+      "cipDesc": "Philosophy and Religious Studies, General.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 29685,
+      "median2Y": null
+    },
+    {
+      "cipCode": "3801",
+      "cipDesc": "Philosophy.",
+      "programCount": 192,
+      "institutionCount": 190,
+      "median1Y": 29685,
+      "median2Y": 28598
+    },
+    {
+      "cipCode": "3802",
+      "cipDesc": "Religion/Religious Studies.",
+      "programCount": 92,
+      "institutionCount": 82,
+      "median1Y": 32925,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "3899",
+      "cipDesc": "Philosophy and Religious Studies, Other.",
+      "programCount": 4,
+      "institutionCount": 4,
+      "median1Y": 29438,
+      "median2Y": 33367
+    },
+    {
+      "cipCode": "3902",
+      "cipDesc": "Bible/Biblical Studies.",
+      "programCount": 70,
+      "institutionCount": 59,
+      "median1Y": 28902,
+      "median2Y": 29141
+    },
+    {
+      "cipCode": "3903",
+      "cipDesc": "Missions/Missionary Studies and Missiology.",
+      "programCount": 19,
+      "institutionCount": 18,
+      "median1Y": 25194,
+      "median2Y": 21872
+    },
+    {
+      "cipCode": "3904",
+      "cipDesc": "Religious Education.",
+      "programCount": 31,
+      "institutionCount": 27,
+      "median1Y": 32213,
+      "median2Y": 30949
+    },
+    {
+      "cipCode": "3905",
+      "cipDesc": "Religious/Sacred Music.",
+      "programCount": 12,
+      "institutionCount": 11,
+      "median1Y": 29685,
+      "median2Y": 28236
+    },
+    {
+      "cipCode": "3906",
+      "cipDesc": "Theological and Ministerial Studies.",
+      "programCount": 210,
+      "institutionCount": 172,
+      "median1Y": 41454,
+      "median2Y": 41565
+    },
+    {
+      "cipCode": "3907",
+      "cipDesc": "Pastoral Counseling and Specialized Ministries.",
+      "programCount": 81,
+      "institutionCount": 72,
+      "median1Y": 29504,
+      "median2Y": 28816
+    },
+    {
+      "cipCode": "3999",
+      "cipDesc": "Theology and Religious Vocations, Other.",
+      "programCount": 26,
+      "institutionCount": 21,
+      "median1Y": 40821,
+      "median2Y": 40113
+    },
+    {
+      "cipCode": "4001",
+      "cipDesc": "Physical Sciences.",
+      "programCount": 26,
+      "institutionCount": 26,
+      "median1Y": 25001,
+      "median2Y": 23579
+    },
+    {
+      "cipCode": "4002",
+      "cipDesc": "Astronomy and Astrophysics.",
+      "programCount": 9,
+      "institutionCount": 9,
+      "median1Y": 42123,
+      "median2Y": 36848
+    },
+    {
+      "cipCode": "4004",
+      "cipDesc": "Atmospheric Sciences and Meteorology.",
+      "programCount": 26,
+      "institutionCount": 26,
+      "median1Y": 36560,
+      "median2Y": 35060
+    },
+    {
+      "cipCode": "4005",
+      "cipDesc": "Chemistry.",
+      "programCount": 400,
+      "institutionCount": 342,
+      "median1Y": 41109,
+      "median2Y": 39369
+    },
+    {
+      "cipCode": "4006",
+      "cipDesc": "Geological and Earth Sciences/Geosciences.",
+      "programCount": 262,
+      "institutionCount": 227,
+      "median1Y": 38289,
+      "median2Y": 35416
+    },
+    {
+      "cipCode": "4008",
+      "cipDesc": "Physics.",
+      "programCount": 170,
+      "institutionCount": 146,
+      "median1Y": 44845,
+      "median2Y": 43798
+    },
+    {
+      "cipCode": "4010",
+      "cipDesc": "Materials Sciences.",
+      "programCount": 6,
+      "institutionCount": 6,
+      "median1Y": 62328,
+      "median2Y": 63005
+    },
+    {
+      "cipCode": "4099",
+      "cipDesc": "Physical Sciences, Other.",
+      "programCount": 5,
+      "institutionCount": 5,
+      "median1Y": 23693,
+      "median2Y": 34061
+    },
+    {
+      "cipCode": "4100",
+      "cipDesc": "Science Technologies/Technicians, General.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 50856,
+      "median2Y": null
+    },
+    {
+      "cipCode": "4101",
+      "cipDesc": "Biology Technician/Biotechnology Laboratory Technician.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 37363,
+      "median2Y": 40644
+    },
+    {
+      "cipCode": "4102",
+      "cipDesc": "Nuclear and Industrial Radiologic Technologies/Technicians.",
+      "programCount": 8,
+      "institutionCount": 8,
+      "median1Y": 48933,
+      "median2Y": 50000
+    },
+    {
+      "cipCode": "4103",
+      "cipDesc": "Physical Science Technologies/Technicians.",
+      "programCount": 25,
+      "institutionCount": 21,
+      "median1Y": 52607,
+      "median2Y": 51436
+    },
+    {
+      "cipCode": "4199",
+      "cipDesc": "Science Technologies/Technicians, Other.",
+      "programCount": 19,
+      "institutionCount": 19,
+      "median1Y": 49019,
+      "median2Y": 51690
+    },
+    {
+      "cipCode": "4201",
+      "cipDesc": "Psychology, General.",
+      "programCount": 1482,
+      "institutionCount": 1283,
+      "median1Y": 30228,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "4227",
+      "cipDesc": "Research and Experimental Psychology.",
+      "programCount": 104,
+      "institutionCount": 95,
+      "median1Y": 32854,
+      "median2Y": 30942
+    },
+    {
+      "cipCode": "4228",
+      "cipDesc": "Clinical, Counseling and Applied Psychology.",
+      "programCount": 648,
+      "institutionCount": 505,
+      "median1Y": 48041,
+      "median2Y": 46673
+    },
+    {
+      "cipCode": "4299",
+      "cipDesc": "Psychology, Other.",
+      "programCount": 42,
+      "institutionCount": 41,
+      "median1Y": 40017,
+      "median2Y": 41007
+    },
+    {
+      "cipCode": "4301",
+      "cipDesc": "Criminal Justice and Corrections.",
+      "programCount": 1959,
+      "institutionCount": 1480,
+      "median1Y": 34573,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "4302",
+      "cipDesc": "Fire Protection.",
+      "programCount": 159,
+      "institutionCount": 119,
+      "median1Y": 49019,
+      "median2Y": 50930
+    },
+    {
+      "cipCode": "4303",
+      "cipDesc": "Homeland Security.",
+      "programCount": 83,
+      "institutionCount": 70,
+      "median1Y": 48265,
+      "median2Y": 44776
+    },
+    {
+      "cipCode": "4304",
+      "cipDesc": "Security Science and Technology.",
+      "programCount": 103,
+      "institutionCount": 86,
+      "median1Y": 41119,
+      "median2Y": 41184
+    },
+    {
+      "cipCode": "4399",
+      "cipDesc": "Homeland Security, Law Enforcement, Firefighting and Related Protective Services, Other.",
+      "programCount": 35,
+      "institutionCount": 31,
+      "median1Y": 46087,
+      "median2Y": 46634
+    },
+    {
+      "cipCode": "4400",
+      "cipDesc": "Human Services, General.",
+      "programCount": 253,
+      "institutionCount": 212,
+      "median1Y": 31871,
+      "median2Y": 31707
+    },
+    {
+      "cipCode": "4402",
+      "cipDesc": "Community Organization and Advocacy.",
+      "programCount": 57,
+      "institutionCount": 54,
+      "median1Y": 32957,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "4404",
+      "cipDesc": "Public Administration.",
+      "programCount": 377,
+      "institutionCount": 322,
+      "median1Y": 50105,
+      "median2Y": 50060
+    },
+    {
+      "cipCode": "4405",
+      "cipDesc": "Public Policy Analysis.",
+      "programCount": 97,
+      "institutionCount": 81,
+      "median1Y": 51273,
+      "median2Y": 50439
+    },
+    {
+      "cipCode": "4407",
+      "cipDesc": "Social Work.",
+      "programCount": 809,
+      "institutionCount": 589,
+      "median1Y": 35274,
+      "median2Y": 35060
+    },
+    {
+      "cipCode": "4499",
+      "cipDesc": "Public Administration and Social Service Professions, Other.",
+      "programCount": 30,
+      "institutionCount": 28,
+      "median1Y": 43891,
+      "median2Y": 45383
+    },
+    {
+      "cipCode": "4501",
+      "cipDesc": "Social Sciences, General.",
+      "programCount": 164,
+      "institutionCount": 156,
+      "median1Y": 32789,
+      "median2Y": 32148
+    },
+    {
+      "cipCode": "4502",
+      "cipDesc": "Anthropology.",
+      "programCount": 305,
+      "institutionCount": 273,
+      "median1Y": 27439,
+      "median2Y": 25938
+    },
+    {
+      "cipCode": "4503",
+      "cipDesc": "Archeology.",
+      "programCount": 8,
+      "institutionCount": 6,
+      "median1Y": 24563,
+      "median2Y": 25238
+    },
+    {
+      "cipCode": "4504",
+      "cipDesc": "Criminology.",
+      "programCount": 163,
+      "institutionCount": 145,
+      "median1Y": 34842,
+      "median2Y": 34090
+    },
+    {
+      "cipCode": "4505",
+      "cipDesc": "Demography and Population Studies.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 51000,
+      "median2Y": null
+    },
+    {
+      "cipCode": "4506",
+      "cipDesc": "Economics.",
+      "programCount": 501,
+      "institutionCount": 462,
+      "median1Y": 47650,
+      "median2Y": 47260
+    },
+    {
+      "cipCode": "4507",
+      "cipDesc": "Geography and Cartography.",
+      "programCount": 208,
+      "institutionCount": 189,
+      "median1Y": 37568,
+      "median2Y": 36524
+    },
+    {
+      "cipCode": "4509",
+      "cipDesc": "International Relations and National Security Studies.",
+      "programCount": 222,
+      "institutionCount": 189,
+      "median1Y": 39729,
+      "median2Y": 38797
+    },
+    {
+      "cipCode": "4510",
+      "cipDesc": "Political Science and Government.",
+      "programCount": 687,
+      "institutionCount": 642,
+      "median1Y": 35416,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "4511",
+      "cipDesc": "Sociology.",
+      "programCount": 675,
+      "institutionCount": 643,
+      "median1Y": 32284,
+      "median2Y": 31495
+    },
+    {
+      "cipCode": "4512",
+      "cipDesc": "Urban Studies/Affairs.",
+      "programCount": 51,
+      "institutionCount": 47,
+      "median1Y": 40287,
+      "median2Y": 38289
+    },
+    {
+      "cipCode": "4513",
+      "cipDesc": "Sociology and Anthropology.",
+      "programCount": 10,
+      "institutionCount": 10,
+      "median1Y": 29685,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "4599",
+      "cipDesc": "Social Sciences, Other.",
+      "programCount": 69,
+      "institutionCount": 64,
+      "median1Y": 35505,
+      "median2Y": 35060
+    },
+    {
+      "cipCode": "4600",
+      "cipDesc": "Construction Trades, General.",
+      "programCount": 13,
+      "institutionCount": 13,
+      "median1Y": 27552,
+      "median2Y": 30521
+    },
+    {
+      "cipCode": "4601",
+      "cipDesc": "Mason/Masonry.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 30409,
+      "median2Y": 24035
+    },
+    {
+      "cipCode": "4602",
+      "cipDesc": "Carpenters.",
+      "programCount": 32,
+      "institutionCount": 31,
+      "median1Y": 28381,
+      "median2Y": 29902
+    },
+    {
+      "cipCode": "4603",
+      "cipDesc": "Electrical and Power Transmission Installers.",
+      "programCount": 300,
+      "institutionCount": 266,
+      "median1Y": 35060,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "4604",
+      "cipDesc": "Building/Construction Finishing, Management, and Inspection.",
+      "programCount": 74,
+      "institutionCount": 69,
+      "median1Y": 27397,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "4605",
+      "cipDesc": "Plumbing and Related Water Supply Services.",
+      "programCount": 28,
+      "institutionCount": 28,
+      "median1Y": 31941,
+      "median2Y": 31219
+    },
+    {
+      "cipCode": "4699",
+      "cipDesc": "Construction Trades, Other.",
+      "programCount": 5,
+      "institutionCount": 5,
+      "median1Y": 31314,
+      "median2Y": 28224
+    },
+    {
+      "cipCode": "4700",
+      "cipDesc": "Mechanics and Repairers, General.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 29685,
+      "median2Y": 22989
+    },
+    {
+      "cipCode": "4701",
+      "cipDesc": "Electrical/Electronics Maintenance and Repair Technology.",
+      "programCount": 116,
+      "institutionCount": 110,
+      "median1Y": 31732,
+      "median2Y": 30988
+    },
+    {
+      "cipCode": "4702",
+      "cipDesc": "Heating, Air Conditioning, Ventilation and Refrigeration Maintenance Technology/Technician (HAC, HACR, HVAC, HVACR).",
+      "programCount": 353,
+      "institutionCount": 324,
+      "median1Y": 33993,
+      "median2Y": 32818
+    },
+    {
+      "cipCode": "4703",
+      "cipDesc": "Heavy/Industrial Equipment Maintenance Technologies.",
+      "programCount": 119,
+      "institutionCount": 104,
+      "median1Y": 45696,
+      "median2Y": 41956
+    },
+    {
+      "cipCode": "4704",
+      "cipDesc": "Precision Systems Maintenance and Repair Technologies.",
+      "programCount": 16,
+      "institutionCount": 15,
+      "median1Y": 30988,
+      "median2Y": 30771
+    },
+    {
+      "cipCode": "4706",
+      "cipDesc": "Vehicle Maintenance and Repair Technologies.",
+      "programCount": 639,
+      "institutionCount": 527,
+      "median1Y": 34526,
+      "median2Y": 32925
+    },
+    {
+      "cipCode": "4799",
+      "cipDesc": "Mechanic and Repair Technologies/Technicians, Other.",
+      "programCount": 18,
+      "institutionCount": 16,
+      "median1Y": 37233,
+      "median2Y": 45989
+    },
+    {
+      "cipCode": "4805",
+      "cipDesc": "Precision Metal Working.",
+      "programCount": 557,
+      "institutionCount": 492,
+      "median1Y": 35306,
+      "median2Y": 33459
+    },
+    {
+      "cipCode": "4807",
+      "cipDesc": "Woodworking.",
+      "programCount": 9,
+      "institutionCount": 8,
+      "median1Y": 33993,
+      "median2Y": 35240
+    },
+    {
+      "cipCode": "4899",
+      "cipDesc": "Precision Production, Other.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 21964,
+      "median2Y": 32569
+    },
+    {
+      "cipCode": "4901",
+      "cipDesc": "Air Transportation.",
+      "programCount": 89,
+      "institutionCount": 76,
+      "median1Y": 45383,
+      "median2Y": 43304
+    },
+    {
+      "cipCode": "4902",
+      "cipDesc": "Ground Transportation.",
+      "programCount": 131,
+      "institutionCount": 131,
+      "median1Y": 36668,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "4903",
+      "cipDesc": "Marine Transportation.",
+      "programCount": 15,
+      "institutionCount": 15,
+      "median1Y": 62395,
+      "median2Y": 41870
+    },
+    {
+      "cipCode": "4999",
+      "cipDesc": "Transportation and Materials Moving, Other.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 48342,
+      "median2Y": 43487
+    },
+    {
+      "cipCode": "5001",
+      "cipDesc": "Visual and Performing Arts, General.",
+      "programCount": 115,
+      "institutionCount": 109,
+      "median1Y": 27091,
+      "median2Y": 25948
+    },
+    {
+      "cipCode": "5002",
+      "cipDesc": "Crafts/Craft Design, Folk Art and Artisanry.",
+      "programCount": 8,
+      "institutionCount": 7,
+      "median1Y": 23693,
+      "median2Y": 21964
+    },
+    {
+      "cipCode": "5003",
+      "cipDesc": "Dance.",
+      "programCount": 114,
+      "institutionCount": 109,
+      "median1Y": 22834,
+      "median2Y": 22147
+    },
+    {
+      "cipCode": "5004",
+      "cipDesc": "Design and Applied Arts.",
+      "programCount": 706,
+      "institutionCount": 602,
+      "median1Y": 31133,
+      "median2Y": 30409
+    },
+    {
+      "cipCode": "5005",
+      "cipDesc": "Drama/Theatre Arts and Stagecraft.",
+      "programCount": 472,
+      "institutionCount": 402,
+      "median1Y": 23803,
+      "median2Y": 22789
+    },
+    {
+      "cipCode": "5006",
+      "cipDesc": "Film/Video and Photographic Arts.",
+      "programCount": 292,
+      "institutionCount": 247,
+      "median1Y": 25194,
+      "median2Y": 24532
+    },
+    {
+      "cipCode": "5007",
+      "cipDesc": "Fine and Studio Arts.",
+      "programCount": 760,
+      "institutionCount": 659,
+      "median1Y": 26301,
+      "median2Y": 25524
+    },
+    {
+      "cipCode": "5009",
+      "cipDesc": "Music.",
+      "programCount": 566,
+      "institutionCount": 401,
+      "median1Y": 27476,
+      "median2Y": 26933
+    },
+    {
+      "cipCode": "5010",
+      "cipDesc": "Arts, Entertainment,and Media Management.",
+      "programCount": 88,
+      "institutionCount": 78,
+      "median1Y": 30771,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "5099",
+      "cipDesc": "Visual and Performing Arts, Other.",
+      "programCount": 28,
+      "institutionCount": 25,
+      "median1Y": 25194,
+      "median2Y": 27464
+    },
+    {
+      "cipCode": "5100",
+      "cipDesc": "Health Services/Allied Health/Health Sciences, General.",
+      "programCount": 271,
+      "institutionCount": 241,
+      "median1Y": 32925,
+      "median2Y": 32391
+    },
+    {
+      "cipCode": "5101",
+      "cipDesc": "Chiropractic.",
+      "programCount": 16,
+      "institutionCount": 14,
+      "median1Y": 41298,
+      "median2Y": 41167
+    },
+    {
+      "cipCode": "5102",
+      "cipDesc": "Communication Disorders Sciences and Services.",
+      "programCount": 481,
+      "institutionCount": 275,
+      "median1Y": 52941,
+      "median2Y": 52585
+    },
+    {
+      "cipCode": "5104",
+      "cipDesc": "Dentistry.",
+      "programCount": 71,
+      "institutionCount": 69,
+      "median1Y": 110878,
+      "median2Y": 108578
+    },
+    {
+      "cipCode": "5105",
+      "cipDesc": "Advanced/Graduate Dentistry and Oral Sciences.",
+      "programCount": 45,
+      "institutionCount": 41,
+      "median1Y": 185597,
+      "median2Y": 184757
+    },
+    {
+      "cipCode": "5106",
+      "cipDesc": "Dental Support Services and Allied Professions.",
+      "programCount": 872,
+      "institutionCount": 714,
+      "median1Y": 28354,
+      "median2Y": 27895
+    },
+    {
+      "cipCode": "5107",
+      "cipDesc": "Health and Medical Administrative Services.",
+      "programCount": 2053,
+      "institutionCount": 1456,
+      "median1Y": 29141,
+      "median2Y": 28035
+    },
+    {
+      "cipCode": "5108",
+      "cipDesc": "Allied Health and Medical Assisting Services.",
+      "programCount": 1790,
+      "institutionCount": 1391,
+      "median1Y": 25857,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "5109",
+      "cipDesc": "Allied Health Diagnostic, Intervention, and Treatment Professions.",
+      "programCount": 1571,
+      "institutionCount": 1213,
+      "median1Y": 45696,
+      "median2Y": 44942
+    },
+    {
+      "cipCode": "5110",
+      "cipDesc": "Clinical/Medical Laboratory Science/Research and Allied Professions.",
+      "programCount": 449,
+      "institutionCount": 396,
+      "median1Y": 41193,
+      "median2Y": 42235
+    },
+    {
+      "cipCode": "5111",
+      "cipDesc": "Health/Medical Preparatory Programs.",
+      "programCount": 91,
+      "institutionCount": 90,
+      "median1Y": 28758,
+      "median2Y": 28598
+    },
+    {
+      "cipCode": "5112",
+      "cipDesc": "Medicine.",
+      "programCount": 190,
+      "institutionCount": 171,
+      "median1Y": 57629,
+      "median2Y": 57649
+    },
+    {
+      "cipCode": "5114",
+      "cipDesc": "Medical Clinical Sciences/Graduate Medical Studies.",
+      "programCount": 12,
+      "institutionCount": 12,
+      "median1Y": 170853,
+      "median2Y": 122038
+    },
+    {
+      "cipCode": "5115",
+      "cipDesc": "Mental and Social Health Services and Allied Professions.",
+      "programCount": 482,
+      "institutionCount": 419,
+      "median1Y": 39663,
+      "median2Y": 39009
+    },
+    {
+      "cipCode": "5116",
+      "cipDesc": "Nursing.",
+      "programCount": 16,
+      "institutionCount": 15,
+      "median1Y": 34704,
+      "median2Y": 38529
+    },
+    {
+      "cipCode": "5117",
+      "cipDesc": "Optometry.",
+      "programCount": 21,
+      "institutionCount": 21,
+      "median1Y": 99069,
+      "median2Y": 96345
+    },
+    {
+      "cipCode": "5118",
+      "cipDesc": "Ophthalmic and Optometric Support Services and Allied Professions.",
+      "programCount": 39,
+      "institutionCount": 39,
+      "median1Y": 32925,
+      "median2Y": 32569
+    },
+    {
+      "cipCode": "5120",
+      "cipDesc": "Pharmacy, Pharmaceutical Sciences, and Administration.",
+      "programCount": 180,
+      "institutionCount": 143,
+      "median1Y": 112713,
+      "median2Y": 117091
+    },
+    {
+      "cipCode": "5122",
+      "cipDesc": "Public Health.",
+      "programCount": 526,
+      "institutionCount": 389,
+      "median1Y": 43798,
+      "median2Y": 42025
+    },
+    {
+      "cipCode": "5123",
+      "cipDesc": "Rehabilitation and Therapeutic Professions.",
+      "programCount": 550,
+      "institutionCount": 370,
+      "median1Y": 65218,
+      "median2Y": 66401
+    },
+    {
+      "cipCode": "5126",
+      "cipDesc": "Health Aides/Attendants/Orderlies.",
+      "programCount": 24,
+      "institutionCount": 23,
+      "median1Y": 20666,
+      "median2Y": 19144
+    },
+    {
+      "cipCode": "5127",
+      "cipDesc": "Medical Illustration and Informatics.",
+      "programCount": 37,
+      "institutionCount": 34,
+      "median1Y": 67548,
+      "median2Y": 68779
+    },
+    {
+      "cipCode": "5131",
+      "cipDesc": "Dietetics and Clinical Nutrition Services.",
+      "programCount": 155,
+      "institutionCount": 134,
+      "median1Y": 35274,
+      "median2Y": 34704
+    },
+    {
+      "cipCode": "5132",
+      "cipDesc": "Bioethics/Medical Ethics.",
+      "programCount": 49,
+      "institutionCount": 47,
+      "median1Y": 79688,
+      "median2Y": 79222
+    },
+    {
+      "cipCode": "5133",
+      "cipDesc": "Alternative and Complementary Medicine and Medical Systems.",
+      "programCount": 60,
+      "institutionCount": 50,
+      "median1Y": 25967,
+      "median2Y": 25194
+    },
+    {
+      "cipCode": "5134",
+      "cipDesc": "Alternative and Complementary Medical Support Services.",
+      "programCount": 5,
+      "institutionCount": 5,
+      "median1Y": 32913,
+      "median2Y": 29593
+    },
+    {
+      "cipCode": "5135",
+      "cipDesc": "Somatic Bodywork and Related Therapeutic Services.",
+      "programCount": 444,
+      "institutionCount": 387,
+      "median1Y": 20140,
+      "median2Y": 19227
+    },
+    {
+      "cipCode": "5136",
+      "cipDesc": "Movement and Mind-Body Therapies and Education.",
+      "programCount": 7,
+      "institutionCount": 7,
+      "median1Y": 26896,
+      "median2Y": 34704
+    },
+    {
+      "cipCode": "5137",
+      "cipDesc": "Energy and Biologically Based Therapies.",
+      "programCount": 5,
+      "institutionCount": 5,
+      "median1Y": 20140,
+      "median2Y": 29685
+    },
+    {
+      "cipCode": "5138",
+      "cipDesc": "Registered Nursing, Nursing Administration, Nursing Research and Clinical Nursing.",
+      "programCount": 2937,
+      "institutionCount": 1987,
+      "median1Y": 63204,
+      "median2Y": 62563
+    },
+    {
+      "cipCode": "5139",
+      "cipDesc": "Practical Nursing, Vocational Nursing and Nursing Assistants.",
+      "programCount": 907,
+      "institutionCount": 868,
+      "median1Y": 36810,
+      "median2Y": 35763
+    },
+    {
+      "cipCode": "5199",
+      "cipDesc": "Health Professions and Related Clinical Sciences, Other.",
+      "programCount": 120,
+      "institutionCount": 105,
+      "median1Y": 38165,
+      "median2Y": 38165
+    },
+    {
+      "cipCode": "5201",
+      "cipDesc": "Business/Commerce, General.",
+      "programCount": 722,
+      "institutionCount": 598,
+      "median1Y": 39369,
+      "median2Y": 40473
+    },
+    {
+      "cipCode": "5202",
+      "cipDesc": "Business Administration, Management and Operations.",
+      "programCount": 3380,
+      "institutionCount": 2141,
+      "median1Y": 44905,
+      "median2Y": 44791
+    },
+    {
+      "cipCode": "5203",
+      "cipDesc": "Accounting and Related Services.",
+      "programCount": 1939,
+      "institutionCount": 1378,
+      "median1Y": 47260,
+      "median2Y": 46254
+    },
+    {
+      "cipCode": "5204",
+      "cipDesc": "Business Operations Support and Assistant Services.",
+      "programCount": 373,
+      "institutionCount": 343,
+      "median1Y": 23319,
+      "median2Y": 22923
+    },
+    {
+      "cipCode": "5205",
+      "cipDesc": "Business/Corporate Communications.",
+      "programCount": 33,
+      "institutionCount": 31,
+      "median1Y": 38541,
+      "median2Y": 39909
+    },
+    {
+      "cipCode": "5206",
+      "cipDesc": "Business/Managerial Economics.",
+      "programCount": 118,
+      "institutionCount": 115,
+      "median1Y": 47260,
+      "median2Y": 48432
+    },
+    {
+      "cipCode": "5207",
+      "cipDesc": "Entrepreneurial and Small Business Operations.",
+      "programCount": 149,
+      "institutionCount": 146,
+      "median1Y": 33993,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "5208",
+      "cipDesc": "Finance and Financial Management Services.",
+      "programCount": 641,
+      "institutionCount": 557,
+      "median1Y": 52107,
+      "median2Y": 50856
+    },
+    {
+      "cipCode": "5209",
+      "cipDesc": "Hospitality Administration/Management.",
+      "programCount": 282,
+      "institutionCount": 257,
+      "median1Y": 35060,
+      "median2Y": 33993
+    },
+    {
+      "cipCode": "5210",
+      "cipDesc": "Human Resources Management and Services.",
+      "programCount": 606,
+      "institutionCount": 474,
+      "median1Y": 46841,
+      "median2Y": 46603
+    },
+    {
+      "cipCode": "5211",
+      "cipDesc": "International Business.",
+      "programCount": 199,
+      "institutionCount": 190,
+      "median1Y": 47260,
+      "median2Y": 47260
+    },
+    {
+      "cipCode": "5212",
+      "cipDesc": "Management Information Systems and Services.",
+      "programCount": 311,
+      "institutionCount": 275,
+      "median1Y": 57995,
+      "median2Y": 58673
+    },
+    {
+      "cipCode": "5213",
+      "cipDesc": "Management Sciences and Quantitative Methods.",
+      "programCount": 203,
+      "institutionCount": 170,
+      "median1Y": 62661,
+      "median2Y": 59085
+    },
+    {
+      "cipCode": "5214",
+      "cipDesc": "Marketing.",
+      "programCount": 736,
+      "institutionCount": 654,
+      "median1Y": 42682,
+      "median2Y": 42449
+    },
+    {
+      "cipCode": "5215",
+      "cipDesc": "Real Estate.",
+      "programCount": 67,
+      "institutionCount": 59,
+      "median1Y": 56415,
+      "median2Y": 54870
+    },
+    {
+      "cipCode": "5216",
+      "cipDesc": "Taxation.",
+      "programCount": 45,
+      "institutionCount": 45,
+      "median1Y": 74128,
+      "median2Y": 74953
+    },
+    {
+      "cipCode": "5217",
+      "cipDesc": "Insurance.",
+      "programCount": 24,
+      "institutionCount": 23,
+      "median1Y": 54992,
+      "median2Y": 55964
+    },
+    {
+      "cipCode": "5218",
+      "cipDesc": "General Sales, Merchandising and Related Marketing Operations.",
+      "programCount": 65,
+      "institutionCount": 61,
+      "median1Y": 41193,
+      "median2Y": 38649
+    },
+    {
+      "cipCode": "5219",
+      "cipDesc": "Specialized Sales, Merchandising and  Marketing Operations.",
+      "programCount": 121,
+      "institutionCount": 101,
+      "median1Y": 32518,
+      "median2Y": 32658
+    },
+    {
+      "cipCode": "5220",
+      "cipDesc": "Construction Management.",
+      "programCount": 75,
+      "institutionCount": 65,
+      "median1Y": 64159,
+      "median2Y": 64139
+    },
+    {
+      "cipCode": "5299",
+      "cipDesc": "Business, Management, Marketing, and Related Support Services, Other.",
+      "programCount": 106,
+      "institutionCount": 92,
+      "median1Y": 46046,
+      "median2Y": 41465
+    },
+    {
+      "cipCode": "5301",
+      "cipDesc": "High School/Secondary Diploma Programs.",
+      "programCount": 1,
+      "institutionCount": 1,
+      "median1Y": 45487,
+      "median2Y": 41565
+    },
+    {
+      "cipCode": "5401",
+      "cipDesc": "History.",
+      "programCount": 756,
+      "institutionCount": 656,
+      "median1Y": 30771,
+      "median2Y": 30228
+    },
+    {
+      "cipCode": "6001",
+      "cipDesc": "Dental Residency Programs.",
+      "programCount": 3,
+      "institutionCount": 3,
+      "median1Y": 188966,
+      "median2Y": 198793
+    },
+    {
+      "cipCode": "6126",
+      "cipDesc": "Radiology Residency/Fellowship Programs.",
+      "programCount": 2,
+      "institutionCount": 2,
+      "median1Y": 54578,
+      "median2Y": 31495
+    }
+  ]
+}
