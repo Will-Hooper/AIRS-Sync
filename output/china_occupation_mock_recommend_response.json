@@ -1,0 +1,717 @@
+{
+  "endpoint": "GET /api/china-occupations/:slug/related",
+  "successCases": {
+    "cross-border-e-commerce-operations-manager": {
+      "request": {
+        "slug": "cross-border-e-commerce-operations-manager",
+        "limit": 3
+      },
+      "response": {
+        "slug": "cross-border-e-commerce-operations-manager",
+        "results": [
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          },
+          {
+            "slug": "homestay-steward",
+            "cnTitleDisplay": "民宿管家",
+            "enTitle": "Homestay Steward",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "民宿管家主要活跃在民宿经营与平台房态管理场景，负责房态管理、住客接待、体验服务和平台运营等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/homestay-steward"
+          }
+        ]
+      }
+    },
+    "user-growth-operations-specialist": {
+      "request": {
+        "slug": "user-growth-operations-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "user-growth-operations-specialist",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          },
+          {
+            "slug": "homestay-steward",
+            "cnTitleDisplay": "民宿管家",
+            "enTitle": "Homestay Steward",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "民宿管家主要活跃在民宿经营与平台房态管理场景，负责房态管理、住客接待、体验服务和平台运营等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/homestay-steward"
+          }
+        ]
+      }
+    },
+    "on-demand-delivery-rider": {
+      "request": {
+        "slug": "on-demand-delivery-rider",
+        "limit": 3
+      },
+      "response": {
+        "slug": "on-demand-delivery-rider",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "homestay-steward",
+            "cnTitleDisplay": "民宿管家",
+            "enTitle": "Homestay Steward",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "民宿管家主要活跃在民宿经营与平台房态管理场景，负责房态管理、住客接待、体验服务和平台运营等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/homestay-steward"
+          }
+        ]
+      }
+    },
+    "bim-technician": {
+      "request": {
+        "slug": "bim-technician",
+        "limit": 3
+      },
+      "response": {
+        "slug": "bim-technician",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          }
+        ]
+      }
+    },
+    "carbon-emissions-administrator": {
+      "request": {
+        "slug": "carbon-emissions-administrator",
+        "limit": 3
+      },
+      "response": {
+        "slug": "carbon-emissions-administrator",
+        "results": [
+          {
+            "slug": "carbon-sink-measurement-and-assessment-specialist",
+            "cnTitleDisplay": "碳汇计量评估师",
+            "enTitle": "Carbon Sink Measurement and Assessment Specialist",
+            "priority": "P0",
+            "track": "双碳/绿色经济",
+            "introShort": "碳汇计量评估师主要活跃在碳汇项目核算与评估场景，负责碳汇监测、方法应用、项目评估和核算报告等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/carbon-sink-measurement-and-assessment-specialist"
+          },
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          }
+        ]
+      }
+    },
+    "ai-training-specialist": {
+      "request": {
+        "slug": "ai-training-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "ai-training-specialist",
+        "results": [
+          {
+            "slug": "generative-ai-application-specialist",
+            "cnTitleDisplay": "生成式AI应用员",
+            "enTitle": "Generative AI Application Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "生成式AI应用员主要活跃在大模型落地与业务应用场景，负责提示设计、流程接入、业务应用和效果反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/generative-ai-application-specialist"
+          },
+          {
+            "slug": "information-security-testing-specialist",
+            "cnTitleDisplay": "信息安全测试员",
+            "enTitle": "Information Security Testing Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "信息安全测试员主要活跃在网络与应用安全测试场景，负责漏洞验证、渗透测试、风险复现和修复反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/information-security-testing-specialist"
+          },
+          {
+            "slug": "digital-twin-application-technician",
+            "cnTitleDisplay": "数字孪生应用技术员",
+            "enTitle": "Digital Twin Application Technician",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "数字孪生应用技术员主要活跃在数字孪生建模与场景落地，负责数据接入、场景建模、运行映射和应用实施等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/digital-twin-application-technician"
+          }
+        ]
+      }
+    },
+    "generative-ai-application-specialist": {
+      "request": {
+        "slug": "generative-ai-application-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "generative-ai-application-specialist",
+        "results": [
+          {
+            "slug": "ai-training-specialist",
+            "cnTitleDisplay": "人工智能训练师",
+            "enTitle": "AI Training Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "人工智能训练师主要活跃在模型训练与数据标注场景，负责训练集构建、标注质检、模型评测和调优反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/ai-training-specialist"
+          },
+          {
+            "slug": "information-security-testing-specialist",
+            "cnTitleDisplay": "信息安全测试员",
+            "enTitle": "Information Security Testing Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "信息安全测试员主要活跃在网络与应用安全测试场景，负责漏洞验证、渗透测试、风险复现和修复反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/information-security-testing-specialist"
+          },
+          {
+            "slug": "digital-twin-application-technician",
+            "cnTitleDisplay": "数字孪生应用技术员",
+            "enTitle": "Digital Twin Application Technician",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "数字孪生应用技术员主要活跃在数字孪生建模与场景落地，负责数据接入、场景建模、运行映射和应用实施等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/digital-twin-application-technician"
+          }
+        ]
+      }
+    },
+    "information-security-testing-specialist": {
+      "request": {
+        "slug": "information-security-testing-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "information-security-testing-specialist",
+        "results": [
+          {
+            "slug": "ai-training-specialist",
+            "cnTitleDisplay": "人工智能训练师",
+            "enTitle": "AI Training Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "人工智能训练师主要活跃在模型训练与数据标注场景，负责训练集构建、标注质检、模型评测和调优反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/ai-training-specialist"
+          },
+          {
+            "slug": "generative-ai-application-specialist",
+            "cnTitleDisplay": "生成式AI应用员",
+            "enTitle": "Generative AI Application Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "生成式AI应用员主要活跃在大模型落地与业务应用场景，负责提示设计、流程接入、业务应用和效果反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/generative-ai-application-specialist"
+          },
+          {
+            "slug": "digital-twin-application-technician",
+            "cnTitleDisplay": "数字孪生应用技术员",
+            "enTitle": "Digital Twin Application Technician",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "数字孪生应用技术员主要活跃在数字孪生建模与场景落地，负责数据接入、场景建模、运行映射和应用实施等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/digital-twin-application-technician"
+          }
+        ]
+      }
+    },
+    "homestay-steward": {
+      "request": {
+        "slug": "homestay-steward",
+        "limit": 3
+      },
+      "response": {
+        "slug": "homestay-steward",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          }
+        ]
+      }
+    },
+    "supply-chain-manager": {
+      "request": {
+        "slug": "supply-chain-manager",
+        "limit": 3
+      },
+      "response": {
+        "slug": "supply-chain-manager",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          }
+        ]
+      }
+    },
+    "digital-twin-application-technician": {
+      "request": {
+        "slug": "digital-twin-application-technician",
+        "limit": 3
+      },
+      "response": {
+        "slug": "digital-twin-application-technician",
+        "results": [
+          {
+            "slug": "ai-training-specialist",
+            "cnTitleDisplay": "人工智能训练师",
+            "enTitle": "AI Training Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "人工智能训练师主要活跃在模型训练与数据标注场景，负责训练集构建、标注质检、模型评测和调优反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/ai-training-specialist"
+          },
+          {
+            "slug": "generative-ai-application-specialist",
+            "cnTitleDisplay": "生成式AI应用员",
+            "enTitle": "Generative AI Application Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "生成式AI应用员主要活跃在大模型落地与业务应用场景，负责提示设计、流程接入、业务应用和效果反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/generative-ai-application-specialist"
+          },
+          {
+            "slug": "information-security-testing-specialist",
+            "cnTitleDisplay": "信息安全测试员",
+            "enTitle": "Information Security Testing Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "信息安全测试员主要活跃在网络与应用安全测试场景，负责漏洞验证、渗透测试、风险复现和修复反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/information-security-testing-specialist"
+          }
+        ]
+      }
+    },
+    "carbon-sink-measurement-and-assessment-specialist": {
+      "request": {
+        "slug": "carbon-sink-measurement-and-assessment-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "carbon-sink-measurement-and-assessment-specialist",
+        "results": [
+          {
+            "slug": "carbon-emissions-administrator",
+            "cnTitleDisplay": "碳排放管理员",
+            "enTitle": "Carbon Emissions Administrator",
+            "priority": "P0",
+            "track": "双碳/绿色经济",
+            "introShort": "碳排放管理员主要活跃在企业碳盘查与履约管理场景，负责碳核算、排放监测、履约管理和数据报送等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/carbon-emissions-administrator"
+          },
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          }
+        ]
+      }
+    },
+    "family-education-guidance-specialist": {
+      "request": {
+        "slug": "family-education-guidance-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "family-education-guidance-specialist",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          }
+        ]
+      }
+    },
+    "elderly-functional-assessment-specialist": {
+      "request": {
+        "slug": "elderly-functional-assessment-specialist",
+        "limit": 3
+      },
+      "response": {
+        "slug": "elderly-functional-assessment-specialist",
+        "results": [
+          {
+            "slug": "birth-defect-prevention-counselor",
+            "cnTitleDisplay": "出生缺陷防控咨询师",
+            "enTitle": "Birth Defect Prevention Counselor",
+            "priority": "P0",
+            "track": "健康照护",
+            "introShort": "出生缺陷防控咨询师主要活跃在优生优育与出生缺陷防控场景，负责风险咨询、筛查解读、干预建议和转诊协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/birth-defect-prevention-counselor"
+          },
+          {
+            "slug": "assistive-technology-consultant",
+            "cnTitleDisplay": "康复辅助技术咨询师",
+            "enTitle": "Assistive Technology Consultant",
+            "priority": "P0",
+            "track": "健康照护",
+            "introShort": "康复辅助技术咨询师主要活跃在康复辅具评估与适配场景，负责需求评估、辅具匹配、使用指导和效果跟踪等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/assistive-technology-consultant"
+          },
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          }
+        ]
+      }
+    },
+    "birth-defect-prevention-counselor": {
+      "request": {
+        "slug": "birth-defect-prevention-counselor",
+        "limit": 3
+      },
+      "response": {
+        "slug": "birth-defect-prevention-counselor",
+        "results": [
+          {
+            "slug": "elderly-functional-assessment-specialist",
+            "cnTitleDisplay": "老年人能力评估师",
+            "enTitle": "Elderly Functional Assessment Specialist",
+            "priority": "P0",
+            "track": "健康照护",
+            "introShort": "老年人能力评估师主要活跃在养老评估与照护分级场景，负责能力评估、失能分级、照护建议和福利适配等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/elderly-functional-assessment-specialist"
+          },
+          {
+            "slug": "assistive-technology-consultant",
+            "cnTitleDisplay": "康复辅助技术咨询师",
+            "enTitle": "Assistive Technology Consultant",
+            "priority": "P0",
+            "track": "健康照护",
+            "introShort": "康复辅助技术咨询师主要活跃在康复辅具评估与适配场景，负责需求评估、辅具匹配、使用指导和效果跟踪等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/assistive-technology-consultant"
+          },
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          }
+        ]
+      }
+    },
+    "assistive-technology-consultant": {
+      "request": {
+        "slug": "assistive-technology-consultant",
+        "limit": 3
+      },
+      "response": {
+        "slug": "assistive-technology-consultant",
+        "results": [
+          {
+            "slug": "elderly-functional-assessment-specialist",
+            "cnTitleDisplay": "老年人能力评估师",
+            "enTitle": "Elderly Functional Assessment Specialist",
+            "priority": "P0",
+            "track": "健康照护",
+            "introShort": "老年人能力评估师主要活跃在养老评估与照护分级场景，负责能力评估、失能分级、照护建议和福利适配等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/elderly-functional-assessment-specialist"
+          },
+          {
+            "slug": "birth-defect-prevention-counselor",
+            "cnTitleDisplay": "出生缺陷防控咨询师",
+            "enTitle": "Birth Defect Prevention Counselor",
+            "priority": "P0",
+            "track": "健康照护",
+            "introShort": "出生缺陷防控咨询师主要活跃在优生优育与出生缺陷防控场景，负责风险咨询、筛查解读、干预建议和转诊协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/birth-defect-prevention-counselor"
+          },
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          }
+        ]
+      }
+    },
+    "agricultural-digitalization-technician": {
+      "request": {
+        "slug": "agricultural-digitalization-technician",
+        "limit": 3
+      },
+      "response": {
+        "slug": "agricultural-digitalization-technician",
+        "results": [
+          {
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          },
+          {
+            "slug": "user-growth-operations-specialist",
+            "cnTitleDisplay": "用户增长运营师",
+            "enTitle": "User Growth Operations Specialist",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "用户增长运营师主要活跃在互联网产品与品牌增长团队，负责转化实验、漏斗优化、用户分层和留存提升等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/user-growth-operations-specialist"
+          },
+          {
+            "slug": "on-demand-delivery-rider",
+            "cnTitleDisplay": "网约配送员",
+            "enTitle": "On-Demand Delivery Rider",
+            "priority": "P0",
+            "track": "平台经济",
+            "introShort": "网约配送员主要活跃在即时零售与外卖平台履约场景，负责平台接单、即时派送、路线执行和履约交付等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/on-demand-delivery-rider"
+          }
+        ]
+      }
+    },
+    "blockchain-application-operator": {
+      "request": {
+        "slug": "blockchain-application-operator",
+        "limit": 3
+      },
+      "response": {
+        "slug": "blockchain-application-operator",
+        "results": [
+          {
+            "slug": "ai-training-specialist",
+            "cnTitleDisplay": "人工智能训练师",
+            "enTitle": "AI Training Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "人工智能训练师主要活跃在模型训练与数据标注场景，负责训练集构建、标注质检、模型评测和调优反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/ai-training-specialist"
+          },
+          {
+            "slug": "generative-ai-application-specialist",
+            "cnTitleDisplay": "生成式AI应用员",
+            "enTitle": "Generative AI Application Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "生成式AI应用员主要活跃在大模型落地与业务应用场景，负责提示设计、流程接入、业务应用和效果反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/generative-ai-application-specialist"
+          },
+          {
+            "slug": "information-security-testing-specialist",
+            "cnTitleDisplay": "信息安全测试员",
+            "enTitle": "Information Security Testing Specialist",
+            "priority": "P0",
+            "track": "AI/数据新职业",
+            "introShort": "信息安全测试员主要活跃在网络与应用安全测试场景，负责漏洞验证、渗透测试、风险复现和修复反馈等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "url": "/china-occupations/information-security-testing-specialist"
+          }
+        ]
+      }
+    }
+  },
+  "emptyCases": {
+    "noRecommendations": {
+      "request": {
+        "slug": "blockchain-application-operator",
+        "limit": 3
+      },
+      "response": {
+        "slug": "blockchain-application-operator",
+        "results": []
+      }
+    }
+  },
+  "errorCases": {
+    "serviceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/:slug/related",
+      "requestId": "mock-china_occupation_related_unavailable",
+      "error": {
+        "status": 500,
+        "code": "china_occupation_related_unavailable",
+        "message": "相关推荐服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "slug": "blockchain-application-operator"
+        }
+      }
+    }
+  }
+}

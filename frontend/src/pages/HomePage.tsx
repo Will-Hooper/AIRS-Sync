@@ -5,8 +5,9 @@ import { UniverseMap } from "../components/home/UniverseMap";
 import { DataFreshnessPanel } from "../components/shared/DataFreshnessPanel";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
 import { NumberedBox } from "../components/shared/NumberedBox";
+import { SearchCombobox } from "../components/shared/SearchCombobox";
 import { SiteFooter } from "../components/shared/SiteFooter";
-import { getOccupations, getSummary } from "../lib/api";
+import { getOccupations, getSummary, searchOccupations as searchOccupationMatches } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
 import { formatDateTime, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
@@ -143,11 +144,29 @@ export function HomePage() {
     const normalized = deferredQuery.trim();
     if (!normalized || trackedDesktopQueryRef.current === normalized) return;
     trackedDesktopQueryRef.current = normalized;
-    void trackSearchEvent({
-      query: normalized,
-      language,
-      source: "desktop-home"
-    });
+
+    let cancelled = false;
+    void searchOccupationMatches(normalized)
+      .then((payload) => {
+        if (cancelled) return;
+        return trackSearchEvent({
+          query: normalized,
+          language,
+          source: "desktop-home",
+          occupation: payload.primaryResult?.occupation,
+          searchLabel: payload.primaryResult?.label,
+          matchType: payload.matchType,
+          matchedAlias: payload.primaryResult?.matchedAlias,
+          resultCount: payload.resultCount,
+          isZeroResult: !payload.primaryResult,
+          didClickResult: false
+        });
+      })
+      .catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+    };
   }, [deferredQuery, language]);
 
   useNumberedBoxes(pageRef, [
@@ -357,11 +376,30 @@ export function HomePage() {
 
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.searchLabel}</span>
-                  <input
-                    className="airs-input"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
+                  <SearchCombobox
+                    language={language}
                     placeholder={copy.searchPlaceholder}
+                    value={query}
+                    analyticsSource="desktop-home"
+                    onQueryChange={setQuery}
+                    onCommit={(nextQuery, selection, payload) => {
+                      setQuery(nextQuery);
+                      void trackSearchEvent({
+                        query: nextQuery,
+                        source: "desktop-home",
+                        language,
+                        occupation: selection?.occupation,
+                        searchLabel: selection?.label,
+                        matchType: payload?.matchType || selection?.matchType,
+                        matchedAlias: selection?.matchedAlias,
+                        resultCount: payload?.resultCount,
+                        isZeroResult: !payload?.primaryResult,
+                        didClickResult: Boolean(selection)
+                      });
+                    }}
+                    onSelect={(selection) => {
+                      navigate(`/occupation/${encodeURIComponent(selection.occupation.socCode)}?lang=${language}&entry=${encodeURIComponent(selection.label)}`);
+                    }}
                   />
                 </label>
               </div>

@@ -5,6 +5,9 @@
     "build:frontend": "vite build",
     "build:node": "tsc -p tsconfig.node.json",
     "check:h5-boundary": "node ./scripts/check-h5-boundary.mjs",
+    "search:check-seeds": "node ./dist-node/src-node/check-occupation-search-seeds.js",
+    "test:search": "vitest run frontend/src/lib/__tests__/occupation-search.spec.ts",
+    "test": "vitest run",
     "typecheck": "npm run typecheck:frontend && npm run typecheck:node",
     "typecheck:frontend": "tsc -p tsconfig.frontend.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
@@ -15,6 +18,7 @@
     "sync:scorecard": "node ./dist-node/src-node/college-scorecard-sync.js",
     "analytics:server": "node ./dist-node/services/analytics/server.js",
     "analytics:report": "node ./dist-node/services/analytics/run-report.js",
+    "analytics:search-quality": "node ./dist-node/services/analytics/search-report.js",
     "analytics:email": "node ./dist-node/services/analytics/send-report-email.js"
   },
   "dependencies": {
@@ -43,6 +47,7 @@
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
-    "vite": "^8.0.2"
+    "vite": "^8.0.2",
+    "vitest": "^3.2.4"
   }
 }

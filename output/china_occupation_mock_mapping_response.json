@@ -1,0 +1,431 @@
+{
+  "endpoint": "GET /api/china-occupations/:slug/mapping",
+  "successCases": {
+    "cross-border-e-commerce-operations-manager": {
+      "request": {
+        "slug": "cross-border-e-commerce-operations-manager"
+      },
+      "response": {
+        "slug": "cross-border-e-commerce-operations-manager",
+        "cnTitleDisplay": "跨境电商运营管理师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "13-1161.00",
+        "mappedAirsTitle": "市场研究分析师与营销专员",
+        "parent": {
+          "socCode": "13-1161.00",
+          "airsId": null,
+          "title": "市场研究分析师与营销专员",
+          "url": "/occupations/13-1161-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为市场研究分析师与营销专员（13-1161.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“市场研究分析师与营销专员”，只能表达市场营销与流量分析的一部分能力，无法体现平台规则适配、跨境物流协同和本地化增长运营，前端和用户更容易把该职业理解成普通市场营销专员或传统电商运营。",
+        "relatedAirsTargets": []
+      }
+    },
+    "user-growth-operations-specialist": {
+      "request": {
+        "slug": "user-growth-operations-specialist"
+      },
+      "response": {
+        "slug": "user-growth-operations-specialist",
+        "cnTitleDisplay": "用户增长运营师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "13-1161.00",
+        "mappedAirsTitle": "市场研究分析师与营销专员",
+        "parent": {
+          "socCode": "13-1161.00",
+          "airsId": null,
+          "title": "市场研究分析师与营销专员",
+          "url": "/occupations/13-1161-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为市场研究分析师与营销专员（13-1161.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“市场研究分析师与营销专员”，只能表达营销分析与用户研究的一部分能力，无法体现以增长指标为核心的实验机制和数据驱动运营闭环，前端和用户更容易把该职业理解成普通市场营销专员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "on-demand-delivery-rider": {
+      "request": {
+        "slug": "on-demand-delivery-rider"
+      },
+      "response": {
+        "slug": "on-demand-delivery-rider",
+        "cnTitleDisplay": "网约配送员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "43-5021.00",
+        "mappedAirsTitle": "快递员与信使",
+        "parent": {
+          "socCode": "43-5021.00",
+          "airsId": null,
+          "title": "快递员与信使",
+          "url": "/occupations/43-5021-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为快递员与信使（43-5021.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“快递员与信使”，只能表达一般快递与信使递送的线下交付环节，无法体现平台调度、众包规则、时效履约和即时配送场景，前端和用户更容易把该职业理解成传统快递员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "bim-technician": {
+      "request": {
+        "slug": "bim-technician"
+      },
+      "response": {
+        "slug": "bim-technician",
+        "cnTitleDisplay": "BIM技术员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "17-3011.00",
+        "mappedAirsTitle": "建筑与土木制图员",
+        "parent": {
+          "socCode": "17-3011.00",
+          "airsId": null,
+          "title": "建筑与土木制图员",
+          "url": "/occupations/17-3011-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为建筑与土木制图员（17-3011.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“建筑与土木制图员”，只能表达建筑制图与图纸表达的一部分工作，无法体现BIM 协同、模型信息治理和多专业联动管理，前端和用户更容易把该职业理解成传统建筑与土木制图员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "carbon-emissions-administrator": {
+      "request": {
+        "slug": "carbon-emissions-administrator"
+      },
+      "response": {
+        "slug": "carbon-emissions-administrator",
+        "cnTitleDisplay": "碳排放管理员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "13-1041.00",
+        "mappedAirsTitle": "合规官",
+        "parent": {
+          "socCode": "13-1041.00",
+          "airsId": null,
+          "title": "合规官",
+          "url": "/occupations/13-1041-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为合规官（13-1041.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“合规官”，只能表达合规管理中的部分报送与监测环节，无法体现碳履约、碳盘查和排放数据治理能力，前端和用户更容易把该职业理解成普通合规官或环境专员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "ai-training-specialist": {
+      "request": {
+        "slug": "ai-training-specialist"
+      },
+      "response": {
+        "slug": "ai-training-specialist",
+        "cnTitleDisplay": "人工智能训练师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "15-2051.00",
+        "mappedAirsTitle": "数据科学家",
+        "parent": {
+          "socCode": "15-2051.00",
+          "airsId": null,
+          "title": "数据科学家",
+          "url": "/occupations/15-2051-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为数据科学家（15-2051.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“数据科学家”，只能表达数据分析与算法工作中的局部环节，无法体现数据标注组织、训练流程协同和模型评测反馈机制，前端和用户更容易把该职业理解成数据科学家。",
+        "relatedAirsTargets": []
+      }
+    },
+    "generative-ai-application-specialist": {
+      "request": {
+        "slug": "generative-ai-application-specialist"
+      },
+      "response": {
+        "slug": "generative-ai-application-specialist",
+        "cnTitleDisplay": "生成式AI应用员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "15-1252.00",
+        "mappedAirsTitle": "软件开发工程师",
+        "parent": {
+          "socCode": "15-1252.00",
+          "airsId": null,
+          "title": "软件开发工程师",
+          "url": "/occupations/15-1252-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为软件开发工程师（15-1252.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“软件开发工程师”，只能表达软件开发或系统配置的一部分工作，无法体现面向业务落地的大模型应用和场景配置能力，前端和用户更容易把该职业理解成普通软件开发工程师。",
+        "relatedAirsTargets": []
+      }
+    },
+    "information-security-testing-specialist": {
+      "request": {
+        "slug": "information-security-testing-specialist"
+      },
+      "response": {
+        "slug": "information-security-testing-specialist",
+        "cnTitleDisplay": "信息安全测试员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "15-1212.00",
+        "mappedAirsTitle": "信息安全保卫分析师",
+        "parent": {
+          "socCode": "15-1212.00",
+          "airsId": null,
+          "title": "信息安全保卫分析师",
+          "url": "/occupations/15-1212-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为信息安全保卫分析师（15-1212.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“信息安全保卫分析师”，只能表达安全分析中的监测与研判部分，无法体现测试验证、攻击模拟和问题复现能力，前端和用户更容易把该职业理解成普通信息安全分析师。",
+        "relatedAirsTargets": []
+      }
+    },
+    "homestay-steward": {
+      "request": {
+        "slug": "homestay-steward"
+      },
+      "response": {
+        "slug": "homestay-steward",
+        "cnTitleDisplay": "民宿管家",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "39-6012.00",
+        "mappedAirsTitle": "礼宾员",
+        "parent": {
+          "socCode": "39-6012.00",
+          "airsId": null,
+          "title": "礼宾员",
+          "url": "/occupations/39-6012-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为礼宾员（39-6012.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“礼宾员”，只能表达礼宾接待与前台服务的一部分工作，无法体现住客体验、房东协同和平台运营一体化职责，前端和用户更容易把该职业理解成传统酒店礼宾或前台文员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "supply-chain-manager": {
+      "request": {
+        "slug": "supply-chain-manager"
+      },
+      "response": {
+        "slug": "supply-chain-manager",
+        "cnTitleDisplay": "供应链管理师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "13-1081.00",
+        "mappedAirsTitle": "物流师",
+        "parent": {
+          "socCode": "13-1081.00",
+          "airsId": null,
+          "title": "物流师",
+          "url": "/occupations/13-1081-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为物流师（13-1081.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“物流师”，只能表达物流分析与配送组织的部分能力，无法体现跨采购、仓储、计划和履约的全链路协同能力，前端和用户更容易把该职业理解成传统物流师。",
+        "relatedAirsTargets": []
+      }
+    },
+    "digital-twin-application-technician": {
+      "request": {
+        "slug": "digital-twin-application-technician"
+      },
+      "response": {
+        "slug": "digital-twin-application-technician",
+        "cnTitleDisplay": "数字孪生应用技术员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "15-1252.00",
+        "mappedAirsTitle": "软件开发工程师",
+        "parent": {
+          "socCode": "15-1252.00",
+          "airsId": null,
+          "title": "软件开发工程师",
+          "url": "/occupations/15-1252-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为软件开发工程师（15-1252.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“软件开发工程师”，只能表达软件开发中的部分系统配置工作，无法体现现实系统映射、仿真联动和可视化应用实施能力，前端和用户更容易把该职业理解成普通软件开发工程师。",
+        "relatedAirsTargets": []
+      }
+    },
+    "carbon-sink-measurement-and-assessment-specialist": {
+      "request": {
+        "slug": "carbon-sink-measurement-and-assessment-specialist"
+      },
+      "response": {
+        "slug": "carbon-sink-measurement-and-assessment-specialist",
+        "cnTitleDisplay": "碳汇计量评估师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "19-2041.00",
+        "mappedAirsTitle": "环境科学家与专员（含卫生）",
+        "parent": {
+          "socCode": "19-2041.00",
+          "airsId": null,
+          "title": "环境科学家与专员（含卫生）",
+          "url": "/occupations/19-2041-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为环境科学家与专员（含卫生）（19-2041.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“环境科学家与专员（含卫生）”，只能表达环境科学观察与评估的一部分能力，无法体现碳汇方法、生态数据解释和项目价值评估能力，前端和用户更容易把该职业理解成普通环境科学家。",
+        "relatedAirsTargets": []
+      }
+    },
+    "family-education-guidance-specialist": {
+      "request": {
+        "slug": "family-education-guidance-specialist"
+      },
+      "response": {
+        "slug": "family-education-guidance-specialist",
+        "cnTitleDisplay": "家庭教育指导师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "21-1012.00",
+        "mappedAirsTitle": "教育、升学与职业咨询顾问",
+        "parent": {
+          "socCode": "21-1012.00",
+          "airsId": null,
+          "title": "教育、升学与职业咨询顾问",
+          "url": "/occupations/21-1012-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为教育、升学与职业咨询顾问（21-1012.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“教育、升学与职业咨询顾问”，只能表达教育咨询中的升学和学校指导部分，无法体现面向家庭关系和养育场景的持续指导能力，前端和用户更容易把该职业理解成教育升学顾问。",
+        "relatedAirsTargets": []
+      }
+    },
+    "elderly-functional-assessment-specialist": {
+      "request": {
+        "slug": "elderly-functional-assessment-specialist"
+      },
+      "response": {
+        "slug": "elderly-functional-assessment-specialist",
+        "cnTitleDisplay": "老年人能力评估师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "",
+        "mappedAirsTitle": "",
+        "parent": null,
+        "relationExplainer": "当前暂无稳妥的 AIRS 主职业可直接挂靠，本页先作为中国职业层独立入口，便于前端和内容团队先完成中国语境展示。",
+        "whyNotMerged": "AIRS 现有通用职业只能零散覆盖健康服务中的基础访视或一般照护支持，无法稳定体现老年功能评估、照护等级判断和服务适配能力，继续并入会让前端和用户把它理解成普通社区卫生从业人员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "birth-defect-prevention-counselor": {
+      "request": {
+        "slug": "birth-defect-prevention-counselor"
+      },
+      "response": {
+        "slug": "birth-defect-prevention-counselor",
+        "cnTitleDisplay": "出生缺陷防控咨询师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "29-9092.00",
+        "mappedAirsTitle": "遗传咨询师",
+        "parent": {
+          "socCode": "29-9092.00",
+          "airsId": null,
+          "title": "遗传咨询师",
+          "url": "/occupations/29-9092-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为遗传咨询师（29-9092.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“遗传咨询师”，只能表达遗传风险沟通中的单点咨询能力，无法体现面向防控流程的持续咨询和筛查协同能力，前端和用户更容易把该职业理解成单纯遗传咨询师。",
+        "relatedAirsTargets": []
+      }
+    },
+    "assistive-technology-consultant": {
+      "request": {
+        "slug": "assistive-technology-consultant"
+      },
+      "response": {
+        "slug": "assistive-technology-consultant",
+        "cnTitleDisplay": "康复辅助技术咨询师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "21-1015.00",
+        "mappedAirsTitle": "康复咨询师",
+        "parent": {
+          "socCode": "21-1015.00",
+          "airsId": null,
+          "title": "康复咨询师",
+          "url": "/occupations/21-1015-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为康复咨询师（21-1015.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“康复咨询师”，只能表达康复咨询中的一般支持与转介工作，无法体现辅具评估、适配建议和辅助技术方案设计能力，前端和用户更容易把该职业理解成普通康复咨询师。",
+        "relatedAirsTargets": []
+      }
+    },
+    "agricultural-digitalization-technician": {
+      "request": {
+        "slug": "agricultural-digitalization-technician"
+      },
+      "response": {
+        "slug": "agricultural-digitalization-technician",
+        "cnTitleDisplay": "农业数字化技术员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "19-4012.00",
+        "mappedAirsTitle": "农业技术员",
+        "parent": {
+          "socCode": "19-4012.00",
+          "airsId": null,
+          "title": "农业技术员",
+          "url": "/occupations/19-4012-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为农业技术员（19-4012.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“农业技术员”，只能表达传统农业技术支持的一部分工作，无法体现农业场景下的数据化实施和设备协同能力，前端和用户更容易把该职业理解成普通农业技术员。",
+        "relatedAirsTargets": []
+      }
+    },
+    "blockchain-application-operator": {
+      "request": {
+        "slug": "blockchain-application-operator"
+      },
+      "response": {
+        "slug": "blockchain-application-operator",
+        "cnTitleDisplay": "区块链应用操作员",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "15-1299.00",
+        "mappedAirsTitle": "其他计算机类职业",
+        "parent": {
+          "socCode": "15-1299.00",
+          "airsId": null,
+          "title": "其他计算机类职业",
+          "url": "/occupations/15-1299-00"
+        },
+        "relationExplainer": "当前推荐挂靠 AIRS 主职业为其他计算机类职业（15-1299.00），用于帮助用户理解能力邻近关系和后续跳转，不代表 AIRS 已完整覆盖该中国职业。",
+        "whyNotMerged": "如果直接并入AIRS“其他计算机类职业”，只能表达泛计算机岗位中的部分系统操作工作，无法体现链上业务操作和节点运行维护能力，前端和用户更容易把该职业理解成普通计算机从业人员。",
+        "relatedAirsTargets": []
+      }
+    }
+  },
+  "emptyCases": {
+    "noMappedSocCode": {
+      "request": {
+        "slug": "elderly-functional-assessment-specialist"
+      },
+      "response": {
+        "slug": "elderly-functional-assessment-specialist",
+        "cnTitleDisplay": "老年人能力评估师",
+        "mappingType": "independent_card",
+        "independentCardFlag": true,
+        "mappedSocCode": "",
+        "mappedAirsTitle": "",
+        "parent": null,
+        "relationExplainer": "当前暂无稳妥的 AIRS 主职业可直接挂靠，本页先作为中国职业层独立入口，便于前端和内容团队先完成中国语境展示。",
+        "whyNotMerged": "AIRS 现有通用职业只能零散覆盖健康服务中的基础访视或一般照护支持，无法稳定体现老年功能评估、照护等级判断和服务适配能力，继续并入会让前端和用户把它理解成普通社区卫生从业人员。",
+        "relatedAirsTargets": []
+      }
+    }
+  },
+  "errorCases": {
+    "serviceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/:slug/mapping",
+      "requestId": "mock-china_occupation_mapping_unavailable",
+      "error": {
+        "status": 500,
+        "code": "china_occupation_mapping_unavailable",
+        "message": "中国职业映射关系服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "slug": "elderly-functional-assessment-specialist"
+        }
+      }
+    }
+  }
+}

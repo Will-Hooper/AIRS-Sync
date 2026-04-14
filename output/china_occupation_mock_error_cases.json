@@ -1,0 +1,88 @@
+{
+  "errorFormat": {
+    "success": false,
+    "endpoint": "GET /api/example",
+    "requestId": "mock-error-code",
+    "error": {
+      "status": 500,
+      "code": "china_occupation_service_error",
+      "message": "错误提示文案",
+      "retryable": true,
+      "details": {
+        "slug": "bim-technician"
+      }
+    }
+  },
+  "cases": {
+    "searchServiceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/search",
+      "requestId": "mock-china_occupation_search_unavailable",
+      "error": {
+        "status": 503,
+        "code": "china_occupation_search_unavailable",
+        "message": "中国职业搜索服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "q": "BIM技术员"
+        }
+      }
+    },
+    "detailNotFound": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/:slug",
+      "requestId": "mock-china_occupation_not_found",
+      "error": {
+        "status": 404,
+        "code": "china_occupation_not_found",
+        "message": "当前 slug 对应的中国职业不存在或已下线。",
+        "retryable": false,
+        "details": {
+          "slug": "not-exists-slug"
+        }
+      }
+    },
+    "detailServiceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/:slug",
+      "requestId": "mock-china_occupation_detail_unavailable",
+      "error": {
+        "status": 500,
+        "code": "china_occupation_detail_unavailable",
+        "message": "中国职业详情服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "slug": "bim-technician"
+        }
+      }
+    },
+    "mappingServiceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/:slug/mapping",
+      "requestId": "mock-china_occupation_mapping_unavailable",
+      "error": {
+        "status": 500,
+        "code": "china_occupation_mapping_unavailable",
+        "message": "中国职业映射关系服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "slug": "elderly-functional-assessment-specialist"
+        }
+      }
+    },
+    "recommendServiceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/:slug/related",
+      "requestId": "mock-china_occupation_related_unavailable",
+      "error": {
+        "status": 500,
+        "code": "china_occupation_related_unavailable",
+        "message": "相关推荐服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "slug": "blockchain-application-operator"
+        }
+      }
+    }
+  }
+}

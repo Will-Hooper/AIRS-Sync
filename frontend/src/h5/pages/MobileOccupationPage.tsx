@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getOccupationDetail, getSummary } from "../../lib/api";
 import { trackSearchEvent } from "../../lib/analytics";
 import { formatNumber } from "../../lib/format";
-import type { OccupationDetailPayload, OccupationRow } from "../../lib/types";
+import type { OccupationDetailPayload } from "../../lib/types";
 import { MobileBottomHero } from "../components/MobileBottomHero";
 import { H5DataFreshnessPanel } from "../components/H5DataFreshnessPanel";
 import { H5Footer } from "../components/H5Footer";
@@ -35,6 +35,7 @@ export function MobileOccupationPage() {
   const [generating, setGenerating] = useState(false);
 
   const socCode = decodeURIComponent(params.socCode || searchParams.get("soc") || "");
+  const entryLabel = searchParams.get("entry") || "";
   const copy = getH5Copy(language);
 
   useEffect(() => {
@@ -80,6 +81,11 @@ export function MobileOccupationPage() {
   }, [shareImageUrl]);
 
   const occupation = payload?.occupation || null;
+  const displayTitle = occupation
+    ? language === "zh"
+      ? entryLabel || occupation.titleZh || occupation.title
+      : occupation.title
+    : "";
   const readingText = occupation
     ? language === "zh"
       ? occupation.summaryZh || occupation.summary
@@ -170,16 +176,23 @@ export function MobileOccupationPage() {
           <H5SearchCombobox
             language={language}
             placeholder={copy.searchPlaceholder}
-            onCommit={(query, selected) => {
+            analyticsSource="h5-detail"
+            onCommit={(query, selected, payload) => {
               void trackSearchEvent({
                 query,
                 source: "h5-detail",
                 language,
-                occupation: selected
+                occupation: selected?.occupation,
+                searchLabel: selected?.label,
+                matchType: payload?.matchType || selected?.matchType,
+                matchedAlias: selected?.matchedAlias,
+                resultCount: payload?.resultCount,
+                isZeroResult: !payload?.primaryResult,
+                didClickResult: Boolean(selected)
               });
             }}
-            onSelect={(nextOccupation: OccupationRow) => {
-              navigate(`/occupation/${encodeURIComponent(nextOccupation.socCode)}?lang=${language}`);
+            onSelect={(selection) => {
+              navigate(`/occupation/${encodeURIComponent(selection.occupation.socCode)}?lang=${language}&entry=${encodeURIComponent(selection.label)}`);
             }}
           />
         </header>
@@ -198,7 +211,7 @@ export function MobileOccupationPage() {
               <div data-h5-numbered-box className="h5-numbered space-y-3">
                 <p className="h5-kicker">{copy.resultTitle}</p>
                 <h1 className="text-4xl font-semibold leading-tight tracking-[-0.06em] text-white">
-                  {language === "zh" ? occupation.titleZh || occupation.title : occupation.title}
+                  {displayTitle}
                 </h1>
                 <div className="flex flex-wrap gap-2">
                   <span className="h5-chip">{occupation.socCode}</span>

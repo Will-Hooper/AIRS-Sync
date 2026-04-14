@@ -1,4 +1,20 @@
 export type Language = "en" | "zh";
+export type OccupationSearchMatchType =
+  | "exact_alias"
+  | "prefix_alias"
+  | "contains_alias"
+  | "fuzzy_alias"
+  | "category_fallback"
+  | "no_result";
+
+export type OccupationAliasType =
+  | "official"
+  | "common"
+  | "spoken"
+  | "recruitment"
+  | "task_based"
+  | "abbreviation"
+  | "wrong_variant";
 
 export interface OccupationTask {
   name: string;
@@ -121,6 +137,45 @@ export interface OccupationRow extends JsonRegionMetrics {
   size?: number;
   zIndex?: number;
   [key: string]: unknown;
+}
+
+export interface OccupationSearchAlias {
+  alias: string;
+  aliasNormalized: string;
+  aliasType: OccupationAliasType;
+  weight: number;
+  source: string;
+}
+
+export interface OccupationSearchHit {
+  id: string;
+  occupation: OccupationRow;
+  label: string;
+  labelEn?: string;
+  normalizedQuery: string;
+  matchType: OccupationSearchMatchType;
+  score: number;
+  matchReason?: string;
+  matchedAlias?: string;
+  matchedAliasNormalized?: string;
+  categoryLv1?: string;
+  categoryLv2?: string;
+  analysisTemplateId?: string;
+  searchPriority: number;
+  aliases?: OccupationSearchAlias[];
+}
+
+export interface OccupationSearchPayload {
+  queryRaw: string;
+  queryNormalized: string;
+  matchType: OccupationSearchMatchType;
+  exactHit: boolean;
+  primaryResult: OccupationSearchHit | null;
+  alternatives: OccupationSearchHit[];
+  suggestions: OccupationSearchHit[];
+  popularSearches: OccupationSearchHit[];
+  resultCount: number;
+  feedbackHint?: string;
 }
 
 export interface OccupationQueryParams {

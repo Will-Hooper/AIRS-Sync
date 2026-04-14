@@ -1,10 +1,12 @@
 import crypto from "node:crypto";
+import fs from "node:fs";
 import express from "express";
 import geoip from "geoip-lite";
 import { sendAnalyticsReportEmail } from "./lib/email";
 import { generateAnalyticsReport } from "./lib/report";
-import { analyticsPaths, appendSearchEvent, ensureAnalyticsDirs, readSchedulerState, writeSchedulerState } from "./lib/storage";
-import type { SearchEventRecord } from "./lib/types";
+import { generateSearchQualityReport } from "./lib/search-quality-report";
+import { analyticsPaths, appendSearchEvent, appendSearchFeedback, ensureAnalyticsDirs, readSchedulerState, writeSchedulerState } from "./lib/storage";
+import type { SearchEventRecord, SearchFeedbackRecord } from "./lib/types";
 
 const REPORT_INTERVAL_MS = 72 * 60 * 60 * 1000;
 
@@ -46,14 +48,27 @@ function normalizeLocation(ip: string) {
 function buildEventRecord(req: express.Request): SearchEventRecord {
   const body = req.body || {};
   const ip = getClientIp(req);
+  const rawQuery = String(body.query || "").trim();
+  const normalizedQuery = String(body.normalizedQuery || rawQuery)
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
   return {
     id: crypto.randomUUID(),
     occurredAt: body.timestamp || new Date().toISOString(),
-    query: String(body.query || "").trim(),
-    normalizedQuery: String(body.query || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " "),
+    query: rawQuery,
+    normalizedQuery,
+    searchLabel: body.searchLabel ? String(body.searchLabel) : "",
+    matchType: body.matchType ? String(body.matchType) : "",
+    matchedAlias: body.matchedAlias ? String(body.matchedAlias) : "",
+    resultCount: Number(body.resultCount || 0),
+    clickedOccupationId: body.clickedOccupationId ? String(body.clickedOccupationId) : "",
+    matchedOccupationId: body.matchedOccupationId ? String(body.matchedOccupationId) : "",
+    didClickResult: Boolean(body.didClickResult),
+    isZeroResult: Boolean(body.isZeroResult),
+    deviceType: body.deviceType ? String(body.deviceType) : "",
+    sessionId: body.sessionId ? String(body.sessionId) : "",
     language: String(body.language || "zh"),
     source: String(body.source || "unknown"),
     pageUrl: String(body.pageUrl || req.headers.origin || ""),
@@ -68,6 +83,35 @@ function buildEventRecord(req: express.Request): SearchEventRecord {
           titleZh: body.occupation.titleZh ? String(body.occupation.titleZh) : undefined
         }
       : null
+  };
+}
+
+function buildFeedbackRecord(req: express.Request): SearchFeedbackRecord {
+  const body = req.body || {};
+  const ip = getClientIp(req);
+  const rawQuery = String(body.query || "").trim();
+  const normalizedQuery = String(body.normalizedQuery || rawQuery)
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+  return {
+    id: crypto.randomUUID(),
+    occurredAt: body.timestamp || new Date().toISOString(),
+    query: rawQuery,
+    normalizedQuery,
+    feedbackText: String(body.feedbackText || "").trim(),
+    matchType: body.matchType ? String(body.matchType) : "",
+    resultCount: Number(body.resultCount || 0),
+    deviceType: body.deviceType ? String(body.deviceType) : "",
+    sessionId: body.sessionId ? String(body.sessionId) : "",
+    language: String(body.language || "zh"),
+    source: String(body.source || "unknown"),
+    pageUrl: String(body.pageUrl || req.headers.origin || ""),
+    referrer: String(req.headers.referer || body.referrer || ""),
+    userAgent: String(req.headers["user-agent"] || ""),
+    ip,
+    location: normalizeLocation(ip)
   };
 }
 
@@ -130,12 +174,29 @@ async function main() {
     res.status(202).json({ ok: true });
   });
 
+  app.post("/api/analytics/events/search-feedback", (req, res) => {
+    const record = buildFeedbackRecord(req);
+    if (!record.query || !record.feedbackText) {
+      res.status(400).json({ ok: false, error: "query and feedbackText are required" });
+      return;
+    }
+    appendSearchFeedback(record);
+    res.status(202).json({ ok: true });
+  });
+
   app.get("/api/analytics/reports/latest", (_req, res) => {
     res.sendFile(analyticsPaths.latestReportHtml);
   });
 
   app.get("/api/analytics/reports/latest.json", (_req, res) => {
     res.sendFile(analyticsPaths.latestReportJson);
+  });
+
+  app.get("/api/analytics/reports/search-quality.json", (_req, res) => {
+    if (!fs.existsSync(analyticsPaths.latestSearchQualityJson)) {
+      generateSearchQualityReport(new Date());
+    }
+    res.sendFile(analyticsPaths.latestSearchQualityJson);
   });
 
   const port = Number(process.env.ANALYTICS_PORT || 8787);

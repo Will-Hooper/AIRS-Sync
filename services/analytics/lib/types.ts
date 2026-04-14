@@ -15,6 +15,16 @@ export interface SearchEventRecord {
   occurredAt: string;
   query: string;
   normalizedQuery: string;
+  searchLabel?: string;
+  matchType?: string;
+  matchedAlias?: string;
+  resultCount?: number;
+  clickedOccupationId?: string;
+  matchedOccupationId?: string;
+  didClickResult?: boolean;
+  isZeroResult?: boolean;
+  deviceType?: string;
+  sessionId?: string;
   language: string;
   source: string;
   pageUrl: string;
@@ -23,6 +33,25 @@ export interface SearchEventRecord {
   ip: string;
   location: SearchEventLocation;
   occupation: SearchEventOccupation | null;
+}
+
+export interface SearchFeedbackRecord {
+  id: string;
+  occurredAt: string;
+  query: string;
+  normalizedQuery: string;
+  feedbackText: string;
+  matchType?: string;
+  resultCount?: number;
+  deviceType?: string;
+  sessionId?: string;
+  language: string;
+  source: string;
+  pageUrl: string;
+  referrer: string;
+  userAgent: string;
+  ip: string;
+  location: SearchEventLocation;
 }
 
 export interface AnalyticsSchedulerState {
@@ -65,4 +94,19 @@ export interface AnalyticsReportArtifacts {
   latestHtmlPath: string;
   timestampedJsonPath: string;
   timestampedHtmlPath: string;
+}
+
+export interface SearchQualityReportModel {
+  generatedAt: string;
+  totalSearches: number;
+  uniqueQueryCount: number;
+  firstSearchHitRate: number;
+  zeroResultRate: number;
+  feedbackCount: number;
+  topQueries: ReportBarDatum[];
+  topZeroResultQueries: ReportBarDatum[];
+  topNoClickQueries: ReportBarDatum[];
+  matchTypeDistribution: ReportBarDatum[];
+  deviceTypeDistribution: ReportBarDatum[];
+  topFeedbackTerms: ReportBarDatum[];
 }

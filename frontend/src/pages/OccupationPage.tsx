@@ -9,7 +9,7 @@ import { getOccupationDetail } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
 import { formatCurrency, formatNumber } from "../lib/format";
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
-import type { OccupationDetailPayload, OccupationRow } from "../lib/types";
+import type { OccupationDetailPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
 
 function scrollToSection(id: string) {
@@ -32,6 +32,7 @@ export function OccupationPage() {
   const copy = messages[language];
   const region = searchParams.get("region") || undefined;
   const date = searchParams.get("date") || undefined;
+  const entryLabel = searchParams.get("entry") || "";
 
   useEffect(() => {
     persistLanguage(language);
@@ -81,6 +82,11 @@ export function OccupationPage() {
     ? language === "zh"
       ? occupation.summaryZh || occupation.summary
       : occupation.summary
+    : "--";
+  const displayTitle = occupation
+    ? language === "zh"
+      ? entryLabel || occupation.titleZh || occupation.title
+      : occupation.title
     : "--";
   const evidence = occupation
     ? language === "zh"
@@ -156,16 +162,23 @@ export function OccupationPage() {
             <SearchCombobox
               language={language}
               placeholder={copy.detailSearchPlaceholder}
-              onCommit={(query, selected) => {
+              analyticsSource="desktop-detail"
+              onCommit={(query, selected, payload) => {
                 void trackSearchEvent({
                   query,
                   source: "desktop-detail",
                   language,
-                  occupation: selected
+                  occupation: selected?.occupation,
+                  searchLabel: selected?.label,
+                  matchType: payload?.matchType || selected?.matchType,
+                  matchedAlias: selected?.matchedAlias,
+                  resultCount: payload?.resultCount,
+                  isZeroResult: !payload?.primaryResult,
+                  didClickResult: Boolean(selected)
                 });
               }}
-              onSelect={(nextOccupation: OccupationRow) => {
-                navigate(`/occupation/${encodeURIComponent(nextOccupation.socCode)}?lang=${language}`);
+              onSelect={(selection) => {
+                navigate(`/occupation/${encodeURIComponent(selection.occupation.socCode)}?lang=${language}&entry=${encodeURIComponent(selection.label)}`);
               }}
               className="md:min-w-[320px]"
             />
@@ -191,7 +204,7 @@ export function OccupationPage() {
                 <div className="mt-6 space-y-6">
                   <div className="space-y-4">
                     <h1 className="airs-title-xl max-w-[12ch]">
-                      {language === "zh" ? occupation.titleZh || occupation.title : occupation.title}
+                      {displayTitle}
                     </h1>
                     <div className="flex flex-wrap gap-2">
                       <span className="airs-chip">{occupation.socCode}</span>

@@ -1,0 +1,217 @@
+import type { OccupationSearchMatchType } from "./types";
+
+export type OccupationSearchTestCaseCategory = "A" | "B" | "C" | "D";
+
+export interface OccupationSearchTestCase {
+  category: OccupationSearchTestCaseCategory;
+  categoryTitle: string;
+  query: string;
+  expectedPrimaryOccupation: string | null;
+  expectedMatchTypes: OccupationSearchMatchType[];
+  expectedAlternativeIncludes?: string[];
+  expectedNormalizedQuery?: string;
+  note: string;
+}
+
+interface OccupationSearchTestCaseGroup {
+  category: OccupationSearchTestCaseCategory;
+  title: string;
+  cases: OccupationSearchTestCase[];
+}
+
+type OccupationSearchTestCaseTuple = [
+  query: string,
+  expectedPrimaryOccupation: string | null,
+  expectedMatchTypes: OccupationSearchMatchType[],
+  note: string,
+  expectedAlternativeIncludes?: string[],
+  expectedNormalizedQuery?: string
+];
+
+function buildGroup(
+  category: OccupationSearchTestCaseCategory,
+  title: string,
+  tuples: OccupationSearchTestCaseTuple[]
+): OccupationSearchTestCaseGroup {
+  return {
+    category,
+    title,
+    cases: tuples.map(([query, expectedPrimaryOccupation, expectedMatchTypes, note, expectedAlternativeIncludes, expectedNormalizedQuery]) => ({
+      category,
+      categoryTitle: title,
+      query,
+      expectedPrimaryOccupation,
+      expectedMatchTypes,
+      expectedAlternativeIncludes,
+      expectedNormalizedQuery,
+      note
+    }))
+  };
+}
+
+const EXACT_FREQUENT_CASES = buildGroup("A", "精确高频词", [
+  ["文员", "行政文员", ["exact_alias"], "核心文职入口要稳定直达。"],
+  ["行政文员", "行政文员", ["exact_alias"], "标准中文职业名应直接命中。"],
+  ["前台", "前台接待", ["exact_alias"], "高频门店/办公室入口词。"],
+  ["人事", "人力资源专员", ["exact_alias"], "普通用户直接搜人事。"],
+  ["HR", "人力资源专员", ["exact_alias"], "缩写应统一归并到中文职业。", undefined, "hr"],
+  ["招聘", "人力资源专员", ["exact_alias"], "招聘语义应落到人事体系。"],
+  ["客服", "客服专员", ["exact_alias"], "基础服务岗入口。"],
+  ["会计", "会计", ["exact_alias"], "财务核心高频词。"],
+  ["财务", "会计", ["exact_alias"], "泛财务入口默认落会计模板。"],
+  ["出纳", "出纳", ["exact_alias"], "财务子岗应独立可搜。"],
+  ["电商运营", "电商运营", ["exact_alias"], "电商主职业入口。"],
+  ["电商", "电商运营", ["exact_alias"], "泛电商词应命中运营。"],
+  ["淘宝运营", "电商运营", ["exact_alias"], "招聘站常见写法。"],
+  ["新媒体运营", "新媒体运营", ["exact_alias"], "内容运营标准写法。"],
+  ["新媒体", "新媒体运营", ["prefix_alias"], "高频简写不该空结果。"],
+  ["抖音运营", "抖音运营", ["exact_alias"], "平台型入口词。"],
+  ["直播运营", "直播运营", ["exact_alias"], "直播岗标准词。"],
+  ["视频剪辑", "视频剪辑", ["exact_alias"], "视频岗标准词。"],
+  ["剪辑", "视频剪辑", ["contains_alias", "prefix_alias"], "短词也要给出合理主结果。"],
+  ["程序员", "软件开发工程师", ["exact_alias"], "技术岗高频入口。"],
+  ["前端开发", "前端开发", ["exact_alias"], "细分开发方向。"],
+  ["后端开发", "后端开发", ["exact_alias"], "细分开发方向。"],
+  ["测试工程师", "软件测试工程师", ["exact_alias"], "测试岗标准入口。"],
+  ["产品经理", "产品经理", ["exact_alias"], "产品岗高频词。"],
+  ["销售", "销售专员", ["exact_alias"], "销售泛词也要稳定命中。"],
+  ["导购", "门店销售", ["exact_alias"], "门店零售高频叫法。"],
+  ["物流专员", "物流专员", ["exact_alias"], "物流文职入口。"],
+  ["仓管", "仓库管理员", ["exact_alias"], "仓储岗高频别名。"],
+  ["外卖员", "配送员", ["exact_alias"], "配送岗高频入口。"],
+  ["快递员", "配送员", ["exact_alias"], "快递入口应复用配送模板。"],
+  ["网约车司机", "网约车司机", ["exact_alias"], "司机核心入口。"],
+  ["滴滴司机", "网约车司机", ["exact_alias"], "平台型司机说法。"],
+  ["教师", "老师", ["exact_alias"], "教育岗普通搜索词。"],
+  ["护士", "护士", ["exact_alias"], "护理岗高频入口。"],
+  ["保安", "保安", ["exact_alias"], "安保岗高频入口。"],
+  ["厨师", "厨师", ["exact_alias"], "餐饮岗高频入口。"],
+  ["医生", "医生", ["exact_alias"], "医疗岗基础入口。"],
+  ["法务专员", "法务专员", ["exact_alias"], "法务招聘站标准词。"],
+  ["药剂师", "药师", ["exact_alias"], "中国常用药房职业叫法。"]
+]);
+
+const SPOKEN_CASES = buildGroup("B", "口语表达", [
+  ["招人的", "人力资源专员", ["exact_alias"], "口语表达应直达招聘/人事。"],
+  ["做人事的", "人力资源专员", ["exact_alias"], "口语前后缀要被弱化。", undefined, "人事"],
+  ["做表格的", "行政文员", ["exact_alias"], "任务型表达要能识别到文员。", undefined, "表格"],
+  ["搞电商的", "电商运营", ["exact_alias"], "口语化电商入口。", undefined, "电商"],
+  ["做抖音的", "抖音运营", ["exact_alias"], "平台型口语搜索。", ["新媒体运营", "电商运营"], "抖音"],
+  ["拍视频的", "视频剪辑", ["exact_alias"], "内容生产口语表达。", undefined, "拍视频"],
+  ["视频后期制作", "视频剪辑", ["contains_alias", "prefix_alias"], "描述性表达要回到视频剪辑。"],
+  ["跑滴滴的", "网约车司机", ["exact_alias"], "生活化描述应归并司机岗位。", undefined, "跑滴滴"],
+  ["送快递的", "配送员", ["exact_alias"], "尾部语气词去掉后仍应命中。", undefined, "送快递"],
+  ["坐办公室的", "行政文员", ["contains_alias", "category_fallback", "fuzzy_alias"], "泛描述至少要回到文职入口。", ["前台接待", "人力资源专员"], "坐办公室"],
+  ["做直播带货的", "带货主播", ["exact_alias"], "口语表达应进入直播/主播链路。", ["直播运营", "电商运营"], "直播带货"],
+  ["在工厂上班的", "普工", ["exact_alias"], "普通用户常用描述。", undefined, "在工厂上班"],
+  ["门店卖东西的", "门店销售", ["exact_alias"], "零售口语表达。", undefined, "门店卖东西"],
+  ["药店上班的", "药师", ["exact_alias"], "药店口语表达不该落空。", undefined, "药店上班"],
+  ["跑外卖的", "配送员", ["exact_alias"], "配送口语表达。", undefined, "跑外卖"],
+  ["送外卖的", "配送员", ["exact_alias"], "动词型口语表达。", undefined, "送外卖"],
+  ["管仓库的", "仓库管理员", ["exact_alias"], "任务导向表达。", undefined, "管仓库"],
+  ["发货的", "仓库管理员", ["exact_alias"], "仓储口语表达。", undefined, "发货"],
+  ["管发货", "仓库管理员", ["exact_alias"], "短任务表达也应可命中。"],
+  ["卖东西的", "门店销售", ["exact_alias"], "零售泛口语表达。", undefined, "卖东西"],
+  ["在店里卖货的", "门店销售", ["exact_alias"], "门店零售描述。", undefined, "在店里卖货"],
+  ["看店的", "门店销售", ["exact_alias"], "用户常用非标准职业名。", undefined, "看店"],
+  ["跑业务的", "销售专员", ["exact_alias"], "业务岗口语表达。", undefined, "跑业务"],
+  ["做内容的", "新媒体运营", ["exact_alias"], "内容岗口语表达。", undefined, "内容"],
+  ["搞直播间的", "直播运营", ["exact_alias"], "直播运营口语表达。", undefined, "直播间"],
+  ["做账的", "会计", ["exact_alias"], "任务型财务表达。", undefined, "账"],
+  ["厂里上班的", "普工", ["exact_alias"], "工厂口语表达。", undefined, "厂里上班"],
+  ["工厂工人", "普工", ["exact_alias"], "非招聘站标准词也应直达。"],
+  ["炒菜师傅", "厨师", ["exact_alias"], "餐饮口语表达。", undefined, "炒菜"],
+  ["门卫", "保安", ["exact_alias"], "常见口语岗名。"],
+  ["大夫", "医生", ["exact_alias"], "医疗口语表达。"],
+  ["客诉的", "客服专员", ["exact_alias"], "投诉/售后口语表达。", undefined, "客诉"]
+]);
+
+const RECRUITMENT_CASES = buildGroup("C", "招聘网站风格词", [
+  ["行政专员", "行政文员", ["exact_alias"], "专员后缀应弱化到基础职业。", undefined, "行政"],
+  ["行政助理", "行政文员", ["exact_alias"], "招聘站常见变体。", undefined, "行政"],
+  ["人事专员", "人力资源专员", ["exact_alias"], "专员后缀应弱化。", undefined, "人事"],
+  ["招聘专员", "人力资源专员", ["exact_alias"], "招聘岗标准写法。", undefined, "招聘"],
+  ["财务助理", "会计", ["exact_alias"], "财务助理默认回会计模板。", undefined, "财务"],
+  ["会计员", "会计", ["exact_alias"], "员类后缀应并入会计。", undefined, "会计"],
+  ["财务文员", "出纳", ["exact_alias"], "财务文员更接近出纳/会计文员。"],
+  ["售后客服", "客服专员", ["exact_alias"], "招聘站标准词。"],
+  ["在线客服", "客服专员", ["exact_alias"], "线上客服入口。"],
+  ["电话客服", "客服专员", ["exact_alias"], "电话客服入口。"],
+  ["仓储管理员", "仓库管理员", ["exact_alias"], "仓储岗标准写法。"],
+  ["库存管理员", "仓库管理员", ["exact_alias"], "招聘站常见细分词。"],
+  ["理货员", "理货员", ["exact_alias"], "仓储末端岗位。"],
+  ["补货员", "理货员", ["exact_alias"], "门店/仓储常见招聘词。"],
+  ["物流助理", "物流专员", ["exact_alias"], "专员/助理尾缀应归并。", undefined, "物流"],
+  ["发货专员", "仓库管理员", ["exact_alias"], "发货招聘词当前更贴近仓储发货职责。", undefined, "发货"],
+  ["测试工程师", "软件测试工程师", ["exact_alias"], "工程师标准词。"],
+  ["功能测试", "软件测试工程师", ["exact_alias"], "测试细分方向。"],
+  ["UI设计师", "UI设计师", ["exact_alias"], "英文缩写设计岗。", undefined, "ui设计师"],
+  ["UI设计", "UI设计师", ["exact_alias"], "不带师后缀也应直达。", undefined, "ui设计"],
+  ["交互设计", "UI设计师", ["exact_alias"], "UX 相关表达。"],
+  ["课程顾问", "电话销售", ["exact_alias"], "教育销售常见招聘词。", undefined, "课程"],
+  ["运营助理", "电商运营", ["exact_alias", "category_fallback"], "泛运营助理至少应回运营主模板。", ["新媒体运营", "抖音运营"], "运营"],
+  ["新媒体运营专员", "新媒体运营", ["exact_alias"], "标准招聘站写法。", undefined, "新媒体运营"],
+  ["电商运营专员", "电商运营", ["exact_alias"], "标准招聘站写法。", undefined, "电商运营"],
+  ["短视频运营", "抖音运营", ["exact_alias"], "平台型内容运营岗位。"],
+  ["直播间运营", "直播运营", ["exact_alias"], "直播岗标准写法。"],
+  ["带货运营", "直播运营", ["exact_alias"], "带货相关运营岗位。"],
+  ["平面设计师", "平面设计师", ["exact_alias"], "设计岗标准写法。"],
+  ["美工", "平面设计师", ["exact_alias"], "招聘站和淘宝体系常见写法。"],
+  ["前端开发工程师", "前端开发", ["prefix_alias"], "工程师后缀不应阻断命中。"],
+  ["后端工程师", "后端开发", ["exact_alias"], "后端岗标准写法。"],
+  ["服务端开发", "后端开发", ["exact_alias"], "服务端表达应落后端。"],
+  ["软件工程师", "软件开发工程师", ["exact_alias"], "技术岗常见写法。"],
+  ["开发工程师", "软件开发工程师", ["exact_alias"], "泛开发岗入口。"],
+  ["合同法务", "法务专员", ["exact_alias"], "法务招聘站常用职责词。"],
+  ["律师助理", "法务专员", ["exact_alias"], "法律支持岗应先落法务模板。"]
+]);
+
+const GENERIC_AND_AMBIGUOUS_CASES = buildGroup("D", "泛词 / 易歧义词", [
+  ["文职", "行政文员", ["category_fallback"], "泛文职词不允许空结果。", ["前台接待", "人力资源专员"]],
+  ["设计", "UI设计师", ["category_fallback", "contains_alias"], "设计大类至少要给出主入口。", ["平面设计师", "视频剪辑"]],
+  ["运营", "电商运营", ["exact_alias", "category_fallback"], "泛运营词允许优先回主运营模板。", ["新媒体运营", "抖音运营"], "运营"],
+  ["销售", "销售专员", ["exact_alias", "category_fallback"], "销售泛词至少要给出主入口。", ["电话销售", "门店销售"]],
+  ["司机", "网约车司机", ["category_fallback", "contains_alias"], "司机泛词至少给出司机职业簇。", ["货车司机", "配送司机"]],
+  ["工厂", "普工", ["category_fallback", "prefix_alias"], "工厂泛词应回制造热门职业。", ["仓库管理员", "货车司机"]],
+  ["后勤", "行政文员", ["category_fallback"], "后勤泛词兜底到常见后勤岗位。", ["仓库管理员", "前台接待"]],
+  ["技工", "机械加工技工", ["category_fallback", "contains_alias"], "制造大类泛词当前会先命中更具体的技工词。"],
+  ["医疗", "医生", ["category_fallback", "exact_alias"], "医疗大类要给出热门职业簇。", ["护士", "药师"]],
+  ["行政", "行政文员", ["exact_alias", "category_fallback"], "行政泛词本身也是高频入口。"],
+  ["办公室", "行政文员", ["contains_alias", "prefix_alias", "category_fallback"], "办公室泛词应回文职。"],
+  ["仓库", "仓库管理员", ["prefix_alias", "contains_alias", "category_fallback"], "仓库泛词应先回仓储主结果。"],
+  ["物流", "物流专员", ["exact_alias", "category_fallback"], "物流泛词应可命中。"],
+  ["仓储", "仓库管理员", ["category_fallback", "contains_alias", "prefix_alias"], "仓储泛词允许先回仓储主结果。", ["物流专员", "理货员"]],
+  ["配送", "配送员", ["prefix_alias", "category_fallback"], "配送泛词应先回配送员。", ["配送司机"]],
+  ["直播", "直播运营", ["prefix_alias", "category_fallback"], "直播泛词应给出直播运营链路。", ["带货主播", "电商运营"]],
+  ["新媒体", "新媒体运营", ["prefix_alias", "category_fallback"], "泛媒体词也不应空结果。"],
+  ["剪辑", "视频剪辑", ["contains_alias", "prefix_alias"], "内容岗短词要能命中。"],
+  ["程序", "软件开发工程师", ["prefix_alias", "fuzzy_alias"], "技术短词要能命中开发岗位。"],
+  ["软件", "软件开发工程师", ["category_fallback", "contains_alias", "prefix_alias"], "软件泛词不应空结果。"],
+  ["IT", "软件开发工程师", ["category_fallback", "exact_alias"], "英文泛词至少走技术兜底。", undefined, "it"],
+  ["护理", "护士", ["exact_alias", "category_fallback"], "护理类泛词应回护士。"],
+  ["药房", "药师", ["exact_alias", "category_fallback"], "药房泛词应回药师。"],
+  ["门店", "门店销售", ["prefix_alias", "category_fallback"], "门店泛词允许回零售主结果。"],
+  ["餐饮", "服务员", ["category_fallback", "exact_alias"], "餐饮大类兜底。", ["厨师", "门店销售"]],
+  ["医院", "医生", ["category_fallback"], "医院泛词应回医疗热门职业。", ["护士", "药师"]],
+  ["坐班", "行政文员", ["category_fallback"], "中国用户常用的文职泛词。"],
+  ["顾问", "销售专员", ["category_fallback"], "顾问泛词优先回销售簇。", ["电话销售"]],
+  ["招人", "人力资源专员", ["fuzzy_alias", "exact_alias"], "比“招人的”更短的口语变体。"],
+  ["开滴滴", "网约车司机", ["fuzzy_alias"], "动作型表达应走轻量模糊。"],
+  ["视屏剪辑", "视频剪辑", ["fuzzy_alias"], "常见错字要走轻量模糊。"],
+  ["法物专员", null, ["no_result"], "当前未覆盖的错写应进入无结果兜底并触发补词闭环。"],
+  ["塔罗占卜", null, ["no_result"], "与职业库无关的查询应进入无结果兜底。"],
+  ["宠物沟通", null, ["no_result"], "未覆盖且不应误匹配的查询。"],
+  ["修仙护法", null, ["no_result"], "明显无关查询应返回无结果兜底。"],
+  ["火星移民", null, ["no_result"], "概念性词应返回热门职业和反馈入口。"]
+]);
+
+export const OCCUPATION_SEARCH_TEST_CASE_GROUPS: OccupationSearchTestCaseGroup[] = [
+  EXACT_FREQUENT_CASES,
+  SPOKEN_CASES,
+  RECRUITMENT_CASES,
+  GENERIC_AND_AMBIGUOUS_CASES
+];
+
+export const OCCUPATION_SEARCH_TEST_CASES = OCCUPATION_SEARCH_TEST_CASE_GROUPS.flatMap((group) => group.cases);
+
+export const TOTAL_OCCUPATION_SEARCH_TEST_CASES = OCCUPATION_SEARCH_TEST_CASES.length;

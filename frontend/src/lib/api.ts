@@ -1,4 +1,5 @@
 import { translateOccupationDefinition, translateOccupationTasks, translateOccupationTitle, withTranslatedOccupationTitle } from "./occupation-translation";
+import { getOccupationSuggestions, searchOccupationsByQuery } from "./occupation-search";
 import type {
   JsonDataset,
   JsonDatasetOccupation,
@@ -7,6 +8,7 @@ import type {
   OccupationListPayload,
   OccupationQueryParams,
   OccupationRow,
+  OccupationSearchPayload,
   SummaryPayload
 } from "./types";
 
@@ -721,8 +723,17 @@ function applyClientFilters(rows: OccupationRow[], params: OccupationQueryParams
     nextRows = nextRows.filter((row) => row.label === params.label);
   }
   if (params.q) {
-    const rankedWithinFilter = rankRowsByQuery(nextRows, params.q);
-    nextRows = rankedWithinFilter.length ? rankedWithinFilter : rankRowsByQuery(baseRows, params.q);
+    const filteredPayload = searchOccupationsByQuery(nextRows, params.q);
+    const fallbackPayload = filteredPayload.primaryResult ? filteredPayload : searchOccupationsByQuery(baseRows, params.q);
+    const rankedRows = (fallbackPayload.primaryResult
+      ? [fallbackPayload.primaryResult, ...fallbackPayload.alternatives]
+      : fallbackPayload.popularSearches
+    )
+      .map((hit) => hit.occupation)
+      .filter(Boolean)
+      .filter((row, index, collection) => collection.findIndex((candidate) => candidate.socCode === row.socCode) === index);
+
+    nextRows = rankedRows.length ? rankedRows : rankRowsByQuery(baseRows, params.q);
   }
 
   return nextRows;
@@ -858,4 +869,20 @@ export async function getOccupationDetail(socCode: string, params: OccupationQue
     regions: meta.regions,
     occupation: mapJsonOccupation(matched, region)
   };
+}
+
+export async function searchOccupations(query: string, params: Omit<OccupationQueryParams, "q"> = {}): Promise<OccupationSearchPayload> {
+  const dataset = await loadDataset();
+  const meta = getDatasetMeta(dataset);
+  const region = resolveRegion(params.region, meta.regions);
+  const rows = dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region));
+  return searchOccupationsByQuery(rows, query);
+}
+
+export async function getSearchSuggestions(query: string, params: Omit<OccupationQueryParams, "q"> & { limit?: number } = {}) {
+  const dataset = await loadDataset();
+  const meta = getDatasetMeta(dataset);
+  const region = resolveRegion(params.region, meta.regions);
+  const rows = dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region));
+  return getOccupationSuggestions(rows, query, params.limit ?? 8);
 }

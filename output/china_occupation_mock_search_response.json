@@ -1,0 +1,182 @@
+{
+  "endpoint": "GET /api/china-occupations/search",
+  "successCases": {
+    "independentCardTitleExact": {
+      "request": {
+        "q": "跨境电商运营管理师",
+        "limit": 10,
+        "scene": "global_search",
+        "includeAirsFallback": true
+      },
+      "response": {
+        "query": "跨境电商运营管理师",
+        "normalizedQuery": "跨境电商运营管理师",
+        "results": [
+          {
+            "id": "100001",
+            "slug": "cross-border-e-commerce-operations-manager",
+            "cnTitleDisplay": "跨境电商运营管理师",
+            "enTitle": "Cross-Border E-Commerce Operations Manager",
+            "track": "平台经济",
+            "priority": "P0",
+            "mappingType": "independent_card",
+            "independentCardFlag": true,
+            "matchType": "title_exact",
+            "matchedAlias": "跨境电商运营管理师",
+            "introShort": "跨境电商运营管理师主要活跃在跨境平台商家与品牌出海团队，负责选品上架、投放增长、订单履约与平台规则协同等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "mappedSocCode": "13-1161.00",
+            "mappedAirsTitle": "市场研究分析师与营销专员",
+            "parent": {
+              "socCode": "13-1161.00",
+              "airsId": null,
+              "title": "市场研究分析师与营销专员",
+              "url": "/occupations/13-1161-00"
+            },
+            "url": "/china-occupations/cross-border-e-commerce-operations-manager"
+          }
+        ],
+        "fallback": null
+      }
+    },
+    "independentCardAliasExact": {
+      "request": {
+        "q": "BIM工程师",
+        "limit": 10,
+        "scene": "global_search",
+        "includeAirsFallback": true
+      },
+      "response": {
+        "query": "BIM工程师",
+        "normalizedQuery": "bim工程师",
+        "results": [
+          {
+            "id": "100004",
+            "slug": "bim-technician",
+            "cnTitleDisplay": "BIM技术员",
+            "enTitle": "BIM Technician",
+            "track": "BIM/数字建造",
+            "priority": "P0",
+            "mappingType": "independent_card",
+            "independentCardFlag": true,
+            "matchType": "alias_exact",
+            "matchedAlias": "BIM工程师",
+            "introShort": "BIM技术员主要活跃在建筑数字化建模与协同场景，负责模型搭建、协同校核、碰撞检查和信息管理等工作，用户搜索心智独立，适合在中国职业层首批独立上线。",
+            "mappedSocCode": "17-3011.00",
+            "mappedAirsTitle": "建筑与土木制图员",
+            "parent": {
+              "socCode": "17-3011.00",
+              "airsId": null,
+              "title": "建筑与土木制图员",
+              "url": "/occupations/17-3011-00"
+            },
+            "url": "/china-occupations/bim-technician"
+          }
+        ],
+        "fallback": null
+      }
+    },
+    "mergedRedirectDemo": {
+      "request": {
+        "q": "物流服务师",
+        "limit": 10,
+        "scene": "global_search",
+        "includeAirsFallback": true
+      },
+      "response": {
+        "query": "物流服务师",
+        "normalizedQuery": "物流服务师",
+        "results": [
+          {
+            "id": "200001",
+            "slug": "logistics-service-specialist",
+            "cnTitleDisplay": "物流服务师",
+            "enTitle": "Logistics Service Specialist",
+            "track": "产业运营",
+            "priority": "P1",
+            "mappingType": "merged_redirect",
+            "independentCardFlag": false,
+            "matchType": "title_exact",
+            "matchedAlias": "物流服务师",
+            "introShort": "该职业当前按 AIRS 主职业统一展示，适合前端联调 merged_redirect 搜索命中状态。",
+            "mappedSocCode": "13-1081.00",
+            "mappedAirsTitle": "物流师",
+            "parent": {
+              "socCode": "13-1081.00",
+              "title": "物流师"
+            },
+            "url": "/china-occupations/logistics-service-specialist"
+          }
+        ],
+        "fallback": null
+      }
+    },
+    "oneToManyRedirectDemo": {
+      "request": {
+        "q": "健康照护师",
+        "limit": 10,
+        "scene": "global_search",
+        "includeAirsFallback": true
+      },
+      "response": {
+        "query": "健康照护师",
+        "normalizedQuery": "健康照护师",
+        "results": [
+          {
+            "id": "200002",
+            "slug": "health-caregiver",
+            "cnTitleDisplay": "健康照护师",
+            "enTitle": "Health Caregiver",
+            "track": "健康照护",
+            "priority": "P1",
+            "mappingType": "one_to_many_redirect",
+            "independentCardFlag": false,
+            "matchType": "title_exact",
+            "matchedAlias": "健康照护师",
+            "introShort": "该中国职业对应多个 AIRS 主职业，前端应先进入分流说明页再决定去向。",
+            "mappedSocCode": "",
+            "mappedAirsTitle": "",
+            "parent": null,
+            "url": "/china-occupations/health-caregiver"
+          }
+        ],
+        "fallback": null
+      }
+    }
+  },
+  "emptyCases": {
+    "noResult": {
+      "request": {
+        "q": "宇宙农场体验师",
+        "limit": 10,
+        "scene": "global_search",
+        "includeAirsFallback": true
+      },
+      "response": {
+        "query": "宇宙农场体验师",
+        "normalizedQuery": "宇宙农场体验师",
+        "results": [],
+        "fallback": {
+          "type": "airs_search",
+          "message": "未找到中国职业结果，可继续检索 AIRS 主职业。",
+          "url": "/search?q=宇宙农场体验师"
+        }
+      }
+    }
+  },
+  "errorCases": {
+    "serviceError": {
+      "success": false,
+      "endpoint": "GET /api/china-occupations/search",
+      "requestId": "mock-china_occupation_search_unavailable",
+      "error": {
+        "status": 503,
+        "code": "china_occupation_search_unavailable",
+        "message": "中国职业搜索服务暂时不可用，请稍后重试。",
+        "retryable": true,
+        "details": {
+          "q": "BIM技术员"
+        }
+      }
+    }
+  }
+}

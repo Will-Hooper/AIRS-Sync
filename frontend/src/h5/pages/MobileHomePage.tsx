@@ -91,17 +91,25 @@ export function MobileHomePage() {
                 language={language}
                 placeholder={copy.searchPlaceholder}
                 value={query}
-                onCommit={(nextQuery, occupation) => {
+                analyticsSource="h5-home"
+                onQueryChange={setQuery}
+                onCommit={(nextQuery, selection, payload) => {
                   setQuery(nextQuery);
                   void trackSearchEvent({
                     query: nextQuery,
                     source: "h5-home",
                     language,
-                    occupation
+                    occupation: selection?.occupation,
+                    searchLabel: selection?.label,
+                    matchType: payload?.matchType || selection?.matchType,
+                    matchedAlias: selection?.matchedAlias,
+                    resultCount: payload?.resultCount,
+                    isZeroResult: !payload?.primaryResult,
+                    didClickResult: Boolean(selection)
                   });
                 }}
-                onSelect={(occupation) => {
-                  navigate(`/occupation/${encodeURIComponent(occupation.socCode)}?lang=${language}`);
+                onSelect={(selection) => {
+                  navigate(`/occupation/${encodeURIComponent(selection.occupation.socCode)}?lang=${language}&entry=${encodeURIComponent(selection.label)}`);
                 }}
               />
             </div>
