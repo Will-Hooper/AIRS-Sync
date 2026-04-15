@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { searchOccupations } from "../../lib/api";
 import type { SearchEventSource } from "../../lib/analytics";
 import type { AppLanguage } from "../../lib/i18n";
@@ -26,10 +26,12 @@ export function SearchCombobox({
   onQueryChange,
   className = ""
 }: SearchComboboxProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const [query, setQuery] = useState(value);
   const [suggestions, setSuggestions] = useState<OccupationSearchHit[]>([]);
   const [open, setOpen] = useState(false);
   const [searchPayload, setSearchPayload] = useState<OccupationSearchPayload | null>(null);
+  const [isComposing, setIsComposing] = useState(false);
 
   useEffect(() => {
     setQuery(value);
@@ -74,18 +76,40 @@ export function SearchCombobox({
     setOpen(false);
   };
 
+  const closeIfFocusLeft = () => {
+    window.setTimeout(() => {
+      const activeElement = document.activeElement;
+      if (rootRef.current && activeElement instanceof Node && rootRef.current.contains(activeElement)) {
+        return;
+      }
+      setOpen(false);
+    }, 0);
+  };
+
   return (
-    <div className={`relative ${className}`}>
+    <div ref={rootRef} className={`relative ${className}`}>
       <input
         value={query}
         onFocus={() => setOpen(true)}
-        onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+        onBlur={closeIfFocusLeft}
         onChange={(event) => {
           setQuery(event.target.value);
           onQueryChange?.(event.target.value);
           setOpen(true);
         }}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={(event) => {
+          setIsComposing(false);
+          setQuery(event.currentTarget.value);
+          onQueryChange?.(event.currentTarget.value);
+          setOpen(true);
+        }}
         onKeyDown={(event) => {
+          const nativeEvent = event.nativeEvent as KeyboardEvent & { isComposing?: boolean };
+          if (isComposing || nativeEvent.isComposing || nativeEvent.keyCode === 229) {
+            return;
+          }
+
           if (event.key === "Enter") {
             event.preventDefault();
             submitFirstMatch();

@@ -62,6 +62,7 @@ export function HomePage() {
 
   const copy = messages[language];
   const deferredQuery = useDeferredValue(query);
+  const searchParamQuery = searchParams.get("q") || "";
   const filters = useMemo(() => buildFilters(searchParams, deferredQuery), [deferredQuery, searchParams]);
 
   useEffect(() => {
@@ -130,11 +131,8 @@ export function HomePage() {
   }, [filters]);
 
   useEffect(() => {
-    const nextQuery = searchParams.get("q") || "";
-    if (nextQuery !== query) {
-      setQuery(nextQuery);
-    }
-  }, [searchParams, query]);
+    setQuery((current) => (current === searchParamQuery ? current : searchParamQuery));
+  }, [searchParamQuery]);
 
   useEffect(() => {
     updateParamState(searchParams, setSearchParams, { q: deferredQuery.trim() || undefined });
