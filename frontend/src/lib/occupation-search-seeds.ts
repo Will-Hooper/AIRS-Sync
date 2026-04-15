@@ -1,7 +1,8 @@
 import type { OccupationAliasType } from "./types";
 import { CHINA_P0_SEARCH_SEEDS } from "./occupation-search-china-p0";
+import { CHINA_P05_SEARCH_SEEDS } from "./occupation-search-china-p05";
 
-export { CHINA_P0_SEARCH_SEEDS };
+export { CHINA_P0_SEARCH_SEEDS, CHINA_P05_SEARCH_SEEDS };
 
 export interface OccupationSearchSeedAliasInput {
   // Chinese-facing alias or abbreviation users may type into the search box.
@@ -365,7 +366,7 @@ export const COMMON_OCCUPATION_SEARCH_SEEDS: OccupationSearchSeedEntry[] = [
     categoryLv2: "司机",
     analysisTemplateId: "soc:53-3054.00",
     searchPriority: 102,
-    aliases: ["网约车司机", "滴滴司机", "跑滴滴", "出租车司机"]
+    aliases: ["网约车司机", "滴滴司机", "跑滴滴"]
   },
   {
     id: "common:truck-driver",

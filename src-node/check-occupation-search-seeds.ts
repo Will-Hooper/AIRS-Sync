@@ -1,4 +1,10 @@
-import { CHINA_P0_SEARCH_SEEDS, COMMON_OCCUPATION_SEARCH_SEEDS, type OccupationSearchSeedAliasInput, type OccupationSearchSeedEntry } from "../frontend/src/lib/occupation-search-seeds";
+import {
+  CHINA_P0_SEARCH_SEEDS,
+  CHINA_P05_SEARCH_SEEDS,
+  COMMON_OCCUPATION_SEARCH_SEEDS,
+  type OccupationSearchSeedAliasInput,
+  type OccupationSearchSeedEntry
+} from "../frontend/src/lib/occupation-search-seeds";
 import { normalizeOccupationQuery } from "../frontend/src/lib/occupation-search";
 
 interface AliasCheckRow {
@@ -32,7 +38,7 @@ function toAliasRows(entry: OccupationSearchSeedEntry) {
 }
 
 function main() {
-  const entries = [...COMMON_OCCUPATION_SEARCH_SEEDS, ...CHINA_P0_SEARCH_SEEDS];
+  const entries = [...COMMON_OCCUPATION_SEARCH_SEEDS, ...CHINA_P0_SEARCH_SEEDS, ...CHINA_P05_SEARCH_SEEDS];
   const rows = entries.flatMap(toAliasRows);
   const errors: string[] = [];
   const warnings: string[] = [];

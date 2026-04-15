@@ -1,6 +1,7 @@
 import {
   CATEGORY_FALLBACKS,
   CHINA_P0_SEARCH_SEEDS,
+  CHINA_P05_SEARCH_SEEDS,
   COMMON_OCCUPATION_SEARCH_SEEDS,
   POPULAR_SEARCH_ENTRY_IDS,
   type OccupationSearchSeedAliasInput,
@@ -47,6 +48,8 @@ const STRIP_YUAN_BASES = new Set([
   "审单"
 ]);
 
+const WEAK_SUFFIX_EXCEPTIONS = new Set(["律师助理", "法律助理"]);
+
 const AUTO_CATEGORY_MAP = new Map<string, { categoryLv1: string; categoryLv2: string }>([
   ["Office and Administrative Support", { categoryLv1: "文职", categoryLv2: "综合" }],
   ["Business and Financial Operations", { categoryLv1: "文职", categoryLv2: "商务" }],
@@ -88,7 +91,7 @@ export function normalizeOccupationQuery(value: unknown) {
     .trim();
 
   ["专员", "助理", "顾问", "老师", "师傅", "人员", "岗"].forEach((suffix) => {
-    if (normalized.length > suffix.length + 1 && normalized.endsWith(suffix)) {
+    if (!WEAK_SUFFIX_EXCEPTIONS.has(normalized) && normalized.length > suffix.length + 1 && normalized.endsWith(suffix)) {
       normalized = normalized.slice(0, -suffix.length).trim();
     }
   });
@@ -294,7 +297,7 @@ function seedEntryForRow(seed: OccupationSearchSeedEntry, row: OccupationRow): S
 function buildEntries(rows: OccupationRow[]) {
   const rowsBySocCode = new Map(rows.map((row) => [row.socCode, row]));
   const autoEntries = rows.map(autoEntryForRow);
-  const seedEntries = [...COMMON_OCCUPATION_SEARCH_SEEDS, ...CHINA_P0_SEARCH_SEEDS]
+  const seedEntries = [...COMMON_OCCUPATION_SEARCH_SEEDS, ...CHINA_P0_SEARCH_SEEDS, ...CHINA_P05_SEARCH_SEEDS]
     .map((seed) => {
       const occupation = rowsBySocCode.get(seed.occupationId);
       return occupation ? seedEntryForRow(seed, occupation) : null;
