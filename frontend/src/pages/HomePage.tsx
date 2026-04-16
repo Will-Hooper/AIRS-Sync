@@ -58,6 +58,7 @@ export function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const trackedDesktopQueryRef = useRef("");
+  const skipNextQuerySyncRef = useRef(false);
   const pageRef = useRef<HTMLDivElement | null>(null);
 
   const copy = messages[language];
@@ -135,6 +136,10 @@ export function HomePage() {
   }, [searchParamQuery]);
 
   useEffect(() => {
+    if (skipNextQuerySyncRef.current) {
+      skipNextQuerySyncRef.current = false;
+      return;
+    }
     updateParamState(searchParams, setSearchParams, { q: deferredQuery.trim() || undefined });
   }, [deferredQuery]);
 
@@ -396,6 +401,7 @@ export function HomePage() {
                       });
                     }}
                     onSelect={(selection) => {
+                      skipNextQuerySyncRef.current = true;
                       navigate(`/occupation/${encodeURIComponent(selection.occupation.socCode)}?lang=${language}&entry=${encodeURIComponent(selection.label)}`);
                     }}
                   />

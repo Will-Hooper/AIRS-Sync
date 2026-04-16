@@ -5,6 +5,7 @@
     "build:frontend": "npm run sync:public-data && vite build",
     "build:node": "tsc -p tsconfig.node.json",
     "check:h5-boundary": "node ./scripts/check-h5-boundary.mjs",
+    "export:share-samples": "node ./scripts/export-share-mascot-samples.mjs",
     "sync:public-data": "node ./scripts/sync-public-backend-data.mjs",
     "search:check-seeds": "node ./dist-node/src-node/check-occupation-search-seeds.js",
     "test:search": "vitest run frontend/src/lib/__tests__/occupation-search.spec.ts",

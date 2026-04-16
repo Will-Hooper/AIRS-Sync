@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { searchOccupations } from "../../lib/api";
+import { useRef } from "react";
 import type { SearchEventSource } from "../../lib/analytics";
 import type { AppLanguage } from "../../lib/i18n";
 import type { OccupationSearchHit, OccupationSearchPayload } from "../../lib/types";
 import { OccupationSearchFeedback } from "../../shared/OccupationSearchFeedback";
+import { useOccupationSearchCombobox } from "../../shared/useOccupationSearchCombobox";
 
 interface SearchComboboxProps {
   language: AppLanguage;
@@ -27,54 +27,24 @@ export function SearchCombobox({
   className = ""
 }: SearchComboboxProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const [query, setQuery] = useState(value);
-  const [suggestions, setSuggestions] = useState<OccupationSearchHit[]>([]);
-  const [open, setOpen] = useState(false);
-  const [searchPayload, setSearchPayload] = useState<OccupationSearchPayload | null>(null);
-  const [isComposing, setIsComposing] = useState(false);
-
-  useEffect(() => {
-    setQuery(value);
-  }, [value]);
-
-  useEffect(() => {
-    if (!open && !query.trim()) {
-      setSuggestions([]);
-      setSearchPayload(null);
-      return;
-    }
-
-    let cancelled = false;
-    const timer = window.setTimeout(async () => {
-      try {
-        const payload = await searchOccupations(query);
-        if (cancelled) return;
-        setSearchPayload(payload);
-        setSuggestions((payload.suggestions.length ? payload.suggestions : payload.popularSearches).slice(0, 6));
-      } catch {
-        if (cancelled) return;
-        setSuggestions([]);
-        setSearchPayload(null);
-      }
-    }, 120);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-    };
-  }, [open, query]);
-
-  const submitFirstMatch = () => {
-    if (!searchPayload?.primaryResult) {
-      onCommit?.(query, null, searchPayload);
-      return;
-    }
-
-    const committedQuery = query.trim() || searchPayload.primaryResult.label;
-    onCommit?.(committedQuery, searchPayload.primaryResult, searchPayload);
-    onSelect(searchPayload.primaryResult);
-    setOpen(false);
-  };
+  const {
+    query,
+    suggestions,
+    open,
+    searchPayload,
+    setOpen,
+    handleInputChange,
+    handleCompositionStart,
+    handleCompositionUpdate,
+    handleCompositionEnd,
+    handleKeyDown,
+    handleSuggestionSelect
+  } = useOccupationSearchCombobox({
+    value,
+    onSelect,
+    onCommit,
+    onQueryChange
+  });
 
   const closeIfFocusLeft = () => {
     window.setTimeout(() => {
@@ -92,29 +62,11 @@ export function SearchCombobox({
         value={query}
         onFocus={() => setOpen(true)}
         onBlur={closeIfFocusLeft}
-        onChange={(event) => {
-          setQuery(event.target.value);
-          onQueryChange?.(event.target.value);
-          setOpen(true);
-        }}
-        onCompositionStart={() => setIsComposing(true)}
-        onCompositionEnd={(event) => {
-          setIsComposing(false);
-          setQuery(event.currentTarget.value);
-          onQueryChange?.(event.currentTarget.value);
-          setOpen(true);
-        }}
-        onKeyDown={(event) => {
-          const nativeEvent = event.nativeEvent as KeyboardEvent & { isComposing?: boolean };
-          if (isComposing || nativeEvent.isComposing || nativeEvent.keyCode === 229) {
-            return;
-          }
-
-          if (event.key === "Enter") {
-            event.preventDefault();
-            submitFirstMatch();
-          }
-        }}
+        onChange={(event) => handleInputChange(event.target.value)}
+        onCompositionStart={handleCompositionStart}
+        onCompositionUpdate={(event) => handleCompositionUpdate(event.currentTarget.value)}
+        onCompositionEnd={(event) => handleCompositionEnd(event.currentTarget.value)}
+        onKeyDown={handleKeyDown}
         className="airs-input"
         placeholder={placeholder}
       />
@@ -125,12 +77,7 @@ export function SearchCombobox({
               key={suggestion.id}
               type="button"
               onMouseDown={(event) => event.preventDefault()}
-              onClick={() => {
-                const committedQuery = query.trim() || suggestion.label;
-                onCommit?.(committedQuery, suggestion, searchPayload);
-                onSelect(suggestion);
-                setOpen(false);
-              }}
+              onClick={() => handleSuggestionSelect(suggestion)}
               className="flex w-full flex-col gap-1 border-b border-white/6 px-4 py-3 text-left transition hover:bg-white/5 last:border-b-0"
             >
               <span className="text-sm font-medium text-white">

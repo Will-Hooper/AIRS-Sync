@@ -1,0 +1,46 @@
+{
+  "desktop": {
+    "homeIme": {
+      "before": "#/",
+      "during": "#/",
+      "afterImmediate": "#/",
+      "afterFinal": "#/occupation/15-1252.00?lang=zh&entry=软件开发工程师",
+      "title": "AI会取代你的职业吗？",
+      "inputValue": "程序员",
+      "queryParamDuring": null
+    },
+    "detailFreshPayload": {
+      "oldSuggestion": "",
+      "hash": "#/occupation/29-1141.00?lang=zh&entry=护士",
+      "title": "AI会取代你的职业吗？"
+    },
+    "detailMixed": {
+      "firstSuggestion": "护士",
+      "hash": "#/occupation/15-1252.00?q=IT程序员",
+      "title": "AI会取代你的职业吗？",
+      "inputValue": "IT程序员"
+    }
+  },
+  "h5": {
+    "homeIme": {
+      "before": "#/?lang=zh",
+      "during": "#/?lang=zh",
+      "afterImmediate": "#/?lang=zh",
+      "afterFinal": "#/occupation/15-1252.00?lang=zh&entry=软件开发工程师",
+      "title": "AI会取代你的职业吗？",
+      "inputValue": "程序员",
+      "queryParamDuring": null
+    },
+    "detailFreshPayload": {
+      "oldSuggestion": "",
+      "hash": "#/occupation/29-1141.00?lang=zh&entry=护士",
+      "title": "AI会取代你的职业吗？"
+    },
+    "detailMixed": {
+      "firstSuggestion": "",
+      "hash": "#/occupation/29-1141.00?lang=zh&entry=护士",
+      "title": "护士",
+      "inputValue": "IT程序员"
+    }
+  }
+}

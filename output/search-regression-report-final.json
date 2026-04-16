@@ -1,0 +1,48 @@
+{
+  "desktop": {
+    "homeIme": {
+      "before": "#/",
+      "during": "#/",
+      "afterImmediate": "#/",
+      "afterFinal": "#/occupation/15-1252.00?lang=zh&entry=软件开发工程师"
+    },
+    "detailFreshPayload": {
+      "oldSuggestion": [
+        "护士",
+        "医生"
+      ],
+      "hash": "#/occupation/15-1252.00?lang=zh&entry=软件开发工程师"
+    },
+    "mixedInput": {
+      "suggestions": [
+        "人力资源专员",
+        "行政文员",
+        "会计"
+      ],
+      "hash": "#/occupation/13-1071.00?lang=zh&entry=人力资源专员"
+    }
+  },
+  "h5": {
+    "homeIme": {
+      "before": "#/?lang=zh",
+      "during": "#/?lang=zh",
+      "afterImmediate": "#/?lang=zh",
+      "afterFinal": "#/occupation/15-1252.00?lang=zh&entry=软件开发工程师"
+    },
+    "detailFreshPayload": {
+      "oldSuggestion": [
+        "护士",
+        "医生"
+      ],
+      "hash": "#/occupation/15-1252.00?lang=zh&entry=软件开发工程师"
+    },
+    "mixedInput": {
+      "suggestions": [
+        "人力资源专员",
+        "行政文员",
+        "会计"
+      ],
+      "hash": "#/occupation/13-1071.00?lang=zh&entry=人力资源专员"
+    }
+  }
+}
