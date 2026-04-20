@@ -15,6 +15,8 @@ import type {
 const DATA_URL = "../backend/data/airs_data.json";
 
 let datasetPromise: Promise<JsonDataset> | null = null;
+const datasetMetaCache = new WeakMap<JsonDataset, ReturnType<typeof getDatasetMeta>>();
+const datasetRowsByRegionCache = new WeakMap<JsonDataset, Map<string, OccupationRow[]>>();
 
 export class AirsDataUnavailableError extends Error {
   status: number;
@@ -578,6 +580,9 @@ function resolveRegion(requestedRegion: string | undefined, regions: string[]) {
 }
 
 function getDatasetMeta(dataset: JsonDataset) {
+  const cached = datasetMetaCache.get(dataset);
+  if (cached) return cached;
+
   const dates = uniqueStrings(dataset?.dates);
   const regions = uniqueStrings(dataset?.regions?.length
     ? dataset.regions
@@ -589,7 +594,9 @@ function getDatasetMeta(dataset: JsonDataset) {
     ? dataset.groups
     : dataset?.occupations?.map((occupation) => occupation.majorGroup)).sort();
 
-  return { dates, regions, labels, groups };
+  const meta = { dates, regions, labels, groups };
+  datasetMetaCache.set(dataset, meta);
+  return meta;
 }
 
 function regionMetricsFor(occupation: JsonDatasetOccupation | OccupationRow, region: string): JsonRegionMetrics {
@@ -797,13 +804,27 @@ export function invalidateDatasetCache() {
   datasetPromise = null;
 }
 
+function getRowsForRegion(dataset: JsonDataset, region: string) {
+  let rowsByRegion = datasetRowsByRegionCache.get(dataset);
+  if (!rowsByRegion) {
+    rowsByRegion = new Map<string, OccupationRow[]>();
+    datasetRowsByRegionCache.set(dataset, rowsByRegion);
+  }
+
+  const cachedRows = rowsByRegion.get(region);
+  if (cachedRows) {
+    return cachedRows;
+  }
+
+  const rows = dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region));
+  rowsByRegion.set(region, rows);
+  return rows;
+}
+
 function buildRows(dataset: JsonDataset, params: OccupationQueryParams = {}): OccupationRow[] {
   const meta = getDatasetMeta(dataset);
   const region = resolveRegion(params.region, meta.regions);
-  return applyClientFilters(
-    dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region)),
-    params
-  );
+  return applyClientFilters(getRowsForRegion(dataset, region), params);
 }
 
 export async function getSummary(params: OccupationQueryParams = {}): Promise<SummaryPayload> {
@@ -827,10 +848,7 @@ export async function getOccupations(params: OccupationQueryParams = {}): Promis
   const meta = getDatasetMeta(dataset);
   const date = resolveDate(params.date, meta.dates);
   const region = resolveRegion(params.region, meta.regions);
-  const occupations = applyClientFilters(
-    dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region)),
-    params
-  );
+  const occupations = applyClientFilters(getRowsForRegion(dataset, region), params);
 
   return {
     mode: "json",
@@ -854,7 +872,8 @@ export async function getOccupationDetail(socCode: string, params: OccupationQue
   const meta = getDatasetMeta(dataset);
   const date = resolveDate(params.date, meta.dates);
   const region = resolveRegion(params.region, meta.regions);
-  const matched = dataset.occupations.find((occupation) => occupation.socCode === socCode) || dataset.occupations[0];
+  const rows = getRowsForRegion(dataset, region);
+  const matched = rows.find((occupation) => occupation.socCode === socCode) || rows[0];
 
   return {
     mode: "json",
@@ -867,7 +886,7 @@ export async function getOccupationDetail(socCode: string, params: OccupationQue
     date,
     dates: meta.dates,
     regions: meta.regions,
-    occupation: mapJsonOccupation(matched, region)
+    occupation: matched
   };
 }
 
@@ -875,14 +894,12 @@ export async function searchOccupations(query: string, params: Omit<OccupationQu
   const dataset = await loadDataset();
   const meta = getDatasetMeta(dataset);
   const region = resolveRegion(params.region, meta.regions);
-  const rows = dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region));
-  return searchOccupationsByQuery(rows, query);
+  return searchOccupationsByQuery(getRowsForRegion(dataset, region), query);
 }
 
 export async function getSearchSuggestions(query: string, params: Omit<OccupationQueryParams, "q"> & { limit?: number } = {}) {
   const dataset = await loadDataset();
   const meta = getDatasetMeta(dataset);
   const region = resolveRegion(params.region, meta.regions);
-  const rows = dataset.occupations.map((occupation) => mapJsonOccupation(occupation, region));
-  return getOccupationSuggestions(rows, query, params.limit ?? 8);
+  return getOccupationSuggestions(getRowsForRegion(dataset, region), query, params.limit ?? 8);
 }

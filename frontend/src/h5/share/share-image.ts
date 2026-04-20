@@ -4,13 +4,12 @@ import type { DatasetSourceUpdatedAt, OccupationRow } from "../../lib/types";
 import { getH5Copy } from "../lib/copy";
 import type { H5Language } from "../lib/language";
 import { buildH5OccupationHref } from "../lib/navigation";
-import { getMascotBandCopy, getMascotScoreBand } from "./share-mascot-score-map";
-import { renderMascotSceneDataUrl } from "./share-mascot-renderer";
+import { getShareScoreTheme } from "./share-score-theme";
 
 const CANVAS_WIDTH = 1080;
 const CANVAS_HEIGHT = 1920;
-const CONTENT_X = 84;
-const CONTENT_WIDTH = 912;
+const CONTENT_X = 76;
+const CONTENT_WIDTH = 928;
 const FONT_FAMILY = "'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif";
 
 interface ShareImageOptions {
@@ -38,8 +37,20 @@ export async function renderOccupationShareImage({
 }: ShareImageOptions) {
   const copy = getH5Copy(language);
   const score = Number(occupation.airs || 0);
-  const scoreBand = getMascotScoreBand(score);
-  const mascotCopy = getMascotBandCopy(score, language);
+  const theme = getShareScoreTheme(score);
+  const summary = (
+    language === "zh"
+      ? occupation.summaryZh || occupation.summary
+      : occupation.summary || occupation.summaryZh
+  ).trim() || copy.noReading;
+  const title = language === "zh" ? occupation.titleZh || occupation.title : occupation.title;
+  const breakdownItems = [
+    { label: copy.breakdownLabels.replacement, value: Number(occupation.replacement || 0), color: theme.palette.breakdownTracks[0] },
+    { label: copy.breakdownLabels.augmentation, value: Number(occupation.augmentation || 0), color: theme.palette.breakdownTracks[1] },
+    { label: copy.breakdownLabels.hiring, value: Number(occupation.hiring || 0), color: theme.palette.breakdownTracks[2] },
+    { label: copy.breakdownLabels.historical, value: Number(occupation.historical || 0), color: theme.palette.breakdownTracks[3] }
+  ] as const;
+
   const canvas = document.createElement("canvas");
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
@@ -48,174 +59,273 @@ export async function renderOccupationShareImage({
     throw new Error("canvas context unavailable");
   }
 
-  const gradient = context.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  gradient.addColorStop(0, scoreBand.palette.canvasTop);
-  gradient.addColorStop(0.48, scoreBand.palette.canvasBottom);
-  gradient.addColorStop(1, "#050a11");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  drawBackground(context, theme);
 
-  context.fillStyle = scoreBand.palette.glowSoft;
-  context.beginPath();
-  context.arc(904, 228, 272, 0, Math.PI * 2);
-  context.fill();
-
-  context.fillStyle = scoreBand.palette.helperSoft;
-  context.beginPath();
-  context.arc(146, 1540, 252, 0, Math.PI * 2);
-  context.fill();
-
-  const title = language === "zh" ? occupation.titleZh || occupation.title : occupation.title;
-  const summary = (
-    language === "zh"
-      ? occupation.summaryZh || occupation.summary
-      : occupation.summary
-  ).trim() || copy.noReading;
-  const scoreGuide = language === "zh"
-    ? "分数越高越稳定，越低越容易受到 AI 冲击。"
-    : "Higher scores mean stronger stability and lower AI disruption.";
-  const shareInterpretation = buildShareInterpretation(summary, mascotCopy, language);
-
-  context.fillStyle = scoreBand.palette.glow;
-  setFont(context, 500, 30);
-  context.fillText("AIRS", CONTENT_X, 102);
-
-  drawRangeBadge(context, language, mascotCopy.rangeLabel, scoreBand.palette.badgeBg, scoreBand.palette.badgeText);
+  context.fillStyle = theme.palette.accent;
+  setFont(context, 600, 30);
+  context.fillText("AIRS", CONTENT_X, 98);
+  drawRangeBadge(context, language, theme.rangeLabel[language], theme.palette.badgeBg, theme.palette.badgeText);
 
   const titleLayout = fitWrappedText(context, title, CONTENT_WIDTH, {
-    fontSizes: language === "zh" ? [82, 78, 74, 70, 66, 62] : [76, 72, 68, 64, 60, 56, 52, 48],
-    lineHeightMultiplier: 1.12,
+    fontSizes: language === "zh" ? [86, 82, 78, 72, 68, 62] : [78, 74, 70, 66, 60, 56, 52],
+    lineHeightMultiplier: 1.08,
     maxLines: 3,
     weight: 700
   });
-  context.fillStyle = "#f2f6ff";
+  context.fillStyle = theme.palette.textPrimary;
   setFont(context, 700, titleLayout.fontSize);
-  drawLines(context, titleLayout.lines, CONTENT_X, 184, titleLayout.lineHeight);
+  drawLines(context, titleLayout.lines, CONTENT_X, 182, titleLayout.lineHeight);
 
-  const titleBlockBottom = 184 + titleLayout.lineHeight * titleLayout.lines.length;
-  context.fillStyle = "rgba(242,246,255,0.7)";
-  setFont(context, 400, 28);
-  context.fillText(occupation.socCode, CONTENT_X, titleBlockBottom + 26);
-  context.fillStyle = "rgba(242,246,255,0.46)";
-  setFont(context, 500, 24);
-  context.fillText(scoreGuide, CONTENT_X, titleBlockBottom + 64);
+  const titleBottom = 182 + titleLayout.lines.length * titleLayout.lineHeight;
+  context.fillStyle = theme.palette.textSecondary;
+  setFont(context, 500, 26);
+  context.fillText(occupation.socCode, CONTENT_X, titleBottom + 24);
 
-  const heroY = titleBlockBottom + 102;
-  const heroHeight = titleLayout.lines.length >= 3 ? 564 : 600;
-  const mascotImage = await loadImage(
-    renderMascotSceneDataUrl({
-      score,
-      language,
-      width: CONTENT_WIDTH,
-      height: heroHeight
-    })
-  );
-  context.drawImage(mascotImage, CONTENT_X, heroY, CONTENT_WIDTH, heroHeight);
+  const headlineLayout = fitWrappedText(context, theme.headline[language], CONTENT_WIDTH, {
+    fontSizes: [28, 26, 24],
+    lineHeightMultiplier: 1.3,
+    maxLines: 2,
+    weight: 500
+  });
+  context.fillStyle = theme.palette.textSecondary;
+  setFont(context, 500, headlineLayout.fontSize);
+  drawLines(context, headlineLayout.lines, CONTENT_X, titleBottom + 68, headlineLayout.lineHeight);
 
-  const metricY = heroY + heroHeight + 34;
-  const metricHeight = 190;
-  drawMetricCard(
-    context,
-    CONTENT_X,
-    metricY,
-    434,
-    metricHeight,
-    copy.currentAirsLabel,
-    formatNumber(score, 1, language),
-    mascotCopy.badge,
-    scoreBand.palette.glow
-  );
-  drawMetricCard(
-    context,
-    562,
-    metricY,
-    434,
-    metricHeight,
-    copy.globalAverageLabel,
-    formatNumber(averageAirs, 1, language),
-    language === "zh" ? "用于和全体职业的当前均值做对照。" : "Context against the current all-occupation average.",
-    scoreBand.palette.helper
-  );
+  const heroCard = {
+    x: CONTENT_X,
+    y: titleBottom + 132,
+    width: CONTENT_WIDTH,
+    height: 272
+  };
+  drawPanel(context, heroCard.x, heroCard.y, heroCard.width, heroCard.height, 34, theme);
+  drawHeroCard(context, heroCard.x, heroCard.y, heroCard.width, heroCard.height, {
+    language,
+    score,
+    averageAirs,
+    theme,
+    currentAirsLabel: copy.currentAirsLabel,
+    globalAverageLabel: copy.globalAverageLabel,
+    statusLabel: theme.statusLabel[language]
+  });
 
-  const insightTitleY = metricY + metricHeight + 72;
-  context.fillStyle = "#f2f6ff";
-  setFont(context, 700, 40);
-  context.fillText(language === "zh" ? "职业解读 / 风险提示" : "Occupation read / Risk", CONTENT_X, insightTitleY);
+  const readingTitleY = heroCard.y + heroCard.height + 64;
+  context.fillStyle = theme.palette.textPrimary;
+  setFont(context, 700, 38);
+  context.fillText(language === "zh" ? "职业解读" : "Occupation read", CONTENT_X, readingTitleY);
 
-  const summaryPaddingX = 42;
-  const summaryLayout = fitWrappedText(context, shareInterpretation, CONTENT_WIDTH - summaryPaddingX * 2, {
-    fontSizes: language === "zh" ? [30, 28, 26, 24] : [30, 28, 26, 24],
-    lineHeightMultiplier: 1.45,
+  const readingLayout = fitWrappedText(context, summary, CONTENT_WIDTH - 84, {
+    fontSizes: language === "zh" ? [32, 30, 28, 26] : [30, 28, 26, 24],
+    lineHeightMultiplier: 1.38,
     maxLines: 5,
     weight: 400
   });
-  const summaryCard = {
+  const readingCard = {
     x: CONTENT_X,
-    y: insightTitleY + 28,
+    y: readingTitleY + 26,
     width: CONTENT_WIDTH,
-    height: 128 + summaryLayout.lines.length * summaryLayout.lineHeight
+    height: 104 + readingLayout.lines.length * readingLayout.lineHeight
   };
-  drawPanel(context, summaryCard.x, summaryCard.y, summaryCard.width, summaryCard.height, 28);
-  context.fillStyle = scoreBand.palette.glow;
-  setFont(context, 700, 30);
-  context.fillText(mascotCopy.badge, summaryCard.x + summaryPaddingX, summaryCard.y + 52);
-  context.fillStyle = "rgba(242,246,255,0.76)";
-  setFont(context, 400, summaryLayout.fontSize);
-  drawLines(
-    context,
-    summaryLayout.lines,
-    summaryCard.x + summaryPaddingX,
-    summaryCard.y + 96,
-    summaryLayout.lineHeight
-  );
+  drawPanel(context, readingCard.x, readingCard.y, readingCard.width, readingCard.height, 32, theme);
+  context.fillStyle = theme.palette.accent;
+  setFont(context, 700, 26);
+  context.fillText(theme.statusLabel[language], readingCard.x + 40, readingCard.y + 54);
+  context.fillStyle = theme.palette.textSecondary;
+  setFont(context, 400, readingLayout.fontSize);
+  drawLines(context, readingLayout.lines, readingCard.x + 40, readingCard.y + 98, readingLayout.lineHeight);
+
+  const breakdownTitleY = readingCard.y + readingCard.height + 64;
+  context.fillStyle = theme.palette.textPrimary;
+  setFont(context, 700, 38);
+  context.fillText(copy.breakdownTitle, CONTENT_X, breakdownTitleY);
+
+  const breakdownCard = {
+    x: CONTENT_X,
+    y: breakdownTitleY + 26,
+    width: CONTENT_WIDTH,
+    height: 332
+  };
+  drawPanel(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownCard.height, 32, theme);
+  drawBreakdownCard(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownItems, language, theme);
 
   const qrDataUrl = await QRCode.toDataURL(siteUrl, {
     margin: 1,
     width: 240,
     errorCorrectionLevel: "H",
     color: {
-      dark: "#0a1220",
+      dark: "#08111a",
       light: "#ffffffff"
     }
   });
-
   const qrImage = await loadImage(qrDataUrl);
-  const footerY = CANVAS_HEIGHT - 28;
-  const qrCardHeight = 176;
-  const qrCard = {
+  const footerCard = {
     x: CONTENT_X,
-    y: Math.max(summaryCard.y + summaryCard.height + 36, footerY - 48 - qrCardHeight),
+    y: CANVAS_HEIGHT - 252,
     width: CONTENT_WIDTH,
-    height: qrCardHeight
+    height: 184
   };
-  drawPanel(context, qrCard.x, qrCard.y, qrCard.width, qrCard.height, 32);
+  drawPanel(context, footerCard.x, footerCard.y, footerCard.width, footerCard.height, 32, theme);
+
   context.fillStyle = "#ffffff";
-  roundRect(context, qrCard.x + 24, qrCard.y + 20, 136, 136, 22);
+  roundRect(context, footerCard.x + 24, footerCard.y + 24, 132, 132, 22);
   context.fill();
-  context.drawImage(qrImage, qrCard.x + 28, qrCard.y + 24, 128, 128);
+  context.drawImage(qrImage, footerCard.x + 28, footerCard.y + 28, 124, 124);
 
-  const qrTextX = qrCard.x + 196;
-  context.fillStyle = "#f2f6ff";
+  const qrTextX = footerCard.x + 194;
+  context.fillStyle = theme.palette.textPrimary;
   setFont(context, 700, 30);
-  context.fillText(copy.appName, qrTextX, qrCard.y + 58);
+  context.fillText(copy.appName, qrTextX, footerCard.y + 58);
 
-  const qrNoteLayout = fitWrappedText(context, copy.shareImageQrNote, 650, {
+  const qrNoteLayout = fitWrappedText(context, copy.shareImageQrNote, 640, {
     fontSizes: [28, 26, 24],
     lineHeightMultiplier: 1.28,
     maxLines: 3,
     weight: 500
   });
-  context.fillStyle = "rgba(242,246,255,0.84)";
+  context.fillStyle = theme.palette.textSecondary;
   setFont(context, 500, qrNoteLayout.fontSize);
-  drawLines(context, qrNoteLayout.lines, qrTextX, qrCard.y + 102, qrNoteLayout.lineHeight);
+  drawLines(context, qrNoteLayout.lines, qrTextX, footerCard.y + 102, qrNoteLayout.lineHeight);
 
   context.textAlign = "center";
-  context.fillStyle = "rgba(242,246,255,0.42)";
+  context.fillStyle = theme.palette.textSecondary;
   setFont(context, 400, 20);
-  context.fillText(copy.footerCopyright, canvas.width / 2, footerY);
+  context.fillText(copy.footerCopyright, canvas.width / 2, CANVAS_HEIGHT - 26);
   context.textAlign = "left";
 
   return canvas.toDataURL("image/png");
+}
+
+function drawBackground(context: CanvasRenderingContext2D, theme: ReturnType<typeof getShareScoreTheme>) {
+  const gradient = context.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  gradient.addColorStop(0, theme.palette.canvasTop);
+  gradient.addColorStop(0.5, theme.palette.canvasBottom);
+  gradient.addColorStop(1, "#04070d");
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+  context.fillStyle = theme.palette.canvasAccent;
+  context.beginPath();
+  context.arc(854, 214, 286, 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = theme.palette.accentSoft;
+  context.beginPath();
+  context.arc(180, 1548, 248, 0, Math.PI * 2);
+  context.fill();
+
+  context.strokeStyle = "rgba(255,255,255,0.06)";
+  context.lineWidth = 1.5;
+  for (let row = 0; row < 12; row += 1) {
+    const y = 118 + row * 138;
+    context.beginPath();
+    context.moveTo(74, y);
+    context.lineTo(CANVAS_WIDTH - 74, y);
+    context.stroke();
+  }
+}
+
+function drawHeroCard(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  options: {
+    language: H5Language;
+    score: number;
+    averageAirs: number;
+    theme: ReturnType<typeof getShareScoreTheme>;
+    currentAirsLabel: string;
+    globalAverageLabel: string;
+    statusLabel: string;
+  }
+) {
+  const dividerX = x + width * 0.56;
+  context.fillStyle = options.theme.palette.accentSoft;
+  roundRect(context, x + 28, y + 24, 156, 34, 17);
+  context.fill();
+  context.fillStyle = options.theme.palette.accent;
+  setFont(context, 700, 20);
+  context.fillText(options.statusLabel, x + 44, y + 47);
+
+  context.fillStyle = options.theme.palette.textSecondary;
+  setFont(context, 500, 22);
+  context.fillText(options.currentAirsLabel, x + 36, y + 96);
+
+  context.fillStyle = options.theme.palette.textPrimary;
+  setFont(context, 700, 118);
+  context.fillText(formatNumber(options.score, 1, options.language), x + 34, y + 202);
+
+  context.strokeStyle = "rgba(255,255,255,0.08)";
+  context.lineWidth = 2;
+  context.beginPath();
+  context.moveTo(dividerX, y + 36);
+  context.lineTo(dividerX, y + height - 36);
+  context.stroke();
+
+  context.fillStyle = options.theme.palette.textSecondary;
+  setFont(context, 500, 22);
+  context.fillText(options.globalAverageLabel, dividerX + 36, y + 96);
+
+  context.fillStyle = options.theme.palette.textPrimary;
+  setFont(context, 700, 86);
+  context.fillText(formatNumber(options.averageAirs, 1, options.language), dividerX + 34, y + 188);
+
+  const note = options.language === "zh"
+    ? "分数越高，当前招聘稳定度越高。"
+    : "Higher scores indicate stronger current hiring stability.";
+  const noteLayout = fitWrappedText(context, note, width - (dividerX - x) - 72, {
+    fontSizes: [24, 22, 20],
+    lineHeightMultiplier: 1.3,
+    maxLines: 2,
+    weight: 500
+  });
+  context.fillStyle = options.theme.palette.textSecondary;
+  setFont(context, 500, noteLayout.fontSize);
+  drawLines(context, noteLayout.lines, dividerX + 36, y + 230, noteLayout.lineHeight);
+}
+
+function drawBreakdownCard(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  items: ReadonlyArray<{ label: string; value: number; color: string }>,
+  language: H5Language,
+  theme: ReturnType<typeof getShareScoreTheme>
+) {
+  items.forEach((item, index) => {
+    const rowY = y + 38 + index * 72;
+    context.fillStyle = theme.palette.textSecondary;
+    setFont(context, 500, 24);
+    context.fillText(item.label, x + 34, rowY);
+
+    context.textAlign = "right";
+    context.fillStyle = theme.palette.textPrimary;
+    setFont(context, 600, 24);
+    context.fillText(`${formatNumber(item.value * 100, 0, language)}%`, x + width - 34, rowY);
+    context.textAlign = "left";
+
+    context.fillStyle = "rgba(255,255,255,0.08)";
+    roundRect(context, x + 34, rowY + 20, width - 68, 18, 9);
+    context.fill();
+
+    context.fillStyle = item.color;
+    roundRect(context, x + 34, rowY + 20, Math.max(52, (width - 68) * Math.max(0, Math.min(1, item.value))), 18, 9);
+    context.fill();
+  });
+
+  const note = language === "zh"
+    ? "四项共同决定职业当前是否正被 AI 压缩、改写或重组。"
+    : "These four signals describe how AI is compressing, rewriting, or reshaping the role.";
+  const noteLayout = fitWrappedText(context, note, width - 68, {
+    fontSizes: [22, 20, 18],
+    lineHeightMultiplier: 1.28,
+    maxLines: 2,
+    weight: 500
+  });
+  context.fillStyle = theme.palette.textSecondary;
+  setFont(context, 500, noteLayout.fontSize);
+  drawLines(context, noteLayout.lines, x + 34, y + 292, noteLayout.lineHeight);
 }
 
 async function loadImage(src: string) {
@@ -234,51 +344,19 @@ function drawRangeBadge(
   background: string,
   textColor: string
 ) {
-  const badgeWidth = language === "zh" ? 218 : 252;
+  const badgeWidth = language === "zh" ? 236 : 252;
   const badgeX = CANVAS_WIDTH - CONTENT_X - badgeWidth;
-  context.fillStyle = "rgba(255,255,255,0.12)";
-  roundRect(context, badgeX, 66, badgeWidth, 56, 28);
+  context.fillStyle = "rgba(255,255,255,0.08)";
+  roundRect(context, badgeX, 56, badgeWidth, 64, 28);
   context.fill();
   context.fillStyle = background;
-  roundRect(context, badgeX + 4, 70, badgeWidth - 8, 48, 24);
+  roundRect(context, badgeX + 6, 62, badgeWidth - 12, 52, 24);
   context.fill();
   context.fillStyle = textColor;
   setFont(context, 700, 22);
   context.textAlign = "center";
-  context.fillText(label, badgeX + badgeWidth / 2, 102);
+  context.fillText(label, badgeX + badgeWidth / 2, 98);
   context.textAlign = "left";
-}
-
-function drawMetricCard(
-  context: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  label: string,
-  value: string,
-  note: string,
-  accent: string
-) {
-  drawPanel(context, x, y, width, height, 28);
-  context.fillStyle = "rgba(255,255,255,0.06)";
-  roundRect(context, x + 24, y + 22, 108, 30, 15);
-  context.fill();
-  context.fillStyle = accent;
-  roundRect(context, x + 32, y + 30, 16, 14, 7);
-  context.fill();
-
-  context.fillStyle = "rgba(242,246,255,0.58)";
-  setFont(context, 500, 20);
-  context.fillText(label, x + 58, y + 44);
-
-  context.fillStyle = "#f2f6ff";
-  setFont(context, 700, 84);
-  context.fillText(value, x + 30, y + 130);
-
-  context.fillStyle = "rgba(242,246,255,0.5)";
-  setFont(context, 400, 20);
-  wrapText(context, note, x + 30, y + 168, width - 60, 28);
 }
 
 function drawPanel(
@@ -287,12 +365,13 @@ function drawPanel(
   y: number,
   width: number,
   height: number,
-  radius: number
+  radius: number,
+  theme: ReturnType<typeof getShareScoreTheme>
 ) {
-  context.fillStyle = "rgba(255,255,255,0.04)";
+  context.fillStyle = theme.palette.panelBg;
   roundRect(context, x, y, width, height, radius);
   context.fill();
-  context.strokeStyle = "rgba(255,255,255,0.08)";
+  context.strokeStyle = theme.palette.panelStroke;
   context.lineWidth = 2;
   roundRect(context, x, y, width, height, radius);
   context.stroke();
@@ -313,17 +392,6 @@ function roundRect(
   context.arcTo(x, y + height, x, y, radius);
   context.arcTo(x, y, x + width, y, radius);
   context.closePath();
-}
-
-function wrapText(
-  context: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  maxWidth: number,
-  lineHeight: number
-) {
-  drawLines(context, wrapLines(context, text, maxWidth), x, y, lineHeight);
 }
 
 function drawLines(
@@ -429,14 +497,4 @@ function fitLines(lines: string[], maxLines: number) {
 
 function setFont(context: CanvasRenderingContext2D, weight: number, size: number) {
   context.font = `${weight} ${size}px ${FONT_FAMILY}`;
-}
-
-function buildShareInterpretation(
-  summary: string,
-  mascotCopy: ReturnType<typeof getMascotBandCopy>,
-  language: H5Language
-) {
-  return language === "zh"
-    ? `${mascotCopy.riskHint} ${summary}`
-    : `${mascotCopy.riskHint} ${summary}`;
 }

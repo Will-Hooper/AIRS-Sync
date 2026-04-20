@@ -7,12 +7,14 @@ import { LanguageSwitch } from "../components/shared/LanguageSwitch";
 import { NumberedBox } from "../components/shared/NumberedBox";
 import { SearchCombobox } from "../components/shared/SearchCombobox";
 import { SiteFooter } from "../components/shared/SiteFooter";
+import { ThemeSwitch } from "../components/shared/ThemeSwitch";
 import { getOccupations, getSummary, searchOccupations as searchOccupationMatches } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
 import { formatDateTime, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
+import { useAirsTheme } from "../shared/theme";
 
 function buildFilters(params: URLSearchParams, query: string): OccupationQueryParams {
   return {
@@ -57,6 +59,7 @@ export function HomePage() {
   const [now, setNow] = useState(() => new Date());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [theme, setTheme] = useAirsTheme();
   const trackedDesktopQueryRef = useRef("");
   const skipNextQuerySyncRef = useRef(false);
   const pageRef = useRef<HTMLDivElement | null>(null);
@@ -223,7 +226,10 @@ export function HomePage() {
             <p className="airs-kicker">{copy.appName}</p>
             <h2 className="mt-2 text-lg font-medium text-white/80">{copy.liveFieldKicker}</h2>
           </div>
-          <LanguageSwitch language={language} onChange={setLanguage} />
+          <div className="flex items-center gap-3">
+            <ThemeSwitch language={language} theme={theme} onChange={setTheme} />
+            <LanguageSwitch language={language} onChange={setLanguage} />
+          </div>
         </div>
 
         <NumberedBox>

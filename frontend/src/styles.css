@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --page-bg: #070d14;
   --panel-bg: rgba(15, 23, 33, 0.88);
   --panel-border: rgba(144, 195, 255, 0.14);
   --text-primary: #f2f6ff;
@@ -10,6 +8,20 @@
   --accent-mint: #8ef0cf;
   --accent-blue: #8bc8ff;
   --accent-orange: #ff9a47;
+  --chip-border: rgba(142, 240, 207, 0.22);
+  --chip-bg: rgba(8, 20, 29, 0.72);
+  --button-border: rgba(142, 240, 207, 0.28);
+  --button-bg: rgba(17, 34, 46, 0.76);
+  --input-bg: rgba(0, 0, 0, 0.15);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-placeholder: rgba(255, 255, 255, 0.3);
+  --suggestion-bg: rgba(2, 8, 23, 0.95);
+  --suggestion-border: rgba(255, 255, 255, 0.1);
+  --feedback-bg: rgba(0, 0, 0, 0.2);
+  --feedback-border: rgba(255, 255, 255, 0.12);
+  --badge-bg: rgba(3, 12, 20, 0.84);
+  --badge-border: rgba(142, 240, 207, 0.26);
+  --badge-text: rgba(204, 251, 241, 0.95);
 }
 
 html,
@@ -18,13 +30,46 @@ body,
   min-height: 100%;
 }
 
-body {
+body[data-airs-entry="desktop"] {
+  color: var(--text-primary);
+  font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="dark"] {
+  color-scheme: dark;
   background:
     radial-gradient(circle at 20% 0%, rgba(127, 193, 255, 0.16), transparent 38%),
     radial-gradient(circle at 80% 15%, rgba(111, 227, 194, 0.1), transparent 30%),
     linear-gradient(180deg, #070d14 0%, #050a11 100%);
-  color: var(--text-primary);
-  font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] {
+  color-scheme: light;
+  --panel-bg: rgba(255, 255, 255, 0.78);
+  --panel-border: rgba(95, 134, 173, 0.18);
+  --text-primary: #152235;
+  --text-secondary: #5b6a7c;
+  --accent-mint: #59d3af;
+  --accent-blue: #6faef5;
+  --accent-orange: #ffb062;
+  --chip-border: rgba(95, 134, 173, 0.2);
+  --chip-bg: rgba(236, 243, 250, 0.88);
+  --button-border: rgba(95, 134, 173, 0.24);
+  --button-bg: rgba(243, 247, 252, 0.95);
+  --input-bg: rgba(255, 255, 255, 0.92);
+  --input-border: rgba(95, 134, 173, 0.22);
+  --input-placeholder: rgba(56, 77, 100, 0.42);
+  --suggestion-bg: rgba(250, 252, 255, 0.98);
+  --suggestion-border: rgba(95, 134, 173, 0.18);
+  --feedback-bg: rgba(245, 249, 253, 0.96);
+  --feedback-border: rgba(95, 134, 173, 0.16);
+  --badge-bg: rgba(246, 250, 255, 0.92);
+  --badge-border: rgba(95, 134, 173, 0.18);
+  --badge-text: rgba(35, 64, 96, 0.92);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(109, 176, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 82% 16%, rgba(102, 214, 182, 0.18), transparent 28%),
+    linear-gradient(180deg, #eff5fb 0%, #e4edf7 100%);
 }
 
 @layer components {
@@ -37,21 +82,24 @@ body {
   }
 
   .airs-panel {
-    @apply rounded-[30px] border border-white/10 bg-slate-950/70 shadow-[0_30px_120px_rgba(2,8,15,0.35)] backdrop-blur-xl;
+    @apply rounded-[30px] border shadow-[0_30px_120px_rgba(2,8,15,0.2)] backdrop-blur-xl;
     border-color: var(--panel-border);
     background-color: var(--panel-bg);
   }
 
   .airs-kicker {
-    @apply text-xs uppercase tracking-[0.34em] text-cyan-200/80;
+    color: color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%);
+    @apply text-xs uppercase tracking-[0.34em];
   }
 
   .airs-title-xl {
-    @apply text-4xl font-semibold leading-[0.95] tracking-[-0.05em] text-white md:text-6xl xl:text-[7rem];
+    color: var(--text-primary);
+    @apply text-4xl font-semibold leading-[0.95] tracking-[-0.05em] md:text-6xl xl:text-[7rem];
   }
 
   .airs-title-lg {
-    @apply text-2xl font-semibold tracking-[-0.04em] text-white md:text-4xl;
+    color: var(--text-primary);
+    @apply text-2xl font-semibold tracking-[-0.04em] md:text-4xl;
   }
 
   .airs-copy {
@@ -60,15 +108,17 @@ body {
   }
 
   .airs-chip {
-    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium text-white/80;
-    border-color: rgba(142, 240, 207, 0.22);
-    background: rgba(8, 20, 29, 0.72);
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium;
+    color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+    border-color: var(--chip-border);
+    background: var(--chip-bg);
   }
 
   .airs-button {
     @apply inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium transition hover:-translate-y-0.5;
-    border-color: rgba(142, 240, 207, 0.28);
-    background: rgba(17, 34, 46, 0.76);
+    color: color-mix(in srgb, var(--text-primary) 86%, transparent);
+    border-color: var(--button-border);
+    background: var(--button-bg);
   }
 
   .airs-button-primary {
@@ -78,45 +128,86 @@ body {
   }
 
   .airs-input {
-    @apply w-full rounded-[22px] border border-white/10 bg-black/15 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-cyan-200/40;
+    @apply w-full rounded-[22px] border px-4 py-3 text-sm outline-none transition;
+    color: var(--text-primary);
+    border-color: var(--input-border);
+    background: var(--input-bg);
+  }
+
+  .airs-input::placeholder {
+    color: var(--input-placeholder);
   }
 
   .airs-select {
-    color-scheme: dark;
+    color: var(--text-primary);
     background:
-      linear-gradient(180deg, rgba(23, 37, 52, 0.98), rgba(11, 18, 28, 0.96)),
-      linear-gradient(135deg, rgba(139, 200, 255, 0.08), rgba(142, 240, 207, 0.04));
-    border-color: rgba(139, 200, 255, 0.28);
-    color: rgba(248, 250, 255, 0.98);
+      linear-gradient(180deg, color-mix(in srgb, var(--panel-bg) 94%, #101820 6%), color-mix(in srgb, var(--panel-bg) 88%, #08111b 12%)),
+      linear-gradient(135deg, color-mix(in srgb, var(--accent-blue) 12%, transparent), color-mix(in srgb, var(--accent-mint) 7%, transparent));
+    border-color: color-mix(in srgb, var(--accent-blue) 24%, var(--panel-border) 76%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.32);
+      inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  }
+
+  body[data-airs-entry="desktop"][data-airs-theme="dark"] .airs-select {
+    color-scheme: dark;
+  }
+
+  body[data-airs-entry="desktop"][data-airs-theme="light"] .airs-select {
+    color-scheme: light;
   }
 
   .airs-select:hover {
-    border-color: rgba(142, 240, 207, 0.42);
-    background:
-      linear-gradient(180deg, rgba(27, 42, 58, 0.98), rgba(14, 22, 32, 0.96)),
-      linear-gradient(135deg, rgba(142, 240, 207, 0.07), rgba(139, 200, 255, 0.05));
+    border-color: color-mix(in srgb, var(--accent-mint) 40%, var(--panel-border) 60%);
   }
 
   .airs-select:focus {
-    border-color: rgba(142, 240, 207, 0.5);
+    border-color: color-mix(in srgb, var(--accent-mint) 52%, var(--panel-border) 48%);
     box-shadow:
-      0 0 0 1px rgba(142, 240, 207, 0.2),
-      0 10px 30px rgba(4, 12, 20, 0.28),
+      0 0 0 1px color-mix(in srgb, var(--accent-mint) 22%, transparent),
+      0 10px 30px rgba(4, 12, 20, 0.18),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
-  .airs-select option {
+  body[data-airs-entry="desktop"][data-airs-theme="dark"] .airs-select option {
     background-color: #08111b;
     color: #f8faff;
   }
 
-  .airs-select option:checked,
-  .airs-select option:hover {
-    background-color: #153349;
-    color: #98f4d5;
+  body[data-airs-entry="desktop"][data-airs-theme="light"] .airs-select option {
+    background-color: #f5f9fd;
+    color: #152235;
+  }
+
+  .airs-suggestions {
+    border: 1px solid var(--suggestion-border);
+    background: var(--suggestion-bg);
+  }
+
+  .airs-feedback-shell {
+    color: var(--text-primary);
+  }
+
+  .airs-feedback-input {
+    @apply w-full rounded-2xl border px-4 py-3 text-sm outline-none transition;
+    color: var(--text-primary);
+    border-color: var(--feedback-border);
+    background: var(--feedback-bg);
+  }
+
+  .airs-feedback-input::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  .airs-feedback-button {
+    @apply rounded-2xl border px-4 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+    color: var(--text-primary);
+    border-color: var(--feedback-border);
+    background: color-mix(in srgb, var(--feedback-bg) 82%, transparent);
+  }
+
+  .airs-feedback-button:hover {
+    background: color-mix(in srgb, var(--feedback-bg) 94%, var(--accent-blue) 6%);
   }
 
   .airs-divider {
@@ -129,11 +220,125 @@ body {
 
   [data-numbered-box]::after {
     content: attr(data-box-number);
-    @apply pointer-events-none absolute right-4 top-4 inline-flex h-12 min-w-12 items-center justify-center rounded-full border px-3 text-sm font-semibold tracking-[0.18em] text-emerald-200/95 shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-xl;
-    border-color: rgba(142, 240, 207, 0.26);
-    background: rgba(3, 12, 20, 0.84);
+    @apply pointer-events-none absolute right-4 top-4 inline-flex h-12 min-w-12 items-center justify-center rounded-full border px-3 text-sm font-semibold tracking-[0.18em] shadow-[0_10px_30px_rgba(0,0,0,0.18)] backdrop-blur-xl;
+    border-color: var(--badge-border);
+    background: var(--badge-bg);
+    color: var(--badge-text);
     z-index: 40;
   }
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white {
+  color: rgba(21, 34, 53, 1);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/88 {
+  color: rgba(21, 34, 53, 0.88);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/82 {
+  color: rgba(21, 34, 53, 0.82);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/80 {
+  color: rgba(21, 34, 53, 0.8);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/78 {
+  color: rgba(21, 34, 53, 0.78);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/76 {
+  color: rgba(21, 34, 53, 0.76);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/72 {
+  color: rgba(21, 34, 53, 0.72);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/70 {
+  color: rgba(21, 34, 53, 0.7);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/65 {
+  color: rgba(21, 34, 53, 0.65);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/62 {
+  color: rgba(21, 34, 53, 0.62);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/55 {
+  color: rgba(21, 34, 53, 0.55);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/52 {
+  color: rgba(21, 34, 53, 0.52);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/50 {
+  color: rgba(21, 34, 53, 0.5);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/48 {
+  color: rgba(21, 34, 53, 0.48);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/45 {
+  color: rgba(21, 34, 53, 0.45);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-cyan-200\/80,
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-cyan-100\/72 {
+  color: rgba(48, 90, 126, 0.76);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .border-white\/6 {
+  border-color: rgba(21, 34, 53, 0.08);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .border-white\/8 {
+  border-color: rgba(21, 34, 53, 0.1);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .border-white\/10 {
+  border-color: rgba(21, 34, 53, 0.12);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .border-white\/12 {
+  border-color: rgba(21, 34, 53, 0.14);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .bg-black\/10 {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .bg-black\/15 {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .bg-black\/20 {
+  background-color: rgba(255, 255, 255, 0.78);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .bg-white\/5 {
+  background-color: rgba(21, 34, 53, 0.05);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .bg-white\/8 {
+  background-color: rgba(21, 34, 53, 0.08);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .hover\:bg-white\/5:hover {
+  background-color: rgba(21, 34, 53, 0.06);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .hover\:bg-white\/8:hover {
+  background-color: rgba(21, 34, 53, 0.08);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .hover\:text-white:hover {
+  color: rgba(21, 34, 53, 1);
 }
 
 @layer utilities {

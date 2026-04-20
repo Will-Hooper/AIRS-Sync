@@ -10,13 +10,16 @@ import { H5Footer } from "../components/H5Footer";
 import { H5LanguageSwitch } from "../components/H5LanguageSwitch";
 import { H5NumberedBox } from "../components/H5NumberedBox";
 import { H5SearchCombobox } from "../components/H5SearchCombobox";
+import { H5ThemeSwitch } from "../components/H5ThemeSwitch";
 import { OccupationBreakdownCard } from "../components/OccupationBreakdownCard";
 import { OccupationReadingCard } from "../components/OccupationReadingCard";
 import { useH5NumberedBoxes } from "../hooks/useH5NumberedBoxes";
 import { getH5Copy, getH5LabelText } from "../lib/copy";
 import { getInitialH5Language, normalizeH5Language, persistH5Language, type H5Language } from "../lib/language";
+import { DEFAULT_SHARE_TEXT, getSharePlatformLabel, shareGeneratedImage, type GeneratedShareAsset, type SharePlatform } from "../lib/share";
 import { buildDesktopOccupationHref, buildH5OccupationHref } from "../lib/navigation";
 import { renderOccupationShareImage } from "../share/share-image";
+import { useAirsTheme } from "../../shared/theme";
 
 export function MobileOccupationPage() {
   const navigate = useNavigate();
@@ -30,9 +33,11 @@ export function MobileOccupationPage() {
   const [averageAirs, setAverageAirs] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [shareImageUrl, setShareImageUrl] = useState<string | null>(null);
+  const [shareAsset, setShareAsset] = useState<GeneratedShareAsset | null>(null);
   const [shareError, setShareError] = useState<string | null>(null);
+  const [shareNotice, setShareNotice] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
+  const [theme, setTheme] = useAirsTheme();
 
   const socCode = decodeURIComponent(params.socCode || searchParams.get("soc") || "");
   const entryLabel = searchParams.get("entry") || "";
@@ -74,11 +79,11 @@ export function MobileOccupationPage() {
 
   useEffect(() => {
     return () => {
-      if (shareImageUrl) {
-        URL.revokeObjectURL(shareImageUrl);
+      if (shareAsset?.objectUrl) {
+        URL.revokeObjectURL(shareAsset.objectUrl);
       }
     };
-  }, [shareImageUrl]);
+  }, [shareAsset]);
 
   const occupation = payload?.occupation || null;
   const displayTitle = occupation
@@ -132,16 +137,18 @@ export function MobileOccupationPage() {
     averageAirs,
     payload?.generatedAt,
     payload?.datasetVersion,
-    shareImageUrl,
+    shareAsset?.objectUrl,
     loading,
     error,
-    shareError
+    shareError,
+    shareNotice
   ]);
 
   const createShareImage = async () => {
     if (!occupation) return;
     setGenerating(true);
     setShareError(null);
+    setShareNotice(null);
     try {
       const dataUrl = await renderOccupationShareImage({
         occupation,
@@ -153,14 +160,36 @@ export function MobileOccupationPage() {
       });
       const response = await fetch(dataUrl);
       const blob = await response.blob();
-      if (shareImageUrl) URL.revokeObjectURL(shareImageUrl);
+      if (shareAsset?.objectUrl) URL.revokeObjectURL(shareAsset.objectUrl);
       const objectUrl = URL.createObjectURL(blob);
-      setShareImageUrl(objectUrl);
+      setShareAsset({
+        objectUrl,
+        fileName: `airs-share-${occupation.socCode}.png`,
+        file: new File([blob], `airs-share-${occupation.socCode}.png`, { type: blob.type || "image/png" })
+      });
+      setShareNotice(copy.shareReady);
     } catch {
       setShareError(copy.shareError);
     } finally {
       setGenerating(false);
     }
+  };
+
+  const handlePlatformShare = async (platform: SharePlatform) => {
+    if (!shareAsset) return;
+    const result = await shareGeneratedImage({
+      asset: shareAsset,
+      language,
+      platform,
+      shareText: DEFAULT_SHARE_TEXT
+    });
+
+    if (result.status === "cancelled") {
+      return;
+    }
+
+    setShareError(null);
+    setShareNotice(result.message);
   };
 
   return (
@@ -171,7 +200,10 @@ export function MobileOccupationPage() {
             <button type="button" className="h5-button" onClick={() => navigate(`/?lang=${language}`)}>
               {copy.backHome}
             </button>
-            <H5LanguageSwitch language={language} onChange={setLanguage} />
+            <div className="flex flex-col items-end gap-3">
+              <H5ThemeSwitch language={language} theme={theme} onChange={setTheme} />
+              <H5LanguageSwitch language={language} onChange={setLanguage} />
+            </div>
           </div>
           <H5SearchCombobox
             language={language}
@@ -261,23 +293,44 @@ export function MobileOccupationPage() {
                   >
                     {copy.openDesktopDetail}
                   </button>
-                  {shareImageUrl && (
+                  {shareAsset && (
                     <a
-                      href={shareImageUrl}
-                      download={`airs-share-${occupation.socCode}.png`}
+                      href={shareAsset.objectUrl}
+                      download={shareAsset.fileName}
                       className="h5-button flex-1 text-center"
                     >
                       {copy.saveImage}
                     </a>
                   )}
                 </div>
+                {shareAsset && (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                    {(["wechatMoments", "xiaohongshu", "weibo"] as SharePlatform[]).map((platform) => (
+                      <button
+                        key={platform}
+                        type="button"
+                        className="h5-button"
+                        onClick={() => void handlePlatformShare(platform)}
+                      >
+                        {getSharePlatformLabel(platform, language)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {shareAsset && (
+                  <p className="mt-4 text-sm text-white/45">
+                    {language === "zh"
+                      ? `默认分享文案：${DEFAULT_SHARE_TEXT}`
+                      : `Default caption: ${DEFAULT_SHARE_TEXT}`}
+                  </p>
+                )}
                 {shareError && <p className="mt-4 text-sm text-amber-200/80">{shareError}</p>}
-                {shareImageUrl && <p className="mt-4 text-sm text-white/45">{copy.shareReady}</p>}
+                {shareNotice && <p className="mt-4 text-sm text-white/45">{shareNotice}</p>}
               </div>
 
-              {shareImageUrl && (
+              {shareAsset && (
                 <div data-h5-numbered-box className="h5-numbered rounded-[28px] border border-white/10 bg-black/15 p-3">
-                  <img src={shareImageUrl} alt={copy.shareImageTitle} className="w-full rounded-[22px]" />
+                  <img src={shareAsset.objectUrl} alt={copy.shareImageTitle} className="w-full rounded-[22px]" />
                 </div>
               )}
             </>

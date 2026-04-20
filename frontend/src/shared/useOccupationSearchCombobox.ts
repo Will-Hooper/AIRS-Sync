@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MutableRefObject } from "react";
 import { searchOccupations } from "../lib/api";
 import type { OccupationSearchHit, OccupationSearchPayload } from "../lib/types";
 import {
@@ -16,6 +16,7 @@ interface UseOccupationSearchComboboxOptions {
   onCommit?: (query: string, selection?: OccupationSearchHit | null, payload?: OccupationSearchPayload | null) => void;
   onQueryChange?: (query: string) => void;
   searchDelayMs?: number;
+  queryChangeDelayMs?: number;
   suggestionLimit?: number;
 }
 
@@ -24,17 +25,18 @@ export function useOccupationSearchCombobox({
   onSelect,
   onCommit,
   onQueryChange,
-  searchDelayMs = 120,
+  searchDelayMs = 80,
+  queryChangeDelayMs = 90,
   suggestionLimit = 6
 }: UseOccupationSearchComboboxOptions) {
   const [query, setQuery] = useState(value);
-  const [suggestions, setSuggestions] = useState<OccupationSearchHit[]>([]);
   const [open, setOpen] = useState(false);
   const [searchPayload, setSearchPayload] = useState<OccupationSearchPayload | null>(null);
   const [isComposing, setIsComposing] = useState(false);
   const imeStateRef = useRef(createSearchImeState());
   const queryRef = useRef(query);
   const payloadRef = useRef<OccupationSearchPayload | null>(null);
+  const queryChangeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     queryRef.current = query;
@@ -47,6 +49,7 @@ export function useOccupationSearchCombobox({
   useEffect(() => {
     if (imeStateRef.current.isComposing) return;
     if (value === queryRef.current) return;
+    clearPendingQueryChange(queryChangeTimerRef);
     setQuery(value);
   }, [value]);
 
@@ -54,7 +57,6 @@ export function useOccupationSearchCombobox({
     if (isComposing) return;
 
     if (!open && !query.trim()) {
-      setSuggestions([]);
       setSearchPayload(null);
       return;
     }
@@ -65,10 +67,9 @@ export function useOccupationSearchCombobox({
       try {
         const payload = await searchOccupations(activeQuery);
         if (cancelled || queryRef.current !== activeQuery) return;
-        syncPayload(payload, suggestionLimit, setSearchPayload, setSuggestions);
+        setSearchPayload(payload);
       } catch {
         if (cancelled || queryRef.current !== activeQuery) return;
-        setSuggestions([]);
         setSearchPayload(null);
       }
     }, searchDelayMs);
@@ -77,12 +78,30 @@ export function useOccupationSearchCombobox({
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [isComposing, open, query, searchDelayMs, suggestionLimit]);
+  }, [isComposing, open, query, searchDelayMs]);
+
+  useEffect(() => {
+    return () => clearPendingQueryChange(queryChangeTimerRef);
+  }, []);
+
+  const suggestions = useMemo(
+    () => (searchPayload ? (searchPayload.suggestions.length ? searchPayload.suggestions : searchPayload.popularSearches).slice(0, suggestionLimit) : []),
+    [searchPayload, suggestionLimit]
+  );
+
+  const scheduleQueryChange = (nextQuery: string) => {
+    if (!onQueryChange) return;
+    clearPendingQueryChange(queryChangeTimerRef);
+    queryChangeTimerRef.current = window.setTimeout(() => {
+      queryChangeTimerRef.current = null;
+      onQueryChange(nextQuery);
+    }, queryChangeDelayMs);
+  };
 
   const handleInputChange = (nextQuery: string) => {
     setQuery(nextQuery);
     if (shouldPropagateQueryChange(imeStateRef.current.isComposing)) {
-      onQueryChange?.(nextQuery);
+      scheduleQueryChange(nextQuery);
     }
     setOpen(true);
   };
@@ -102,7 +121,7 @@ export function useOccupationSearchCombobox({
     imeStateRef.current = endComposition(imeStateRef.current, now);
     setIsComposing(false);
     setQuery(nextQuery);
-    onQueryChange?.(nextQuery);
+    scheduleQueryChange(nextQuery);
     setOpen(true);
   };
 
@@ -114,12 +133,13 @@ export function useOccupationSearchCombobox({
 
     const payload = await searchOccupations(activeQuery);
     if (queryRef.current !== activeQuery) return null;
-    syncPayload(payload, suggestionLimit, setSearchPayload, setSuggestions);
+    setSearchPayload(payload);
     return payload;
   };
 
   const submitFirstMatch = async () => {
     const activeQuery = queryRef.current;
+    clearPendingQueryChange(queryChangeTimerRef);
     const payload = await resolveLatestPayload();
     if (!payload || queryRef.current !== activeQuery) return;
 
@@ -135,6 +155,7 @@ export function useOccupationSearchCombobox({
   };
 
   const handleSuggestionSelect = (suggestion: OccupationSearchHit) => {
+    clearPendingQueryChange(queryChangeTimerRef);
     const committedQuery = queryRef.current.trim() || suggestion.label;
     onCommit?.(committedQuery, suggestion, payloadRef.current);
     onSelect(suggestion);
@@ -167,6 +188,7 @@ export function useOccupationSearchCombobox({
     open,
     searchPayload,
     isComposing,
+    canSubmit: Boolean(query.trim()) && !isComposing,
     setOpen,
     handleInputChange,
     handleCompositionStart,
@@ -178,12 +200,8 @@ export function useOccupationSearchCombobox({
   };
 }
 
-function syncPayload(
-  payload: OccupationSearchPayload,
-  suggestionLimit: number,
-  setSearchPayload: (payload: OccupationSearchPayload | null) => void,
-  setSuggestions: (suggestions: OccupationSearchHit[]) => void
-) {
-  setSearchPayload(payload);
-  setSuggestions((payload.suggestions.length ? payload.suggestions : payload.popularSearches).slice(0, suggestionLimit));
+function clearPendingQueryChange(timerRef: MutableRefObject<number | null>) {
+  if (timerRef.current === null) return;
+  window.clearTimeout(timerRef.current);
+  timerRef.current = null;
 }

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { SearchEventSource } from "../../lib/analytics";
 import type { OccupationSearchHit, OccupationSearchPayload } from "../../lib/types";
 import { OccupationSearchFeedback } from "../../shared/OccupationSearchFeedback";
@@ -25,18 +26,21 @@ export function H5SearchCombobox({
   onQueryChange,
   className = ""
 }: H5SearchComboboxProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const {
     query,
     suggestions,
     open,
     searchPayload,
+    canSubmit,
     setOpen,
     handleInputChange,
     handleCompositionStart,
     handleCompositionUpdate,
     handleCompositionEnd,
     handleKeyDown,
-    handleSuggestionSelect
+    handleSuggestionSelect,
+    submitFirstMatch
   } = useOccupationSearchCombobox({
     value,
     onSelect,
@@ -44,22 +48,43 @@ export function H5SearchCombobox({
     onQueryChange
   });
 
+  const closeIfFocusLeft = () => {
+    window.setTimeout(() => {
+      const activeElement = document.activeElement;
+      if (rootRef.current && activeElement instanceof Node && rootRef.current.contains(activeElement)) {
+        return;
+      }
+      setOpen(false);
+    }, 0);
+  };
+
   return (
-    <div className={`relative ${className}`.trim()}>
-      <input
-        value={query}
-        onFocus={() => setOpen(true)}
-        onBlur={() => window.setTimeout(() => setOpen(false), 120)}
-        onChange={(event) => handleInputChange(event.target.value)}
-        onCompositionStart={handleCompositionStart}
-        onCompositionUpdate={(event) => handleCompositionUpdate(event.currentTarget.value)}
-        onCompositionEnd={(event) => handleCompositionEnd(event.currentTarget.value)}
-        onKeyDown={handleKeyDown}
-        className="h5-input"
-        placeholder={placeholder}
-      />
+    <div ref={rootRef} className={`relative ${className}`.trim()}>
+      <div className="flex items-center gap-3">
+        <input
+          value={query}
+          onFocus={() => setOpen(true)}
+          onBlur={closeIfFocusLeft}
+          onChange={(event) => handleInputChange(event.target.value)}
+          onCompositionStart={handleCompositionStart}
+          onCompositionUpdate={(event) => handleCompositionUpdate(event.currentTarget.value)}
+          onCompositionEnd={(event) => handleCompositionEnd(event.currentTarget.value)}
+          onKeyDown={handleKeyDown}
+          className="h5-input flex-1"
+          placeholder={placeholder}
+        />
+        <button
+          type="button"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => void submitFirstMatch()}
+          disabled={!canSubmit}
+          className="h5-button-primary shrink-0 px-5 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {language === "zh" ? "搜索" : "Search"}
+        </button>
+      </div>
       {open && (suggestions.length > 0 || (searchPayload?.matchType === "no_result" && query.trim())) && (
-        <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-40 overflow-hidden rounded-[24px] border border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-xl">
+        <div className="h5-suggestions absolute left-0 right-0 top-[calc(100%+0.75rem)] z-40 overflow-hidden rounded-[24px] shadow-2xl backdrop-blur-xl">
           {suggestions.map((suggestion) => (
             <button
               key={suggestion.id}

@@ -37,6 +37,11 @@ interface ScoredEntry {
   matchReason?: string;
 }
 
+interface EntryBuildCache {
+  entries: SearchEntry[];
+  popularEntries: SearchEntry[];
+}
+
 const STRIP_YUAN_BASES = new Set([
   "会计",
   "出纳",
@@ -48,7 +53,39 @@ const STRIP_YUAN_BASES = new Set([
   "审单"
 ]);
 
-const WEAK_SUFFIX_EXCEPTIONS = new Set(["律师助理", "法律助理"]);
+const WEAK_SUFFIX_EXCEPTIONS = new Set(["律师助理", "法律助理", "法律顾问"]);
+const BROAD_RELATED_CATEGORY_LV1 = new Set(["文职", "服务", "技术", "公共服务", "交通物流", "物流", "运营", "销售", "内容", "教育医疗", "教育", "互联网", "文化机构"]);
+const CATEGORY_FALLBACK_PREFERRED_QUERIES = new Set(["顾问"]);
+const MANUAL_RELATED_ENTRY_IDS = new Map<string, string[]>([
+  ["china-p05:lawyer", ["china-p05:legal-counsel", "common:legal-specialist", "china-p05:ip-specialist"]],
+  ["common:legal-specialist", ["china-p05:legal-counsel", "china-p05:lawyer", "china-p05:ip-specialist"]],
+  ["china-p05:legal-counsel", ["china-p05:lawyer", "common:legal-specialist", "china-p05:ip-specialist"]],
+  ["china-p05:doctor", ["china-p05:traditional-chinese-medicine-doctor", "china-p05:dentist", "common:pharmacist", "common:nurse"]],
+  ["common:doctor", ["china-p05:traditional-chinese-medicine-doctor", "china-p05:dentist", "common:pharmacist", "common:nurse"]],
+  ["china-p05:traditional-chinese-medicine-doctor", ["china-p05:doctor", "china-p05:dentist", "common:pharmacist"]],
+  ["china-p05:police-officer", ["china-p05:auxiliary-police", "china-p05:judicial-police"]],
+  ["china-p05:auxiliary-police", ["china-p05:police-officer", "china-p05:judicial-police"]],
+  ["china-p05:judicial-police", ["china-p05:police-officer", "china-p05:auxiliary-police"]],
+  ["common:accountant", ["china-p05:auditor", "china-p05:cost-accountant", "common:cashier-accounts", "china-p05:finance-manager"]],
+  ["common:cashier-accounts", ["common:accountant", "china-p05:cost-accountant", "china-p05:auditor"]],
+  ["china-p05:auditor", ["common:accountant", "china-p05:cost-accountant", "china-p05:finance-manager"]],
+  ["china-p05:cost-accountant", ["common:accountant", "china-p05:auditor", "china-p05:finance-manager"]],
+  ["china-p05:finance-manager", ["common:accountant", "china-p05:auditor", "china-p05:cost-accountant"]],
+  ["common:receptionist", ["china-p05:hotel-front-desk", "common:admin-clerk"]],
+  ["china-p05:hotel-front-desk", ["common:receptionist", "china-p05:lobby-manager"]],
+  ["common:hr-specialist", ["common:admin-clerk", "common:receptionist", "common:customer-service"]],
+  ["common:admin-clerk", ["common:receptionist", "common:hr-specialist", "common:customer-service"]],
+  ["common:ui-designer", ["china-p05:interaction-designer", "common:graphic-designer", "china-p05:animation-designer", "china-p05:illustrator"]],
+  ["china-p05:interaction-designer", ["common:ui-designer", "common:graphic-designer", "china-p05:animation-designer", "china-p05:illustrator"]],
+  ["china-p05:animation-designer", ["common:ui-designer", "common:graphic-designer", "china-p05:interaction-designer", "china-p05:illustrator"]],
+  ["china-p05:architectural-designer", ["china-p05:civil-engineer", "china-p05:construction-worker-supervisor", "china-p05:cost-engineer"]],
+  ["common:ride-hailing-driver", ["china-p05:taxi-driver", "china-p05:bus-driver", "common:truck-driver", "common:delivery-driver"]],
+  ["china-p05:taxi-driver", ["common:ride-hailing-driver", "china-p05:bus-driver", "common:truck-driver"]],
+  ["china-p05:bus-driver", ["common:ride-hailing-driver", "china-p05:taxi-driver", "common:truck-driver"]],
+  ["china-p05:forklift-driver", ["common:warehouse-clerk", "common:stocker", "common:truck-driver"]],
+  ["common:software-developer", ["china-p05:software-engineer", "common:frontend-developer", "common:backend-developer", "common:test-engineer"]],
+  ["china-p05:software-engineer", ["common:software-developer", "common:frontend-developer", "common:backend-developer", "common:test-engineer"]]
+]);
 
 const AUTO_CATEGORY_MAP = new Map<string, { categoryLv1: string; categoryLv2: string }>([
   ["Office and Administrative Support", { categoryLv1: "文职", categoryLv2: "综合" }],
@@ -66,6 +103,8 @@ const AUTO_CATEGORY_MAP = new Map<string, { categoryLv1: string; categoryLv2: st
   ["Building and Grounds Cleaning and Maintenance", { categoryLv1: "服务", categoryLv2: "保洁" }],
   ["Personal Care and Service", { categoryLv1: "服务", categoryLv2: "个人服务" }]
 ]);
+
+const entryBuildCache = new WeakMap<OccupationRow[], EntryBuildCache>();
 
 function toHalfWidth(value: string) {
   return value.replace(/[\uFF01-\uFF5E]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0)).replace(/\u3000/g, " ");
@@ -295,6 +334,11 @@ function seedEntryForRow(seed: OccupationSearchSeedEntry, row: OccupationRow): S
 }
 
 function buildEntries(rows: OccupationRow[]) {
+  const cached = entryBuildCache.get(rows);
+  if (cached) {
+    return cached;
+  }
+
   const rowsBySocCode = new Map(rows.map((row) => [row.socCode, row]));
   const autoEntries = rows.map(autoEntryForRow);
   const seedEntries = [...COMMON_OCCUPATION_SEARCH_SEEDS, ...CHINA_P0_SEARCH_SEEDS, ...CHINA_P05_SEARCH_SEEDS]
@@ -304,12 +348,15 @@ function buildEntries(rows: OccupationRow[]) {
     })
     .filter((entry): entry is SearchEntry => Boolean(entry));
 
-  return {
+  const built = {
     entries: [...seedEntries, ...autoEntries],
     popularEntries: POPULAR_SEARCH_ENTRY_IDS
       .map((id) => seedEntries.find((entry) => entry.id === id))
       .filter((entry): entry is SearchEntry => Boolean(entry))
   };
+
+  entryBuildCache.set(rows, built);
+  return built;
 }
 
 function toHit(scored: ScoredEntry, normalizedQuery: string): OccupationSearchHit {
@@ -353,7 +400,7 @@ function dedupeByOccupation(scoredEntries: ScoredEntry[]) {
 function dedupeHitsByLabel(hits: OccupationSearchHit[]) {
   const seen = new Set<string>();
   return hits.filter((hit) => {
-    const key = `${hit.id}:${hit.label}`;
+    const key = normalizeOccupationQuery(hit.label);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -361,7 +408,37 @@ function dedupeHitsByLabel(hits: OccupationSearchHit[]) {
 }
 
 function isCuratedEntry(entry: SearchEntry) {
-  return entry.id.startsWith("common:") || entry.id.startsWith("china:");
+  return entry.id.startsWith("common:") || entry.id.startsWith("china:") || entry.id.startsWith("china-p05:");
+}
+
+function isCuratedHit(hit: OccupationSearchHit) {
+  return hit.id.startsWith("common:") || hit.id.startsWith("china:") || hit.id.startsWith("china-p05:");
+}
+
+function relatedAlternativeSignals(
+  primary: Pick<SearchEntry | OccupationSearchHit, "id" | "label" | "categoryLv1" | "categoryLv2" | "analysisTemplateId">,
+  candidate: Pick<SearchEntry | OccupationSearchHit, "id" | "label" | "categoryLv1" | "categoryLv2" | "analysisTemplateId">,
+  normalizedQuery: string
+) {
+  const manualRelated = (MANUAL_RELATED_ENTRY_IDS.get(primary.id) || []).includes(candidate.id);
+  const sameCategoryLv1 = candidate.categoryLv1 === primary.categoryLv1;
+  const sameCategoryLv2 = candidate.categoryLv2 === primary.categoryLv2;
+  const sameCategoryLv1Allowed = sameCategoryLv1 && !BROAD_RELATED_CATEGORY_LV1.has(primary.categoryLv1);
+  const labelSimilarity = Math.max(diceCoefficient(primary.label, candidate.label), tokenOverlapScore(primary.label, candidate.label));
+  const querySimilarity = Math.max(diceCoefficient(normalizedQuery, candidate.label), tokenOverlapScore(normalizedQuery, candidate.label));
+  const lexicalRelated = querySimilarity >= 0.24;
+  const sameTemplate = candidate.analysisTemplateId === primary.analysisTemplateId;
+  const sameTemplateAllowed = sameTemplate && (sameCategoryLv2 || sameCategoryLv1Allowed || lexicalRelated || manualRelated);
+
+  return {
+    isRelated: manualRelated || sameCategoryLv2 || sameCategoryLv1Allowed || sameTemplateAllowed || lexicalRelated,
+    manualRelated,
+    sameCategoryLv1Allowed,
+    sameCategoryLv2,
+    sameTemplateAllowed,
+    labelSimilarity,
+    querySimilarity
+  };
 }
 
 function relatedAlternatives(entries: SearchEntry[], primary: OccupationSearchHit, normalizedQuery: string) {
@@ -371,25 +448,28 @@ function relatedAlternatives(entries: SearchEntry[], primary: OccupationSearchHi
   return entries
     .filter((entry) => entry.id !== primaryEntry.id && isCuratedEntry(entry))
     .map((entry) => {
-      let score = 0;
-      if (entry.analysisTemplateId === primaryEntry.analysisTemplateId) score += 320;
-      if (entry.categoryLv1 === primaryEntry.categoryLv1) score += 180;
-      if (entry.categoryLv2 === primaryEntry.categoryLv2) score += 40;
-      score += entry.searchPriority * 0.4;
+      const signals = relatedAlternativeSignals(primaryEntry, entry, normalizedQuery);
+      if (!signals.isRelated) return null;
 
-      return score > 0
-        ? toHit(
-            {
-              entry,
-              score,
-              matchType: "category_fallback",
-              matchedAlias: primary.label,
-              matchedAliasNormalized: normalizedQuery,
-              matchReason: "相近职业推荐"
-            },
-            normalizedQuery
-          )
-        : null;
+      let score = 0;
+      if (signals.manualRelated) score += 360;
+      if (signals.sameTemplateAllowed) score += 240;
+      if (signals.sameCategoryLv2) score += 220;
+      if (signals.sameCategoryLv1Allowed) score += 140;
+      score += Math.round((signals.labelSimilarity * 120) + (signals.querySimilarity * 90));
+      score += entry.searchPriority * 0.35;
+
+      return toHit(
+        {
+          entry,
+          score,
+          matchType: "category_fallback",
+          matchedAlias: primary.label,
+          matchedAliasNormalized: normalizedQuery,
+          matchReason: "相近职业推荐"
+        },
+        normalizedQuery
+      );
     })
     .filter((entry): entry is OccupationSearchHit => Boolean(entry))
     .sort((left, right) =>
@@ -401,6 +481,15 @@ function relatedAlternatives(entries: SearchEntry[], primary: OccupationSearchHi
 
 function fallbackAlternatives(entries: SearchEntry[], queryRaw: string, normalizedQuery: string) {
   return categoryFallback(entries, queryRaw).map((entry) => toHit(entry, normalizedQuery));
+}
+
+function supplementalAlternatives(hits: OccupationSearchHit[], primary: OccupationSearchHit | null, normalizedQuery: string) {
+  if (!primary) return [] as OccupationSearchHit[];
+
+  return hits
+    .slice(1, 8)
+    .filter((hit) => isCuratedHit(hit) && hit.label !== primary.label)
+    .filter((hit) => relatedAlternativeSignals(primary, hit, normalizedQuery).isRelated);
 }
 
 function scoreAliasMatch(queryNormalized: string, queryCompact: string, alias: OccupationSearchAlias, entry: SearchEntry): ScoredEntry | null {
@@ -532,7 +621,7 @@ export function searchOccupationsByQuery(rows: OccupationRow[], queryRaw: string
     };
   }
 
-  const scoredEntries = scoreEntries(entries, queryRaw);
+  const scoredEntries = CATEGORY_FALLBACK_PREFERRED_QUERIES.has(normalizedQuery) ? [] : scoreEntries(entries, queryRaw);
   const matchedEntries = scoredEntries.length ? scoredEntries : categoryFallback(entries, queryRaw);
   const fallbackType = scoredEntries.length ? scoredEntries[0].matchType : (matchedEntries.length ? "category_fallback" : "no_result");
   const hits = matchedEntries.map((entry) => toHit(entry, normalizedQuery));
@@ -555,8 +644,10 @@ export function searchOccupationsByQuery(rows: OccupationRow[], queryRaw: string
   const primaryResult = hits[0] || null;
   const curatedAlternatives = primaryResult ? relatedAlternatives(entries, primaryResult, normalizedQuery) : [];
   const categoryAlternatives = fallbackAlternatives(entries, queryRaw, normalizedQuery);
-  const alternatives = dedupeHitsByLabel([...categoryAlternatives, ...curatedAlternatives, ...(hits.slice(1, 5) || [])])
-    .filter((entry) => entry.id !== primaryResult?.id || entry.label !== primaryResult?.label)
+  const extraAlternatives = supplementalAlternatives(hits, primaryResult, normalizedQuery);
+  const primaryLabelNormalized = primaryResult ? normalizeOccupationQuery(primaryResult.label) : "";
+  const alternatives = dedupeHitsByLabel([...curatedAlternatives, ...categoryAlternatives, ...extraAlternatives])
+    .filter((entry) => normalizeOccupationQuery(entry.label) !== primaryLabelNormalized)
     .slice(0, 4);
   const suggestions = dedupeHitsByLabel([...(primaryResult ? [primaryResult] : []), ...alternatives, ...hits.slice(1, 8)])
     .slice(0, 8);

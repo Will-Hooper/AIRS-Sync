@@ -9,10 +9,12 @@ import { H5Footer } from "../components/H5Footer";
 import { H5LanguageSwitch } from "../components/H5LanguageSwitch";
 import { H5NumberedBox } from "../components/H5NumberedBox";
 import { H5SearchCombobox } from "../components/H5SearchCombobox";
+import { H5ThemeSwitch } from "../components/H5ThemeSwitch";
 import { useH5NumberedBoxes } from "../hooks/useH5NumberedBoxes";
 import { getH5Copy } from "../lib/copy";
 import { getInitialH5Language, normalizeH5Language, persistH5Language, type H5Language } from "../lib/language";
 import { buildDesktopHomeHref } from "../lib/navigation";
+import { useAirsTheme } from "../../shared/theme";
 
 export function MobileHomePage() {
   const navigate = useNavigate();
@@ -23,8 +25,8 @@ export function MobileHomePage() {
   );
   const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [summaryError, setSummaryError] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
   const [now, setNow] = useState(() => new Date());
+  const [theme, setTheme] = useAirsTheme();
 
   const copy = getH5Copy(language);
 
@@ -65,7 +67,7 @@ export function MobileHomePage() {
     [language, now]
   );
 
-  useH5NumberedBoxes(pageRef, [language, query, summary?.avgAirs, summary?.generatedAt, summary?.datasetVersion, summaryError]);
+  useH5NumberedBoxes(pageRef, [language, summary?.avgAirs, summary?.generatedAt, summary?.datasetVersion, summaryError]);
 
   return (
     <div className="h5-shell">
@@ -76,7 +78,10 @@ export function MobileHomePage() {
             <p className="mt-2 text-sm text-white/55">{subtitle}</p>
             <p className="mt-2 max-w-[24rem] text-sm leading-7 text-white/45">{copy.sourceNote}</p>
           </div>
-          <H5LanguageSwitch language={language} onChange={setLanguage} />
+          <div className="flex flex-col items-end gap-3">
+            <H5ThemeSwitch language={language} theme={theme} onChange={setTheme} />
+            <H5LanguageSwitch language={language} onChange={setLanguage} />
+          </div>
         </header>
 
         <section data-h5-numbered-box className="h5-numbered h5-panel flex flex-1 flex-col justify-between overflow-hidden px-5 py-7">
@@ -90,11 +95,8 @@ export function MobileHomePage() {
               <H5SearchCombobox
                 language={language}
                 placeholder={copy.searchPlaceholder}
-                value={query}
                 analyticsSource="h5-home"
-                onQueryChange={setQuery}
                 onCommit={(nextQuery, selection, payload) => {
-                  setQuery(nextQuery);
                   void trackSearchEvent({
                     query: nextQuery,
                     source: "h5-home",

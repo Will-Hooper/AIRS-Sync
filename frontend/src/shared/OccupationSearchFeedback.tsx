@@ -25,14 +25,10 @@ export function OccupationSearchFeedback({
 
   const isZh = language === "zh";
   const wrapperClassName = variant === "mobile"
-    ? "border-t border-white/8 px-4 py-4"
-    : "border-t border-white/8 px-4 py-4";
-  const inputClassName = variant === "mobile"
-    ? "w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/20"
-    : "w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/20";
-  const buttonClassName = variant === "mobile"
-    ? "rounded-2xl border border-white/12 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/8 disabled:cursor-not-allowed disabled:opacity-50"
-    : "rounded-2xl border border-white/12 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/8 disabled:cursor-not-allowed disabled:opacity-50";
+    ? "airs-feedback-shell border-t border-white/8 px-4 py-4"
+    : "airs-feedback-shell border-t border-white/8 px-4 py-4";
+  const inputClassName = "airs-feedback-input";
+  const buttonClassName = "airs-feedback-button";
 
   const submitFeedback = async () => {
     if (!feedbackText.trim() || submitting) return;

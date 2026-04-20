@@ -5,12 +5,14 @@ import { NumberedBox } from "../components/shared/NumberedBox";
 import { SearchCombobox } from "../components/shared/SearchCombobox";
 import { DataFreshnessPanel } from "../components/shared/DataFreshnessPanel";
 import { SiteFooter } from "../components/shared/SiteFooter";
+import { ThemeSwitch } from "../components/shared/ThemeSwitch";
 import { getOccupationDetail } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
 import { formatCurrency, formatNumber } from "../lib/format";
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationDetailPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
+import { useAirsTheme } from "../shared/theme";
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -26,6 +28,7 @@ export function OccupationPage() {
   const [payload, setPayload] = useState<OccupationDetailPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [theme, setTheme] = useAirsTheme();
   const pageRef = useRef<HTMLDivElement | null>(null);
 
   const socCode = decodeURIComponent(params.socCode || searchParams.get("soc") || "");
@@ -182,6 +185,7 @@ export function OccupationPage() {
               }}
               className="md:min-w-[320px]"
             />
+            <ThemeSwitch language={language} theme={theme} onChange={setTheme} />
             <LanguageSwitch language={language} onChange={setLanguage} />
           </div>
         </header>
