@@ -17,7 +17,10 @@ export default defineConfig({
     outDir: "../dist",
     emptyOutDir: true,
     rollupOptions: {
-      input: path.resolve(__dirname, "frontend/index.html")
+      input: {
+        index: path.resolve(__dirname, "frontend/index.html"),
+        "m/index": path.resolve(__dirname, "frontend/m/index.html")
+      }
     }
   }
 });

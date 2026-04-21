@@ -374,6 +374,7 @@ export function OccupationPage() {
                 <DataFreshnessPanel
                   compact
                   language={language}
+                  fileUpdatedAt={payload?.fileUpdatedAt}
                   generatedAt={payload?.generatedAt}
                   sourceUpdatedAt={payload?.sourceUpdatedAt}
                   datasetVersion={payload?.datasetVersion}

@@ -9,6 +9,7 @@ interface SearchComboboxProps {
   language: AppLanguage;
   placeholder: string;
   analyticsSource: SearchEventSource;
+  buttonPlacement?: "outside" | "inline";
   value?: string;
   onSelect: (selection: OccupationSearchHit) => void;
   onCommit?: (query: string, selection?: OccupationSearchHit | null, payload?: OccupationSearchPayload | null) => void;
@@ -20,6 +21,7 @@ export function SearchCombobox({
   language,
   placeholder,
   analyticsSource,
+  buttonPlacement = "outside",
   value = "",
   onSelect,
   onCommit,
@@ -58,9 +60,11 @@ export function SearchCombobox({
     }, 0);
   };
 
+  const inlineButton = buttonPlacement === "inline";
+
   return (
-    <div ref={rootRef} className={`relative ${className}`}>
-      <div className="flex items-center gap-3">
+    <div ref={rootRef} className={`relative ${className}`.trim()}>
+      <div className={inlineButton ? "relative" : "flex items-center gap-3"}>
         <input
           value={query}
           onFocus={() => setOpen(true)}
@@ -70,7 +74,7 @@ export function SearchCombobox({
           onCompositionUpdate={(event) => handleCompositionUpdate(event.currentTarget.value)}
           onCompositionEnd={(event) => handleCompositionEnd(event.currentTarget.value)}
           onKeyDown={handleKeyDown}
-          className="airs-input flex-1"
+          className={`airs-input ${inlineButton ? "pr-32" : "flex-1"}`}
           placeholder={placeholder}
         />
         <button
@@ -78,7 +82,9 @@ export function SearchCombobox({
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => void submitFirstMatch()}
           disabled={!canSubmit}
-          className="airs-button-primary shrink-0 px-5 py-3 disabled:cursor-not-allowed disabled:opacity-50"
+          className={`airs-button-primary disabled:cursor-not-allowed disabled:opacity-50 ${
+            inlineButton ? "airs-input-inline-button" : "shrink-0 px-5 py-3"
+          }`}
         >
           {language === "zh" ? "搜索" : "Search"}
         </button>

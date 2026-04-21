@@ -33,6 +33,7 @@ interface H5Copy {
   notFoundText: string;
   returnHome: string;
   dataFreshness: string;
+  dataFileUpdatedLabel: string;
   generatedAtLabel: string;
   recruitmentUpdatedLabel: string;
   airsUpdatedLabel: string;
@@ -48,6 +49,7 @@ interface H5Copy {
   syncStateUnknown: string;
   shareImageQrNote: string;
   shareImageTitle: string;
+  footerRecordNumber: string;
   breakdownLabels: {
     replacement: string;
     augmentation: string;
@@ -87,6 +89,7 @@ export const h5Messages: Record<H5Language, H5Copy> = {
     notFoundText: "The H5 route you opened does not exist.",
     returnHome: "Return to H5 home",
     dataFreshness: "Data freshness",
+    dataFileUpdatedLabel: "Current data file update",
     generatedAtLabel: "Dataset generated",
     recruitmentUpdatedLabel: "Recruitment sync",
     airsUpdatedLabel: "AIRS recalculation",
@@ -102,6 +105,7 @@ export const h5Messages: Record<H5Language, H5Copy> = {
     syncStateUnknown: "Unknown",
     shareImageQrNote: "Open the H5 view and check how AI is changing this occupation.",
     shareImageTitle: "AIRS occupation share card",
+    footerRecordNumber: "京ICP备2026017743号",
     breakdownLabels: {
       replacement: "Replacement",
       augmentation: "Augmentation",
@@ -139,6 +143,7 @@ export const h5Messages: Record<H5Language, H5Copy> = {
     notFoundText: "你打开的 H5 路由不存在。",
     returnHome: "返回 H5 首页",
     dataFreshness: "数据更新时间",
+    dataFileUpdatedLabel: "当前数据文件更新时间",
     generatedAtLabel: "本次数据生成时间",
     recruitmentUpdatedLabel: "招聘数据同步",
     airsUpdatedLabel: "AIRS 主重算",
@@ -154,6 +159,7 @@ export const h5Messages: Record<H5Language, H5Copy> = {
     syncStateUnknown: "未知",
     shareImageQrNote: "打开 H5 页面，看看 AI 正在怎样改写这个职业。",
     shareImageTitle: "AIRS 职业分享图",
+    footerRecordNumber: "京ICP备2026017743号",
     breakdownLabels: {
       replacement: "替代压力",
       augmentation: "岗位改写",

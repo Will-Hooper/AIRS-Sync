@@ -5,6 +5,7 @@ import type { H5Language } from "../lib/language";
 
 interface H5DataFreshnessPanelProps {
   language: H5Language;
+  fileUpdatedAt?: string;
   generatedAt?: string;
   sourceUpdatedAt?: DatasetSourceUpdatedAt;
   datasetVersion?: string;
@@ -14,6 +15,7 @@ interface H5DataFreshnessPanelProps {
 
 export function H5DataFreshnessPanel({
   language,
+  fileUpdatedAt,
   generatedAt,
   sourceUpdatedAt,
   datasetVersion,
@@ -21,8 +23,15 @@ export function H5DataFreshnessPanel({
   compact = false
 }: H5DataFreshnessPanelProps) {
   const copy = getH5Copy(language);
+  const primaryUpdatedAt = fileUpdatedAt || generatedAt || sourceUpdatedAt?.airs || sourceUpdatedAt?.recruitment;
   const rows = [
-    { label: copy.generatedAtLabel, value: formatDateTimeValue(generatedAt, language) },
+    {
+      label: fileUpdatedAt ? copy.dataFileUpdatedLabel : copy.generatedAtLabel,
+      value: formatDateTimeValue(primaryUpdatedAt, language)
+    },
+    ...(fileUpdatedAt && generatedAt && generatedAt !== fileUpdatedAt
+      ? [{ label: copy.generatedAtLabel, value: formatDateTimeValue(generatedAt, language) }]
+      : []),
     { label: copy.recruitmentUpdatedLabel, value: formatDateTimeValue(sourceUpdatedAt?.recruitment, language) },
     { label: copy.airsUpdatedLabel, value: formatDateTimeValue(sourceUpdatedAt?.airs, language) },
     { label: copy.onetUpdatedLabel, value: formatDateTimeValue(sourceUpdatedAt?.onet, language) },
@@ -52,7 +61,7 @@ export function H5DataFreshnessPanel({
       <p className="h5-kicker">{copy.dataFreshness}</p>
       <div className="mt-5 grid gap-3">
         {rows.map((row) => (
-          <div key={row.label} className="rounded-[22px] border border-white/8 bg-white/[0.02] px-4 py-4">
+          <div key={row.label} className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
             <p className="text-sm text-white/45">{row.label}</p>
             <p className="mt-2 text-base font-medium text-white/82">{row.value}</p>
           </div>

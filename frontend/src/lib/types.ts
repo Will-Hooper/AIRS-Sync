@@ -115,6 +115,12 @@ export interface JsonDataset {
   occupations: JsonDatasetOccupation[];
 }
 
+export interface JsonDatasetFileMeta {
+  fileName?: string;
+  updatedAt?: string;
+  size?: number;
+}
+
 export interface OccupationRow extends JsonRegionMetrics {
   socCode: string;
   title: string;
@@ -190,6 +196,7 @@ export interface SummaryPayload {
   mode: string;
   source: string;
   updatedAt: string;
+  fileUpdatedAt?: string;
   generatedAt?: string;
   sourceUpdatedAt?: DatasetSourceUpdatedAt;
   datasetVersion?: string;
@@ -204,6 +211,7 @@ export interface OccupationListPayload {
   mode: string;
   source: string;
   updatedAt: string;
+  fileUpdatedAt?: string;
   generatedAt?: string;
   sourceUpdatedAt?: DatasetSourceUpdatedAt;
   datasetVersion?: string;
@@ -220,6 +228,7 @@ export interface OccupationDetailPayload {
   mode: string;
   source: string;
   updatedAt: string;
+  fileUpdatedAt?: string;
   generatedAt?: string;
   sourceUpdatedAt?: DatasetSourceUpdatedAt;
   datasetVersion?: string;

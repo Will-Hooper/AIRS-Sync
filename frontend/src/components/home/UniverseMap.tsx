@@ -229,12 +229,12 @@ export function UniverseMap({
   return (
     <div
       ref={panelRef}
-      className={`airs-panel overflow-hidden ${isFullscreen ? "flex h-full flex-col rounded-none border-transparent bg-slate-950/95" : ""}`}
+      className={`airs-panel overflow-hidden ${isFullscreen ? "airs-map-host flex h-full flex-col rounded-none border-transparent" : ""}`}
     >
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/8 px-6 py-4">
         <div>
           <p className="airs-kicker">{labels.viewModesKicker}</p>
-          <div className="mt-2 inline-flex rounded-full border border-white/10 bg-black/15 p-1">
+          <div className="airs-map-toggle-shell mt-2 inline-flex rounded-full border p-1">
             {(["market", "group", "label"] as ViewMode[]).map((mode) => (
               <button
                 key={mode}
@@ -243,7 +243,7 @@ export function UniverseMap({
                 className={`rounded-full px-4 py-2 text-sm transition ${
                   mode === viewMode
                     ? "bg-gradient-to-r from-emerald-200 to-sky-300 text-slate-950"
-                    : "text-white/60 hover:text-white"
+                    : "airs-map-toggle-option"
                 }`}
               >
                 {labels.modes[mode]}
@@ -278,7 +278,7 @@ export function UniverseMap({
 
       <div
         ref={containerRef}
-        className={`relative isolate touch-none overflow-hidden overscroll-contain bg-[radial-gradient(circle_at_20%_0%,rgba(127,193,255,0.1),transparent_34%),linear-gradient(180deg,rgba(7,13,20,0.5),rgba(7,13,20,0.85))] ${isFullscreen ? "min-h-0 flex-1 h-auto" : "h-[560px]"}`}
+        className={`airs-map-stage relative isolate touch-none overflow-hidden overscroll-contain ${isFullscreen ? "h-auto min-h-0 flex-1" : "h-[560px]"}`}
         onWheelCapture={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -319,8 +319,8 @@ export function UniverseMap({
       >
         <svg className="h-full w-full">
           <g transform={`translate(${camera.x} ${camera.y}) scale(${camera.scale})`}>
-            <line x1={bounds.minX - 180} x2={bounds.maxX + 180} y1={0} y2={0} stroke="rgba(127,193,255,0.18)" strokeWidth={1 / camera.scale} />
-            <line y1={bounds.minY - 180} y2={bounds.maxY + 180} x1={0} x2={0} stroke="rgba(127,193,255,0.18)" strokeWidth={1 / camera.scale} />
+            <line x1={bounds.minX - 180} x2={bounds.maxX + 180} y1={0} y2={0} stroke="var(--airs-map-axis-line)" strokeWidth={1 / camera.scale} />
+            <line y1={bounds.minY - 180} y2={bounds.maxY + 180} x1={0} x2={0} stroke="var(--airs-map-axis-line)" strokeWidth={1 / camera.scale} />
             {points.map((point) => {
               const selected = point.row.socCode === selectedSocCode;
               const dimmed = selectedSocCode ? !selected : false;
@@ -332,7 +332,7 @@ export function UniverseMap({
                   r={point.radius / camera.scale}
                   fill={pointColor(point.row)}
                   fillOpacity={dimmed ? 0.18 : 0.9}
-                  stroke={selected ? "#f2f6ff" : "rgba(255,255,255,0.18)"}
+                  stroke={selected ? "var(--airs-map-selected-stroke)" : "var(--airs-map-point-stroke)"}
                   strokeWidth={selected ? 2.4 / camera.scale : 1 / camera.scale}
                   onMouseEnter={() => setHoveredSocCode(point.row.socCode)}
                   onMouseLeave={() => setHoveredSocCode((current) => (current === point.row.socCode ? null : current))}
@@ -345,24 +345,24 @@ export function UniverseMap({
 
         {selectedPoint && selectedProjection && (
           <div
-            className="pointer-events-none absolute z-10 max-w-xs rounded-[24px] border border-white/10 bg-slate-950/92 px-4 py-3 shadow-2xl backdrop-blur-xl"
+            className="airs-map-tooltip pointer-events-none absolute z-10 max-w-xs rounded-[24px] border px-4 py-3 shadow-2xl backdrop-blur-xl"
             style={{
               left: `${selectedProjection.x}px`,
               top: `${selectedProjection.y - 18}px`,
               transform: "translate(-50%, -100%)"
             }}
           >
-            <p className="text-sm font-medium text-white">
+            <p className="airs-map-tooltip-title text-sm font-medium">
               {language === "zh" ? selectedPoint.row.titleZh || selectedPoint.row.title : selectedPoint.row.title}
             </p>
-            <p className="mt-1 text-xs text-white/45">
+            <p className="airs-map-tooltip-meta mt-1 text-xs">
               {selectedPoint.row.socCode} · AIRS {formatNumber(selectedPoint.row.airs || 0, 0, language)}
             </p>
-            <p className="mt-2 text-xs text-white/65">{labelText(language, selectedPoint.row.label)}</p>
+            <p className="airs-map-tooltip-meta mt-2 text-xs">{labelText(language, selectedPoint.row.label)}</p>
           </div>
         )}
 
-        <div className="pointer-events-none absolute bottom-4 left-6 right-6 flex flex-col gap-2 text-xs text-white/45 md:flex-row md:items-center md:justify-between">
+        <div className="airs-map-axis-text pointer-events-none absolute bottom-4 left-6 right-6 flex flex-col gap-2 text-xs md:flex-row md:items-center md:justify-between">
           <span>{labels.axisX}</span>
           <span>{labels.axisY}</span>
         </div>

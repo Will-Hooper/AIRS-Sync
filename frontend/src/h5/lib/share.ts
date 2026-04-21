@@ -1,4 +1,5 @@
 import type { H5Language } from "./language";
+import { H5_SHARE_COPY } from "./share-copy";
 
 export type SharePlatform = "wechatMoments" | "xiaohongshu" | "weibo";
 
@@ -13,7 +14,7 @@ export interface ShareAttemptResult {
   message: string;
 }
 
-export const DEFAULT_SHARE_TEXT = "搜搜看，AI是否会取代你的职业";
+export const DEFAULT_SHARE_TEXT = H5_SHARE_COPY;
 
 export async function shareGeneratedImage(options: {
   asset: GeneratedShareAsset;

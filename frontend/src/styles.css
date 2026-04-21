@@ -22,6 +22,30 @@
   --badge-bg: rgba(3, 12, 20, 0.84);
   --badge-border: rgba(142, 240, 207, 0.26);
   --badge-text: rgba(204, 251, 241, 0.95);
+  --airs-hero-overlay-start: rgba(2, 8, 23, 0.88);
+  --airs-hero-overlay-mid: rgba(2, 8, 23, 0.64);
+  --airs-hero-overlay-end: rgba(2, 8, 23, 0.78);
+  --airs-hero-copy: rgba(242, 246, 255, 0.72);
+  --airs-hero-glow: radial-gradient(circle_at_100%_45%, rgba(255, 154, 71, 0.32), transparent 58%);
+  --airs-hero-orb-bg: radial-gradient(circle, rgba(255, 154, 71, 0.3), transparent 62%);
+  --airs-hero-orb-border: rgba(254, 215, 170, 0.15);
+  --airs-map-host-bg: rgba(7, 13, 20, 0.95);
+  --airs-map-stage-bg:
+    radial-gradient(circle at 20% 0%, rgba(127, 193, 255, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(7, 13, 20, 0.5), rgba(7, 13, 20, 0.85));
+  --airs-map-toggle-bg: rgba(0, 0, 0, 0.15);
+  --airs-map-toggle-border: rgba(255, 255, 255, 0.1);
+  --airs-map-toggle-text: rgba(255, 255, 255, 0.62);
+  --airs-map-axis-text: rgba(242, 246, 255, 0.46);
+  --airs-map-axis-line: rgba(127, 193, 255, 0.18);
+  --airs-map-point-stroke: rgba(255, 255, 255, 0.18);
+  --airs-map-selected-stroke: rgba(242, 246, 255, 0.96);
+  --airs-map-tooltip-bg: rgba(2, 8, 23, 0.92);
+  --airs-map-tooltip-border: rgba(255, 255, 255, 0.1);
+  --airs-map-tooltip-text: rgba(242, 246, 255, 1);
+  --airs-map-tooltip-muted: rgba(242, 246, 255, 0.56);
+  --airs-footer-text: rgba(242, 246, 255, 0.58);
+  --airs-footer-link-text: rgba(242, 246, 255, 0.78);
 }
 
 html,
@@ -66,6 +90,30 @@ body[data-airs-entry="desktop"][data-airs-theme="light"] {
   --badge-bg: rgba(246, 250, 255, 0.92);
   --badge-border: rgba(95, 134, 173, 0.18);
   --badge-text: rgba(35, 64, 96, 0.92);
+  --airs-hero-overlay-start: rgba(250, 252, 255, 0.96);
+  --airs-hero-overlay-mid: rgba(239, 246, 253, 0.84);
+  --airs-hero-overlay-end: rgba(228, 239, 248, 0.92);
+  --airs-hero-copy: rgba(21, 34, 53, 0.74);
+  --airs-hero-glow: radial-gradient(circle_at_100%_45%, rgba(255, 176, 98, 0.22), transparent 60%);
+  --airs-hero-orb-bg: radial-gradient(circle, rgba(255, 176, 98, 0.18), transparent 64%);
+  --airs-hero-orb-border: rgba(95, 134, 173, 0.18);
+  --airs-map-host-bg: rgba(245, 250, 255, 0.98);
+  --airs-map-stage-bg:
+    radial-gradient(circle at 20% 0%, rgba(120, 180, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(250, 252, 255, 0.98), rgba(231, 240, 249, 0.96));
+  --airs-map-toggle-bg: rgba(245, 249, 253, 0.95);
+  --airs-map-toggle-border: rgba(95, 134, 173, 0.16);
+  --airs-map-toggle-text: rgba(21, 34, 53, 0.68);
+  --airs-map-axis-text: rgba(21, 34, 53, 0.62);
+  --airs-map-axis-line: rgba(95, 134, 173, 0.22);
+  --airs-map-point-stroke: rgba(21, 34, 53, 0.16);
+  --airs-map-selected-stroke: rgba(21, 34, 53, 0.82);
+  --airs-map-tooltip-bg: rgba(250, 252, 255, 0.98);
+  --airs-map-tooltip-border: rgba(95, 134, 173, 0.18);
+  --airs-map-tooltip-text: rgba(21, 34, 53, 1);
+  --airs-map-tooltip-muted: rgba(21, 34, 53, 0.58);
+  --airs-footer-text: rgba(21, 34, 53, 0.62);
+  --airs-footer-link-text: rgba(21, 34, 53, 0.82);
   background:
     radial-gradient(circle at 18% 0%, rgba(109, 176, 255, 0.18), transparent 34%),
     radial-gradient(circle at 82% 16%, rgba(102, 214, 182, 0.18), transparent 28%),
@@ -136,6 +184,15 @@ body[data-airs-entry="desktop"][data-airs-theme="light"] {
 
   .airs-input::placeholder {
     color: var(--input-placeholder);
+  }
+
+  .airs-input-inline-button {
+    @apply absolute right-2 top-1/2 min-w-24 -translate-y-1/2 px-4 py-2.5 text-sm;
+    box-shadow: 0 12px 28px rgba(16, 24, 40, 0.16);
+  }
+
+  .airs-input-inline-button:hover {
+    transform: translateY(-50%);
   }
 
   .airs-select {
@@ -214,6 +271,73 @@ body[data-airs-entry="desktop"][data-airs-theme="light"] {
     @apply h-px w-full bg-white/8;
   }
 
+  .airs-hero-overlay {
+    background: linear-gradient(135deg, var(--airs-hero-overlay-start), var(--airs-hero-overlay-mid), var(--airs-hero-overlay-end));
+  }
+
+  .airs-hero-glow {
+    background: var(--airs-hero-glow);
+  }
+
+  .airs-hero-orb {
+    border-color: var(--airs-hero-orb-border);
+    background: var(--airs-hero-orb-bg);
+  }
+
+  .airs-hero-copy {
+    color: var(--airs-hero-copy);
+  }
+
+  .airs-map-host {
+    background: var(--airs-map-host-bg);
+  }
+
+  .airs-map-stage {
+    background: var(--airs-map-stage-bg);
+  }
+
+  .airs-map-toggle-shell {
+    border-color: var(--airs-map-toggle-border);
+    background: var(--airs-map-toggle-bg);
+  }
+
+  .airs-map-toggle-option {
+    color: var(--airs-map-toggle-text);
+  }
+
+  .airs-map-toggle-option:hover {
+    color: var(--text-primary);
+  }
+
+  .airs-map-tooltip {
+    border-color: var(--airs-map-tooltip-border);
+    background: var(--airs-map-tooltip-bg);
+  }
+
+  .airs-map-tooltip-title {
+    color: var(--airs-map-tooltip-text);
+  }
+
+  .airs-map-tooltip-meta {
+    color: var(--airs-map-tooltip-muted);
+  }
+
+  .airs-map-axis-text {
+    color: var(--airs-map-axis-text);
+  }
+
+  .airs-footer-copy {
+    color: var(--airs-footer-text);
+  }
+
+  .airs-footer-link {
+    color: var(--airs-footer-link-text);
+  }
+
+  .airs-footer-link:hover {
+    color: var(--text-primary);
+  }
+
   [data-numbered-box] {
     @apply relative;
   }
@@ -266,6 +390,14 @@ body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/65 {
 
 body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/62 {
   color: rgba(21, 34, 53, 0.62);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/60 {
+  color: rgba(21, 34, 53, 0.6);
+}
+
+body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/58 {
+  color: rgba(21, 34, 53, 0.58);
 }
 
 body[data-airs-entry="desktop"][data-airs-theme="light"] .text-white\/55 {

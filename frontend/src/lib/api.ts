@@ -2,6 +2,7 @@ import { translateOccupationDefinition, translateOccupationTasks, translateOccup
 import { getOccupationSuggestions, searchOccupationsByQuery } from "./occupation-search";
 import type {
   JsonDataset,
+  JsonDatasetFileMeta,
   JsonDatasetOccupation,
   JsonRegionMetrics,
   OccupationDetailPayload,
@@ -13,8 +14,10 @@ import type {
 } from "./types";
 
 const DATA_URL = "../backend/data/airs_data.json";
+const DATA_META_URL = "../backend/data/airs_data.meta.json";
 
 let datasetPromise: Promise<JsonDataset> | null = null;
+let datasetFileMetaPromise: Promise<JsonDatasetFileMeta | null> | null = null;
 const datasetMetaCache = new WeakMap<JsonDataset, ReturnType<typeof getDatasetMeta>>();
 const datasetRowsByRegionCache = new WeakMap<JsonDataset, Map<string, OccupationRow[]>>();
 
@@ -31,14 +34,11 @@ export class AirsDataUnavailableError extends Error {
 }
 
 function updatedAtFromDataset(dataset: JsonDataset) {
-  return dataset.generatedAt
-    || dataset.sourceUpdatedAt?.recruitment
-    || dataset.sourceUpdatedAt?.airs
-    || (
-      Array.isArray(dataset?.dates) && dataset.dates.length
-        ? `${dataset.dates[dataset.dates.length - 1]}T12:00:00-05:00`
-        : new Date().toISOString()
-    );
+  return resolveLatestTimestamp([
+    dataset.generatedAt,
+    ...Object.values(dataset.sourceUpdatedAt || {}),
+    coverageTimestampFromDataset(dataset)
+  ]) || new Date().toISOString();
 }
 
 function uniqueStrings(values: unknown[] = []) {
@@ -360,6 +360,55 @@ function buildDataUrlCandidates() {
 
   addCandidate("/backend/data/airs_data.json");
   return [...candidates];
+}
+
+function buildDataMetaUrlCandidates() {
+  const candidates = new Set<string>();
+  const addCandidate = (value: string | null | undefined) => {
+    if (!value) return;
+    try {
+      candidates.add(new URL(value, window.location.href).href);
+    } catch {
+      // Ignore malformed candidate URLs and continue with the remaining fallbacks.
+    }
+  };
+
+  addCandidate(DATA_META_URL);
+  buildDataUrlCandidates().forEach((url) => {
+    try {
+      candidates.add(new URL("./airs_data.meta.json", url).href);
+    } catch {
+      // Ignore malformed candidate URLs and continue with the remaining fallbacks.
+    }
+  });
+
+  addCandidate("/backend/data/airs_data.meta.json");
+  return [...candidates];
+}
+
+function resolveLatestTimestamp(values: Array<string | null | undefined>) {
+  return values.reduce<{ value: string; time: number } | null>((latest, value) => {
+    if (!value) return latest;
+    const time = Date.parse(value);
+    if (Number.isNaN(time)) return latest;
+    if (!latest || time > latest.time) {
+      return { value, time };
+    }
+    return latest;
+  }, null)?.value;
+}
+
+function coverageTimestampFromDataset(dataset: JsonDataset) {
+  return Array.isArray(dataset?.dates) && dataset.dates.length
+    ? `${dataset.dates[dataset.dates.length - 1]}T12:00:00-05:00`
+    : undefined;
+}
+
+function resolveDatasetDisplayUpdatedAt(dataset: JsonDataset, fileMeta?: JsonDatasetFileMeta | null) {
+  return resolveLatestTimestamp([
+    fileMeta?.updatedAt,
+    updatedAtFromDataset(dataset)
+  ]) || updatedAtFromDataset(dataset);
 }
 
 function normalizeSearchText(value: unknown) {
@@ -800,8 +849,37 @@ async function loadDataset(): Promise<JsonDataset> {
   return datasetPromise;
 }
 
+async function loadDatasetFileMeta(): Promise<JsonDatasetFileMeta | null> {
+  if (!datasetFileMetaPromise) {
+    datasetFileMetaPromise = (async () => {
+      for (const url of buildDataMetaUrlCandidates()) {
+        try {
+          const response = await fetch(url, { cache: "no-cache" });
+          if (!response.ok) {
+            continue;
+          }
+
+          const payload = await response.json();
+          if (!payload || typeof payload !== "object") {
+            continue;
+          }
+
+          return payload as JsonDatasetFileMeta;
+        } catch {
+          // Ignore per-candidate errors and keep trying the remaining fallbacks.
+        }
+      }
+
+      return null;
+    })();
+  }
+
+  return datasetFileMetaPromise;
+}
+
 export function invalidateDatasetCache() {
   datasetPromise = null;
+  datasetFileMetaPromise = null;
 }
 
 function getRowsForRegion(dataset: JsonDataset, region: string) {
@@ -828,13 +906,14 @@ function buildRows(dataset: JsonDataset, params: OccupationQueryParams = {}): Oc
 }
 
 export async function getSummary(params: OccupationQueryParams = {}): Promise<SummaryPayload> {
-  const dataset = await loadDataset();
-  const updatedAt = updatedAtFromDataset(dataset);
+  const [dataset, fileMeta] = await Promise.all([loadDataset(), loadDatasetFileMeta()]);
+  const updatedAt = resolveDatasetDisplayUpdatedAt(dataset, fileMeta);
   const rows = buildRows(dataset, params);
   const meta = getDatasetMeta(dataset);
 
   return {
     ...summarizeRows(rows, updatedAt),
+    fileUpdatedAt: fileMeta?.updatedAt,
     generatedAt: dataset.generatedAt,
     sourceUpdatedAt: dataset.sourceUpdatedAt,
     datasetVersion: dataset.datasetVersion,
@@ -844,7 +923,7 @@ export async function getSummary(params: OccupationQueryParams = {}): Promise<Su
 }
 
 export async function getOccupations(params: OccupationQueryParams = {}): Promise<OccupationListPayload> {
-  const dataset = await loadDataset();
+  const [dataset, fileMeta] = await Promise.all([loadDataset(), loadDatasetFileMeta()]);
   const meta = getDatasetMeta(dataset);
   const date = resolveDate(params.date, meta.dates);
   const region = resolveRegion(params.region, meta.regions);
@@ -853,7 +932,8 @@ export async function getOccupations(params: OccupationQueryParams = {}): Promis
   return {
     mode: "json",
     source: "json",
-    updatedAt: updatedAtFromDataset(dataset),
+    updatedAt: resolveDatasetDisplayUpdatedAt(dataset, fileMeta),
+    fileUpdatedAt: fileMeta?.updatedAt,
     generatedAt: dataset.generatedAt,
     sourceUpdatedAt: dataset.sourceUpdatedAt,
     datasetVersion: dataset.datasetVersion,
@@ -868,7 +948,7 @@ export async function getOccupations(params: OccupationQueryParams = {}): Promis
 }
 
 export async function getOccupationDetail(socCode: string, params: OccupationQueryParams = {}): Promise<OccupationDetailPayload> {
-  const dataset = await loadDataset();
+  const [dataset, fileMeta] = await Promise.all([loadDataset(), loadDatasetFileMeta()]);
   const meta = getDatasetMeta(dataset);
   const date = resolveDate(params.date, meta.dates);
   const region = resolveRegion(params.region, meta.regions);
@@ -878,7 +958,8 @@ export async function getOccupationDetail(socCode: string, params: OccupationQue
   return {
     mode: "json",
     source: "json",
-    updatedAt: updatedAtFromDataset(dataset),
+    updatedAt: resolveDatasetDisplayUpdatedAt(dataset, fileMeta),
+    fileUpdatedAt: fileMeta?.updatedAt,
     generatedAt: dataset.generatedAt,
     sourceUpdatedAt: dataset.sourceUpdatedAt,
     datasetVersion: dataset.datasetVersion,

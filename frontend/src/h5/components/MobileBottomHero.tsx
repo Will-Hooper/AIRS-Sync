@@ -20,12 +20,12 @@ export function MobileBottomHero({ caption, language, className = "", contentCla
   });
 
   return (
-    <div className={`relative isolate min-h-[220px] overflow-hidden rounded-[32px] border border-white/10 bg-black/20 ${className}`.trim()}>
+    <div className={`h5-bottom-hero relative isolate min-h-[220px] overflow-hidden rounded-[32px] border border-white/10 bg-black/20 ${className}`.trim()}>
       <div ref={backgroundRef} className="absolute inset-0" />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/78 to-slate-950/46" />
-      <div className={`absolute inset-y-0 ${language === "zh" ? "right-0" : "left-0"} w-1/2 bg-[radial-gradient(circle_at_100%_50%,rgba(255,154,71,0.24),transparent_58%)]`} />
+      <div className="h5-bottom-hero-overlay absolute inset-0" />
+      <div className={`h5-bottom-hero-glow absolute inset-y-0 ${language === "zh" ? "right-0" : "left-0"} w-1/2`} />
       <div className={`relative z-10 flex h-full min-h-[220px] items-end p-6 ${contentClassName}`.trim()}>
-        <p className="max-w-[18rem] text-sm leading-7 text-white/72">{caption}</p>
+        <p className="h5-bottom-hero-copy max-w-[18rem] text-sm leading-7">{caption}</p>
       </div>
     </div>
   );

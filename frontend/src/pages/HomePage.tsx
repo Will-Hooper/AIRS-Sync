@@ -10,7 +10,7 @@ import { SiteFooter } from "../components/shared/SiteFooter";
 import { ThemeSwitch } from "../components/shared/ThemeSwitch";
 import { getOccupations, getSummary, searchOccupations as searchOccupationMatches } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
-import { formatDateTime, formatNumber, formatPercent } from "../lib/format";
+import { formatDateTime, formatDateTimeValue, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
@@ -50,8 +50,6 @@ export function HomePage() {
   );
   const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [occupations, setOccupations] = useState<OccupationRow[]>([]);
-  const [dates, setDates] = useState<string[]>([]);
-  const [regions, setRegions] = useState<string[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   const [groups, setGroups] = useState<string[]>([]);
   const [selectedSocCode, setSelectedSocCode] = useState<string | null>(null);
@@ -108,8 +106,6 @@ export function HomePage() {
         if (cancelled) return;
         setSummary(nextSummary);
         setOccupations(listPayload.occupations);
-        setDates(listPayload.dates);
-        setRegions(listPayload.regions);
         setLabels(listPayload.labels);
         setGroups(listPayload.groups);
         setSelectedSocCode((current) => {
@@ -310,39 +306,7 @@ export function HomePage() {
                 )}
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm text-white/55">{copy.date}</span>
-                  <select
-                    className="airs-input airs-select appearance-none"
-                    value={searchParams.get("date") || ""}
-                    onChange={(event) => updateParamState(searchParams, setSearchParams, { date: event.target.value || undefined })}
-                  >
-                    <option value="">{dates[dates.length - 1] || "--"}</option>
-                    {dates.map((date) => (
-                      <option key={date} value={date}>
-                        {date}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm text-white/55">{copy.region}</span>
-                  <select
-                    className="airs-input airs-select appearance-none"
-                    value={searchParams.get("region") || ""}
-                    onChange={(event) => updateParamState(searchParams, setSearchParams, { region: event.target.value || undefined })}
-                  >
-                    <option value="">{regions[0] || "National"}</option>
-                    {regions.map((region) => (
-                      <option key={region} value={region}>
-                        {region}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,0.92fr)_minmax(360px,1.9fr)]">
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.group}</span>
                   <select
@@ -383,13 +347,14 @@ export function HomePage() {
                   </select>
                 </label>
 
-                <label className="flex flex-col gap-2">
+                <label className="flex flex-col gap-2 md:col-span-2 xl:col-span-1">
                   <span className="text-sm text-white/55">{copy.searchLabel}</span>
                   <SearchCombobox
                     language={language}
                     placeholder={copy.searchPlaceholder}
                     value={query}
                     analyticsSource="desktop-home"
+                    buttonPlacement="inline"
                     onQueryChange={setQuery}
                     onCommit={(nextQuery, selection, payload) => {
                       setQuery(nextQuery);
@@ -491,8 +456,13 @@ export function HomePage() {
               </div>
               <div className="mt-6 grid gap-3">
                 <div data-numbered-box className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
-                  <p className="text-sm text-white/45">{language === "zh" ? "最新数据日期" : "Latest data date"}</p>
-                  <p className="mt-2 text-lg font-medium text-white">{summary?.date || "--"}</p>
+                  <p className="text-sm text-white/45">{copy.dataFileUpdatedLabel}</p>
+                  <p className="mt-2 text-lg font-medium text-white">
+                    {formatDateTimeValue(summary?.fileUpdatedAt || summary?.generatedAt || summary?.updatedAt, language)}
+                  </p>
+                  <p className="mt-2 text-xs text-white/45">
+                    {copy.dataCoverageDateLabel}: {summary?.date || "--"}
+                  </p>
                 </div>
                 <div data-numbered-box className="rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
                   <p className="text-sm text-white/45">{language === "zh" ? "纳入职业数" : "Occupations in view"}</p>
@@ -503,6 +473,7 @@ export function HomePage() {
                 <DataFreshnessPanel
                   compact
                   language={language}
+                  fileUpdatedAt={summary?.fileUpdatedAt}
                   generatedAt={summary?.generatedAt}
                   sourceUpdatedAt={summary?.sourceUpdatedAt}
                   datasetVersion={summary?.datasetVersion}

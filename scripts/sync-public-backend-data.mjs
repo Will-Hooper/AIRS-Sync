@@ -40,6 +40,20 @@ async function main() {
     )
   );
 
+  const airsDataStats = await fs.stat(path.join(sourceDir, "airs_data.json"));
+  await fs.writeFile(
+    path.join(targetDir, "airs_data.meta.json"),
+    `${JSON.stringify(
+      {
+        fileName: "airs_data.json",
+        updatedAt: airsDataStats.mtime.toISOString(),
+        size: airsDataStats.size
+      },
+      null,
+      2
+    )}\n`
+  );
+
   const oversizedFile = path.join(targetDir, "college_scorecard_programs.json");
   try {
     await fs.unlink(oversizedFile);
@@ -47,6 +61,7 @@ async function main() {
 
   console.log(`Synced ${files.length} JSON files to public/backend/data`);
   files.forEach((file) => console.log(`- ${file}`));
+  console.log("- airs_data.meta.json");
 }
 
 main().catch((error) => {
