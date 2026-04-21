@@ -1,3 +1,4 @@
+import QRCode from "qrcode";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
@@ -6,16 +7,20 @@ import { SearchCombobox } from "../components/shared/SearchCombobox";
 import { DataFreshnessPanel } from "../components/shared/DataFreshnessPanel";
 import { SiteFooter } from "../components/shared/SiteFooter";
 import { ThemeSwitch } from "../components/shared/ThemeSwitch";
-import { getOccupationDetail } from "../lib/api";
+import { getOccupationDetail, getSummary } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
+import { applyDesktopShareMetadata } from "../lib/desktop-metadata";
 import { formatCurrency, formatNumber } from "../lib/format";
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationDetailPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
+import { renderOccupationShareImage } from "../shared/share/render-occupation-share-image";
 import { useAirsTheme } from "../shared/theme";
 
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+interface DesktopShareAsset {
+  file: File;
+  fileName: string;
+  objectUrl: string;
 }
 
 export function OccupationPage() {
@@ -26,8 +31,14 @@ export function OccupationPage() {
     normalizeLanguage(searchParams.get("lang") || getInitialLanguage(window.location.search))
   );
   const [payload, setPayload] = useState<OccupationDetailPayload | null>(null);
+  const [averageAirs, setAverageAirs] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [shareAsset, setShareAsset] = useState<DesktopShareAsset | null>(null);
+  const [shareError, setShareError] = useState<string | null>(null);
+  const [shareNotice, setShareNotice] = useState<string | null>(null);
+  const [shareQrUrl, setShareQrUrl] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
   const [theme, setTheme] = useAirsTheme();
   const pageRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,6 +56,10 @@ export function OccupationPage() {
   }, [language]);
 
   useEffect(() => {
+    applyDesktopShareMetadata(language);
+  }, [language]);
+
+  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [socCode]);
 
@@ -53,10 +68,11 @@ export function OccupationPage() {
     setLoading(true);
     setError(null);
 
-    getOccupationDetail(socCode, { region, date })
-      .then((nextPayload) => {
+    Promise.all([getOccupationDetail(socCode, { region, date }), getSummary()])
+      .then(([nextPayload, summary]) => {
         if (cancelled) return;
         setPayload(nextPayload);
+        setAverageAirs(summary.avgAirs);
         if (!socCode && nextPayload.occupation?.socCode) {
           navigate(`/occupation/${encodeURIComponent(nextPayload.occupation.socCode)}?lang=${language}`, { replace: true });
         }
@@ -74,6 +90,39 @@ export function OccupationPage() {
       cancelled = true;
     };
   }, [socCode, region, date, language, navigate]);
+
+  useEffect(() => {
+    return () => {
+      if (shareAsset?.objectUrl) {
+        URL.revokeObjectURL(shareAsset.objectUrl);
+      }
+    };
+  }, [shareAsset]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void QRCode.toDataURL("airsindex.com", {
+      margin: 1,
+      width: 240,
+      errorCorrectionLevel: "H",
+      color: {
+        dark: "#08111a",
+        light: "#ffffffff"
+      }
+    }).then((dataUrl) => {
+      if (!cancelled) {
+        setShareQrUrl(dataUrl);
+      }
+    }).catch(() => {
+      if (!cancelled) {
+        setShareQrUrl(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const occupation = payload?.occupation || null;
   const definition = occupation
@@ -122,12 +171,67 @@ export function OccupationPage() {
 
   const breakdown = occupation
     ? [
-        { key: "replacement", label: language === "zh" ? "替代压力" : "Replacement", value: Number(occupation.replacement || 0) },
-        { key: "augmentation", label: language === "zh" ? "岗位改写" : "Augmentation", value: Number(occupation.augmentation || 0) },
-        { key: "hiring", label: language === "zh" ? "招聘兑现" : "Hiring realization", value: Number(occupation.hiring || 0) },
-        { key: "historical", label: language === "zh" ? "历史累计渗透" : "Historical exposure", value: Number(occupation.historical || 0) }
+        { key: "replacement", label: copy.breakdownLabels.replacement, value: Number(occupation.replacement || 0) },
+        { key: "augmentation", label: copy.breakdownLabels.augmentation, value: Number(occupation.augmentation || 0) },
+        { key: "hiring", label: copy.breakdownLabels.hiring, value: Number(occupation.hiring || 0) },
+        { key: "historical", label: copy.breakdownLabels.historical, value: Number(occupation.historical || 0) }
       ]
     : [];
+  const shareBreakdownLabels = language === "zh"
+    ? {
+        replacement: "侵蚀率",
+        augmentation: "改写率",
+        hiring: "招聘影响",
+        historical: "累计渗透"
+      }
+    : {
+        replacement: "Erosion rate",
+        augmentation: "Rewrite rate",
+        hiring: "Hiring impact",
+        historical: "Cumulative penetration"
+      };
+
+  const createShareImage = async () => {
+    if (!occupation) return;
+    setGenerating(true);
+    setShareError(null);
+    setShareNotice(null);
+
+    try {
+      const dataUrl = await renderOccupationShareImage({
+        occupation,
+        averageAirs,
+        language,
+        qrText: "airsindex.com",
+        copy: {
+          appName: copy.appName,
+          currentAirsLabel: copy.currentAirsLabel,
+          globalAverageLabel: copy.globalAverageLabel,
+          readingTitle: copy.readKicker,
+          breakdownTitle: copy.breakdownTitle,
+          breakdownLabels: shareBreakdownLabels,
+          noReading: copy.noReading,
+          shareImageQrNote: copy.shareQrDescription,
+          footerCopyright: copy.footerCopyright
+        }
+      });
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      if (shareAsset?.objectUrl) URL.revokeObjectURL(shareAsset.objectUrl);
+      const fileName = `airs-desktop-share-${occupation.socCode}.png`;
+      const objectUrl = URL.createObjectURL(blob);
+      setShareAsset({
+        objectUrl,
+        fileName,
+        file: new File([blob], fileName, { type: blob.type || "image/png" })
+      });
+      setShareNotice(copy.shareReady);
+    } catch {
+      setShareError(copy.shareError);
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   useNumberedBoxes(pageRef, [
     socCode,
@@ -143,25 +247,14 @@ export function OccupationPage() {
   return (
     <div className="airs-shell">
       <div ref={pageRef} className="airs-page">
-        <header data-numbered-box className="airs-panel sticky top-4 z-20 flex flex-col gap-4 px-6 py-5 md:flex-row md:items-center md:justify-between">
+        <header data-numbered-box className="airs-panel flex flex-col gap-4 px-6 py-5 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <button type="button" className="airs-button" onClick={() => navigate("/")}>
               {copy.backToUniverse}
             </button>
-            <nav className="flex items-center gap-2 text-sm text-white/55">
-              <button type="button" className="rounded-full px-3 py-2 hover:bg-white/5 hover:text-white" onClick={() => scrollToSection("overview")}>
-                {language === "zh" ? "概览" : "Overview"}
-              </button>
-              <button type="button" className="rounded-full px-3 py-2 hover:bg-white/5 hover:text-white" onClick={() => scrollToSection("breakdown")}>
-                {language === "zh" ? "分项" : "Breakdown"}
-              </button>
-              <button type="button" className="rounded-full px-3 py-2 hover:bg-white/5 hover:text-white" onClick={() => scrollToSection("evidence")}>
-                {language === "zh" ? "证据" : "Evidence"}
-              </button>
-            </nav>
           </div>
 
-          <div className="flex flex-col gap-3 md:min-w-[460px] md:flex-row md:items-center md:justify-end">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto] md:min-w-[460px] md:items-center">
             <SearchCombobox
               language={language}
               placeholder={copy.detailSearchPlaceholder}
@@ -183,10 +276,14 @@ export function OccupationPage() {
               onSelect={(selection) => {
                 navigate(`/occupation/${encodeURIComponent(selection.occupation.socCode)}?lang=${language}&entry=${encodeURIComponent(selection.label)}`);
               }}
-              className="md:min-w-[320px]"
+              className="sm:min-w-[260px] md:min-w-[320px]"
             />
-            <ThemeSwitch language={language} theme={theme} onChange={setTheme} />
-            <LanguageSwitch language={language} onChange={setLanguage} />
+            <div className="justify-self-start sm:justify-self-end">
+              <ThemeSwitch language={language} theme={theme} onChange={setTheme} />
+            </div>
+            <div className="justify-self-start sm:justify-self-end">
+              <LanguageSwitch language={language} onChange={setLanguage} />
+            </div>
           </div>
         </header>
 
@@ -237,8 +334,7 @@ export function OccupationPage() {
             <article id="breakdown" data-numbered-box className="airs-panel px-6 py-8 md:px-8">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="airs-kicker">{copy.breakdownTitle}</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.breakdownTitle}</h2>
+                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.breakdownTitle}</h2>
                 </div>
                 {occupation && <span className="airs-chip">AIRS {formatNumber(occupation.airs || 0, 1, language)}</span>}
               </div>
@@ -259,7 +355,56 @@ export function OccupationPage() {
                 ))}
               </div>
 
-              <div data-numbered-box className="mt-10 rounded-[28px] border border-white/8 bg-black/10 px-5 py-5">
+              <div data-numbered-box className="mt-8 rounded-[28px] border border-white/8 bg-black/10 px-4 py-5 md:px-5">
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_248px] lg:items-start">
+                  <div className="min-w-0">
+                    <h3 className="text-2xl font-semibold tracking-[-0.04em] text-white">{copy.shareModuleTitle}</h3>
+                    <p className="mt-3 text-sm leading-7 text-white/55">{copy.shareModuleText}</p>
+                    <div className="mt-5 grid max-w-[30rem] gap-3 sm:grid-cols-2">
+                      <button
+                        type="button"
+                        className={`airs-button-primary ${shareAsset ? "" : "sm:col-span-2"}`}
+                        onClick={() => void createShareImage()}
+                      >
+                        {generating ? copy.loading : copy.shareGenerate}
+                      </button>
+                      {shareAsset && (
+                        <a href={shareAsset.objectUrl} download={shareAsset.fileName} className="airs-button">
+                          {copy.shareSave}
+                        </a>
+                      )}
+                    </div>
+                    {shareError && <p className="mt-4 text-sm leading-6 text-amber-200/80">{shareError}</p>}
+                    {shareNotice && <p className="mt-4 text-sm leading-6 text-white/55">{shareNotice}</p>}
+                  </div>
+
+                  <div className="rounded-[24px] border border-white/8 bg-black/10 px-4 py-4">
+                    <p className="text-sm font-medium text-white/72">{copy.shareQrTitle}</p>
+                    <div className="mt-4 flex min-h-[160px] items-center justify-center rounded-[22px] border border-white/8 bg-white p-3">
+                      {shareQrUrl ? (
+                        <img src={shareQrUrl} alt={copy.shareQrHint} className="h-40 w-40" />
+                      ) : (
+                        <div className="h-40 w-40 rounded-[18px] bg-slate-200/80" />
+                      )}
+                    </div>
+                    <p className="mt-4 text-sm text-white/72">{copy.shareQrHint}</p>
+                    <p className="mt-2 text-sm leading-6 text-white/55">{copy.shareQrDescription}</p>
+                  </div>
+                </div>
+
+                {shareAsset && (
+                  <div className="mt-5 rounded-[24px] border border-white/8 bg-black/10 p-3 md:p-4">
+                    <p className="px-3 pt-2 text-sm font-medium text-white/72">{copy.sharePreviewTitle}</p>
+                    <img
+                      src={shareAsset.objectUrl}
+                      alt={`${displayTitle} ${copy.sharePreviewTitle}`}
+                      className="mt-3 mx-auto max-h-[720px] w-full rounded-[20px] bg-black/5 object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div data-numbered-box className="mt-8 rounded-[28px] border border-white/8 bg-black/10 px-5 py-5">
                 <p className="airs-kicker">{copy.trendTitle}</p>
                 <svg viewBox="0 0 720 240" className="mt-5 w-full overflow-visible">
                   <polyline
@@ -281,8 +426,7 @@ export function OccupationPage() {
             </article>
 
             <article id="evidence" data-numbered-box className="airs-panel px-6 py-8 md:px-8">
-              <p className="airs-kicker">{copy.evidenceTitle}</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.evidenceTitle}</h2>
+              <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.evidenceTitle}</h2>
               <div className="mt-6 space-y-3">
                 {evidence.length ? (
                   evidence.map((line) => (
@@ -301,8 +445,7 @@ export function OccupationPage() {
             <article data-numbered-box className="airs-panel px-6 py-8 md:px-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="max-w-4xl">
-                  <p className="airs-kicker">{copy.tasksTitle}</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.tasksTitle}</h2>
+                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.tasksTitle}</h2>
                   <p className="mt-4 text-sm leading-8 text-white/55">{copy.tasksIntro}</p>
                 </div>
                 <span className="airs-chip">

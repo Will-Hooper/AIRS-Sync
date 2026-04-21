@@ -6,7 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const sourceDir = path.join(repoRoot, "backend", "data");
-const targetDir = path.join(repoRoot, "public", "backend", "data");
+const publicTargetDir = path.join(repoRoot, "public", "backend", "data");
+const distTargetDir = path.join(repoRoot, "dist", "backend", "data");
 
 const ALLOWED_FILES = [
   "airs_baseline.json",
@@ -20,7 +21,17 @@ const ALLOWED_FILES = [
 ];
 
 async function main() {
-  await fs.mkdir(targetDir, { recursive: true });
+  const targetDirs = [publicTargetDir];
+  try {
+    const distStat = await fs.stat(path.join(repoRoot, "dist"));
+    if (distStat.isDirectory()) {
+      targetDirs.push(distTargetDir);
+    }
+  } catch {
+    // dist does not exist yet; only sync public data.
+  }
+
+  await Promise.all(targetDirs.map((targetDir) => fs.mkdir(targetDir, { recursive: true })));
 
   const entries = await fs.readdir(sourceDir, { withFileTypes: true });
   const files = entries
@@ -34,32 +45,32 @@ async function main() {
     .map((entry) => entry.name)
     .sort();
 
-  await Promise.all(
-    files.map((file) =>
-      fs.copyFile(path.join(sourceDir, file), path.join(targetDir, file))
-    )
-  );
+  await Promise.all(targetDirs.flatMap((targetDir) =>
+    files.map((file) => fs.copyFile(path.join(sourceDir, file), path.join(targetDir, file)))
+  ));
 
   const airsDataStats = await fs.stat(path.join(sourceDir, "airs_data.json"));
-  await fs.writeFile(
-    path.join(targetDir, "airs_data.meta.json"),
-    `${JSON.stringify(
-      {
-        fileName: "airs_data.json",
-        updatedAt: airsDataStats.mtime.toISOString(),
-        size: airsDataStats.size
-      },
-      null,
-      2
-    )}\n`
-  );
+  const metaJson = `${JSON.stringify(
+    {
+      fileName: "airs_data.json",
+      updatedAt: airsDataStats.mtime.toISOString(),
+      size: airsDataStats.size
+    },
+    null,
+    2
+  )}\n`;
+  await Promise.all(targetDirs.map((targetDir) =>
+    fs.writeFile(path.join(targetDir, "airs_data.meta.json"), metaJson)
+  ));
 
-  const oversizedFile = path.join(targetDir, "college_scorecard_programs.json");
-  try {
-    await fs.unlink(oversizedFile);
-  } catch {}
+  await Promise.all(targetDirs.map(async (targetDir) => {
+    const oversizedFile = path.join(targetDir, "college_scorecard_programs.json");
+    try {
+      await fs.unlink(oversizedFile);
+    } catch {}
+  }));
 
-  console.log(`Synced ${files.length} JSON files to public/backend/data`);
+  console.log(`Synced ${files.length} JSON files to ${targetDirs.map((dir) => path.relative(repoRoot, dir)).join(", ")}`);
   files.forEach((file) => console.log(`- ${file}`));
   console.log("- airs_data.meta.json");
 }

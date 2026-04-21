@@ -714,10 +714,10 @@ function buildChineseSummary(row: OccupationRow, englishSummary: string) {
 
 function buildChineseEvidence(row: OccupationRow, englishEvidence: string[]) {
   const employmentSignal = Number(row.postings || 0) > 0
-    ? `当前招聘信号：全国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`
+    ? `当前招聘信号：美国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`
     : row.educationOutcomes
       ? `当前未抓到稳定公开招聘数；改用高校相关专业结果补充参考：覆盖 ${row.educationOutcomes.institutionCount} 所院校、${row.educationOutcomes.programCount} 条专业结果。`
-      : `当前招聘信号：全国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`;
+      : `当前招聘信号：美国相关招聘数约 ${Number(row.postings || 0)}；在同类岗位中的招聘热度分位约为 ${extractDemandPercentile(englishEvidence)}。`;
   return [
     `职业对应：${row.titleZh || row.title}（SOC ${row.socCode}；英文名称：${row.title}），归属于${chineseGroupLabel(row.majorGroup)}。`,
     employmentSignal,

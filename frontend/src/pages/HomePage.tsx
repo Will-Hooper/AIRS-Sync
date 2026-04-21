@@ -10,6 +10,7 @@ import { SiteFooter } from "../components/shared/SiteFooter";
 import { ThemeSwitch } from "../components/shared/ThemeSwitch";
 import { getOccupations, getSummary, searchOccupations as searchOccupationMatches } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
+import { applyDesktopShareMetadata } from "../lib/desktop-metadata";
 import { formatDateTime, formatDateTimeValue, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
@@ -70,6 +71,10 @@ export function HomePage() {
   useEffect(() => {
     persistLanguage(language);
     updateParamState(searchParams, setSearchParams, { lang: language || undefined });
+  }, [language]);
+
+  useEffect(() => {
+    applyDesktopShareMetadata(language);
   }, [language]);
 
   useEffect(() => {
@@ -220,7 +225,7 @@ export function HomePage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="airs-kicker">{copy.appName}</p>
-            <h2 className="mt-2 text-lg font-medium text-white/80">{copy.liveFieldKicker}</h2>
+            <h2 className="mt-2 text-lg font-medium text-white/80">{copy.appSubtitle}</h2>
           </div>
           <div className="flex items-center gap-3">
             <ThemeSwitch language={language} theme={theme} onChange={setTheme} />
@@ -288,25 +293,16 @@ export function HomePage() {
         </section>
 
         <section className="order-1 grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.9fr)]">
-          <div data-numbered-box className="airs-panel px-6 py-6 md:px-8">
-            <div className="flex flex-col gap-5 border-b border-white/8 pb-6">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div className="max-w-4xl">
-                  <p className="airs-kicker">{copy.liveFieldKicker}</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-white md:text-5xl">{copy.liveFieldTitle}</h2>
-                </div>
-                {selectedOccupation && (
-                  <button
-                    type="button"
-                    className="airs-button-primary"
-                    onClick={() => navigate(`/occupation/${encodeURIComponent(selectedOccupation.socCode)}?lang=${language}`)}
-                  >
-                    {copy.openDetail}
-                  </button>
-                )}
+          <div data-numbered-box className="airs-panel px-5 py-5 md:px-7 md:py-6 lg:px-8">
+            <div className="flex flex-col gap-4 border-b border-white/8 pb-5">
+              <div className="max-w-[58rem]">
+                <p className="airs-kicker">{copy.liveFieldKicker}</p>
+                <h2 className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-white md:text-[3.25rem]">
+                  {copy.liveFieldTitle}
+                </h2>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,0.92fr)_minmax(360px,1.9fr)]">
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,0.88fr)_minmax(0,0.88fr)_minmax(420px,1.84fr)]">
                 <label className="flex flex-col gap-2">
                   <span className="text-sm text-white/55">{copy.group}</span>
                   <select
@@ -380,7 +376,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-5">
               {error ? (
                 <div className="airs-panel flex min-h-[480px] items-center justify-center px-6 text-center text-white/50">{error}</div>
               ) : loading ? (
@@ -398,14 +394,10 @@ export function HomePage() {
                     resetView: copy.resetView,
                     fullscreenEnter: copy.fullscreenEnter,
                     fullscreenExit: copy.fullscreenExit,
-                    viewModesKicker: copy.viewModesKicker,
+                    axisXTitle: copy.axisXTitle,
+                    axisYTitle: copy.axisYTitle,
                     axisX: copy.axisX,
-                    axisY: copy.axisY,
-                    modes: {
-                      market: copy.mapModeMarket,
-                      group: copy.mapModeGroup,
-                      label: copy.mapModeLabel
-                    }
+                    axisY: copy.axisY
                   }}
                 />
               )}

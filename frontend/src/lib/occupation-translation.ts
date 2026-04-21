@@ -2010,8 +2010,8 @@ const EXACT_TASK_MAP = new Map([
     "联系并安排相关采访对象，为报道获取有效信息。"
   ],
   [
-    "examine news items of local, national, and international significance to determine topics to address, or obtain assignments from editorial staff members.",
-    "研判本地、全国及国际新闻的重要性，以确定报道主题，或接受编辑部指派的采访任务。"
+    "examine news items of local, U.S., and international significance to determine topics to address, or obtain assignments from editorial staff members.",
+    "研判本地、美国及国际新闻的重要性，以确定报道主题，或接受编辑部指派的采访任务。"
   ],
   [
     "develop, maintain, or analyze budgets, preparing periodic reports that compare budgeted costs to actual costs.",
@@ -2358,7 +2358,7 @@ const TASK_PHRASE_MAP = [
   ["people who can provide information about a story", "能够为报道提供信息的人"],
   ["story ideas", "报道选题"],
   ["leads or tips", "线索或消息"],
-  ["news items of local, national, and international significance", "具有本地、全国或国际影响的重要新闻事项"],
+  ["news items of local, U.S., and international significance", "具有本地、美国或国际影响的重要新闻事项"],
   ["annual reports, financial statements, and other records", "年报、财务报表及其他记录"],
   ["material assets, net worth, liabilities, capital stock, surplus, income, or expenditures", "实物资产、净值、负债、股本、盈余、收入或支出"],
   ["deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies", "控制缺陷、重复劳动、铺张浪费、舞弊或不符合法律法规及管理制度的情况"],

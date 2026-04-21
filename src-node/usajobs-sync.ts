@@ -65,6 +65,7 @@ interface UsaJobsSyncOptions {
   onetDataDir: string;
   masterPath: string;
   useExistingHistoryOnly: boolean;
+  useExistingUsaJobsHistory: boolean;
   mapPath: string;
   careerOneStopHistoryPath: string;
   publicJobBoardsHistoryPath: string;
@@ -857,10 +858,19 @@ function parseOptions(): UsaJobsSyncOptions {
   const apiKey = normalizeSecretValue(getStringArg(args, "apiKey", "apikey")) || normalizeSecretValue(process.env.USAJOBS_API_KEY);
   const userEmail = normalizeSecretValue(getStringArg(args, "userEmail", "useremail")) || normalizeSecretValue(process.env.USAJOBS_USER_EMAIL);
   const useExistingHistoryOnly = getBooleanArg(args, "useExistingHistoryOnly", "useexistinghistoryonly");
+  const useExistingUsaJobsHistory =
+    useExistingHistoryOnly ||
+    getBooleanArg(
+      args,
+      "useExistingUsaJobsHistory",
+      "useexistingusajobshistory",
+      "skipUsaJobsRefresh",
+      "skipusajobsrefresh"
+    );
   const syncModeRaw = (getStringArg(args, "syncMode", "syncmode") || "full").toLowerCase();
   const syncMode = syncModeRaw === "hourly" ? "hourly" : "full";
 
-  if (!useExistingHistoryOnly && (!apiKey || !userEmail)) {
+  if (!useExistingUsaJobsHistory && (!apiKey || !userEmail)) {
     throw new Error("Missing USAJOBS credentials. Set --apiKey/--userEmail or env USAJOBS_API_KEY/USAJOBS_USER_EMAIL.");
   }
 
@@ -883,6 +893,7 @@ function parseOptions(): UsaJobsSyncOptions {
     onetDataDir: getStringArg(args, "onetDataDir", "onetdatadir") || path.join(dataDir, "onet"),
     masterPath: getStringArg(args, "masterPath", "masterpath") || path.join(dataDir, "soc_detailed_master.json"),
     useExistingHistoryOnly,
+    useExistingUsaJobsHistory,
     mapPath: path.join(dataDir, "usajobs_soc_map.json"),
     careerOneStopHistoryPath:
       getStringArg(args, "careerOneStopHistoryPath", "careeronestophistorypath") ||
@@ -928,7 +939,7 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
   let page = 1;
   let total = 0;
 
-  if (!options.useExistingHistoryOnly) {
+  if (!options.useExistingUsaJobsHistory) {
     do {
       const response: any = await invokeUsaJobsPage(page, options);
       const result = response?.SearchResult;
@@ -969,7 +980,7 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
       series: []
     };
 
-    if (options.useExistingHistoryOnly) {
+    if (options.useExistingUsaJobsHistory) {
       writeStep(`USAJOBS history missing; creating empty history at ${options.historyPath}`);
       await writeJsonFile(options.historyPath, history);
     }
@@ -985,7 +996,7 @@ async function rebuildHistory(options: UsaJobsSyncOptions, socMap: SocMap) {
     });
   }
 
-  if (!options.useExistingHistoryOnly) {
+  if (!options.useExistingUsaJobsHistory) {
     for (const [code, aggregate] of aggregates) {
       const existing = seriesIndex.get(code) || {
         code,

@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { formatNumber } from "../../lib/format";
 import { labelText } from "../../lib/i18n";
 import type { AppLanguage } from "../../lib/i18n";
 import type { OccupationRow } from "../../lib/types";
-
-type ViewMode = "market" | "group" | "label";
 
 interface UniverseMapProps {
   occupations: OccupationRow[];
@@ -18,10 +16,10 @@ interface UniverseMapProps {
     resetView: string;
     fullscreenEnter: string;
     fullscreenExit: string;
-    viewModesKicker: string;
+    axisXTitle: string;
+    axisYTitle: string;
     axisX: string;
     axisY: string;
-    modes: Record<ViewMode, string>;
   };
 }
 
@@ -60,39 +58,19 @@ export function UniverseMap({
 }: UniverseMapProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("market");
   const [camera, setCamera] = useState<CameraState>({ scale: 1, x: 0, y: 0 });
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
   const [hoveredSocCode, setHoveredSocCode] = useState<string | null>(null);
-  const [dragState, setDragState] = useState<null | { startX: number; startY: number; cameraX: number; cameraY: number }>(null);
-  const [hasInteracted, setHasInteracted] = useState(false);
+  const [dragState, setDragState] = useState<null | { startX: number; startY: number; cameraX: number; cameraY: number; pointerId: number }>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const points = useMemo<RenderPoint[]>(() => {
-    const majorGroups = [...new Set(occupations.map((occupation) => occupation.majorGroup))];
-    const labelsOrder = ["high_risk", "restructuring", "augmenting", "light", "stable"];
     const maxPostings = Math.max(...occupations.map((occupation) => occupation.postings || 0), 1);
 
-    return occupations.map((row, index) => {
+    return occupations.map((row) => {
       const heat = Math.log1p(row.postings || 0) / Math.log1p(maxPostings);
-      const groupIndex = majorGroups.indexOf(row.majorGroup);
-      const labelIndex = Math.max(labelsOrder.indexOf(row.label), 0);
-
-      let x = (Number(row.airs || 0) - 50) * 16;
-      let y = (heat - 0.5) * 900;
-
-      if (viewMode === "group") {
-        const columns = 6;
-        const cellX = groupIndex % columns;
-        const cellY = Math.floor(groupIndex / columns);
-        x = (cellX - 2.5) * 420 + ((index % 11) - 5) * 14;
-        y = (cellY - 1.5) * 300 + (Number(row.airs || 0) - 50) * 4;
-      }
-
-      if (viewMode === "label") {
-        x = (labelIndex - 2) * 430 + ((index % 17) - 8) * 12;
-        y = (Number(row.airs || 0) - 50) * 10;
-      }
+      const x = (Number(row.airs || 0) - 50) * 16;
+      const y = (heat - 0.5) * 900;
 
       return {
         row,
@@ -101,7 +79,7 @@ export function UniverseMap({
         radius: clamp(11 + Math.sqrt((row.postings || 0) + 1), 11, 26)
       };
     });
-  }, [occupations, viewMode]);
+  }, [occupations]);
 
   const bounds = useMemo(() => {
     if (!points.length) {
@@ -138,18 +116,15 @@ export function UniverseMap({
     return () => resizeObserver.disconnect();
   }, []);
 
-  useEffect(() => {
-    setHasInteracted(false);
-  }, [viewMode]);
-
-  useEffect(() => {
-    if (hasInteracted || viewport.width <= 1 || viewport.height <= 1) return;
+  const fitToBounds = useCallback(() => {
+    if (viewport.width <= 1 || viewport.height <= 1) return;
 
     const contentWidth = Math.max(bounds.maxX - bounds.minX, 1);
     const contentHeight = Math.max(bounds.maxY - bounds.minY, 1);
-    const padding = 90;
+    const paddingX = Math.max(84, viewport.width * 0.08);
+    const paddingY = Math.max(84, viewport.height * 0.12);
     const nextScale = clamp(
-      Math.min((viewport.width - padding * 2) / contentWidth, (viewport.height - padding * 2) / contentHeight),
+      Math.min((viewport.width - paddingX * 2) / contentWidth, (viewport.height - paddingY * 2) / contentHeight),
       0.28,
       2.8
     );
@@ -159,7 +134,17 @@ export function UniverseMap({
       x: viewport.width / 2 - ((bounds.minX + bounds.maxX) / 2) * nextScale,
       y: viewport.height / 2 - ((bounds.minY + bounds.maxY) / 2) * nextScale
     });
-  }, [bounds, hasInteracted, viewport]);
+  }, [bounds, viewport.height, viewport.width]);
+
+  useLayoutEffect(() => {
+    fitToBounds();
+  }, [fitToBounds, occupations]);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const frame = window.requestAnimationFrame(() => fitToBounds());
+    return () => window.cancelAnimationFrame(frame);
+  }, [fitToBounds, isFullscreen]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -181,30 +166,35 @@ export function UniverseMap({
     };
   }, [isFullscreen]);
 
-  const projectPoint = (point: RenderPoint) => ({
+  useEffect(() => {
+    setHoveredSocCode(null);
+  }, [occupations, selectedSocCode]);
+
+  const projectPoint = useCallback((point: RenderPoint) => ({
     x: point.x * camera.scale + camera.x,
     y: point.y * camera.scale + camera.y
-  });
+  }), [camera]);
 
   const activeSocCode = selectedSocCode || hoveredSocCode;
   const selectedPoint = activeSocCode ? points.find((point) => point.row.socCode === activeSocCode) : null;
   const selectedProjection = selectedPoint ? projectPoint(selectedPoint) : null;
+  const originX = Math.round(camera.x) + 0.5;
+  const originY = Math.round(camera.y) + 0.5;
 
-  const zoomAt = (factor: number, clientX: number, clientY: number) => {
+  const zoomAt = useCallback((factor: number, clientX: number, clientY: number) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const originX = clientX - rect.left;
-    const originY = clientY - rect.top;
+    const originXValue = clientX - rect.left;
+    const originYValue = clientY - rect.top;
     setCamera((current) => {
       const nextScale = clamp(current.scale * factor, 0.28, 4.5);
       return {
         scale: nextScale,
-        x: originX - ((originX - current.x) / current.scale) * nextScale,
-        y: originY - ((originY - current.y) / current.scale) * nextScale
+        x: originXValue - ((originXValue - current.x) / current.scale) * nextScale,
+        y: originYValue - ((originYValue - current.y) / current.scale) * nextScale
       };
     });
-    setHasInteracted(true);
-  };
+  }, []);
 
   const toggleFullscreen = async () => {
     const host = panelRef.current;
@@ -231,54 +221,10 @@ export function UniverseMap({
       ref={panelRef}
       className={`airs-panel overflow-hidden ${isFullscreen ? "airs-map-host flex h-full flex-col rounded-none border-transparent" : ""}`}
     >
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/8 px-6 py-4">
-        <div>
-          <p className="airs-kicker">{labels.viewModesKicker}</p>
-          <div className="airs-map-toggle-shell mt-2 inline-flex rounded-full border p-1">
-            {(["market", "group", "label"] as ViewMode[]).map((mode) => (
-              <button
-                key={mode}
-                type="button"
-                onClick={() => setViewMode(mode)}
-                className={`rounded-full px-4 py-2 text-sm transition ${
-                  mode === viewMode
-                    ? "bg-gradient-to-r from-emerald-200 to-sky-300 text-slate-950"
-                    : "airs-map-toggle-option"
-                }`}
-              >
-                {labels.modes[mode]}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button type="button" className="airs-button" onClick={() => void toggleFullscreen()}>
-            {isFullscreen ? labels.fullscreenExit : labels.fullscreenEnter}
-          </button>
-          <button type="button" className="airs-button" onClick={() => zoomAt(1.18, viewport.width / 2, viewport.height / 2)}>
-            {labels.zoomIn}
-          </button>
-          <button type="button" className="airs-button" onClick={() => zoomAt(1 / 1.18, viewport.width / 2, viewport.height / 2)}>
-            {labels.zoomOut}
-          </button>
-          <button
-            type="button"
-            className="airs-button"
-            onClick={() => {
-              setHasInteracted(false);
-              onSelect(null);
-            }}
-          >
-            {labels.resetView}
-          </button>
-          <span className="airs-chip">{formatNumber(camera.scale * 100, 0, language)}%</span>
-        </div>
-      </div>
-
       <div
         ref={containerRef}
-        className={`airs-map-stage relative isolate touch-none overflow-hidden overscroll-contain ${isFullscreen ? "h-auto min-h-0 flex-1" : "h-[560px]"}`}
+        className={`airs-map-stage relative isolate touch-none overflow-hidden overscroll-contain ${isFullscreen ? "min-h-0 flex-1" : "h-[540px] lg:h-[580px]"}`}
+        style={{ cursor: dragState ? "grabbing" : "grab" }}
         onWheelCapture={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -291,36 +237,92 @@ export function UniverseMap({
         }}
         onPointerDown={(event) => {
           if ((event.target as HTMLElement).closest("button")) return;
+          event.currentTarget.setPointerCapture(event.pointerId);
           setDragState({
             startX: event.clientX,
             startY: event.clientY,
             cameraX: camera.x,
-            cameraY: camera.y
+            cameraY: camera.y,
+            pointerId: event.pointerId
           });
-          setHasInteracted(true);
         }}
         onPointerMove={(event) => {
-          if (!dragState) return;
-          setCamera({
-            ...camera,
+          if (!dragState || dragState.pointerId !== event.pointerId) return;
+          setCamera((current) => ({
+            ...current,
             x: dragState.cameraX + (event.clientX - dragState.startX),
             y: dragState.cameraY + (event.clientY - dragState.startY)
-          });
+          }));
         }}
-        onPointerUp={() => setDragState(null)}
-        onPointerLeave={() => {
+        onPointerUp={(event) => {
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+          }
           setDragState(null);
-          setHoveredSocCode(null);
+        }}
+        onPointerCancel={(event) => {
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+          }
+          setDragState(null);
+        }}
+        onPointerLeave={() => {
+          if (!dragState) {
+            setHoveredSocCode(null);
+          }
         }}
         onDoubleClick={() => {
-          setHasInteracted(false);
+          fitToBounds();
           onSelect(null);
         }}
       >
-        <svg className="h-full w-full">
+        <div className="pointer-events-none absolute inset-x-4 top-4 z-20 flex justify-end">
+          <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-end gap-2 rounded-[24px] border border-white/8 bg-black/20 p-2 shadow-[0_18px_60px_rgba(2,8,23,0.18)] backdrop-blur-xl">
+            <button type="button" className="airs-button" onClick={() => void toggleFullscreen()}>
+              {isFullscreen ? labels.fullscreenExit : labels.fullscreenEnter}
+            </button>
+            <button type="button" className="airs-button" onClick={() => zoomAt(1.18, viewport.width / 2, viewport.height / 2)}>
+              {labels.zoomIn}
+            </button>
+            <button type="button" className="airs-button" onClick={() => zoomAt(1 / 1.18, viewport.width / 2, viewport.height / 2)}>
+              {labels.zoomOut}
+            </button>
+            <button
+              type="button"
+              className="airs-button"
+              onClick={() => {
+                fitToBounds();
+                onSelect(null);
+              }}
+            >
+              {labels.resetView}
+            </button>
+            <span className="airs-chip">{formatNumber(camera.scale * 100, 0, language)}%</span>
+          </div>
+        </div>
+
+        <svg className="h-full w-full" shapeRendering="geometricPrecision">
+          <line
+            x1={0}
+            x2={viewport.width}
+            y1={originY}
+            y2={originY}
+            stroke="var(--airs-map-axis-line)"
+            strokeWidth={1}
+            shapeRendering="crispEdges"
+            vectorEffect="non-scaling-stroke"
+          />
+          <line
+            y1={0}
+            y2={viewport.height}
+            x1={originX}
+            x2={originX}
+            stroke="var(--airs-map-axis-line)"
+            strokeWidth={1}
+            shapeRendering="crispEdges"
+            vectorEffect="non-scaling-stroke"
+          />
           <g transform={`translate(${camera.x} ${camera.y}) scale(${camera.scale})`}>
-            <line x1={bounds.minX - 180} x2={bounds.maxX + 180} y1={0} y2={0} stroke="var(--airs-map-axis-line)" strokeWidth={1 / camera.scale} />
-            <line y1={bounds.minY - 180} y2={bounds.maxY + 180} x1={0} x2={0} stroke="var(--airs-map-axis-line)" strokeWidth={1 / camera.scale} />
             {points.map((point) => {
               const selected = point.row.socCode === selectedSocCode;
               const dimmed = selectedSocCode ? !selected : false;
@@ -333,7 +335,8 @@ export function UniverseMap({
                   fill={pointColor(point.row)}
                   fillOpacity={dimmed ? 0.18 : 0.9}
                   stroke={selected ? "var(--airs-map-selected-stroke)" : "var(--airs-map-point-stroke)"}
-                  strokeWidth={selected ? 2.4 / camera.scale : 1 / camera.scale}
+                  strokeWidth={selected ? 2.4 : 1.2}
+                  vectorEffect="non-scaling-stroke"
                   onMouseEnter={() => setHoveredSocCode(point.row.socCode)}
                   onMouseLeave={() => setHoveredSocCode((current) => (current === point.row.socCode ? null : current))}
                   onClick={() => onSelect(selected ? null : point.row)}
@@ -347,8 +350,8 @@ export function UniverseMap({
           <div
             className="airs-map-tooltip pointer-events-none absolute z-10 max-w-xs rounded-[24px] border px-4 py-3 shadow-2xl backdrop-blur-xl"
             style={{
-              left: `${selectedProjection.x}px`,
-              top: `${selectedProjection.y - 18}px`,
+              left: `${clamp(selectedProjection.x, 32, Math.max(32, viewport.width - 32))}px`,
+              top: `${clamp(selectedProjection.y - 18, 32, Math.max(32, viewport.height - 32))}px`,
               transform: "translate(-50%, -100%)"
             }}
           >
@@ -361,10 +364,16 @@ export function UniverseMap({
             <p className="airs-map-tooltip-meta mt-2 text-xs">{labelText(language, selectedPoint.row.label)}</p>
           </div>
         )}
+      </div>
 
-        <div className="airs-map-axis-text pointer-events-none absolute bottom-4 left-6 right-6 flex flex-col gap-2 text-xs md:flex-row md:items-center md:justify-between">
-          <span>{labels.axisX}</span>
-          <span>{labels.axisY}</span>
+      <div className="grid gap-3 border-t border-white/8 px-5 py-4 md:grid-cols-2 md:px-6 xl:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)]">
+        <div className="min-h-[108px] rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
+          <p className="text-sm font-medium text-white/72">{labels.axisXTitle}</p>
+          <p className="mt-2 text-sm leading-6 text-white/55">{labels.axisX}</p>
+        </div>
+        <div className="min-h-[108px] rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
+          <p className="text-sm font-medium text-white/72">{labels.axisYTitle}</p>
+          <p className="mt-2 text-sm leading-6 text-white/55">{labels.axisY}</p>
         </div>
       </div>
     </div>

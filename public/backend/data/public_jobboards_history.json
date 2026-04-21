@@ -1,6 +1,6 @@
 {
   "source": "Public job boards (Greenhouse + Lever + Ashby + SmartRecruiters)",
-  "lastRun": "2026-03-22",
+  "lastRun": "2026-04-21",
   "locationScope": "US",
   "minMatchScore": 0.44,
   "activeSources": [
@@ -123,6 +123,14 @@
             "Stripe": 1,
             "Visa": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Stripe": 1,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -144,6 +152,21 @@
             "Visa": 1,
             "SmartRecruiters": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 16,
+          "sources": {
+            "Stripe": 3,
+            "Datadog": 1,
+            "Coinbase": 1,
+            "OpenAI": 4,
+            "Notion": 2,
+            "Ramp": 1,
+            "Cursor": 2,
+            "Perplexity": 1,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -164,6 +187,20 @@
             "Cursor": 9,
             "Perplexity": 1,
             "Visa": 7
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 63,
+          "sources": {
+            "Stripe": 8,
+            "Datadog": 24,
+            "OpenAI": 1,
+            "Notion": 6,
+            "Ramp": 6,
+            "Cursor": 14,
+            "Perplexity": 1,
+            "Visa": 3
           }
         }
       ]
@@ -188,6 +225,22 @@
             "Visa": 34,
             "SmartRecruiters": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 95,
+          "sources": {
+            "Stripe": 13,
+            "Datadog": 25,
+            "Coinbase": 2,
+            "OpenAI": 16,
+            "Notion": 3,
+            "Ramp": 6,
+            "Perplexity": 2,
+            "Mercor": 2,
+            "Visa": 24,
+            "SmartRecruiters": 2
+          }
         }
       ]
     },
@@ -210,6 +263,19 @@
             "Visa": 4,
             "SmartRecruiters": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 26,
+          "sources": {
+            "Datadog": 11,
+            "Coinbase": 1,
+            "Palantir": 1,
+            "OpenAI": 2,
+            "Notion": 3,
+            "Cursor": 1,
+            "Visa": 7
+          }
         }
       ]
     },
@@ -224,6 +290,13 @@
           "sources": {
             "Visa": 3
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
         }
       ]
     },
@@ -236,6 +309,14 @@
           "date": "2026-03-22",
           "count": 1,
           "sources": {
+            "University of Austin": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Datadog": 1,
             "University of Austin": 1
           }
         }
@@ -252,6 +333,14 @@
           "sources": {
             "Palantir": 3
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Notion": 1,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -267,6 +356,13 @@
             "Datadog": 2,
             "OpenAI": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
         }
       ]
     },
@@ -277,6 +373,15 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "Palantir": 1,
+            "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 3,
           "sources": {
             "Stripe": 1,
@@ -299,6 +404,16 @@
             "Ramp": 1,
             "Visa": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 7,
+          "sources": {
+            "Coinbase": 1,
+            "Palantir": 1,
+            "Ramp": 2,
+            "Visa": 3
+          }
         }
       ]
     },
@@ -309,6 +424,14 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "Ramp": 1,
+            "Visa": 2
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 3,
           "sources": {
             "Ramp": 1,
@@ -328,6 +451,13 @@
           "sources": {
             "Visa": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
         }
       ]
     },
@@ -338,6 +468,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 1,
           "sources": {
             "OpenAI": 1
@@ -357,6 +494,13 @@
             "OpenAI": 1,
             "Visa": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
         }
       ]
     },
@@ -371,6 +515,13 @@
           "sources": {
             "Visa": 4
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
         }
       ]
     },
@@ -381,6 +532,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 1,
           "sources": {
             "OpenAI": 1
@@ -420,6 +578,21 @@
             "Mercor": 1,
             "Visa": 5
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 18,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 3,
+            "Coinbase": 2,
+            "OpenAI": 3,
+            "Ramp": 1,
+            "Cursor": 2,
+            "Perplexity": 2,
+            "Mercor": 3,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -434,6 +607,14 @@
           "sources": {
             "Stripe": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Stripe": 1,
+            "Cursor": 1
+          }
         }
       ]
     },
@@ -447,6 +628,20 @@
           "count": 1,
           "sources": {
             "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "11-9161.00",
+      "title": "Emergency Management Directors",
+      "majorGroup": "Management",
+      "daily": [
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
           }
         }
       ]
@@ -467,6 +662,19 @@
             "Ramp": 1,
             "Cursor": 1,
             "Visa": 5
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 21,
+          "sources": {
+            "Stripe": 3,
+            "Coinbase": 2,
+            "Palantir": 3,
+            "OpenAI": 4,
+            "Ramp": 1,
+            "Cursor": 1,
+            "Visa": 7
           }
         }
       ]
@@ -496,6 +704,14 @@
           "sources": {
             "Stripe": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "Visa": 2
+          }
         }
       ]
     },
@@ -515,6 +731,17 @@
             "Notion": 1,
             "Visa": 5
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 11,
+          "sources": {
+            "Datadog": 1,
+            "Coinbase": 1,
+            "Palantir": 2,
+            "OpenAI": 1,
+            "Visa": 6
+          }
         }
       ]
     },
@@ -532,6 +759,15 @@
             "Ramp": 1,
             "Mercor": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 5,
+          "sources": {
+            "OpenAI": 2,
+            "Notion": 2,
+            "Mercor": 1
+          }
         }
       ]
     },
@@ -542,6 +778,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Cursor": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 1,
           "sources": {
             "Cursor": 1
@@ -558,6 +801,14 @@
           "date": "2026-03-22",
           "count": 1,
           "sources": {
+            "Perplexity": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
+            "Notion": 2,
             "Perplexity": 1
           }
         }
@@ -582,6 +833,20 @@
             "Mercor": 1,
             "Visa": 7
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 29,
+          "sources": {
+            "Datadog": 1,
+            "Coinbase": 2,
+            "Palantir": 10,
+            "OpenAI": 4,
+            "Notion": 1,
+            "Perplexity": 1,
+            "Mercor": 1,
+            "Visa": 9
+          }
         }
       ]
     },
@@ -595,6 +860,13 @@
           "count": 3,
           "sources": {
             "Visa": 3
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Visa": 2
           }
         }
       ]
@@ -624,6 +896,14 @@
           "sources": {
             "University of Austin": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
+            "University of Austin": 2,
+            "Ramp": 1
+          }
         }
       ]
     },
@@ -638,6 +918,13 @@
           "sources": {
             "OpenAI": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Palantir": 2
+          }
         }
       ]
     },
@@ -651,6 +938,14 @@
           "count": 4,
           "sources": {
             "Stripe": 1,
+            "OpenAI": 2,
+            "Ramp": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
             "OpenAI": 2,
             "Ramp": 1
           }
@@ -670,6 +965,14 @@
             "Datadog": 2,
             "Palantir": 3
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 4,
+          "sources": {
+            "Datadog": 1,
+            "Palantir": 3
+          }
         }
       ]
     },
@@ -683,6 +986,15 @@
           "count": 1,
           "sources": {
             "Datadog": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 1,
+            "Notion": 1
           }
         }
       ]
@@ -699,6 +1011,13 @@
             "Coinbase": 1,
             "Visa": 4
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
         }
       ]
     },
@@ -713,6 +1032,13 @@
           "sources": {
             "Coinbase": 2,
             "OpenAI": 3
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 4,
+          "sources": {
+            "OpenAI": 4
           }
         }
       ]
@@ -743,6 +1069,14 @@
           "sources": {
             "Stripe": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Stripe": 1,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -759,6 +1093,14 @@
             "OpenAI": 4,
             "Visa": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 4,
+          "sources": {
+            "Stripe": 1,
+            "OpenAI": 3
+          }
         }
       ]
     },
@@ -773,6 +1115,14 @@
           "sources": {
             "Datadog": 1,
             "Ramp": 1,
+            "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Datadog": 1,
             "Visa": 1
           }
         }
@@ -805,6 +1155,15 @@
             "OpenAI": 6,
             "Cursor": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 7,
+          "sources": {
+            "Datadog": 1,
+            "OpenAI": 5,
+            "Cursor": 1
+          }
         }
       ]
     },
@@ -817,6 +1176,14 @@
           "date": "2026-03-22",
           "count": 1,
           "sources": {
+            "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "University of Austin": 1,
             "Visa": 1
           }
         }
@@ -832,6 +1199,13 @@
           "count": 1,
           "sources": {
             "Datadog": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Notion": 2
           }
         }
       ]
@@ -857,6 +1231,23 @@
             "Mercor": 2,
             "Visa": 23
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 95,
+          "sources": {
+            "Stripe": 8,
+            "Datadog": 4,
+            "Coinbase": 1,
+            "Palantir": 11,
+            "OpenAI": 34,
+            "Notion": 3,
+            "Ramp": 4,
+            "Cursor": 1,
+            "Perplexity": 1,
+            "Mercor": 6,
+            "Visa": 22
+          }
         }
       ]
     },
@@ -871,6 +1262,14 @@
           "sources": {
             "Perplexity": 1,
             "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 5,
+          "sources": {
+            "Perplexity": 1,
+            "Visa": 4
           }
         }
       ]
@@ -891,6 +1290,18 @@
             "Mercor": 1,
             "Visa": 4
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 16,
+          "sources": {
+            "Coinbase": 2,
+            "OpenAI": 3,
+            "Notion": 3,
+            "Cursor": 1,
+            "Mercor": 1,
+            "Visa": 6
+          }
         }
       ]
     },
@@ -901,6 +1312,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 1,
           "sources": {
             "Visa": 1
@@ -929,6 +1347,23 @@
             "Mercor": 5,
             "Visa": 44
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 278,
+          "sources": {
+            "Stripe": 5,
+            "Datadog": 8,
+            "Coinbase": 15,
+            "Palantir": 52,
+            "OpenAI": 96,
+            "Notion": 10,
+            "Ramp": 19,
+            "Cursor": 19,
+            "Perplexity": 6,
+            "Mercor": 5,
+            "Visa": 43
+          }
         }
       ]
     },
@@ -942,6 +1377,29 @@
           "count": 3,
           "sources": {
             "Visa": 3
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 5,
+          "sources": {
+            "OpenAI": 1,
+            "Cursor": 1,
+            "Visa": 3
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "15-1254.00",
+      "title": "Web Developers",
+      "majorGroup": "Computer and Mathematical",
+      "daily": [
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
           }
         }
       ]
@@ -959,6 +1417,16 @@
             "OpenAI": 2,
             "Cursor": 1,
             "Visa": 7
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 9,
+          "sources": {
+            "OpenAI": 1,
+            "Ramp": 1,
+            "Cursor": 1,
+            "Visa": 6
           }
         }
       ]
@@ -984,6 +1452,23 @@
             "Mercor": 1,
             "Visa": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 69,
+          "sources": {
+            "Stripe": 2,
+            "Datadog": 3,
+            "Coinbase": 5,
+            "Palantir": 25,
+            "OpenAI": 18,
+            "Notion": 1,
+            "Ramp": 3,
+            "Cursor": 1,
+            "Perplexity": 4,
+            "Mercor": 6,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -1001,6 +1486,16 @@
             "Perplexity": 1,
             "Mercor": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 18,
+          "sources": {
+            "OpenAI": 12,
+            "Notion": 1,
+            "Mercor": 1,
+            "Visa": 4
+          }
         }
       ]
     },
@@ -1014,6 +1509,14 @@
           "count": 2,
           "sources": {
             "Palantir": 2
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Stripe": 1,
+            "Ramp": 1
           }
         }
       ]
@@ -1036,6 +1539,18 @@
             "Mercor": 1,
             "Visa": 4
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 27,
+          "sources": {
+            "Stripe": 2,
+            "OpenAI": 16,
+            "Ramp": 2,
+            "Cursor": 1,
+            "Mercor": 1,
+            "Visa": 5
+          }
         }
       ]
     },
@@ -1052,6 +1567,16 @@
             "Ramp": 1,
             "Perplexity": 1,
             "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 4,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 1,
+            "OpenAI": 1,
+            "Ramp": 1
           }
         }
       ]
@@ -1070,6 +1595,15 @@
             "Cursor": 1,
             "Perplexity": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
+            "OpenAI": 1,
+            "Ramp": 1,
+            "Cursor": 1
+          }
         }
       ]
     },
@@ -1087,6 +1621,16 @@
             "Cursor": 1,
             "Mercor": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 22,
+          "sources": {
+            "Datadog": 1,
+            "OpenAI": 17,
+            "Cursor": 2,
+            "Mercor": 2
+          }
         }
       ]
     },
@@ -1097,6 +1641,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Visa": 2
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 2,
           "sources": {
             "Visa": 2
@@ -1118,6 +1669,29 @@
             "OpenAI": 2,
             "Visa": 15
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 19,
+          "sources": {
+            "Datadog": 1,
+            "OpenAI": 2,
+            "Visa": 16
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "17-2071.00",
+      "title": "Electrical Engineers",
+      "majorGroup": "Architecture and Engineering",
+      "daily": [
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
         }
       ]
     },
@@ -1135,6 +1709,17 @@
             "Palantir": 1,
             "OpenAI": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 7,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 2,
+            "Palantir": 1,
+            "OpenAI": 2,
+            "Cursor": 1
+          }
         }
       ]
     },
@@ -1149,6 +1734,13 @@
           "sources": {
             "OpenAI": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
         }
       ]
     },
@@ -1159,6 +1751,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 3,
+          "sources": {
+            "OpenAI": 3
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 3,
           "sources": {
             "OpenAI": 3
@@ -1179,6 +1778,15 @@
             "OpenAI": 3,
             "Notion": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 6,
+          "sources": {
+            "Stripe": 1,
+            "OpenAI": 4,
+            "Notion": 1
+          }
         }
       ]
     },
@@ -1189,6 +1797,14 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "OpenAI": 1,
+            "Visa": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 2,
           "sources": {
             "OpenAI": 1,
@@ -1213,6 +1829,19 @@
             "OpenAI": 6,
             "Ramp": 1,
             "Cursor": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 18,
+          "sources": {
+            "Stripe": 2,
+            "Datadog": 1,
+            "Coinbase": 1,
+            "Palantir": 4,
+            "OpenAI": 8,
+            "Ramp": 1,
+            "Mercor": 1
           }
         }
       ]
@@ -1242,6 +1871,13 @@
           "sources": {
             "OpenAI": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
         }
       ]
     },
@@ -1255,6 +1891,27 @@
           "count": 1,
           "sources": {
             "Ramp": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Ramp": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "19-2041.00",
+      "title": "Environmental Scientists and Specialists, Including Health",
+      "majorGroup": "Life, Physical, and Social Science",
+      "daily": [
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Coinbase": 1
           }
         }
       ]
@@ -1270,6 +1927,13 @@
           "sources": {
             "OpenAI": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
         }
       ]
     },
@@ -1283,6 +1947,27 @@
           "count": 1,
           "sources": {
             "OpenAI": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "19-3051.00",
+      "title": "Urban and Regional Planners",
+      "majorGroup": "Life, Physical, and Social Science",
+      "daily": [
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
           }
         }
       ]
@@ -1307,6 +1992,19 @@
             "Perplexity": 1,
             "Visa": 4
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 26,
+          "sources": {
+            "Stripe": 1,
+            "Datadog": 2,
+            "Palantir": 11,
+            "OpenAI": 6,
+            "Ramp": 2,
+            "Perplexity": 1,
+            "Visa": 3
+          }
         }
       ]
     },
@@ -1321,6 +2019,13 @@
           "sources": {
             "Coinbase": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "OpenAI": 1
+          }
         }
       ]
     },
@@ -1331,6 +2036,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "University of Austin": 2
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 2,
           "sources": {
             "University of Austin": 2
@@ -1349,6 +2061,14 @@
           "sources": {
             "OpenAI": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "OpenAI": 1,
+            "Visa": 1
+          }
         }
       ]
     },
@@ -1363,6 +2083,16 @@
           "sources": {
             "University of Austin": 1,
             "Cursor": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 4,
+          "sources": {
+            "University of Austin": 1,
+            "Notion": 1,
+            "Cursor": 1,
+            "Visa": 1
           }
         }
       ]
@@ -1387,6 +2117,22 @@
             "Mercor": 1,
             "Visa": 20
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 52,
+          "sources": {
+            "Stripe": 7,
+            "Datadog": 2,
+            "Coinbase": 2,
+            "Palantir": 2,
+            "University of Austin": 1,
+            "OpenAI": 15,
+            "Notion": 1,
+            "Ramp": 3,
+            "Mercor": 1,
+            "Visa": 18
+          }
         }
       ]
     },
@@ -1401,6 +2147,13 @@
           "sources": {
             "Datadog": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Datadog": 1
+          }
         }
       ]
     },
@@ -1411,6 +2164,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 2,
+          "sources": {
+            "Palantir": 2
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 2,
           "sources": {
             "Palantir": 2
@@ -1443,6 +2203,13 @@
           "sources": {
             "Palantir": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 2,
+          "sources": {
+            "Palantir": 2
+          }
         }
       ]
     },
@@ -1457,6 +2224,27 @@
           "sources": {
             "Visa": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Visa": 1
+          }
+        }
+      ]
+    },
+    {
+      "socCode": "33-3051.00",
+      "title": "Police and Sheriff's Patrol Officers",
+      "majorGroup": "Protective Service",
+      "daily": [
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Stripe": 1
+          }
         }
       ]
     },
@@ -1467,6 +2255,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Notion": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 1,
           "sources": {
             "Notion": 1
@@ -1485,6 +2280,13 @@
           "sources": {
             "Coinbase": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Coinbase": 1
+          }
         }
       ]
     },
@@ -1501,6 +2303,15 @@
             "Datadog": 1,
             "Ramp": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 3,
+          "sources": {
+            "Stripe": 1,
+            "OpenAI": 1,
+            "Ramp": 1
+          }
         }
       ]
     },
@@ -1515,6 +2326,13 @@
           "sources": {
             "Datadog": 9,
             "Cursor": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 9,
+          "sources": {
+            "Datadog": 9
           }
         }
       ]
@@ -1534,6 +2352,18 @@
             "Notion": 1,
             "Ramp": 4,
             "SmartRecruiters": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 15,
+          "sources": {
+            "Datadog": 2,
+            "Coinbase": 3,
+            "OpenAI": 3,
+            "Notion": 1,
+            "Ramp": 5,
+            "Visa": 1
           }
         }
       ]
@@ -1560,6 +2390,13 @@
       "daily": [
         {
           "date": "2026-03-22",
+          "count": 1,
+          "sources": {
+            "Ramp": 1
+          }
+        },
+        {
+          "date": "2026-04-21",
           "count": 1,
           "sources": {
             "Ramp": 1
@@ -1595,6 +2432,13 @@
             "Ramp": 1,
             "Mercor": 1
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 1,
+          "sources": {
+            "Ramp": 1
+          }
         }
       ]
     },
@@ -1624,8 +2468,18 @@
             "Stripe": 1,
             "Ramp": 2
           }
+        },
+        {
+          "date": "2026-04-21",
+          "count": 6,
+          "sources": {
+            "Stripe": 1,
+            "Palantir": 3,
+            "Ramp": 2
+          }
         }
       ]
     }
-  ]
+  ],
+  "lastRunAt": "2026-04-21T01:37:28.372Z"
 }
