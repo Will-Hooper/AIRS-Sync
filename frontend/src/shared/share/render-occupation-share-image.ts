@@ -41,6 +41,19 @@ interface FittedTextLayout {
   lineHeight: number;
 }
 
+interface ParagraphLine {
+  text: string;
+  isParagraphStart: boolean;
+}
+
+interface FittedParagraphTextLayout {
+  lines: ParagraphLine[];
+  fontSize: number;
+  lineHeight: number;
+  paragraphGap: number;
+  height: number;
+}
+
 export async function renderOccupationShareImage({
   occupation,
   averageAirs,
@@ -125,17 +138,18 @@ export async function renderOccupationShareImage({
   setFont(context, 700, 38);
   context.fillText(copy.readingTitle, CONTENT_X, readingTitleY);
 
-  const readingLayout = fitWrappedText(context, summary, CONTENT_WIDTH - 84, {
+  const readingLayout = fitParagraphText(context, summary, CONTENT_WIDTH - 84, {
     fontSizes: language === "zh" ? [32, 30, 28, 26] : [30, 28, 26, 24],
     lineHeightMultiplier: 1.38,
     maxLines: 5,
+    paragraphGapMultiplier: 0.5,
     weight: 400
   });
   const readingCard = {
     x: CONTENT_X,
     y: readingTitleY + 26,
     width: CONTENT_WIDTH,
-    height: 104 + readingLayout.lines.length * readingLayout.lineHeight
+    height: 104 + readingLayout.height
   };
   drawPanel(context, readingCard.x, readingCard.y, readingCard.width, readingCard.height, 32, theme);
   context.fillStyle = theme.palette.accent;
@@ -143,7 +157,14 @@ export async function renderOccupationShareImage({
   context.fillText(theme.statusLabel[language], readingCard.x + 40, readingCard.y + 54);
   context.fillStyle = theme.palette.textSecondary;
   setFont(context, 400, readingLayout.fontSize);
-  drawLines(context, readingLayout.lines, readingCard.x + 40, readingCard.y + 98, readingLayout.lineHeight);
+  drawParagraphLines(
+    context,
+    readingLayout.lines,
+    readingCard.x + 40,
+    readingCard.y + 98,
+    readingLayout.lineHeight,
+    readingLayout.paragraphGap
+  );
 
   const breakdownTitleY = readingCard.y + readingCard.height + 64;
   context.fillStyle = theme.palette.textPrimary;
@@ -154,7 +175,7 @@ export async function renderOccupationShareImage({
     x: CONTENT_X,
     y: breakdownTitleY + 26,
     width: CONTENT_WIDTH,
-    height: 332
+    height: 320
   };
   drawPanel(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownCard.height, 32, theme);
   drawBreakdownCard(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownItems, language, theme);
@@ -325,19 +346,6 @@ function drawBreakdownCard(
     roundRect(context, x + 34, rowY + 20, Math.max(52, (width - 68) * Math.max(0, Math.min(1, item.value))), 18, 9);
     context.fill();
   });
-
-  const note = language === "zh"
-    ? "四项共同决定职业当前是否正被 AI 压缩、改写或重组。"
-    : "These four signals describe how AI is compressing, rewriting, or reshaping the role.";
-  const noteLayout = fitWrappedText(context, note, width - 68, {
-    fontSizes: [22, 20, 18],
-    lineHeightMultiplier: 1.28,
-    maxLines: 2,
-    weight: 500
-  });
-  context.fillStyle = theme.palette.textSecondary;
-  setFont(context, 500, noteLayout.fontSize);
-  drawLines(context, noteLayout.lines, x + 34, y + 292, noteLayout.lineHeight);
 }
 
 async function loadImage(src: string) {
@@ -418,8 +426,27 @@ function drawLines(
   });
 }
 
+function drawParagraphLines(
+  context: CanvasRenderingContext2D,
+  lines: ParagraphLine[],
+  x: number,
+  y: number,
+  lineHeight: number,
+  paragraphGap: number
+) {
+  let currentY = y;
+
+  lines.forEach((line, index) => {
+    if (index > 0 && line.isParagraphStart) {
+      currentY += paragraphGap;
+    }
+    context.fillText(line.text, x, currentY);
+    currentY += lineHeight;
+  });
+}
+
 function wrapLines(context: CanvasRenderingContext2D, text: string, maxWidth: number) {
-  const source = String(text || "").trim().replace(/\s+/g, " ");
+  const source = normalizeCanvasInlineText(text);
   if (!source) return [""];
 
   const tokens = source.split(/(\s+)/).filter(Boolean);
@@ -451,8 +478,19 @@ function wrapLines(context: CanvasRenderingContext2D, text: string, maxWidth: nu
     for (const fragment of Array.from(token)) {
       const fragmentTrial = current ? `${current}${fragment}` : fragment;
       if (context.measureText(fragmentTrial).width > maxWidth && current) {
-        lines.push(current.trimEnd());
-        current = fragment;
+        if (shouldStickToPrevious(fragment)) {
+          current = fragmentTrial;
+          continue;
+        }
+
+        let line = current.trimEnd();
+        let carry = fragment;
+        while (line.length > 1 && shouldStickToNext(line.slice(-1))) {
+          carry = `${line.slice(-1)}${carry}`;
+          line = line.slice(0, -1).trimEnd();
+        }
+        lines.push(line);
+        current = carry;
       } else {
         current = fragmentTrial;
       }
@@ -461,6 +499,48 @@ function wrapLines(context: CanvasRenderingContext2D, text: string, maxWidth: nu
 
   if (current) lines.push(current.trimEnd());
   return lines;
+}
+
+function normalizeCanvasInlineText(text: string) {
+  return String(text || "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[ \t\f\v\u00a0]+/g, " ")
+    .trim();
+}
+
+function splitParagraphs(text: string) {
+  const source = String(text || "").replace(/\r\n?/g, "\n").trim();
+  if (!source) return [""];
+  const paragraphs = source
+    .split(/\n+/)
+    .map((paragraph) => normalizeCanvasInlineText(paragraph))
+    .filter(Boolean);
+  if (!paragraphs.length) return [""];
+
+  const merged = paragraphs.reduce<string[]>((result, paragraph) => {
+    let currentParagraph = paragraph;
+    if (result.length) {
+      while (currentParagraph && shouldStickToPrevious(currentParagraph[0])) {
+        result[result.length - 1] += currentParagraph[0];
+        currentParagraph = currentParagraph.slice(1).trimStart();
+      }
+    }
+
+    if (currentParagraph) {
+      result.push(currentParagraph);
+    }
+    return result;
+  }, []);
+
+  return merged.length ? merged : [""];
+}
+
+function shouldStickToPrevious(fragment: string) {
+  return /^[，。！？；：、,.!?;:）】》〉」』”’%)\]]$/.test(fragment);
+}
+
+function shouldStickToNext(fragment: string) {
+  return /^[（【《〈「『“‘(\[]$/.test(fragment);
 }
 
 function fitWrappedText(
@@ -500,11 +580,96 @@ function fitWrappedText(
   };
 }
 
+function fitParagraphText(
+  context: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+  options: {
+    fontSizes: number[];
+    lineHeightMultiplier: number;
+    paragraphGapMultiplier: number;
+    maxLines: number;
+    weight: number;
+  }
+): FittedParagraphTextLayout {
+  let fitted: FittedParagraphTextLayout | null = null;
+
+  options.fontSizes.forEach((fontSize) => {
+    if (fitted) return;
+    setFont(context, options.weight, fontSize);
+    const lineHeight = Math.round(fontSize * options.lineHeightMultiplier);
+    const paragraphGap = Math.round(fontSize * options.paragraphGapMultiplier);
+    const lines = buildParagraphLines(context, text, maxWidth);
+    if (lines.length <= options.maxLines) {
+      fitted = {
+        lines,
+        fontSize,
+        lineHeight,
+        paragraphGap,
+        height: getParagraphLayoutHeight(lines, lineHeight, paragraphGap)
+      };
+    }
+  });
+
+  if (fitted) return fitted;
+
+  const fontSize = options.fontSizes[options.fontSizes.length - 1];
+  setFont(context, options.weight, fontSize);
+  const lineHeight = Math.round(fontSize * options.lineHeightMultiplier);
+  const paragraphGap = Math.round(fontSize * options.paragraphGapMultiplier);
+  const lines = fitParagraphLines(buildParagraphLines(context, text, maxWidth), options.maxLines);
+
+  return {
+    lines,
+    fontSize,
+    lineHeight,
+    paragraphGap,
+    height: getParagraphLayoutHeight(lines, lineHeight, paragraphGap)
+  };
+}
+
+function buildParagraphLines(
+  context: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number
+) {
+  return splitParagraphs(text).flatMap((paragraph) =>
+    wrapLines(context, paragraph, maxWidth).map((line, index) => ({
+      text: line,
+      isParagraphStart: index === 0
+    }))
+  );
+}
+
+function fitParagraphLines(lines: ParagraphLine[], maxLines: number) {
+  if (lines.length <= maxLines) return lines;
+  const next = lines.slice(0, maxLines).map((line) => ({ ...line }));
+  next[maxLines - 1].text = appendEllipsis(next[maxLines - 1].text);
+  return next;
+}
+
+function getParagraphLayoutHeight(lines: ParagraphLine[], lineHeight: number, paragraphGap: number) {
+  if (!lines.length) return lineHeight;
+
+  let height = 0;
+  lines.forEach((line, index) => {
+    if (index > 0 && line.isParagraphStart) {
+      height += paragraphGap;
+    }
+    height += lineHeight;
+  });
+  return height;
+}
+
 function fitLines(lines: string[], maxLines: number) {
   if (lines.length <= maxLines) return lines;
   const next = lines.slice(0, maxLines);
-  next[maxLines - 1] = next[maxLines - 1].replace(/[。！？；，、,.!?;:：]?\s*$/, "") + "…";
+  next[maxLines - 1] = appendEllipsis(next[maxLines - 1]);
   return next;
+}
+
+function appendEllipsis(text: string) {
+  return text.replace(/[。！？；，、,.!?;:：]?\s*$/, "") + "…";
 }
 
 function setFont(context: CanvasRenderingContext2D, weight: number, size: number) {

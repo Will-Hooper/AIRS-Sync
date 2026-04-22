@@ -1,4 +1,3 @@
-import QRCode from "qrcode";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
@@ -9,19 +8,15 @@ import { SiteFooter } from "../components/shared/SiteFooter";
 import { ThemeSwitch } from "../components/shared/ThemeSwitch";
 import { getOccupationDetail, getSummary } from "../lib/api";
 import { trackSearchEvent } from "../lib/analytics";
+import { getDesktopShareCopy } from "../lib/desktop-share-copy";
 import { applyDesktopShareMetadata } from "../lib/desktop-metadata";
 import { formatCurrency, formatNumber } from "../lib/format";
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationDetailPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
+import { getSharePlatformLabel, shareGeneratedImage, type GeneratedShareAsset, type SharePlatform } from "../shared/share/share-generated-image";
 import { renderOccupationShareImage } from "../shared/share/render-occupation-share-image";
 import { useAirsTheme } from "../shared/theme";
-
-interface DesktopShareAsset {
-  file: File;
-  fileName: string;
-  objectUrl: string;
-}
 
 export function OccupationPage() {
   const navigate = useNavigate();
@@ -34,10 +29,9 @@ export function OccupationPage() {
   const [averageAirs, setAverageAirs] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [shareAsset, setShareAsset] = useState<DesktopShareAsset | null>(null);
+  const [shareAsset, setShareAsset] = useState<GeneratedShareAsset | null>(null);
   const [shareError, setShareError] = useState<string | null>(null);
   const [shareNotice, setShareNotice] = useState<string | null>(null);
-  const [shareQrUrl, setShareQrUrl] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [theme, setTheme] = useAirsTheme();
   const pageRef = useRef<HTMLDivElement | null>(null);
@@ -98,31 +92,6 @@ export function OccupationPage() {
       }
     };
   }, [shareAsset]);
-
-  useEffect(() => {
-    let cancelled = false;
-    void QRCode.toDataURL("airsindex.com", {
-      margin: 1,
-      width: 240,
-      errorCorrectionLevel: "H",
-      color: {
-        dark: "#08111a",
-        light: "#ffffffff"
-      }
-    }).then((dataUrl) => {
-      if (!cancelled) {
-        setShareQrUrl(dataUrl);
-      }
-    }).catch(() => {
-      if (!cancelled) {
-        setShareQrUrl(null);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const occupation = payload?.occupation || null;
   const definition = occupation
@@ -190,6 +159,7 @@ export function OccupationPage() {
         hiring: "Hiring impact",
         historical: "Cumulative penetration"
       };
+  const shareCaption = getDesktopShareCopy(language);
 
   const createShareImage = async () => {
     if (!occupation) return;
@@ -231,6 +201,23 @@ export function OccupationPage() {
     } finally {
       setGenerating(false);
     }
+  };
+
+  const handlePlatformShare = async (platform: SharePlatform) => {
+    if (!shareAsset) return;
+    const result = await shareGeneratedImage({
+      asset: shareAsset,
+      language,
+      platform,
+      shareText: shareCaption
+    });
+
+    if (result.status === "cancelled") {
+      return;
+    }
+
+    setShareError(null);
+    setShareNotice(result.message);
   };
 
   useNumberedBoxes(pageRef, [
@@ -356,41 +343,47 @@ export function OccupationPage() {
               </div>
 
               <div data-numbered-box className="mt-8 rounded-[28px] border border-white/8 bg-black/10 px-4 py-5 md:px-5">
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_248px] lg:items-start">
-                  <div className="min-w-0">
-                    <h3 className="text-2xl font-semibold tracking-[-0.04em] text-white">{copy.shareModuleTitle}</h3>
-                    <p className="mt-3 text-sm leading-7 text-white/55">{copy.shareModuleText}</p>
-                    <div className="mt-5 grid max-w-[30rem] gap-3 sm:grid-cols-2">
-                      <button
-                        type="button"
-                        className={`airs-button-primary ${shareAsset ? "" : "sm:col-span-2"}`}
-                        onClick={() => void createShareImage()}
-                      >
-                        {generating ? copy.loading : copy.shareGenerate}
-                      </button>
-                      {shareAsset && (
-                        <a href={shareAsset.objectUrl} download={shareAsset.fileName} className="airs-button">
-                          {copy.shareSave}
-                        </a>
-                      )}
-                    </div>
-                    {shareError && <p className="mt-4 text-sm leading-6 text-amber-200/80">{shareError}</p>}
-                    {shareNotice && <p className="mt-4 text-sm leading-6 text-white/55">{shareNotice}</p>}
-                  </div>
-
-                  <div className="rounded-[24px] border border-white/8 bg-black/10 px-4 py-4">
-                    <p className="text-sm font-medium text-white/72">{copy.shareQrTitle}</p>
-                    <div className="mt-4 flex min-h-[160px] items-center justify-center rounded-[22px] border border-white/8 bg-white p-3">
-                      {shareQrUrl ? (
-                        <img src={shareQrUrl} alt={copy.shareQrHint} className="h-40 w-40" />
-                      ) : (
-                        <div className="h-40 w-40 rounded-[18px] bg-slate-200/80" />
-                      )}
-                    </div>
-                    <p className="mt-4 text-sm text-white/72">{copy.shareQrHint}</p>
-                    <p className="mt-2 text-sm leading-6 text-white/55">{copy.shareQrDescription}</p>
-                  </div>
+                <h3 className="text-2xl font-semibold tracking-[-0.04em] text-white">{copy.shareModuleTitle}</h3>
+                <p className="mt-3 text-sm leading-7 text-white/55">{copy.shareModuleText}</p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    className="airs-button-primary min-w-[180px] flex-1 sm:flex-none"
+                    onClick={() => void createShareImage()}
+                  >
+                    {generating ? copy.loading : copy.shareGenerate}
+                  </button>
+                  {shareAsset && (
+                    <a
+                      href={shareAsset.objectUrl}
+                      download={shareAsset.fileName}
+                      className="airs-button min-w-[160px] flex-1 text-center sm:flex-none"
+                    >
+                      {copy.shareSave}
+                    </a>
+                  )}
                 </div>
+                {shareAsset && (
+                  <div className="mt-3 grid gap-3 lg:grid-cols-3">
+                    {(["wechatMoments", "xiaohongshu", "weibo"] as SharePlatform[]).map((platform) => (
+                      <button
+                        key={platform}
+                        type="button"
+                        className="airs-button"
+                        onClick={() => void handlePlatformShare(platform)}
+                      >
+                        {getSharePlatformLabel(platform, language)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {shareAsset && (
+                  <p className="mt-4 text-sm text-white/45">
+                    {language === "zh" ? `默认分享文案：${shareCaption}` : `Default caption: ${shareCaption}`}
+                  </p>
+                )}
+                {shareError && <p className="mt-4 text-sm leading-6 text-amber-200/80">{shareError}</p>}
+                {shareNotice && <p className="mt-4 text-sm leading-6 text-white/55">{shareNotice}</p>}
 
                 {shareAsset && (
                   <div className="mt-5 rounded-[24px] border border-white/8 bg-black/10 p-3 md:p-4">

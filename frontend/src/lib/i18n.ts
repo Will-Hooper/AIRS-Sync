@@ -13,7 +13,7 @@ export const messages = {
     heroKicker: "AI Recruitment Stability Score",
     heroTitleLines: ["Will AI replace you?"],
     heroText:
-      "AIRS, the AI Recruitment Stability Score. Higher scores mean your occupation is safer; lower scores mean the AI shock has already begun. We track real occupation hiring changes in the United States and layer in how quickly AI is expanding across industries to show what is already happening: which jobs are still in demand, and which roles are quietly losing blood in front of AI.",
+      "AIRS, the AI Recruitment Stability Score. Higher scores mean your occupation is safer; lower scores mean the AI shock has already begun. We track real occupation hiring changes in the United States and layer in how quickly AI is expanding across industries to show what is already happening: which jobs are still in demand, and which roles have already been quietly replaced by AI.",
     summaryCards: [
       { code: "01", label: "Average score" },
       { code: "02", label: "Concentration" },
@@ -26,7 +26,7 @@ export const messages = {
       signalTitle: "The earliest shifts usually show up in job postings first."
     },
     liveFieldKicker: "AI impact live",
-    liveFieldTitle: "See, at a glance, how more than 800 occupations are already being rewritten by AI. To see the future, you have to see the present first.",
+    liveFieldTitle: "Change never happens overnight. It unfolds quietly. Here, we want you to see with your own eyes how AI is rewriting more than 800 occupations.",
     date: "Date",
     region: "Region",
     group: "Group",
@@ -122,7 +122,7 @@ export const messages = {
     heroKicker: "AI 招聘稳定指数",
     heroTitleLines: ["AI会取代你吗？"],
     heroText:
-      "AIRS，AI Recruitment Stability Score——AI招聘稳定指数。分数越高，你的职业越安全；分数越低，AI的冲击开始发生。我们追踪美国当下真实的职业招聘变化，叠加AI在各行业的扩张速度，呈现正在发生的事实：哪些工作还在被需要，哪些岗位已经在AI面前悄悄失血。",
+      "AIRS，AI Recruitment Stability Score——AI招聘稳定指数。分数越高，你的职业越安全；分数越低，AI的冲击开始发生。我们追踪美国当下真实的职业招聘变化，叠加AI在各行业的扩张速度，呈现正在发生的事实：哪些工作还在被需要，哪些岗位已经被AI悄悄取代。",
     summaryCards: [
       { code: "01", label: "平均分" },
       { code: "02", label: "风险集中" },
@@ -135,7 +135,7 @@ export const messages = {
       signalTitle: "最早出现的变化，通常先写进招聘启事。"
     },
     liveFieldKicker: "AI冲击现场",
-    liveFieldTitle: "在这里，你能一眼看见 800 多个职业正如何被 AI 改写。看见现在，才能看见未来。",
+    liveFieldTitle: "改变从来不是一夜之间，而是在悄无声息中发生。我们期待能让你在这里，亲眼看见800多个职业正如何被AI改写",
     date: "日期",
     region: "地区",
     group: "职业大类",
