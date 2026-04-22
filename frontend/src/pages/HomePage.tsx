@@ -15,6 +15,7 @@ import { formatDateTime, formatDateTimeValue, formatNumber, formatPercent } from
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
+import { getScoreTextStyle } from "../shared/score-color";
 import { useAirsTheme } from "../shared/theme";
 
 function buildFilters(params: URLSearchParams, query: string): OccupationQueryParams {
@@ -245,7 +246,9 @@ export function HomePage() {
             </div>
             <div className="space-y-3">
               <p className="text-6xl font-semibold tracking-[-0.06em] text-white">
-                {summary ? formatNumber(summary.avgAirs, 1, language) : "--"}
+                <span style={getScoreTextStyle(summary?.avgAirs || 0, { highIsDangerous: false, theme })}>
+                  {summary ? formatNumber(summary.avgAirs, 1, language) : "--"}
+                </span>
               </p>
               <p className="text-sm leading-7 text-white/55">
                 {language === "zh"
@@ -274,7 +277,11 @@ export function HomePage() {
             </div>
             <div className="space-y-5">
               <h3 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-white">{copy.summaryTexts.rewriteTitle}</h3>
-              <p className="text-4xl font-semibold tracking-[-0.05em] text-white">{formatPercent(rewriteShare, 0, language)}</p>
+              <p className="text-4xl font-semibold tracking-[-0.05em] text-white">
+                <span style={getScoreTextStyle(rewriteShare * 100, { highIsDangerous: true, theme })}>
+                  {formatPercent(rewriteShare, 0, language)}
+                </span>
+              </p>
               <p className="text-sm leading-7 text-white/55">{rewriteText}</p>
             </div>
           </article>
@@ -295,17 +302,10 @@ export function HomePage() {
         <section className="order-1 grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.9fr)]">
           <div data-numbered-box className="airs-panel px-5 py-5 md:px-7 md:py-6 lg:px-8">
             <div className="flex flex-col gap-4 border-b border-white/8 pb-5">
-              <div className="max-w-[58rem]">
-                <p className="airs-kicker">{copy.liveFieldKicker}</p>
-                <h2 className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-white md:text-[3.25rem]">
-                  {copy.liveFieldTitle}
-                </h2>
-              </div>
-
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,0.88fr)_minmax(0,0.88fr)_minmax(420px,1.84fr)]">
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm text-white/55">{copy.group}</span>
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,0.72fr)_minmax(0,0.72fr)_minmax(460px,2.06fr)]">
+                <label>
                   <select
+                    aria-label={copy.group}
                     className="airs-input airs-select appearance-none"
                     value={searchParams.get("majorGroup") || "all"}
                     onChange={(event) =>
@@ -323,9 +323,9 @@ export function HomePage() {
                   </select>
                 </label>
 
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm text-white/55">{copy.label}</span>
+                <label>
                   <select
+                    aria-label={copy.label}
                     className="airs-input airs-select appearance-none"
                     value={searchParams.get("label") || "all"}
                     onChange={(event) =>
@@ -343,8 +343,7 @@ export function HomePage() {
                   </select>
                 </label>
 
-                <label className="flex flex-col gap-2 md:col-span-2 xl:col-span-1">
-                  <span className="text-sm text-white/55">{copy.searchLabel}</span>
+                <label className="md:col-span-2 xl:col-span-1">
                   <SearchCombobox
                     language={language}
                     placeholder={copy.searchPlaceholder}
@@ -373,6 +372,13 @@ export function HomePage() {
                     }}
                   />
                 </label>
+              </div>
+
+              <div className="max-w-[62rem]">
+                <p className="airs-kicker">{copy.liveFieldKicker}</p>
+                <h2 className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-white md:text-[3.25rem]">
+                  {copy.liveFieldTitle}
+                </h2>
               </div>
             </div>
 
@@ -419,7 +425,12 @@ export function HomePage() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <span className="airs-chip">{labelText(language, selectedOccupation.label)}</span>
-                    <span className="airs-chip">AIRS {formatNumber(selectedOccupation.airs || 0, 1, language)}</span>
+                    <span className="airs-chip">
+                      AIRS{" "}
+                      <span style={getScoreTextStyle(selectedOccupation.airs || 0, { highIsDangerous: false, theme })}>
+                        {formatNumber(selectedOccupation.airs || 0, 1, language)}
+                      </span>
+                    </span>
                     <span className="airs-chip">{copy.openPostings} {formatNumber(selectedOccupation.postings || 0, 0, language)}</span>
                   </div>
                   <p className="airs-copy">

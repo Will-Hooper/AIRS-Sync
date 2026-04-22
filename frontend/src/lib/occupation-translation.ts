@@ -2844,6 +2844,13 @@ export function translateOccupationTasks(title, taskTexts) {
       candidate = makeDistinctTaskTranslation(title, taskText, baseTranslation);
     }
 
+    if (isGenericTaskTranslation(title, candidate)) {
+      const refined = makeDistinctTaskTranslation(title, taskText, candidate);
+      if (refined && refined !== candidate) {
+        candidate = refined;
+      }
+    }
+
     const seen = (used.get(candidate) || 0) + 1;
     used.set(candidate, seen);
     if (seen > 1) {

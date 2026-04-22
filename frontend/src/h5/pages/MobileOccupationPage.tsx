@@ -19,6 +19,7 @@ import { getInitialH5Language, normalizeH5Language, persistH5Language, type H5La
 import { DEFAULT_SHARE_TEXT, getSharePlatformLabel, shareGeneratedImage, type GeneratedShareAsset, type SharePlatform } from "../lib/share";
 import { buildDesktopOccupationHref, buildH5OccupationHref } from "../lib/navigation";
 import { renderOccupationShareImage } from "../share/share-image";
+import { getScoreTextStyle } from "../../shared/score-color";
 import { useAirsTheme } from "../../shared/theme";
 
 export function MobileOccupationPage() {
@@ -156,7 +157,8 @@ export function MobileOccupationPage() {
         language,
         generatedAt: payload?.generatedAt,
         sourceUpdatedAt: payload?.sourceUpdatedAt,
-        siteUrl: buildH5OccupationHref(occupation.socCode, language)
+        siteUrl: buildH5OccupationHref(occupation.socCode, language),
+        themeMode: theme
       });
       const response = await fetch(dataUrl);
       const blob = await response.blob();
@@ -200,7 +202,7 @@ export function MobileOccupationPage() {
             <button type="button" className="h5-button" onClick={() => navigate(`/?lang=${language}`)}>
               {copy.backHome}
             </button>
-            <div className="flex flex-col items-end gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-2">
               <H5ThemeSwitch language={language} theme={theme} onChange={setTheme} />
               <H5LanguageSwitch language={language} onChange={setLanguage} />
             </div>
@@ -267,20 +269,24 @@ export function MobileOccupationPage() {
                 <div data-h5-numbered-box className="h5-numbered rounded-[28px] border border-white/10 bg-black/15 px-5 py-6">
                   <p className="text-sm text-white/52">{copy.currentAirsLabel}</p>
                   <p className="mt-4 text-[4rem] font-semibold leading-none tracking-[-0.08em] text-white">
-                    {formatNumber(occupation.airs || 0, 1, language)}
+                    <span style={getScoreTextStyle(occupation.airs || 0, { highIsDangerous: false, theme })}>
+                      {formatNumber(occupation.airs || 0, 1, language)}
+                    </span>
                   </p>
                 </div>
                 <div data-h5-numbered-box className="h5-numbered rounded-[28px] border border-white/10 bg-black/15 px-5 py-6">
                   <p className="text-sm text-white/52">{copy.globalAverageLabel}</p>
                   <p className="mt-4 text-[4rem] font-semibold leading-none tracking-[-0.08em] text-white">
-                    {formatNumber(averageAirs, 1, language)}
+                    <span style={getScoreTextStyle(averageAirs, { highIsDangerous: false, theme })}>
+                      {formatNumber(averageAirs, 1, language)}
+                    </span>
                   </p>
                 </div>
               </div>
 
               <OccupationReadingCard title={copy.readingTitle} content={readingText} emptyText={copy.noReading} />
 
-              <OccupationBreakdownCard title={copy.breakdownTitle} items={breakdown} />
+              <OccupationBreakdownCard title={copy.breakdownTitle} items={breakdown} theme={theme} />
 
               <div data-h5-numbered-box className="h5-numbered rounded-[28px] border border-white/8 bg-black/10 px-4 py-4">
                 <div className="flex flex-wrap gap-3">

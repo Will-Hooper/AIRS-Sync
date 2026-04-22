@@ -14,9 +14,15 @@ import { formatCurrency, formatNumber } from "../lib/format";
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationDetailPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
+import { getScoreTextStyle } from "../shared/score-color";
 import { getSharePlatformLabel, shareGeneratedImage, type GeneratedShareAsset, type SharePlatform } from "../shared/share/share-generated-image";
 import { renderOccupationShareImage } from "../shared/share/render-occupation-share-image";
 import { useAirsTheme } from "../shared/theme";
+
+function getTaskSafetyScore(value?: number) {
+  const normalized = Math.max(0, Math.min(1, Number(value || 0)));
+  return Math.round((1 - normalized) * 100);
+}
 
 export function OccupationPage() {
   const navigate = useNavigate();
@@ -172,6 +178,7 @@ export function OccupationPage() {
         occupation,
         averageAirs,
         language,
+        themeMode: theme,
         qrText: "airsindex.com",
         copy: {
           appName: copy.appName,
@@ -323,14 +330,23 @@ export function OccupationPage() {
                 <div>
                   <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">{copy.breakdownTitle}</h2>
                 </div>
-                {occupation && <span className="airs-chip">AIRS {formatNumber(occupation.airs || 0, 1, language)}</span>}
+                {occupation && (
+                  <span className="airs-chip">
+                    AIRS{" "}
+                    <span style={getScoreTextStyle(occupation.airs || 0, { highIsDangerous: false, theme })}>
+                      {formatNumber(occupation.airs || 0, 1, language)}
+                    </span>
+                  </span>
+                )}
               </div>
               <div className="mt-8 grid gap-4">
                 {breakdown.map((item) => (
                   <div key={item.key} data-numbered-box className="rounded-[24px] border border-white/8 bg-black/10 px-5 py-5">
                     <div className="flex items-center justify-between gap-4">
                       <span className="text-sm text-white/65">{item.label}</span>
-                      <span className="text-sm font-medium text-white">{formatNumber(item.value * 100, 0, language)}%</span>
+                      <span className="text-sm font-medium text-white" style={getScoreTextStyle(item.value * 100, { highIsDangerous: true, theme })}>
+                        {formatNumber(item.value * 100, 0, language)}%
+                      </span>
                     </div>
                     <div className="mt-4 h-3 overflow-hidden rounded-full bg-white/8">
                       <div
@@ -442,17 +458,23 @@ export function OccupationPage() {
 
               <div className="mt-8 grid gap-4 md:grid-cols-2">
                 {tasks.length ? (
-                  tasks.map((task, index) => (
-                    <article key={`${task.name}-${index}`} data-numbered-box className="rounded-[24px] border border-white/8 bg-black/10 px-5 py-5">
-                      <p className="text-sm text-white/45">{language === "zh" ? "工作内容" : "Task"}</p>
-                      <h3 className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.03em] text-white">
-                        {language === "zh" ? task.nameZh || task.name : task.name}
-                      </h3>
-                      <p className="mt-5 text-xl text-white/65">
-                        {copy.impactExposure} {formatNumber(task.score ?? 0, 2, language)}
-                      </p>
-                    </article>
-                  ))
+                  tasks.map((task, index) => {
+                    const safeScore = getTaskSafetyScore(task.score);
+                    return (
+                      <article key={`${task.name}-${index}`} data-numbered-box className="rounded-[24px] border border-white/8 bg-black/10 px-5 py-5">
+                        <p className="text-sm text-white/45">{language === "zh" ? "工作内容" : "Task"}</p>
+                        <h3 className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.03em] text-white">
+                          {language === "zh" ? task.nameZh || task.name : task.name}
+                        </h3>
+                        <p className="mt-5 text-xl text-white/65">
+                          {copy.impactExposure}{" "}
+                          <span style={getScoreTextStyle(safeScore, { highIsDangerous: false, theme })}>
+                            {formatNumber(safeScore, 0, language)} / 100
+                          </span>
+                        </p>
+                      </article>
+                    );
+                  })
                 ) : (
                   <div data-numbered-box className="rounded-[24px] border border-white/8 bg-black/10 px-5 py-5 text-sm text-white/55">
                     {copy.tasksEmpty}
@@ -466,7 +488,9 @@ export function OccupationPage() {
             <article data-numbered-box className="airs-panel px-6 py-6">
               <p className="airs-kicker">{copy.statusLabel}</p>
               <p className="mt-4 text-8xl font-semibold tracking-[-0.08em] text-white">
-                {occupation ? formatNumber(occupation.airs || 0, 0, language) : "--"}
+                <span style={getScoreTextStyle(occupation?.airs || 0, { highIsDangerous: false, theme })}>
+                  {occupation ? formatNumber(occupation.airs || 0, 0, language) : "--"}
+                </span>
               </p>
               <div className="mt-6 rounded-full border border-emerald-300/20 bg-emerald-300/8 px-4 py-3 text-center text-lg font-medium text-white/88">
                 {occupation ? labelText(language, occupation.label) : "--"}

@@ -1,8 +1,10 @@
 import type { AppLanguage } from "../language";
+import type { AppTheme } from "../theme";
 
 export interface ShareScoreThemePalette {
   canvasTop: string;
   canvasBottom: string;
+  canvasFloor: string;
   canvasAccent: string;
   panelBg: string;
   panelStroke: string;
@@ -12,6 +14,7 @@ export interface ShareScoreThemePalette {
   textSecondary: string;
   badgeBg: string;
   badgeText: string;
+  gridStroke: string;
   breakdownTracks: [string, string, string, string];
 }
 
@@ -33,6 +36,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
     palette: {
       canvasTop: "#15384e",
       canvasBottom: "#07111b",
+      canvasFloor: "#04070d",
       canvasAccent: "rgba(157,255,226,0.18)",
       panelBg: "rgba(7,18,30,0.56)",
       panelStroke: "rgba(255,255,255,0.12)",
@@ -42,6 +46,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
       textSecondary: "rgba(239,248,255,0.74)",
       badgeBg: "#d8fff1",
       badgeText: "#113647",
+      gridStroke: "rgba(255,255,255,0.06)",
       breakdownTracks: ["#9dffe2", "#84d8ff", "#7fd4bc", "#a9c5ff"]
     },
     rangeLabel: {
@@ -64,6 +69,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
     palette: {
       canvasTop: "#19364e",
       canvasBottom: "#08111a",
+      canvasFloor: "#04070d",
       canvasAccent: "rgba(141,217,255,0.16)",
       panelBg: "rgba(8,19,31,0.58)",
       panelStroke: "rgba(255,255,255,0.11)",
@@ -73,6 +79,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
       textSecondary: "rgba(239,248,255,0.72)",
       badgeBg: "#e1f6ff",
       badgeText: "#143447",
+      gridStroke: "rgba(255,255,255,0.06)",
       breakdownTracks: ["#8dd9ff", "#9be9d6", "#8abfff", "#f2cb7a"]
     },
     rangeLabel: {
@@ -95,6 +102,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
     palette: {
       canvasTop: "#223545",
       canvasBottom: "#0b1118",
+      canvasFloor: "#04070d",
       canvasAccent: "rgba(255,208,132,0.14)",
       panelBg: "rgba(11,18,27,0.6)",
       panelStroke: "rgba(255,255,255,0.11)",
@@ -104,6 +112,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
       textSecondary: "rgba(243,247,255,0.72)",
       badgeBg: "#ffe9c5",
       badgeText: "#4a3420",
+      gridStroke: "rgba(255,255,255,0.06)",
       breakdownTracks: ["#ffd084", "#9bb8ff", "#97d3ff", "#f4b278"]
     },
     rangeLabel: {
@@ -126,6 +135,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
     palette: {
       canvasTop: "#2c3042",
       canvasBottom: "#0a0d14",
+      canvasFloor: "#04070d",
       canvasAccent: "rgba(255,196,134,0.14)",
       panelBg: "rgba(12,13,21,0.62)",
       panelStroke: "rgba(255,255,255,0.1)",
@@ -135,6 +145,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
       textSecondary: "rgba(255,244,238,0.72)",
       badgeBg: "#ffe1cc",
       badgeText: "#4b281d",
+      gridStroke: "rgba(255,255,255,0.06)",
       breakdownTracks: ["#ffc486", "#ff9d7c", "#cab0ff", "#f6cf7d"]
     },
     rangeLabel: {
@@ -157,6 +168,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
     palette: {
       canvasTop: "#2d2134",
       canvasBottom: "#080b12",
+      canvasFloor: "#04070d",
       canvasAccent: "rgba(255,152,117,0.16)",
       panelBg: "rgba(12,11,18,0.64)",
       panelStroke: "rgba(255,255,255,0.1)",
@@ -166,6 +178,7 @@ const SCORE_THEMES: ShareScoreTheme[] = [
       textSecondary: "rgba(255,243,240,0.72)",
       badgeBg: "#ffd8cf",
       badgeText: "#55241e",
+      gridStroke: "rgba(255,255,255,0.06)",
       breakdownTracks: ["#ff9875", "#ff765f", "#d0a1ff", "#ffc27d"]
     },
     rangeLabel: {
@@ -183,8 +196,61 @@ const SCORE_THEMES: ShareScoreTheme[] = [
   }
 ];
 
-export function getShareScoreTheme(score: number) {
+function hexToRgb(hex: string) {
+  const normalized = hex.replace("#", "");
+  const value = normalized.length === 3
+    ? normalized.split("").map((item) => item + item).join("")
+    : normalized;
+  const parsed = Number.parseInt(value, 16);
+  return {
+    r: (parsed >> 16) & 255,
+    g: (parsed >> 8) & 255,
+    b: parsed & 255
+  };
+}
+
+function rgbaFromHex(hex: string, alpha: number) {
+  const rgb = hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
+}
+
+function mixHex(left: string, right: string, ratio: number) {
+  const clampedRatio = Math.max(0, Math.min(1, ratio));
+  const leftRgb = hexToRgb(left);
+  const rightRgb = hexToRgb(right);
+  return `rgb(${Math.round(leftRgb.r + (rightRgb.r - leftRgb.r) * clampedRatio)} ${Math.round(leftRgb.g + (rightRgb.g - leftRgb.g) * clampedRatio)} ${Math.round(leftRgb.b + (rightRgb.b - leftRgb.b) * clampedRatio)})`;
+}
+
+function toLightPalette(theme: ShareScoreTheme): ShareScoreThemePalette {
+  const accent = theme.palette.accent;
+  return {
+    canvasTop: mixHex("#ffffff", accent, 0.08),
+    canvasBottom: "#e8f0f8",
+    canvasFloor: "#dce6f1",
+    canvasAccent: rgbaFromHex(accent, 0.12),
+    panelBg: "rgba(255,255,255,0.86)",
+    panelStroke: "rgba(95,134,173,0.18)",
+    accent,
+    accentSoft: rgbaFromHex(accent, 0.14),
+    textPrimary: "#152235",
+    textSecondary: "rgba(21,34,53,0.68)",
+    badgeBg: rgbaFromHex(accent, 0.18),
+    badgeText: "#163447",
+    gridStroke: "rgba(21,34,53,0.08)",
+    breakdownTracks: theme.palette.breakdownTracks.map((item) => mixHex(item, "#ffffff", 0.12)) as ShareScoreThemePalette["breakdownTracks"]
+  };
+}
+
+export function getShareScoreTheme(score: number, themeMode: AppTheme = "dark") {
   const normalizedScore = Number.isFinite(score) ? Math.max(0, Math.min(100, score)) : 0;
-  return SCORE_THEMES.find((item) => normalizedScore >= item.min && normalizedScore <= item.max)
+  const baseTheme = SCORE_THEMES.find((item) => normalizedScore >= item.min && normalizedScore <= item.max)
     || SCORE_THEMES[SCORE_THEMES.length - 1];
+  if (themeMode === "dark") {
+    return baseTheme;
+  }
+
+  return {
+    ...baseTheme,
+    palette: toLightPalette(baseTheme)
+  };
 }

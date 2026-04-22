@@ -2,6 +2,8 @@ import QRCode from "qrcode";
 import { formatNumber } from "../../lib/format";
 import type { OccupationRow } from "../../lib/types";
 import type { AppLanguage } from "../language";
+import type { AppTheme } from "../theme";
+import { getScoreAccentColors } from "../score-color";
 import { getShareScoreTheme } from "./share-score-theme";
 
 const CANVAS_WIDTH = 1080;
@@ -33,6 +35,7 @@ export interface RenderOccupationShareImageOptions {
   language: AppLanguage;
   copy: OccupationShareImageCopy;
   qrText?: string;
+  themeMode?: AppTheme;
 }
 
 interface FittedTextLayout {
@@ -59,10 +62,11 @@ export async function renderOccupationShareImage({
   averageAirs,
   language,
   copy,
-  qrText = "airsindex.com"
+  qrText = "airsindex.com",
+  themeMode = "dark"
 }: RenderOccupationShareImageOptions) {
   const score = Number(occupation.airs || 0);
-  const theme = getShareScoreTheme(score);
+  const theme = getShareScoreTheme(score, themeMode);
   const summary = (
     language === "zh"
       ? occupation.summaryZh || occupation.summary
@@ -128,6 +132,7 @@ export async function renderOccupationShareImage({
     score,
     averageAirs,
     theme,
+    themeMode,
     currentAirsLabel: copy.currentAirsLabel,
     globalAverageLabel: copy.globalAverageLabel,
     statusLabel: theme.statusLabel[language]
@@ -178,7 +183,7 @@ export async function renderOccupationShareImage({
     height: 320
   };
   drawPanel(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownCard.height, 32, theme);
-  drawBreakdownCard(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownItems, language, theme);
+  drawBreakdownCard(context, breakdownCard.x, breakdownCard.y, breakdownCard.width, breakdownItems, language, theme, themeMode);
 
   const qrDataUrl = await QRCode.toDataURL(qrText, {
     margin: 1,
@@ -231,7 +236,7 @@ function drawBackground(context: CanvasRenderingContext2D, theme: ReturnType<typ
   const gradient = context.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   gradient.addColorStop(0, theme.palette.canvasTop);
   gradient.addColorStop(0.5, theme.palette.canvasBottom);
-  gradient.addColorStop(1, "#04070d");
+  gradient.addColorStop(1, theme.palette.canvasFloor);
   context.fillStyle = gradient;
   context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -245,7 +250,7 @@ function drawBackground(context: CanvasRenderingContext2D, theme: ReturnType<typ
   context.arc(180, 1548, 248, 0, Math.PI * 2);
   context.fill();
 
-  context.strokeStyle = "rgba(255,255,255,0.06)";
+  context.strokeStyle = theme.palette.gridStroke;
   context.lineWidth = 1.5;
   for (let row = 0; row < 12; row += 1) {
     const y = 118 + row * 138;
@@ -267,6 +272,7 @@ function drawHeroCard(
     score: number;
     averageAirs: number;
     theme: ReturnType<typeof getShareScoreTheme>;
+    themeMode: AppTheme;
     currentAirsLabel: string;
     globalAverageLabel: string;
     statusLabel: string;
@@ -284,9 +290,13 @@ function drawHeroCard(
   setFont(context, 500, 22);
   context.fillText(options.currentAirsLabel, x + 36, y + 96);
 
-  context.fillStyle = options.theme.palette.textPrimary;
   setFont(context, 700, 118);
-  context.fillText(formatNumber(options.score, 1, options.language), x + 34, y + 202);
+  drawGradientText(context, formatNumber(options.score, 1, options.language), x + 34, y + 202, {
+    value: options.score,
+    highIsDangerous: false,
+    theme: options.themeMode,
+    fontSize: 118
+  });
 
   context.strokeStyle = "rgba(255,255,255,0.08)";
   context.lineWidth = 2;
@@ -299,9 +309,13 @@ function drawHeroCard(
   setFont(context, 500, 22);
   context.fillText(options.globalAverageLabel, dividerX + 36, y + 96);
 
-  context.fillStyle = options.theme.palette.textPrimary;
   setFont(context, 700, 86);
-  context.fillText(formatNumber(options.averageAirs, 1, options.language), dividerX + 34, y + 188);
+  drawGradientText(context, formatNumber(options.averageAirs, 1, options.language), dividerX + 34, y + 188, {
+    value: options.averageAirs,
+    highIsDangerous: false,
+    theme: options.themeMode,
+    fontSize: 86
+  });
 
   const note = options.language === "zh"
     ? "分数越高，当前招聘稳定度越高。"
@@ -324,7 +338,8 @@ function drawBreakdownCard(
   width: number,
   items: ReadonlyArray<{ label: string; value: number; color: string }>,
   language: AppLanguage,
-  theme: ReturnType<typeof getShareScoreTheme>
+  theme: ReturnType<typeof getShareScoreTheme>,
+  themeMode: AppTheme
 ) {
   items.forEach((item, index) => {
     const rowY = y + 38 + index * 72;
@@ -333,9 +348,14 @@ function drawBreakdownCard(
     context.fillText(item.label, x + 34, rowY);
 
     context.textAlign = "right";
-    context.fillStyle = theme.palette.textPrimary;
     setFont(context, 600, 24);
-    context.fillText(`${formatNumber(item.value * 100, 0, language)}%`, x + width - 34, rowY);
+    drawGradientText(context, `${formatNumber(item.value * 100, 0, language)}%`, x + width - 34, rowY, {
+      value: item.value * 100,
+      highIsDangerous: true,
+      theme: themeMode,
+      fontSize: 24,
+      textAlign: "right"
+    });
     context.textAlign = "left";
 
     context.fillStyle = "rgba(255,255,255,0.08)";
@@ -424,6 +444,43 @@ function drawLines(
   lines.forEach((line, index) => {
     context.fillText(line, x, y + index * lineHeight);
   });
+}
+
+function drawGradientText(
+  context: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  options: {
+    value: number;
+    highIsDangerous: boolean;
+    theme: AppTheme;
+    fontSize: number;
+    textAlign?: CanvasTextAlign;
+  }
+) {
+  const previousAlign = context.textAlign;
+  const align = options.textAlign || previousAlign || "left";
+  context.textAlign = align;
+  const metrics = context.measureText(text);
+  const width = Math.max(metrics.width, Math.round(options.fontSize * 0.72));
+  const startX = align === "right"
+    ? x - width
+    : align === "center"
+      ? x - width / 2
+      : x;
+  const colors = getScoreAccentColors(options.value, {
+    min: 0,
+    max: 100,
+    highIsDangerous: options.highIsDangerous,
+    theme: options.theme
+  });
+  const gradient = context.createLinearGradient(startX, y - options.fontSize, startX + width, y);
+  gradient.addColorStop(0, colors.secondary);
+  gradient.addColorStop(1, colors.primary);
+  context.fillStyle = gradient;
+  context.fillText(text, x, y);
+  context.textAlign = previousAlign;
 }
 
 function drawParagraphLines(

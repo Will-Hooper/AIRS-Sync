@@ -14,6 +14,7 @@ import { useH5NumberedBoxes } from "../hooks/useH5NumberedBoxes";
 import { getH5Copy } from "../lib/copy";
 import { getInitialH5Language, normalizeH5Language, persistH5Language, type H5Language } from "../lib/language";
 import { buildDesktopHomeHref } from "../lib/navigation";
+import { getScoreTextStyle } from "../../shared/score-color";
 import { useAirsTheme } from "../../shared/theme";
 
 export function MobileHomePage() {
@@ -78,7 +79,7 @@ export function MobileHomePage() {
             <p className="mt-2 text-sm text-white/55">{subtitle}</p>
             <p className="mt-2 max-w-[24rem] text-sm leading-7 text-white/45">{copy.sourceNote}</p>
           </div>
-          <div className="flex flex-col items-end gap-3">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             <H5ThemeSwitch language={language} theme={theme} onChange={setTheme} />
             <H5LanguageSwitch language={language} onChange={setLanguage} />
           </div>
@@ -128,7 +129,9 @@ export function MobileHomePage() {
               <div className="space-y-3 pr-12 text-center">
                 <p className="text-sm text-white/52">{copy.averageLabel}</p>
                 <p className="text-[5rem] font-semibold leading-none tracking-[-0.08em] text-white">
-                  {summaryError ? "--" : formatNumber(summary?.avgAirs, 1, language)}
+                  <span style={getScoreTextStyle(summary?.avgAirs || 0, { highIsDangerous: false, theme })}>
+                    {summaryError ? "--" : formatNumber(summary?.avgAirs, 1, language)}
+                  </span>
                 </p>
                 {summaryError && <p className="text-sm leading-6 text-white/45">{copy.loadError}</p>}
               </div>

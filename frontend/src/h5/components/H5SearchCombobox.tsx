@@ -63,6 +63,7 @@ export function H5SearchCombobox({
       <div className="flex items-center gap-3">
         <input
           value={query}
+          aria-label={placeholder}
           onFocus={() => setOpen(true)}
           onBlur={closeIfFocusLeft}
           onChange={(event) => handleInputChange(event.target.value)}

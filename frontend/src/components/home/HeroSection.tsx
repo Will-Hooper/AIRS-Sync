@@ -18,12 +18,12 @@ export function HeroSection({ kicker, titleLines, text }: HeroSectionProps) {
   });
 
   return (
-    <section className="airs-panel relative isolate overflow-hidden px-6 py-8 md:px-10 md:py-10">
+    <section className="airs-panel relative isolate overflow-hidden px-6 py-6 md:px-10 md:py-7">
       <div ref={backgroundRef} className="absolute inset-0" />
       <div className="airs-hero-overlay absolute inset-0" />
       <div className="airs-hero-glow absolute right-0 top-0 h-full w-[38%]" />
       <div className="airs-hero-orb absolute right-[8%] top-1/2 hidden h-48 w-48 -translate-y-1/2 rounded-full border blur-[2px] md:block" />
-      <div className="relative z-10 flex min-h-[280px] flex-col justify-end gap-5 md:min-h-[320px]">
+      <div className="relative z-10 flex min-h-[220px] flex-col justify-end gap-4 md:min-h-[250px]">
         <div className={isSingleLineTitle ? "max-w-[84rem]" : "max-w-full"}>
           <p className="airs-kicker">{kicker}</p>
           <h1

@@ -237,6 +237,7 @@ export function UniverseMap({
         }}
         onPointerDown={(event) => {
           if ((event.target as HTMLElement).closest("button")) return;
+          if ((event.target as Element).closest?.("[data-map-point='true']")) return;
           event.currentTarget.setPointerCapture(event.pointerId);
           setDragState({
             startX: event.clientX,
@@ -327,20 +328,31 @@ export function UniverseMap({
               const selected = point.row.socCode === selectedSocCode;
               const dimmed = selectedSocCode ? !selected : false;
               return (
-                <circle
-                  key={point.row.socCode}
-                  cx={point.x}
-                  cy={point.y}
-                  r={point.radius / camera.scale}
-                  fill={pointColor(point.row)}
-                  fillOpacity={dimmed ? 0.18 : 0.9}
-                  stroke={selected ? "var(--airs-map-selected-stroke)" : "var(--airs-map-point-stroke)"}
-                  strokeWidth={selected ? 2.4 : 1.2}
-                  vectorEffect="non-scaling-stroke"
-                  onMouseEnter={() => setHoveredSocCode(point.row.socCode)}
-                  onMouseLeave={() => setHoveredSocCode((current) => (current === point.row.socCode ? null : current))}
-                  onClick={() => onSelect(selected ? null : point.row)}
-                />
+                <g key={point.row.socCode}>
+                  <circle
+                    cx={point.x}
+                    cy={point.y}
+                    r={point.radius / camera.scale}
+                    fill={pointColor(point.row)}
+                    fillOpacity={dimmed ? 0.18 : 0.9}
+                    stroke={selected ? "var(--airs-map-selected-stroke)" : "var(--airs-map-point-stroke)"}
+                    strokeWidth={selected ? 2.4 : 1.2}
+                    vectorEffect="non-scaling-stroke"
+                    pointerEvents="none"
+                  />
+                  <circle
+                    data-map-point="true"
+                    cx={point.x}
+                    cy={point.y}
+                    r={Math.max(point.radius / camera.scale, 18 / camera.scale)}
+                    fill="transparent"
+                    pointerEvents="all"
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onMouseEnter={() => setHoveredSocCode(point.row.socCode)}
+                    onMouseLeave={() => setHoveredSocCode((current) => (current === point.row.socCode ? null : current))}
+                    onClick={() => onSelect(selected ? null : point.row)}
+                  />
+                </g>
               );
             })}
           </g>
