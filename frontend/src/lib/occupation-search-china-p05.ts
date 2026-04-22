@@ -71,6 +71,7 @@ const P05_SEED_TUPLES: P05SeedTuple[] = [
   ["editor", "27-3041.00", "编辑", "Editor", "内容", "新闻采编", 124, { common: ["文字编辑", "内容编辑", "网站编辑"], recruitment: ["新闻编辑", "公众号编辑", "内容编辑专员"], spoken: ["改稿子的", "做编辑的"] }],
   ["director-editor", "27-2012.00", "编导", "Producer and Director", "内容", "影视制作", 122, { common: ["影视编导", "内容编导", "视频编导"], recruitment: ["电视编导", "节目编导", "短视频编导"], spoken: ["写脚本的", "做节目策划的"] }],
   ["host", "27-3011.00", "主持人", "Broadcast Announcer", "内容", "播音主持", 122, { common: ["节目主持人", "播音主持", "主播主持"], recruitment: ["电台主持人", "电视主持人", "活动主持人"], spoken: ["主持的", "做主持的"] }],
+  ["talent-agent", "13-1011.00", "艺人经纪人", "Talent Agent", "内容", "演艺经纪", 122, { common: ["明星经纪人", "演员经纪人", "娱乐经纪人", "演艺经纪人"], recruitment: ["艺人商务"], spoken: ["做艺人经纪的"] }],
   ["photographer", "27-4021.00", "摄影师", "Photographer", "内容", "影像拍摄", 124, { common: ["人像摄影师", "拍照摄影师", "摄影"], recruitment: ["商业摄影师", "婚礼摄影师", "摄影助理"], spoken: ["拍照片的", "拍照的"] }],
   ["camera-operator", "27-4031.00", "摄像师", "Camera Operator", "内容", "影像拍摄", 124, { common: ["视频摄像师", "摄像", "摄影摄像"], recruitment: ["婚礼摄像师", "活动摄像师", "拍摄助理"], spoken: ["扛摄像机的", "拍摄视频的"], task_based: ["拍视频摄像"] }],
   ["animation-designer", "27-1014.00", "动画设计师", "Animator", "设计", "动画", 100, { common: ["动画师", "动画设计", "动画制作"], recruitment: ["二维动画师", "三维动画师", "动效设计师"], abbreviation: ["3d动画师"], spoken: ["做动画的"] }],

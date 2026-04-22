@@ -83,10 +83,29 @@ describe("primary result regression", () => {
     ["外卖员", "配送员"],
     ["滴滴司机", "网约车司机"],
     ["程序员", "软件开发工程师"],
+    ["艺人经纪人", "艺人经纪人"],
+    ["明星经纪人", "艺人经纪人"],
+    ["演员经纪人", "艺人经纪人"],
+    ["娱乐经纪人", "艺人经纪人"],
+    ["演艺经纪人", "艺人经纪人"],
     ["教师", "老师"],
     ["护士", "护士"]
   ])("returns %s -> %s", (query, expectedLabel) => {
     expect(search(query).primaryResult?.label).toBe(expectedLabel);
+  });
+});
+
+describe("entertainment agent convergence regression", () => {
+  test("maps artist-manager aliases onto the talent agent entry", () => {
+    const payload = search("艺人经纪人");
+    expect(payload.primaryResult?.occupation.socCode).toBe("13-1011.00");
+    expect(payload.primaryResult?.label).toBe("艺人经纪人");
+  });
+
+  test("does not let the bare 经纪人 query over-expand into entertainment aliases", () => {
+    const payload = search("经纪人");
+    expect(payload.matchType).toBe("no_result");
+    expect(payload.primaryResult).toBeNull();
   });
 });
 

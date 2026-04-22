@@ -54,6 +54,7 @@ const STRIP_YUAN_BASES = new Set([
 ]);
 
 const WEAK_SUFFIX_EXCEPTIONS = new Set(["律师助理", "法律助理", "法律顾问"]);
+const EXACT_ALIAS_ONLY_QUERIES = new Set(["经纪人"]);
 const BROAD_RELATED_CATEGORY_LV1 = new Set(["文职", "服务", "技术", "公共服务", "交通物流", "物流", "运营", "销售", "内容", "教育医疗", "教育", "互联网", "文化机构"]);
 const CATEGORY_FALLBACK_PREFERRED_QUERIES = new Set(["顾问"]);
 const MANUAL_RELATED_ENTRY_IDS = new Map<string, string[]>([
@@ -506,6 +507,10 @@ function scoreAliasMatch(queryNormalized: string, queryCompact: string, alias: O
       matchedAliasNormalized: aliasNormalized,
       matchReason: "别名精确命中"
     };
+  }
+
+  if (EXACT_ALIAS_ONLY_QUERIES.has(queryNormalized)) {
+    return null;
   }
 
   if (aliasCompact.startsWith(queryCompact) || queryCompact.startsWith(aliasCompact)) {
