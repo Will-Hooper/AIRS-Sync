@@ -217,7 +217,7 @@ export function OccupationPage() {
     }
 
     setShareError(null);
-    setShareNotice(result.message);
+    setShareNotice(result.status === "fallback" ? result.message : null);
   };
 
   useNumberedBoxes(pageRef, [
@@ -344,7 +344,6 @@ export function OccupationPage() {
 
               <div data-numbered-box className="mt-8 rounded-[28px] border border-white/8 bg-black/10 px-4 py-5 md:px-5">
                 <h3 className="text-2xl font-semibold tracking-[-0.04em] text-white">{copy.shareModuleTitle}</h3>
-                <p className="mt-3 text-sm leading-7 text-white/55">{copy.shareModuleText}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <button
                     type="button"
@@ -376,11 +375,6 @@ export function OccupationPage() {
                       </button>
                     ))}
                   </div>
-                )}
-                {shareAsset && (
-                  <p className="mt-4 text-sm text-white/45">
-                    {language === "zh" ? `默认分享文案：${shareCaption}` : `Default caption: ${shareCaption}`}
-                  </p>
                 )}
                 {shareError && <p className="mt-4 text-sm leading-6 text-amber-200/80">{shareError}</p>}
                 {shareNotice && <p className="mt-4 text-sm leading-6 text-white/55">{shareNotice}</p>}

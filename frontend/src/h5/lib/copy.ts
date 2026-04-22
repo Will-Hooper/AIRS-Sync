@@ -103,7 +103,7 @@ export const h5Messages: Record<H5Language, H5Copy> = {
     syncModeHourly: "Hourly recruitment refresh",
     syncModeFull: "Daily full rebuild",
     syncStateUnknown: "Unknown",
-    shareImageQrNote: "Open the H5 view and check how AI is changing this occupation.",
+    shareImageQrNote: "Search and see whether AI will replace your occupation.",
     shareImageTitle: "AIRS occupation share card",
     footerRecordNumber: "京ICP备2026017743号",
     breakdownLabels: {
@@ -157,7 +157,7 @@ export const h5Messages: Record<H5Language, H5Copy> = {
     syncModeHourly: "小时级招聘更新",
     syncModeFull: "每日完整重算",
     syncStateUnknown: "未知",
-    shareImageQrNote: "打开 H5 页面，看看 AI 正在怎样改写这个职业。",
+    shareImageQrNote: "搜搜看，AI是否会取代你的职业",
     shareImageTitle: "AIRS 职业分享图",
     footerRecordNumber: "京ICP备2026017743号",
     breakdownLabels: {
