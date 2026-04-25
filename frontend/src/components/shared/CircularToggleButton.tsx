@@ -4,7 +4,7 @@ interface CircularToggleButtonProps {
   title: string;
   ariaPressed: boolean;
   onClick: () => void;
-  size?: "desktop" | "mobile";
+  size?: "desktop" | "mobile" | "compact";
   children: ReactNode;
 }
 
@@ -29,7 +29,13 @@ export function CircularToggleButton({
   size = "desktop",
   children
 }: CircularToggleButtonProps) {
-  const sizeClassName = size === "mobile" ? "h-[3.1rem] w-[3.1rem]" : "h-[3.45rem] w-[3.45rem]";
+  const sizeClassName =
+    size === "mobile"
+      ? "h-[3.1rem] w-[3.1rem]"
+      : size === "compact"
+        ? "h-[2.88rem] w-[2.88rem]"
+        : "h-[3.45rem] w-[3.45rem]";
+  const innerRingClassName = size === "compact" ? "inset-[3px]" : "inset-[4px]";
 
   return (
     <button
@@ -42,7 +48,7 @@ export function CircularToggleButton({
       style={BUTTON_STYLE}
     >
       <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full border" style={OUTER_RING_STYLE} />
-      <span aria-hidden="true" className="pointer-events-none absolute inset-[4px] rounded-full border" style={INNER_RING_STYLE} />
+      <span aria-hidden="true" className={`pointer-events-none absolute ${innerRingClassName} rounded-full border`} style={INNER_RING_STYLE} />
       <span className="relative z-10 inline-flex items-center justify-center">{children}</span>
     </button>
   );

@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "pageId": "occupation-detail",
+  "updatedAt": "2026-04-24T00:00:00.000Z",
+  "modules": [
+    {
+      "pageId": "occupation-detail",
+      "moduleId": "occupation-overview",
+      "moduleType": "detail-overview",
+      "content": {
+        "detailKicker": {
+          "key": "occupation.overview.detailKicker",
+          "label": "Detail kicker",
+          "value": {
+            "en": "Occupation detail",
+            "zh": "职业详情"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "definitionKicker": {
+          "key": "occupation.overview.definitionKicker",
+          "label": "Definition kicker",
+          "value": {
+            "en": "SOC definition",
+            "zh": "SOC 定义"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "readKicker": {
+          "key": "occupation.overview.readKicker",
+          "label": "Read kicker",
+          "value": {
+            "en": "AIRS read",
+            "zh": "AIRS 解读"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "occupation-main",
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 8,
+        "rowSpan": 4,
+        "minHeight": 520,
+        "minColSpan": 5,
+        "maxColSpan": 10,
+        "minRowSpan": 2,
+        "maxRowSpan": 8
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 32,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "occupation-detail",
+      "moduleId": "occupation-breakdown",
+      "moduleType": "detail-breakdown",
+      "content": {
+        "breakdownTitle": {
+          "key": "occupation.breakdown.title",
+          "label": "Breakdown title",
+          "value": {
+            "en": "Score breakdown",
+            "zh": "分项拆解"
+          },
+          "style": {
+            "fontSize": 36,
+            "fontWeight": 600,
+            "lineHeight": 1.15,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        },
+        "shareTitle": {
+          "key": "occupation.breakdown.shareTitle",
+          "label": "Share module title",
+          "value": {
+            "en": "Generate share image",
+            "zh": "生成图片分享"
+          },
+          "style": {
+            "fontSize": 28,
+            "fontWeight": 600,
+            "lineHeight": 1.2,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        },
+        "trendTitle": {
+          "key": "occupation.breakdown.trendTitle",
+          "label": "Trend title",
+          "value": {
+            "en": "Twelve-month AIRS movement",
+            "zh": "12 个月 AIRS 变化"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "occupation-main",
+        "colStart": 1,
+        "rowStart": 5,
+        "colSpan": 8,
+        "rowSpan": 6,
+        "minHeight": 820,
+        "minColSpan": 5,
+        "maxColSpan": 10,
+        "minRowSpan": 2,
+        "maxRowSpan": 10
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 32,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "occupation-detail",
+      "moduleId": "occupation-evidence",
+      "moduleType": "detail-evidence",
+      "content": {
+        "title": {
+          "key": "occupation.evidence.title",
+          "label": "Evidence title",
+          "value": {
+            "en": "Recruitment-side evidence",
+            "zh": "招聘侧证据"
+          },
+          "style": {
+            "fontSize": 36,
+            "fontWeight": 600,
+            "lineHeight": 1.15,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "occupation-main",
+        "colStart": 1,
+        "rowStart": 11,
+        "colSpan": 8,
+        "rowSpan": 3,
+        "minHeight": 320,
+        "minColSpan": 5,
+        "maxColSpan": 10,
+        "minRowSpan": 2,
+        "maxRowSpan": 8
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 32,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "occupation-detail",
+      "moduleId": "occupation-tasks",
+      "moduleType": "detail-tasks",
+      "content": {
+        "title": {
+          "key": "occupation.tasks.title",
+          "label": "Tasks title",
+          "value": {
+            "en": "Which parts of this job are easiest for AI to take over first",
+            "zh": "这份工作里，哪些具体内容最容易先被 AI 接管"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 36,
+            "fontWeight": 600,
+            "lineHeight": 1.15,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        },
+        "intro": {
+          "key": "occupation.tasks.intro",
+          "label": "Tasks intro",
+          "value": {
+            "en": "Scores here use a 0-100 safety scale. Higher scores mean the task is less likely to be replaced, rewritten, or compressed by AI first.",
+            "zh": "这里显示的是 0-100 的“AI安全度”。分数越高，说明这项工作内容越不容易先被 AI 取代、改写或压缩。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.75,
+            "color": "rgba(255,255,255,0.55)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "occupation-main",
+        "colStart": 1,
+        "rowStart": 14,
+        "colSpan": 8,
+        "rowSpan": 5,
+        "minHeight": 420,
+        "minColSpan": 5,
+        "maxColSpan": 10,
+        "minRowSpan": 2,
+        "maxRowSpan": 8
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 32,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "occupation-detail",
+      "moduleId": "occupation-status",
+      "moduleType": "detail-status",
+      "content": {
+        "statusLabel": {
+          "key": "occupation.status.label",
+          "label": "Status label",
+          "value": {
+            "en": "Current state",
+            "zh": "当前状态"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "openPostings": {
+          "key": "occupation.status.openPostings",
+          "label": "Open postings label",
+          "value": {
+            "en": "Open postings",
+            "zh": "在招岗位数"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.5,
+            "color": "rgba(255,255,255,0.45)",
+            "textAlign": "left"
+          }
+        },
+        "relatedMedian2Y": {
+          "key": "occupation.status.relatedMedian2Y",
+          "label": "Median label",
+          "value": {
+            "en": "Related major median earnings (2y)",
+            "zh": "高校相关专业 2 年收入中位数"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.5,
+            "color": "rgba(255,255,255,0.45)",
+            "textAlign": "left"
+          }
+        },
+        "relatedSamples": {
+          "key": "occupation.status.relatedSamples",
+          "label": "Samples label",
+          "value": {
+            "en": "Related major outcome samples",
+            "zh": "高校相关专业结果样本数"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.5,
+            "color": "rgba(255,255,255,0.45)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "occupation-main",
+        "colStart": 9,
+        "rowStart": 1,
+        "colSpan": 4,
+        "rowSpan": 9,
+        "minHeight": 660,
+        "minColSpan": 3,
+        "maxColSpan": 6,
+        "minRowSpan": 3,
+        "maxRowSpan": 10
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    }
+  ]
+}

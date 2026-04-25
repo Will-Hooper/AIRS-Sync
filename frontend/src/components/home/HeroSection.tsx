@@ -1,13 +1,15 @@
-import { useRef } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
 import { useVantaDots } from "../../lib/vanta";
 
 interface HeroSectionProps {
-  kicker: string;
-  titleLines: readonly string[];
-  text: string;
+  kicker: ReactNode;
+  titleLines: readonly ReactNode[];
+  text: ReactNode;
+  className?: string;
+  style?: CSSProperties;
 }
 
-export function HeroSection({ kicker, titleLines, text }: HeroSectionProps) {
+export function HeroSection({ kicker, titleLines, text, className = "", style }: HeroSectionProps) {
   const backgroundRef = useRef<HTMLDivElement | null>(null);
   const isSingleLineTitle = titleLines.length === 1;
   useVantaDots(backgroundRef, {
@@ -18,7 +20,7 @@ export function HeroSection({ kicker, titleLines, text }: HeroSectionProps) {
   });
 
   return (
-    <section className="airs-panel relative isolate overflow-hidden px-6 py-6 md:px-10 md:py-7">
+    <section className={`airs-panel relative isolate overflow-hidden px-6 py-6 md:px-10 md:py-7 ${className}`.trim()} style={style}>
       <div ref={backgroundRef} className="absolute inset-0" />
       <div className="airs-hero-overlay absolute inset-0" />
       <div className="airs-hero-glow absolute right-0 top-0 h-full w-[38%]" />
@@ -34,7 +36,7 @@ export function HeroSection({ kicker, titleLines, text }: HeroSectionProps) {
             }`}
           >
             {titleLines.map((line, index) => (
-              <span key={line}>
+              <span key={index}>
                 {line}
                 {index < titleLines.length - 1 && <br />}
               </span>

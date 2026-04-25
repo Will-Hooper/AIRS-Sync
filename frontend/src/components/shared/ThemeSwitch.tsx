@@ -6,11 +6,12 @@ interface ThemeSwitchProps {
   language: AppLanguage;
   theme: AppTheme;
   onChange: (theme: AppTheme) => void;
+  compact?: boolean;
 }
 
-function ThemeGlyph() {
+function ThemeGlyph({ compact = false }: { compact?: boolean }) {
   return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" className="h-7 w-7" fill="none">
+    <svg aria-hidden="true" viewBox="0 0 32 32" className={compact ? "h-5 w-5" : "h-7 w-7"} fill="none">
       <path
         d="M16 7.2a8.8 8.8 0 1 0 0 17.6V7.2Z"
         fill="currentColor"
@@ -35,16 +36,16 @@ function ThemeGlyph() {
   );
 }
 
-export function ThemeSwitch({ language, theme, onChange }: ThemeSwitchProps) {
+export function ThemeSwitch({ language, theme, onChange, compact = false }: ThemeSwitchProps) {
   const nextTheme = theme === "dark" ? "light" : "dark";
   const title = theme === "dark"
     ? (language === "zh" ? "切换到浅色模式" : "Switch to light mode")
     : (language === "zh" ? "切换到深色模式" : "Switch to dark mode");
 
   return (
-    <CircularToggleButton title={title} ariaPressed={theme === "dark"} onClick={() => onChange(nextTheme)}>
+    <CircularToggleButton title={title} ariaPressed={theme === "dark"} onClick={() => onChange(nextTheme)} size={compact ? "compact" : "desktop"}>
       <span className="text-[#2d3748]">
-        <ThemeGlyph />
+        <ThemeGlyph compact={compact} />
       </span>
     </CircularToggleButton>
   );

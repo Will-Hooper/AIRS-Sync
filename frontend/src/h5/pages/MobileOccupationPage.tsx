@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getOccupationDetail, getSummary } from "../../lib/api";
 import { trackSearchEvent } from "../../lib/analytics";
+import { getReadOnlyConfigText, useReadOnlyPageConfig } from "../../editor/readOnly";
 import { formatNumber } from "../../lib/format";
 import type { OccupationDetailPayload } from "../../lib/types";
 import { MobileBottomHero } from "../components/MobileBottomHero";
@@ -39,10 +40,13 @@ export function MobileOccupationPage() {
   const [shareNotice, setShareNotice] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [theme, setTheme] = useAirsTheme();
+  const pageConfig = useReadOnlyPageConfig("occupation-detail");
 
   const socCode = decodeURIComponent(params.socCode || searchParams.get("soc") || "");
   const entryLabel = searchParams.get("entry") || "";
   const copy = getH5Copy(language);
+  const readingTitle = getReadOnlyConfigText(pageConfig, "occupation-overview", "readKicker", language, copy.readingTitle);
+  const breakdownTitle = getReadOnlyConfigText(pageConfig, "occupation-breakdown", "breakdownTitle", language, copy.breakdownTitle);
 
   useEffect(() => {
     persistH5Language(language);
@@ -284,9 +288,9 @@ export function MobileOccupationPage() {
                 </div>
               </div>
 
-              <OccupationReadingCard title={copy.readingTitle} content={readingText} emptyText={copy.noReading} />
+              <OccupationReadingCard title={readingTitle} content={readingText} emptyText={copy.noReading} />
 
-              <OccupationBreakdownCard title={copy.breakdownTitle} items={breakdown} theme={theme} />
+              <OccupationBreakdownCard title={breakdownTitle} items={breakdown} theme={theme} />
 
               <div data-h5-numbered-box className="h5-numbered rounded-[28px] border border-white/8 bg-black/10 px-4 py-4">
                 <div className="flex flex-wrap gap-3">

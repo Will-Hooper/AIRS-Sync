@@ -1,0 +1,311 @@
+export const CHINA_P0_SEARCH_SEEDS = [
+	{
+		id: "china:cross-border-e-commerce-operations-manager",
+		occupationId: "13-1161.00",
+		label: "跨境电商运营管理师",
+		labelEn: "Cross-Border E-Commerce Operations Manager",
+		categoryLv1: "运营",
+		categoryLv2: "平台经济",
+		analysisTemplateId: "soc:13-1161.00",
+		searchPriority: 120,
+		aliases: [
+			"跨境电商运营管理师",
+			"跨境电商运营",
+			"跨境运营",
+			"跨境店铺运营",
+			"跨境电商运营经理"
+		]
+	},
+	{
+		id: "china:user-growth-operations-specialist",
+		occupationId: "13-1161.00",
+		label: "用户增长运营师",
+		labelEn: "User Growth Operations Specialist",
+		categoryLv1: "运营",
+		categoryLv2: "平台经济",
+		analysisTemplateId: "soc:13-1161.00",
+		searchPriority: 120,
+		aliases: [
+			"用户增长运营师",
+			"增长运营",
+			"用户增长",
+			"增长负责人",
+			"流量增长运营"
+		]
+	},
+	{
+		id: "china:on-demand-delivery-rider",
+		occupationId: "43-5021.00",
+		label: "网约配送员",
+		labelEn: "On-Demand Delivery Rider",
+		categoryLv1: "运营",
+		categoryLv2: "平台经济",
+		analysisTemplateId: "soc:43-5021.00",
+		searchPriority: 120,
+		aliases: [
+			"网约配送员",
+			"即时配送员",
+			"同城配送员",
+			"外卖骑手",
+			"配送骑手"
+		]
+	},
+	{
+		id: "china:bim-technician",
+		occupationId: "17-3011.00",
+		label: "BIM技术员",
+		labelEn: "BIM Technician",
+		categoryLv1: "技术",
+		categoryLv2: "数字建造",
+		analysisTemplateId: "soc:17-3011.00",
+		searchPriority: 120,
+		aliases: [
+			"建筑信息模型技术员",
+			"BIM技术员",
+			"建筑信息模型师",
+			"BIM工程师",
+			"BIM建模师"
+		]
+	},
+	{
+		id: "china:carbon-emissions-administrator",
+		occupationId: "13-1041.00",
+		label: "碳排放管理员",
+		labelEn: "Carbon Emissions Administrator",
+		categoryLv1: "技术",
+		categoryLv2: "绿色经济",
+		analysisTemplateId: "soc:13-1041.00",
+		searchPriority: 120,
+		aliases: [
+			"碳排放管理员",
+			"碳管理师",
+			"碳排放管理",
+			"碳盘查专员",
+			"碳核算管理员"
+		]
+	},
+	{
+		id: "china:ai-training-specialist",
+		occupationId: "15-2051.00",
+		label: "人工智能训练师",
+		labelEn: "AI Training Specialist",
+		categoryLv1: "技术",
+		categoryLv2: "AI/数据",
+		analysisTemplateId: "soc:15-2051.00",
+		searchPriority: 120,
+		aliases: [
+			"人工智能训练师",
+			"AI训练师",
+			"数据标注师",
+			"模型训练师",
+			"人工智能标注师"
+		]
+	},
+	{
+		id: "china:generative-ai-application-specialist",
+		occupationId: "15-1252.00",
+		label: "生成式AI应用员",
+		labelEn: "Generative AI Application Specialist",
+		categoryLv1: "技术",
+		categoryLv2: "AI/数据",
+		analysisTemplateId: "soc:15-1252.00",
+		searchPriority: 120,
+		aliases: [
+			"生成式人工智能系统应用员",
+			"生成式AI应用员",
+			"AIGC应用员",
+			"生成式AI应用师",
+			"大模型应用专员",
+			"AI应用员"
+		]
+	},
+	{
+		id: "china:information-security-testing-specialist",
+		occupationId: "15-1212.00",
+		label: "信息安全测试员",
+		labelEn: "Information Security Testing Specialist",
+		categoryLv1: "技术",
+		categoryLv2: "AI/数据",
+		analysisTemplateId: "soc:15-1212.00",
+		searchPriority: 120,
+		aliases: [
+			"信息安全测试员",
+			"安全测试工程师",
+			"渗透测试员",
+			"安全测试专员",
+			"网络安全测试员"
+		]
+	},
+	{
+		id: "china:homestay-steward",
+		occupationId: "39-6012.00",
+		label: "民宿管家",
+		labelEn: "Homestay Steward",
+		categoryLv1: "运营",
+		categoryLv2: "平台经济",
+		analysisTemplateId: "soc:39-6012.00",
+		searchPriority: 120,
+		aliases: [
+			"民宿管家",
+			"民宿运营管家",
+			"民宿主理人",
+			"民宿运营",
+			"民宿前台管家"
+		]
+	},
+	{
+		id: "china:supply-chain-manager",
+		occupationId: "13-1081.00",
+		label: "供应链管理师",
+		labelEn: "Supply Chain Manager",
+		categoryLv1: "物流",
+		categoryLv2: "产业运营",
+		analysisTemplateId: "soc:13-1081.00",
+		searchPriority: 120,
+		aliases: [
+			"供应链管理师",
+			"供应链运营师",
+			"供应链经理",
+			"供应链专员",
+			"供应链规划"
+		]
+	},
+	{
+		id: "china:digital-twin-application-technician",
+		occupationId: "15-1252.00",
+		label: "数字孪生应用技术员",
+		labelEn: "Digital Twin Application Technician",
+		categoryLv1: "技术",
+		categoryLv2: "AI/数据",
+		analysisTemplateId: "soc:15-1252.00",
+		searchPriority: 120,
+		aliases: [
+			"数字孪生应用技术员",
+			"数字孪生技术员",
+			"数字孪生工程师",
+			"孪生应用工程师",
+			"数字孪生实施"
+		]
+	},
+	{
+		id: "china:carbon-sink-measurement-and-assessment-specialist",
+		occupationId: "19-2041.00",
+		label: "碳汇计量评估师",
+		labelEn: "Carbon Sink Measurement and Assessment Specialist",
+		categoryLv1: "技术",
+		categoryLv2: "绿色经济",
+		analysisTemplateId: "soc:19-2041.00",
+		searchPriority: 120,
+		aliases: [
+			"碳汇计量评估师",
+			"碳汇评估师",
+			"碳汇计量师",
+			"碳汇核算师",
+			"碳汇项目评估"
+		]
+	},
+	{
+		id: "china:family-education-guidance-specialist",
+		occupationId: "21-1012.00",
+		label: "家庭教育指导师",
+		labelEn: "Family Education Guidance Specialist",
+		categoryLv1: "教育医疗",
+		categoryLv2: "家庭服务",
+		analysisTemplateId: "soc:21-1012.00",
+		searchPriority: 120,
+		aliases: [
+			"家庭教育指导师",
+			"家庭教育顾问",
+			"家庭教育咨询师",
+			"家教指导师",
+			"亲子教育指导"
+		]
+	},
+	{
+		id: "china:elderly-functional-assessment-specialist",
+		occupationId: "21-1093.00",
+		label: "老年人能力评估师",
+		labelEn: "Elderly Functional Assessment Specialist",
+		categoryLv1: "教育医疗",
+		categoryLv2: "健康照护",
+		analysisTemplateId: "soc:21-1093.00",
+		searchPriority: 120,
+		aliases: [
+			"老年人能力评估师",
+			"老年能力评估师",
+			"老年评估师",
+			"失能评估师",
+			"养老评估师"
+		]
+	},
+	{
+		id: "china:birth-defect-prevention-counselor",
+		occupationId: "29-9092.00",
+		label: "出生缺陷防控咨询师",
+		labelEn: "Birth Defect Prevention Counselor",
+		categoryLv1: "教育医疗",
+		categoryLv2: "健康照护",
+		analysisTemplateId: "soc:29-9092.00",
+		searchPriority: 120,
+		aliases: [
+			"出生缺陷防控咨询师",
+			"出生缺陷咨询师",
+			"优生咨询师",
+			"出生缺陷防控",
+			"产前防控咨询"
+		]
+	},
+	{
+		id: "china:assistive-technology-consultant",
+		occupationId: "21-1015.00",
+		label: "康复辅助技术咨询师",
+		labelEn: "Assistive Technology Consultant",
+		categoryLv1: "教育医疗",
+		categoryLv2: "健康照护",
+		analysisTemplateId: "soc:21-1015.00",
+		searchPriority: 120,
+		aliases: [
+			"康复辅助技术咨询师",
+			"辅具咨询师",
+			"康复辅具咨询师",
+			"辅助技术咨询师",
+			"辅具适配师"
+		]
+	},
+	{
+		id: "china:agricultural-digitalization-technician",
+		occupationId: "19-4012.00",
+		label: "农业数字化技术员",
+		labelEn: "Agricultural Digitalization Technician",
+		categoryLv1: "其他",
+		categoryLv2: "数字农业",
+		analysisTemplateId: "soc:19-4012.00",
+		searchPriority: 120,
+		aliases: [
+			"农业数字化技术员",
+			"数字农业技术员",
+			"智慧农业技术员",
+			"农业数字化专员",
+			"数字农技员"
+		]
+	},
+	{
+		id: "china:blockchain-application-operator",
+		occupationId: "15-1299.00",
+		label: "区块链应用操作员",
+		labelEn: "Blockchain Application Operator",
+		categoryLv1: "技术",
+		categoryLv2: "AI/数据",
+		analysisTemplateId: "soc:15-1299.00",
+		searchPriority: 120,
+		aliases: [
+			"区块链应用操作员",
+			"区块链操作员",
+			"链上应用操作员",
+			"区块链运营专员",
+			"链上业务操作员"
+		]
+	}
+];
+
+//# sourceMappingURL=data:application/json;base64,eyJtYXBwaW5ncyI6IkFBWUEsT0FBTyxNQUFNLHdCQUFrRDtDQUM3RDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQVk7R0FBUztHQUFPO0dBQVM7R0FBVztFQUMzRDtDQUNEO0VBQ0UsSUFBSTtFQUNKLGNBQWM7RUFDZCxPQUFPO0VBQ1AsU0FBUztFQUNULGFBQWE7RUFDYixhQUFhO0VBQ2Isb0JBQW9CO0VBQ3BCLGdCQUFnQjtFQUNoQixTQUFTO0dBQUM7R0FBVTtHQUFPO0dBQU87R0FBUTtHQUFTO0VBQ3BEO0NBQ0Q7RUFDRSxJQUFJO0VBQ0osY0FBYztFQUNkLE9BQU87RUFDUCxTQUFTO0VBQ1QsYUFBYTtFQUNiLGFBQWE7RUFDYixvQkFBb0I7RUFDcEIsZ0JBQWdCO0VBQ2hCLFNBQVM7R0FBQztHQUFRO0dBQVE7R0FBUTtHQUFPO0dBQU87RUFDakQ7Q0FDRDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQVk7R0FBUztHQUFVO0dBQVM7R0FBUztFQUM1RDtDQUNEO0VBQ0UsSUFBSTtFQUNKLGNBQWM7RUFDZCxPQUFPO0VBQ1AsU0FBUztFQUNULGFBQWE7RUFDYixhQUFhO0VBQ2Isb0JBQW9CO0VBQ3BCLGdCQUFnQjtFQUNoQixTQUFTO0dBQUM7R0FBUztHQUFPO0dBQVE7R0FBUTtHQUFTO0VBQ3BEO0NBQ0Q7RUFDRSxJQUFJO0VBQ0osY0FBYztFQUNkLE9BQU87RUFDUCxTQUFTO0VBQ1QsYUFBYTtFQUNiLGFBQWE7RUFDYixvQkFBb0I7RUFDcEIsZ0JBQWdCO0VBQ2hCLFNBQVM7R0FBQztHQUFVO0dBQVE7R0FBUTtHQUFRO0dBQVU7RUFDdkQ7Q0FDRDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQWU7R0FBVztHQUFVO0dBQVc7R0FBVTtHQUFRO0VBQzVFO0NBQ0Q7RUFDRSxJQUFJO0VBQ0osY0FBYztFQUNkLE9BQU87RUFDUCxTQUFTO0VBQ1QsYUFBYTtFQUNiLGFBQWE7RUFDYixvQkFBb0I7RUFDcEIsZ0JBQWdCO0VBQ2hCLFNBQVM7R0FBQztHQUFVO0dBQVU7R0FBUTtHQUFTO0dBQVU7RUFDMUQ7Q0FDRDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQU87R0FBUztHQUFRO0dBQU87R0FBUztFQUNuRDtDQUNEO0VBQ0UsSUFBSTtFQUNKLGNBQWM7RUFDZCxPQUFPO0VBQ1AsU0FBUztFQUNULGFBQWE7RUFDYixhQUFhO0VBQ2Isb0JBQW9CO0VBQ3BCLGdCQUFnQjtFQUNoQixTQUFTO0dBQUM7R0FBUztHQUFTO0dBQVE7R0FBUTtHQUFRO0VBQ3JEO0NBQ0Q7RUFDRSxJQUFJO0VBQ0osY0FBYztFQUNkLE9BQU87RUFDUCxTQUFTO0VBQ1QsYUFBYTtFQUNiLGFBQWE7RUFDYixvQkFBb0I7RUFDcEIsZ0JBQWdCO0VBQ2hCLFNBQVM7R0FBQztHQUFZO0dBQVU7R0FBVTtHQUFVO0dBQVM7RUFDOUQ7Q0FDRDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQVU7R0FBUTtHQUFRO0dBQVE7R0FBUztFQUN0RDtDQUNEO0VBQ0UsSUFBSTtFQUNKLGNBQWM7RUFDZCxPQUFPO0VBQ1AsU0FBUztFQUNULGFBQWE7RUFDYixhQUFhO0VBQ2Isb0JBQW9CO0VBQ3BCLGdCQUFnQjtFQUNoQixTQUFTO0dBQUM7R0FBVTtHQUFTO0dBQVU7R0FBUTtHQUFTO0VBQ3pEO0NBQ0Q7RUFDRSxJQUFJO0VBQ0osY0FBYztFQUNkLE9BQU87RUFDUCxTQUFTO0VBQ1QsYUFBYTtFQUNiLGFBQWE7RUFDYixvQkFBb0I7RUFDcEIsZ0JBQWdCO0VBQ2hCLFNBQVM7R0FBQztHQUFXO0dBQVU7R0FBUTtHQUFRO0dBQVE7RUFDeEQ7Q0FDRDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQVk7R0FBVTtHQUFRO0dBQVM7R0FBUztFQUMzRDtDQUNEO0VBQ0UsSUFBSTtFQUNKLGNBQWM7RUFDZCxPQUFPO0VBQ1AsU0FBUztFQUNULGFBQWE7RUFDYixhQUFhO0VBQ2Isb0JBQW9CO0VBQ3BCLGdCQUFnQjtFQUNoQixTQUFTO0dBQUM7R0FBWTtHQUFRO0dBQVU7R0FBVTtHQUFRO0VBQzNEO0NBQ0Q7RUFDRSxJQUFJO0VBQ0osY0FBYztFQUNkLE9BQU87RUFDUCxTQUFTO0VBQ1QsYUFBYTtFQUNiLGFBQWE7RUFDYixvQkFBb0I7RUFDcEIsZ0JBQWdCO0VBQ2hCLFNBQVM7R0FBQztHQUFXO0dBQVU7R0FBVTtHQUFVO0dBQVE7RUFDNUQ7Q0FDRDtFQUNFLElBQUk7RUFDSixjQUFjO0VBQ2QsT0FBTztFQUNQLFNBQVM7RUFDVCxhQUFhO0VBQ2IsYUFBYTtFQUNiLG9CQUFvQjtFQUNwQixnQkFBZ0I7RUFDaEIsU0FBUztHQUFDO0dBQVc7R0FBUztHQUFVO0dBQVU7R0FBVTtFQUM3RDtDQUNGIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIm9jY3VwYXRpb24tc2VhcmNoLWNoaW5hLXAwLnRzIl0sInZlcnNpb24iOjMsInNvdXJjZXNDb250ZW50IjpbImludGVyZmFjZSBDaGluYVAwU2VhcmNoU2VlZEVudHJ5IHtcbiAgaWQ6IHN0cmluZztcbiAgb2NjdXBhdGlvbklkOiBzdHJpbmc7XG4gIGxhYmVsOiBzdHJpbmc7XG4gIGxhYmVsRW4/OiBzdHJpbmc7XG4gIGNhdGVnb3J5THYxOiBzdHJpbmc7XG4gIGNhdGVnb3J5THYyOiBzdHJpbmc7XG4gIGFuYWx5c2lzVGVtcGxhdGVJZDogc3RyaW5nO1xuICBzZWFyY2hQcmlvcml0eTogbnVtYmVyO1xuICBhbGlhc2VzOiBzdHJpbmdbXTtcbn1cblxuZXhwb3J0IGNvbnN0IENISU5BX1AwX1NFQVJDSF9TRUVEUzogQ2hpbmFQMFNlYXJjaFNlZWRFbnRyeVtdID0gW1xuICB7XG4gICAgaWQ6IFwiY2hpbmE6Y3Jvc3MtYm9yZGVyLWUtY29tbWVyY2Utb3BlcmF0aW9ucy1tYW5hZ2VyXCIsXG4gICAgb2NjdXBhdGlvbklkOiBcIjEzLTExNjEuMDBcIixcbiAgICBsYWJlbDogXCLot6jlooPnlLXllYbov5DokKXnrqHnkIbluIhcIixcbiAgICBsYWJlbEVuOiBcIkNyb3NzLUJvcmRlciBFLUNvbW1lcmNlIE9wZXJhdGlvbnMgTWFuYWdlclwiLFxuICAgIGNhdGVnb3J5THYxOiBcIui/kOiQpVwiLFxuICAgIGNhdGVnb3J5THYyOiBcIuW5s+WPsOe7j+a1jlwiLFxuICAgIGFuYWx5c2lzVGVtcGxhdGVJZDogXCJzb2M6MTMtMTE2MS4wMFwiLFxuICAgIHNlYXJjaFByaW9yaXR5OiAxMjAsXG4gICAgYWxpYXNlczogW1wi6Leo5aKD55S15ZWG6L+Q6JCl566h55CG5biIXCIsXCLot6jlooPnlLXllYbov5DokKVcIixcIui3qOWig+i/kOiQpVwiLFwi6Leo5aKD5bqX6ZO66L+Q6JClXCIsXCLot6jlooPnlLXllYbov5DokKXnu4/nkIZcIl0sXG4gIH0sXG4gIHtcbiAgICBpZDogXCJjaGluYTp1c2VyLWdyb3d0aC1vcGVyYXRpb25zLXNwZWNpYWxpc3RcIixcbiAgICBvY2N1cGF0aW9uSWQ6IFwiMTMtMTE2MS4wMFwiLFxuICAgIGxhYmVsOiBcIueUqOaIt+WinumVv+i/kOiQpeW4iFwiLFxuICAgIGxhYmVsRW46IFwiVXNlciBHcm93dGggT3BlcmF0aW9ucyBTcGVjaWFsaXN0XCIsXG4gICAgY2F0ZWdvcnlMdjE6IFwi6L+Q6JClXCIsXG4gICAgY2F0ZWdvcnlMdjI6IFwi5bmz5Y+w57uP5rWOXCIsXG4gICAgYW5hbHlzaXNUZW1wbGF0ZUlkOiBcInNvYzoxMy0xMTYxLjAwXCIsXG4gICAgc2VhcmNoUHJpb3JpdHk6IDEyMCxcbiAgICBhbGlhc2VzOiBbXCLnlKjmiLflop7plb/ov5DokKXluIhcIixcIuWinumVv+i/kOiQpVwiLFwi55So5oi35aKe6ZW/XCIsXCLlop7plb/otJ/otKPkurpcIixcIua1gemHj+WinumVv+i/kOiQpVwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiBcImNoaW5hOm9uLWRlbWFuZC1kZWxpdmVyeS1yaWRlclwiLFxuICAgIG9jY3VwYXRpb25JZDogXCI0My01MDIxLjAwXCIsXG4gICAgbGFiZWw6IFwi572R57qm6YWN6YCB5ZGYXCIsXG4gICAgbGFiZWxFbjogXCJPbi1EZW1hbmQgRGVsaXZlcnkgUmlkZXJcIixcbiAgICBjYXRlZ29yeUx2MTogXCLov5DokKVcIixcbiAgICBjYXRlZ29yeUx2MjogXCLlubPlj7Dnu4/mtY5cIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjQzLTUwMjEuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIue9kee6pumFjemAgeWRmFwiLFwi5Y2z5pe26YWN6YCB5ZGYXCIsXCLlkIzln47phY3pgIHlkZhcIixcIuWkluWNlumqkeaJi1wiLFwi6YWN6YCB6aqR5omLXCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6YmltLXRlY2huaWNpYW5cIixcbiAgICBvY2N1cGF0aW9uSWQ6IFwiMTctMzAxMS4wMFwiLFxuICAgIGxhYmVsOiBcIkJJTeaKgOacr+WRmFwiLFxuICAgIGxhYmVsRW46IFwiQklNIFRlY2huaWNpYW5cIixcbiAgICBjYXRlZ29yeUx2MTogXCLmioDmnK9cIixcbiAgICBjYXRlZ29yeUx2MjogXCLmlbDlrZflu7rpgKBcIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjE3LTMwMTEuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuW7uuetkeS/oeaBr+aooeWei+aKgOacr+WRmFwiLFwiQklN5oqA5pyv5ZGYXCIsXCLlu7rnrZHkv6Hmga/mqKHlnovluIhcIixcIkJJTeW3peeoi+W4iFwiLFwiQklN5bu65qih5biIXCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6Y2FyYm9uLWVtaXNzaW9ucy1hZG1pbmlzdHJhdG9yXCIsXG4gICAgb2NjdXBhdGlvbklkOiBcIjEzLTEwNDEuMDBcIixcbiAgICBsYWJlbDogXCLnorPmjpLmlL7nrqHnkIblkZhcIixcbiAgICBsYWJlbEVuOiBcIkNhcmJvbiBFbWlzc2lvbnMgQWRtaW5pc3RyYXRvclwiLFxuICAgIGNhdGVnb3J5THYxOiBcIuaKgOacr1wiLFxuICAgIGNhdGVnb3J5THYyOiBcIue7v+iJsue7j+a1jlwiLFxuICAgIGFuYWx5c2lzVGVtcGxhdGVJZDogXCJzb2M6MTMtMTA0MS4wMFwiLFxuICAgIHNlYXJjaFByaW9yaXR5OiAxMjAsXG4gICAgYWxpYXNlczogW1wi56Kz5o6S5pS+566h55CG5ZGYXCIsXCLnorPnrqHnkIbluIhcIixcIueis+aOkuaUvueuoeeQhlwiLFwi56Kz55uY5p+l5LiT5ZGYXCIsXCLnorPmoLjnrpfnrqHnkIblkZhcIl0sXG4gIH0sXG4gIHtcbiAgICBpZDogXCJjaGluYTphaS10cmFpbmluZy1zcGVjaWFsaXN0XCIsXG4gICAgb2NjdXBhdGlvbklkOiBcIjE1LTIwNTEuMDBcIixcbiAgICBsYWJlbDogXCLkurrlt6Xmmbrog73orq3nu4PluIhcIixcbiAgICBsYWJlbEVuOiBcIkFJIFRyYWluaW5nIFNwZWNpYWxpc3RcIixcbiAgICBjYXRlZ29yeUx2MTogXCLmioDmnK9cIixcbiAgICBjYXRlZ29yeUx2MjogXCJBSS/mlbDmja5cIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjE1LTIwNTEuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuS6uuW3peaZuuiDveiuree7g+W4iFwiLFwiQUnorq3nu4PluIhcIixcIuaVsOaNruagh+azqOW4iFwiLFwi5qih5Z6L6K6t57uD5biIXCIsXCLkurrlt6Xmmbrog73moIfms6jluIhcIl0sXG4gIH0sXG4gIHtcbiAgICBpZDogXCJjaGluYTpnZW5lcmF0aXZlLWFpLWFwcGxpY2F0aW9uLXNwZWNpYWxpc3RcIixcbiAgICBvY2N1cGF0aW9uSWQ6IFwiMTUtMTI1Mi4wMFwiLFxuICAgIGxhYmVsOiBcIueUn+aIkOW8j0FJ5bqU55So5ZGYXCIsXG4gICAgbGFiZWxFbjogXCJHZW5lcmF0aXZlIEFJIEFwcGxpY2F0aW9uIFNwZWNpYWxpc3RcIixcbiAgICBjYXRlZ29yeUx2MTogXCLmioDmnK9cIixcbiAgICBjYXRlZ29yeUx2MjogXCJBSS/mlbDmja5cIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjE1LTEyNTIuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIueUn+aIkOW8j+S6uuW3peaZuuiDveezu+e7n+W6lOeUqOWRmFwiLFwi55Sf5oiQ5byPQUnlupTnlKjlkZhcIixcIkFJR0PlupTnlKjlkZhcIixcIueUn+aIkOW8j0FJ5bqU55So5biIXCIsXCLlpKfmqKHlnovlupTnlKjkuJPlkZhcIixcIkFJ5bqU55So5ZGYXCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6aW5mb3JtYXRpb24tc2VjdXJpdHktdGVzdGluZy1zcGVjaWFsaXN0XCIsXG4gICAgb2NjdXBhdGlvbklkOiBcIjE1LTEyMTIuMDBcIixcbiAgICBsYWJlbDogXCLkv6Hmga/lronlhajmtYvor5XlkZhcIixcbiAgICBsYWJlbEVuOiBcIkluZm9ybWF0aW9uIFNlY3VyaXR5IFRlc3RpbmcgU3BlY2lhbGlzdFwiLFxuICAgIGNhdGVnb3J5THYxOiBcIuaKgOacr1wiLFxuICAgIGNhdGVnb3J5THYyOiBcIkFJL+aVsOaNrlwiLFxuICAgIGFuYWx5c2lzVGVtcGxhdGVJZDogXCJzb2M6MTUtMTIxMi4wMFwiLFxuICAgIHNlYXJjaFByaW9yaXR5OiAxMjAsXG4gICAgYWxpYXNlczogW1wi5L+h5oGv5a6J5YWo5rWL6K+V5ZGYXCIsXCLlronlhajmtYvor5Xlt6XnqIvluIhcIixcIua4l+mAj+a1i+ivleWRmFwiLFwi5a6J5YWo5rWL6K+V5LiT5ZGYXCIsXCLnvZHnu5zlronlhajmtYvor5XlkZhcIl0sXG4gIH0sXG4gIHtcbiAgICBpZDogXCJjaGluYTpob21lc3RheS1zdGV3YXJkXCIsXG4gICAgb2NjdXBhdGlvbklkOiBcIjM5LTYwMTIuMDBcIixcbiAgICBsYWJlbDogXCLmsJHlrr/nrqHlrrZcIixcbiAgICBsYWJlbEVuOiBcIkhvbWVzdGF5IFN0ZXdhcmRcIixcbiAgICBjYXRlZ29yeUx2MTogXCLov5DokKVcIixcbiAgICBjYXRlZ29yeUx2MjogXCLlubPlj7Dnu4/mtY5cIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjM5LTYwMTIuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuawkeWuv+euoeWutlwiLFwi5rCR5a6/6L+Q6JCl566h5a62XCIsXCLmsJHlrr/kuLvnkIbkurpcIixcIuawkeWuv+i/kOiQpVwiLFwi5rCR5a6/5YmN5Y+w566h5a62XCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6c3VwcGx5LWNoYWluLW1hbmFnZXJcIixcbiAgICBvY2N1cGF0aW9uSWQ6IFwiMTMtMTA4MS4wMFwiLFxuICAgIGxhYmVsOiBcIuS+m+W6lOmTvueuoeeQhuW4iFwiLFxuICAgIGxhYmVsRW46IFwiU3VwcGx5IENoYWluIE1hbmFnZXJcIixcbiAgICBjYXRlZ29yeUx2MTogXCLnianmtYFcIixcbiAgICBjYXRlZ29yeUx2MjogXCLkuqfkuJrov5DokKVcIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjEzLTEwODEuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuS+m+W6lOmTvueuoeeQhuW4iFwiLFwi5L6b5bqU6ZO+6L+Q6JCl5biIXCIsXCLkvpvlupTpk77nu4/nkIZcIixcIuS+m+W6lOmTvuS4k+WRmFwiLFwi5L6b5bqU6ZO+6KeE5YiSXCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6ZGlnaXRhbC10d2luLWFwcGxpY2F0aW9uLXRlY2huaWNpYW5cIixcbiAgICBvY2N1cGF0aW9uSWQ6IFwiMTUtMTI1Mi4wMFwiLFxuICAgIGxhYmVsOiBcIuaVsOWtl+WtqueUn+W6lOeUqOaKgOacr+WRmFwiLFxuICAgIGxhYmVsRW46IFwiRGlnaXRhbCBUd2luIEFwcGxpY2F0aW9uIFRlY2huaWNpYW5cIixcbiAgICBjYXRlZ29yeUx2MTogXCLmioDmnK9cIixcbiAgICBjYXRlZ29yeUx2MjogXCJBSS/mlbDmja5cIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjE1LTEyNTIuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuaVsOWtl+WtqueUn+W6lOeUqOaKgOacr+WRmFwiLFwi5pWw5a2X5a2q55Sf5oqA5pyv5ZGYXCIsXCLmlbDlrZflrarnlJ/lt6XnqIvluIhcIixcIuWtqueUn+W6lOeUqOW3peeoi+W4iFwiLFwi5pWw5a2X5a2q55Sf5a6e5pa9XCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6Y2FyYm9uLXNpbmstbWVhc3VyZW1lbnQtYW5kLWFzc2Vzc21lbnQtc3BlY2lhbGlzdFwiLFxuICAgIG9jY3VwYXRpb25JZDogXCIxOS0yMDQxLjAwXCIsXG4gICAgbGFiZWw6IFwi56Kz5rGH6K6h6YeP6K+E5Lyw5biIXCIsXG4gICAgbGFiZWxFbjogXCJDYXJib24gU2luayBNZWFzdXJlbWVudCBhbmQgQXNzZXNzbWVudCBTcGVjaWFsaXN0XCIsXG4gICAgY2F0ZWdvcnlMdjE6IFwi5oqA5pyvXCIsXG4gICAgY2F0ZWdvcnlMdjI6IFwi57u/6Imy57uP5rWOXCIsXG4gICAgYW5hbHlzaXNUZW1wbGF0ZUlkOiBcInNvYzoxOS0yMDQxLjAwXCIsXG4gICAgc2VhcmNoUHJpb3JpdHk6IDEyMCxcbiAgICBhbGlhc2VzOiBbXCLnorPmsYforqHph4/or4TkvLDluIhcIixcIueis+axh+ivhOS8sOW4iFwiLFwi56Kz5rGH6K6h6YeP5biIXCIsXCLnorPmsYfmoLjnrpfluIhcIixcIueis+axh+mhueebruivhOS8sFwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiBcImNoaW5hOmZhbWlseS1lZHVjYXRpb24tZ3VpZGFuY2Utc3BlY2lhbGlzdFwiLFxuICAgIG9jY3VwYXRpb25JZDogXCIyMS0xMDEyLjAwXCIsXG4gICAgbGFiZWw6IFwi5a625bqt5pWZ6IKy5oyH5a+85biIXCIsXG4gICAgbGFiZWxFbjogXCJGYW1pbHkgRWR1Y2F0aW9uIEd1aWRhbmNlIFNwZWNpYWxpc3RcIixcbiAgICBjYXRlZ29yeUx2MTogXCLmlZnogrLljLvnlpdcIixcbiAgICBjYXRlZ29yeUx2MjogXCLlrrbluq3mnI3liqFcIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjIxLTEwMTIuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuWutuW6reaVmeiCsuaMh+WvvOW4iFwiLFwi5a625bqt5pWZ6IKy6aG+6ZeuXCIsXCLlrrbluq3mlZnogrLlkqjor6LluIhcIixcIuWutuaVmeaMh+WvvOW4iFwiLFwi5Lqy5a2Q5pWZ6IKy5oyH5a+8XCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6ZWxkZXJseS1mdW5jdGlvbmFsLWFzc2Vzc21lbnQtc3BlY2lhbGlzdFwiLFxuICAgIG9jY3VwYXRpb25JZDogXCIyMS0xMDkzLjAwXCIsXG4gICAgbGFiZWw6IFwi6ICB5bm05Lq66IO95Yqb6K+E5Lyw5biIXCIsXG4gICAgbGFiZWxFbjogXCJFbGRlcmx5IEZ1bmN0aW9uYWwgQXNzZXNzbWVudCBTcGVjaWFsaXN0XCIsXG4gICAgY2F0ZWdvcnlMdjE6IFwi5pWZ6IKy5Yy755aXXCIsXG4gICAgY2F0ZWdvcnlMdjI6IFwi5YGl5bq354Wn5oqkXCIsXG4gICAgYW5hbHlzaXNUZW1wbGF0ZUlkOiBcInNvYzoyMS0xMDkzLjAwXCIsXG4gICAgc2VhcmNoUHJpb3JpdHk6IDEyMCxcbiAgICBhbGlhc2VzOiBbXCLogIHlubTkurrog73lipvor4TkvLDluIhcIixcIuiAgeW5tOiDveWKm+ivhOS8sOW4iFwiLFwi6ICB5bm06K+E5Lyw5biIXCIsXCLlpLHog73or4TkvLDluIhcIixcIuWFu+iAgeivhOS8sOW4iFwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiBcImNoaW5hOmJpcnRoLWRlZmVjdC1wcmV2ZW50aW9uLWNvdW5zZWxvclwiLFxuICAgIG9jY3VwYXRpb25JZDogXCIyOS05MDkyLjAwXCIsXG4gICAgbGFiZWw6IFwi5Ye655Sf57y66Zm36Ziy5o6n5ZKo6K+i5biIXCIsXG4gICAgbGFiZWxFbjogXCJCaXJ0aCBEZWZlY3QgUHJldmVudGlvbiBDb3Vuc2Vsb3JcIixcbiAgICBjYXRlZ29yeUx2MTogXCLmlZnogrLljLvnlpdcIixcbiAgICBjYXRlZ29yeUx2MjogXCLlgaXlurfnhafmiqRcIixcbiAgICBhbmFseXNpc1RlbXBsYXRlSWQ6IFwic29jOjI5LTkwOTIuMDBcIixcbiAgICBzZWFyY2hQcmlvcml0eTogMTIwLFxuICAgIGFsaWFzZXM6IFtcIuWHuueUn+e8uumZt+mYsuaOp+WSqOivouW4iFwiLFwi5Ye655Sf57y66Zm35ZKo6K+i5biIXCIsXCLkvJjnlJ/lkqjor6LluIhcIixcIuWHuueUn+e8uumZt+mYsuaOp1wiLFwi5Lqn5YmN6Ziy5o6n5ZKo6K+iXCJdLFxuICB9LFxuICB7XG4gICAgaWQ6IFwiY2hpbmE6YXNzaXN0aXZlLXRlY2hub2xvZ3ktY29uc3VsdGFudFwiLFxuICAgIG9jY3VwYXRpb25JZDogXCIyMS0xMDE1LjAwXCIsXG4gICAgbGFiZWw6IFwi5bq35aSN6L6F5Yqp5oqA5pyv5ZKo6K+i5biIXCIsXG4gICAgbGFiZWxFbjogXCJBc3Npc3RpdmUgVGVjaG5vbG9neSBDb25zdWx0YW50XCIsXG4gICAgY2F0ZWdvcnlMdjE6IFwi5pWZ6IKy5Yy755aXXCIsXG4gICAgY2F0ZWdvcnlMdjI6IFwi5YGl5bq354Wn5oqkXCIsXG4gICAgYW5hbHlzaXNUZW1wbGF0ZUlkOiBcInNvYzoyMS0xMDE1LjAwXCIsXG4gICAgc2VhcmNoUHJpb3JpdHk6IDEyMCxcbiAgICBhbGlhc2VzOiBbXCLlurflpI3ovoXliqnmioDmnK/lkqjor6LluIhcIixcIui+heWFt+WSqOivouW4iFwiLFwi5bq35aSN6L6F5YW35ZKo6K+i5biIXCIsXCLovoXliqnmioDmnK/lkqjor6LluIhcIixcIui+heWFt+mAgumFjeW4iFwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiBcImNoaW5hOmFncmljdWx0dXJhbC1kaWdpdGFsaXphdGlvbi10ZWNobmljaWFuXCIsXG4gICAgb2NjdXBhdGlvbklkOiBcIjE5LTQwMTIuMDBcIixcbiAgICBsYWJlbDogXCLlhpzkuJrmlbDlrZfljJbmioDmnK/lkZhcIixcbiAgICBsYWJlbEVuOiBcIkFncmljdWx0dXJhbCBEaWdpdGFsaXphdGlvbiBUZWNobmljaWFuXCIsXG4gICAgY2F0ZWdvcnlMdjE6IFwi5YW25LuWXCIsXG4gICAgY2F0ZWdvcnlMdjI6IFwi5pWw5a2X5Yac5LiaXCIsXG4gICAgYW5hbHlzaXNUZW1wbGF0ZUlkOiBcInNvYzoxOS00MDEyLjAwXCIsXG4gICAgc2VhcmNoUHJpb3JpdHk6IDEyMCxcbiAgICBhbGlhc2VzOiBbXCLlhpzkuJrmlbDlrZfljJbmioDmnK/lkZhcIixcIuaVsOWtl+WGnOS4muaKgOacr+WRmFwiLFwi5pm65oWn5Yac5Lia5oqA5pyv5ZGYXCIsXCLlhpzkuJrmlbDlrZfljJbkuJPlkZhcIixcIuaVsOWtl+WGnOaKgOWRmFwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiBcImNoaW5hOmJsb2NrY2hhaW4tYXBwbGljYXRpb24tb3BlcmF0b3JcIixcbiAgICBvY2N1cGF0aW9uSWQ6IFwiMTUtMTI5OS4wMFwiLFxuICAgIGxhYmVsOiBcIuWMuuWdl+mTvuW6lOeUqOaTjeS9nOWRmFwiLFxuICAgIGxhYmVsRW46IFwiQmxvY2tjaGFpbiBBcHBsaWNhdGlvbiBPcGVyYXRvclwiLFxuICAgIGNhdGVnb3J5THYxOiBcIuaKgOacr1wiLFxuICAgIGNhdGVnb3J5THYyOiBcIkFJL+aVsOaNrlwiLFxuICAgIGFuYWx5c2lzVGVtcGxhdGVJZDogXCJzb2M6MTUtMTI5OS4wMFwiLFxuICAgIHNlYXJjaFByaW9yaXR5OiAxMjAsXG4gICAgYWxpYXNlczogW1wi5Yy65Z2X6ZO+5bqU55So5pON5L2c5ZGYXCIsXCLljLrlnZfpk77mk43kvZzlkZhcIixcIumTvuS4iuW6lOeUqOaTjeS9nOWRmFwiLFwi5Yy65Z2X6ZO+6L+Q6JCl5LiT5ZGYXCIsXCLpk77kuIrkuJrliqHmk43kvZzlkZhcIl0sXG4gIH0sXG5dO1xuIl19

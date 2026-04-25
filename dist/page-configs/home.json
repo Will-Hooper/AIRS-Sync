@@ -1,0 +1,557 @@
+{
+  "schemaVersion": 1,
+  "pageId": "home",
+  "updatedAt": "2026-04-24T00:00:00.000Z",
+  "modules": [
+    {
+      "pageId": "home",
+      "moduleId": "home-hero",
+      "moduleType": "hero",
+      "content": {
+        "kicker": {
+          "key": "home.hero.kicker",
+          "label": "Hero kicker",
+          "value": {
+            "en": "AI Recruitment Stability Score",
+            "zh": "AI 招聘稳定指数"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "title": {
+          "key": "home.hero.title",
+          "label": "Hero title",
+          "value": {
+            "en": "Will AI replace you?",
+            "zh": "AI会取代你吗？"
+          },
+          "style": {
+            "fontSize": 76,
+            "fontWeight": 600,
+            "lineHeight": 0.95,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        },
+        "description": {
+          "key": "home.hero.description",
+          "label": "Hero description",
+          "value": {
+            "en": "AIRS, the AI Recruitment Stability Score. Higher scores mean your occupation is safer; lower scores mean the AI shock has already begun. We track real occupation hiring changes in the United States and layer in how quickly AI is expanding across industries to show what is already happening: which jobs are still in demand, and which roles have already been quietly replaced by AI.",
+            "zh": "AIRS，AI Recruitment Stability Score——AI招聘稳定指数。分数越高，你的职业越安全；分数越低，AI的冲击开始发生。我们追踪美国当下真实的职业招聘变化，叠加AI在各行业的扩张速度，呈现正在发生的事实：哪些工作还在被需要，哪些岗位已经被AI悄悄取代。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 18,
+            "fontWeight": 400,
+            "lineHeight": 1.75,
+            "color": "var(--airs-hero-copy)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-hero",
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 12,
+        "rowSpan": 2,
+        "minHeight": 320,
+        "minColSpan": 6,
+        "maxColSpan": 12,
+        "minRowSpan": 1,
+        "maxRowSpan": 4
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 32,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "home",
+      "moduleId": "home-summary-average",
+      "moduleType": "summary-card",
+      "content": {
+        "label": {
+          "key": "home.summary.average.label",
+          "label": "Label",
+          "value": {
+            "en": "Average score",
+            "zh": "平均分"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.5,
+            "color": "rgba(255,255,255,0.7)",
+            "textAlign": "left"
+          }
+        },
+        "code": {
+          "key": "home.summary.average.code",
+          "label": "Code",
+          "value": {
+            "en": "01",
+            "zh": "01"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "var(--badge-text)",
+            "textAlign": "left"
+          }
+        },
+        "description": {
+          "key": "home.summary.average.description",
+          "label": "Description",
+          "value": {
+            "en": "Higher averages mean the hiring layer remains more stable overall.",
+            "zh": "平均分越高，代表整体招聘稳定度越高。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.75,
+            "color": "rgba(255,255,255,0.55)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-summary",
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 3,
+        "rowSpan": 2,
+        "minHeight": 220,
+        "minColSpan": 2,
+        "maxColSpan": 6,
+        "minRowSpan": 1,
+        "maxRowSpan": 4
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "home",
+      "moduleId": "home-summary-concentration",
+      "moduleType": "summary-card",
+      "content": {
+        "code": {
+          "key": "home.summary.concentration.code",
+          "label": "Code",
+          "value": {
+            "en": "02",
+            "zh": "02"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "label": {
+          "key": "home.summary.concentration.label",
+          "label": "Label",
+          "value": {
+            "en": "Concentration",
+            "zh": "风险集中"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "var(--badge-text)",
+            "textAlign": "left"
+          }
+        },
+        "title": {
+          "key": "home.summary.concentration.title",
+          "label": "Title",
+          "value": {
+            "en": "Risk clusters instead of spreading evenly.",
+            "zh": "风险不会平均落到所有职业，而是先集中在少数岗位。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 30,
+            "fontWeight": 600,
+            "lineHeight": 1.15,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        },
+        "description": {
+          "key": "home.summary.concentration.description",
+          "label": "Description",
+          "value": {
+            "en": "{{highRiskCount}} occupations are already in the highest-risk band.",
+            "zh": "{{highRiskCount}} 个职业已进入高风险区。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.75,
+            "color": "rgba(255,255,255,0.55)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-summary",
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 3,
+        "rowSpan": 2,
+        "minHeight": 220,
+        "minColSpan": 2,
+        "maxColSpan": 6,
+        "minRowSpan": 1,
+        "maxRowSpan": 4
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "home",
+      "moduleId": "home-summary-rewrite",
+      "moduleType": "summary-card",
+      "content": {
+        "code": {
+          "key": "home.summary.rewrite.code",
+          "label": "Code",
+          "value": {
+            "en": "03",
+            "zh": "03"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "label": {
+          "key": "home.summary.rewrite.label",
+          "label": "Label",
+          "value": {
+            "en": "Rewrite share",
+            "zh": "改写占比"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "var(--badge-text)",
+            "textAlign": "left"
+          }
+        },
+        "title": {
+          "key": "home.summary.rewrite.title",
+          "label": "Title",
+          "value": {
+            "en": "Many jobs are changing shape before they stop hiring.",
+            "zh": "不少职业还在招人，但工作方式已经先被改写。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 30,
+            "fontWeight": 600,
+            "lineHeight": 1.15,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        },
+        "description": {
+          "key": "home.summary.rewrite.description",
+          "label": "Description",
+          "value": {
+            "en": "{{rewriteShare}} of occupations are currently augmenting or restructuring.",
+            "zh": "{{rewriteShare}} 的职业正处于“AI辅助增强”或“招聘结构调整中”。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.75,
+            "color": "rgba(255,255,255,0.55)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-summary",
+        "colStart": 7,
+        "rowStart": 1,
+        "colSpan": 3,
+        "rowSpan": 2,
+        "minHeight": 220,
+        "minColSpan": 2,
+        "maxColSpan": 6,
+        "minRowSpan": 1,
+        "maxRowSpan": 4
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "home",
+      "moduleId": "home-summary-signal",
+      "moduleType": "summary-card",
+      "content": {
+        "code": {
+          "key": "home.summary.signal.code",
+          "label": "Code",
+          "value": {
+            "en": "04",
+            "zh": "04"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "label": {
+          "key": "home.summary.signal.label",
+          "label": "Label",
+          "value": {
+            "en": "Earliest signal",
+            "zh": "最早变化"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.3,
+            "color": "var(--badge-text)",
+            "textAlign": "left"
+          }
+        },
+        "title": {
+          "key": "home.summary.signal.title",
+          "label": "Title",
+          "value": {
+            "en": "The earliest shifts usually show up in job postings first.",
+            "zh": "最早出现的变化，通常先写进招聘启事。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 30,
+            "fontWeight": 600,
+            "lineHeight": 1.15,
+            "color": "var(--text-primary)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-summary",
+        "colStart": 10,
+        "rowStart": 1,
+        "colSpan": 3,
+        "rowSpan": 2,
+        "minHeight": 220,
+        "minColSpan": 2,
+        "maxColSpan": 6,
+        "minRowSpan": 1,
+        "maxRowSpan": 4
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "home",
+      "moduleId": "home-current-focus",
+      "moduleType": "focus-card",
+      "content": {
+        "kicker": {
+          "key": "home.currentFocus.kicker",
+          "label": "Kicker",
+          "value": {
+            "en": "Current focus",
+            "zh": "当前聚焦职业"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "button": {
+          "key": "home.currentFocus.button",
+          "label": "Button",
+          "value": {
+            "en": "Open detail",
+            "zh": "查看详情"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "#0f172a",
+            "textAlign": "center"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-side",
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 12,
+        "rowSpan": 3,
+        "minHeight": 280,
+        "minColSpan": 6,
+        "maxColSpan": 12,
+        "minRowSpan": 1,
+        "maxRowSpan": 5
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    },
+    {
+      "pageId": "home",
+      "moduleId": "home-data-panel",
+      "moduleType": "data-panel",
+      "content": {
+        "title": {
+          "key": "home.dataPanel.title",
+          "label": "Title",
+          "value": {
+            "en": "Local time",
+            "zh": "你所在地区时间"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 500,
+            "lineHeight": 1.4,
+            "color": "color-mix(in srgb, var(--accent-blue) 58%, var(--text-primary) 42%)",
+            "textAlign": "left"
+          }
+        },
+        "dataFileLabel": {
+          "key": "home.dataPanel.fileLabel",
+          "label": "Data file label",
+          "value": {
+            "en": "Current data file update",
+            "zh": "当前数据文件更新时间"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.5,
+            "color": "rgba(255,255,255,0.45)",
+            "textAlign": "left"
+          }
+        },
+        "coverageLabel": {
+          "key": "home.dataPanel.coverageLabel",
+          "label": "Coverage label",
+          "value": {
+            "en": "Data coverage date",
+            "zh": "数据覆盖日期"
+          },
+          "style": {
+            "fontSize": 12,
+            "fontWeight": 400,
+            "lineHeight": 1.4,
+            "color": "rgba(255,255,255,0.45)",
+            "textAlign": "left"
+          }
+        },
+        "occupationCountLabel": {
+          "key": "home.dataPanel.occupationCountLabel",
+          "label": "Occupation count label",
+          "value": {
+            "en": "Occupations in view",
+            "zh": "纳入职业数"
+          },
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.5,
+            "color": "rgba(255,255,255,0.45)",
+            "textAlign": "left"
+          }
+        },
+        "note": {
+          "key": "home.dataPanel.note",
+          "label": "Note",
+          "value": {
+            "en": "Occupation counts and classification standards are based on the U.S. Standard Occupational Classification (SOC) system.",
+            "zh": "职业数的来源和分类标准来自美国标准职业分类系统（SOC）。"
+          },
+          "multiline": true,
+          "style": {
+            "fontSize": 14,
+            "fontWeight": 400,
+            "lineHeight": 1.75,
+            "color": "rgba(255,255,255,0.48)",
+            "textAlign": "left"
+          }
+        }
+      },
+      "layout": {
+        "sectionId": "home-side",
+        "colStart": 1,
+        "rowStart": 4,
+        "colSpan": 12,
+        "rowSpan": 4,
+        "minHeight": 420,
+        "minColSpan": 6,
+        "maxColSpan": 12,
+        "minRowSpan": 2,
+        "maxRowSpan": 6
+      },
+      "style": {
+        "background": "var(--panel-bg)",
+        "borderRadius": 30,
+        "padding": 24,
+        "textColor": "var(--text-primary)"
+      },
+      "updatedAt": "2026-04-24T00:00:00.000Z"
+    }
+  ]
+}

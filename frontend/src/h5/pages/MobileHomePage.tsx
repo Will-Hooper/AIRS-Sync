@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getSummary } from "../../lib/api";
 import { trackSearchEvent } from "../../lib/analytics";
+import { getReadOnlyConfigText, useReadOnlyPageConfig } from "../../editor/readOnly";
 import { formatDateTime, formatNumber } from "../../lib/format";
 import type { SummaryPayload } from "../../lib/types";
 import { MobileBottomHero } from "../components/MobileBottomHero";
@@ -28,8 +29,11 @@ export function MobileHomePage() {
   const [summaryError, setSummaryError] = useState<string | null>(null);
   const [now, setNow] = useState(() => new Date());
   const [theme, setTheme] = useAirsTheme();
+  const pageConfig = useReadOnlyPageConfig("home");
 
   const copy = getH5Copy(language);
+  const homeTitle = getReadOnlyConfigText(pageConfig, "home-hero", "title", language, copy.homeTitle);
+  const sourceNote = getReadOnlyConfigText(pageConfig, "home-data-panel", "note", language, copy.sourceNote);
 
   useEffect(() => {
     persistH5Language(language);
@@ -77,7 +81,7 @@ export function MobileHomePage() {
           <div>
             <p className="h5-kicker">{copy.moduleKicker}</p>
             <p className="mt-2 text-sm text-white/55">{subtitle}</p>
-            <p className="mt-2 max-w-[24rem] text-sm leading-7 text-white/45">{copy.sourceNote}</p>
+            <p className="mt-2 max-w-[24rem] text-sm leading-7 text-white/45">{sourceNote}</p>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <H5ThemeSwitch language={language} theme={theme} onChange={setTheme} />
@@ -89,7 +93,7 @@ export function MobileHomePage() {
           <div className="space-y-4 text-center">
             <div className="space-y-2">
               <p className="h5-kicker">{copy.appName}</p>
-              <h1 className="text-4xl font-semibold leading-tight tracking-[-0.06em] text-white">{copy.homeTitle}</h1>
+              <h1 className="text-4xl font-semibold leading-tight tracking-[-0.06em] text-white">{homeTitle}</h1>
             </div>
 
             <div className="mx-auto max-w-[420px] space-y-4">

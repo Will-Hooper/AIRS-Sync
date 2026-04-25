@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
+import { EditorProvider } from "./editor/EditorProvider";
 import { router } from "./router";
 import { applyDesktopShareMetadata } from "./lib/desktop-metadata";
 import { getInitialLanguage, normalizeLanguage } from "./lib/i18n";
@@ -16,6 +17,8 @@ applyDesktopShareMetadata(normalizeLanguage(getInitialLanguage(window.location.s
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <EditorProvider>
+      <RouterProvider router={router} />
+    </EditorProvider>
   </React.StrictMode>
 );

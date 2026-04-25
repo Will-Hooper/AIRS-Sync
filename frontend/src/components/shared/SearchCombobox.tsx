@@ -11,6 +11,9 @@ interface SearchComboboxProps {
   placeholder: string;
   analyticsSource: SearchEventSource;
   buttonPlacement?: "outside" | "inline";
+  buttonLabel?: string;
+  buttonLabelClassName?: string;
+  suggestionsPlacement?: "bottom" | "top";
   value?: string;
   onSelect: (selection: OccupationSearchHit) => void;
   onCommit?: (query: string, selection?: OccupationSearchHit | null, payload?: OccupationSearchPayload | null) => void;
@@ -19,9 +22,11 @@ interface SearchComboboxProps {
 }
 
 interface SuggestionPanelPosition {
-  top: number;
+  top?: number;
+  bottom?: number;
   left: number;
   width: number;
+  maxHeight: number;
 }
 
 export function SearchCombobox({
@@ -29,6 +34,9 @@ export function SearchCombobox({
   placeholder,
   analyticsSource,
   buttonPlacement = "outside",
+  buttonLabel,
+  buttonLabelClassName = "",
+  suggestionsPlacement = "bottom",
   value = "",
   onSelect,
   onCommit,
@@ -82,17 +90,23 @@ export function SearchCombobox({
       const rect = rootRef.current?.getBoundingClientRect();
       if (!rect) return;
 
+      const availableBelow = window.innerHeight - rect.bottom - 24;
+      const availableAbove = rect.top - 24;
       const nextPosition = {
-        top: rect.bottom + 12,
+        top: suggestionsPlacement === "bottom" ? rect.bottom + 12 : undefined,
+        bottom: suggestionsPlacement === "top" ? window.innerHeight - rect.top + 12 : undefined,
         left: rect.left,
-        width: rect.width
+        width: rect.width,
+        maxHeight: Math.max(180, Math.min(380, suggestionsPlacement === "top" ? availableAbove : availableBelow))
       };
 
       setSuggestionPanelPosition((current) =>
         current
         && current.top === nextPosition.top
+        && current.bottom === nextPosition.bottom
         && current.left === nextPosition.left
         && current.width === nextPosition.width
+        && current.maxHeight === nextPosition.maxHeight
           ? current
           : nextPosition
       );
@@ -120,7 +134,7 @@ export function SearchCombobox({
       window.removeEventListener("resize", scheduleUpdate);
       window.removeEventListener("scroll", scheduleUpdate, true);
     };
-  }, [shouldRenderSuggestions, suggestions.length, searchPayload?.matchType, query]);
+  }, [shouldRenderSuggestions, suggestions.length, searchPayload?.matchType, query, suggestionsPlacement]);
 
   const suggestionPanel = shouldRenderSuggestions && suggestionPanelPosition
     ? createPortal(
@@ -129,8 +143,11 @@ export function SearchCombobox({
         style={{
           position: "fixed",
           top: suggestionPanelPosition.top,
+          bottom: suggestionPanelPosition.bottom,
           left: suggestionPanelPosition.left,
           width: suggestionPanelPosition.width,
+          maxHeight: suggestionPanelPosition.maxHeight,
+          overflowY: "auto",
           zIndex: 1200
         }}
       >
@@ -189,7 +206,7 @@ export function SearchCombobox({
             inlineButton ? "airs-input-inline-button" : "shrink-0 px-5 py-3"
           }`}
         >
-          {language === "zh" ? "搜索" : "Search"}
+          <span className={buttonLabelClassName}>{buttonLabel || (language === "zh" ? "搜索" : "Search")}</span>
         </button>
       </div>
       {suggestionPanel}
