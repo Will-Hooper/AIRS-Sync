@@ -19,7 +19,6 @@ import { getHumanMoatFactorEntries, getOccupationUniverseMetrics } from "../lib/
 import { getInitialLanguage, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
 import type { OccupationDetailPayload, OccupationRow } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
-import { useVantaDots } from "../lib/vanta";
 import { getScoreTextStyle } from "../shared/score-color";
 import { getSharePlatformLabel, shareGeneratedImage, type GeneratedShareAsset, type SharePlatform } from "../shared/share/share-generated-image";
 import { renderOccupationShareImage } from "../shared/share/render-occupation-share-image";
@@ -33,24 +32,6 @@ function getTaskSafetyScore(value?: number) {
 function getOccupationTitle(occupation: OccupationRow, language: AppLanguage, entryLabel = "") {
   if (language === "zh") return entryLabel || occupation.titleZh || occupation.title;
   return occupation.title;
-}
-
-function ResultRailBackground() {
-  const backgroundRef = useRef<HTMLDivElement | null>(null);
-  useVantaDots(backgroundRef, {
-    spacingDesktop: 18,
-    spacingMobile: 28,
-    sizeDesktop: 2.2,
-    sizeMobile: 1.7
-  });
-
-  return (
-    <div className="airs-motion-background" aria-hidden="true">
-      <div ref={backgroundRef} className="absolute inset-0" />
-      <div className="airs-motion-background__shade absolute inset-0" />
-      <div className="airs-motion-background__grid absolute inset-0" />
-    </div>
-  );
 }
 
 export function OccupationPage() {
@@ -68,6 +49,7 @@ export function OccupationPage() {
   const [shareError, setShareError] = useState<string | null>(null);
   const [shareNotice, setShareNotice] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [theme, setTheme] = useAirsTheme();
   const pageRef = useRef<HTMLDivElement | null>(null);
   const { isEditMode, exitEditMode, withDebugParam } = useEditorMode();
@@ -133,6 +115,30 @@ export function OccupationPage() {
       }
     };
   }, [shareAsset]);
+
+  useEffect(() => {
+    setShareError(null);
+    setShareNotice(null);
+    setIsShareModalOpen(false);
+    setShareAsset((current) => {
+      if (current?.objectUrl) {
+        URL.revokeObjectURL(current.objectUrl);
+      }
+      return null;
+    });
+  }, [socCode, language]);
+
+  useEffect(() => {
+    if (!isShareModalOpen) return;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+    };
+  }, [isShareModalOpen]);
 
   const occupation = payload?.occupation || null;
   const definition = occupation
@@ -283,29 +289,53 @@ export function OccupationPage() {
     () => (occupation ? getHumanMoatFactorEntries(occupation, language) : []),
     [language, occupation]
   );
+  const quadrantConclusion = universeMetrics?.quadrant.detailConclusion
+    || (language === "zh" ? "当前暂时没有可用的象限结论。" : "No quadrant conclusion is available right now.");
+
+  const openShareModal = async () => {
+    if (!occupation || editor.isEditMode) return;
+    setIsShareModalOpen(true);
+    if (!shareAsset && !generating) {
+      await createShareImage();
+    }
+  };
 
   return (
     <div className={`airs-result-shell ${editor.isEditMode ? "airs-editor-active" : ""}`.trim()}>
       <EditorChrome editor={editor} language={language} />
-
-      <aside className="airs-result-rail">
-        <ResultRailBackground />
-        <button type="button" className="airs-result-rail__brand" onClick={() => navigate(withDebugParam("/"))}>
-          AIRS
-        </button>
-        <nav className="airs-result-rail__nav" aria-label="Home summary">
-          <button type="button" onClick={() => navigate(withDebugParam("/"))}>首页</button>
-          <button type="button" onClick={() => navigate(withDebugParam("/"))}>这是什么？</button>
-          <button type="button" onClick={() => navigate(withDebugParam("/"))}>随便逛逛</button>
-          <button type="button" onClick={() => navigate(withDebugParam("/"))}>职业宇宙图</button>
-        </nav>
-      </aside>
 
       <main ref={pageRef} className="airs-result-main">
         <header data-numbered-box className="airs-result-topbar">
           <button type="button" className="airs-button" onClick={() => navigate(withDebugParam("/"))}>
             {copy.backToUniverse}
           </button>
+          <SearchCombobox
+            language={language}
+            placeholder={copy.detailSearchPlaceholder}
+            analyticsSource="desktop-detail"
+            buttonPlacement="inline"
+            buttonLabel="Thinking"
+            buttonLabelClassName="airs-thinking-label"
+            suggestionsPlacement="bottom"
+            onCommit={(query, selected, payload) => {
+              void trackSearchEvent({
+                query,
+                source: "desktop-detail",
+                language,
+                occupation: selected?.occupation,
+                searchLabel: selected?.label,
+                matchType: payload?.matchType || selected?.matchType,
+                matchedAlias: selected?.matchedAlias,
+                resultCount: payload?.resultCount,
+                isZeroResult: !payload?.primaryResult,
+                didClickResult: Boolean(selected)
+              });
+            }}
+            onSelect={(selection) => {
+              navigate(detailPathForSelection(selection.occupation.socCode, selection.label));
+            }}
+            className="airs-apple-search airs-result-topbar__search"
+          />
           <div className="airs-result-topbar__actions">
             <ThemeSwitch compact language={language} theme={theme} onChange={setTheme} />
             <LanguageSwitch compact language={language} onChange={setLanguage} />
@@ -343,12 +373,20 @@ export function OccupationPage() {
                   <span className="airs-chip">{labelText(language, occupation.label)}</span>
                 </div>
                 <p>{summary}</p>
+                <p className="airs-result-hero__conclusion">{quadrantConclusion}</p>
               </div>
               <div className="airs-result-score">
-                <span style={getScoreTextStyle(scoreValue, { highIsDangerous: false, theme })}>
-                  {formatNumber(scoreValue, 0, language)}
-                </span>
-                <small>AIRS</small>
+                <div className="airs-result-score__value">
+                  <span style={getScoreTextStyle(scoreValue, { highIsDangerous: false, theme })}>
+                    {formatNumber(scoreValue, 0, language)}
+                  </span>
+                  <small>AIRS</small>
+                </div>
+                <div className="airs-result-score__actions">
+                  <button type="button" className="airs-button-primary" disabled={editor.isEditMode} onClick={() => void openShareModal()}>
+                    {generating ? copy.loading : language === "zh" ? "分享出去" : "Share"}
+                  </button>
+                </div>
               </div>
             </>
           ) : null}
@@ -366,76 +404,6 @@ export function OccupationPage() {
               fallback={copy.definitionKicker}
             />
             <p className="airs-result-readable">{definition}</p>
-          </article>
-
-          <article data-numbered-box className="airs-result-panel">
-            <EditableText
-              editor={editor}
-              moduleId="occupation-status"
-              fieldName="statusLabel"
-              language={language}
-              as="p"
-              className="airs-kicker"
-              fallback={copy.statusLabel}
-            />
-            <div className="airs-status-score" style={getScoreTextStyle(scoreValue, { highIsDangerous: false, theme })}>
-              {occupation ? formatNumber(scoreValue, 0, language) : "--"}
-            </div>
-            <div className="airs-status-label">{occupation ? labelText(language, occupation.label) : "--"}</div>
-            <p className="airs-result-muted">
-              {occupation && Number(occupation.postings || 0) > 0
-                ? language === "zh"
-                  ? `当前抓到稳定公开招聘岗位 ${formatNumber(occupation.postings || 0, 0, language)} 个。`
-                  : `${formatNumber(occupation.postings || 0, 0, language)} active public openings are currently attached to this occupation.`
-                : language === "zh"
-                  ? "当前没有抓到稳定的公开招聘岗位数，因此这里先用美国高校相关专业的公开结果作为就业侧补充参考。"
-                  : "No stable public opening count is currently available, so related college outcomes are shown here as a labor-market fallback."}
-            </p>
-          </article>
-
-          <article data-numbered-box className="airs-result-panel airs-result-panel--wide">
-            <p className="airs-kicker">{language === "zh" ? "AI 结论" : "AI conclusion"}</p>
-            <h2>{universeMetrics?.quadrant.title || (language === "zh" ? "职业结论" : "Occupation conclusion")}</h2>
-            <p className="airs-result-muted">
-              {universeMetrics?.quadrant.detailConclusion || (language === "zh" ? "当前暂时没有可用的象限结论。" : "No quadrant conclusion is available right now.")}
-            </p>
-            <div className="airs-result-signal-grid">
-              <article>
-                <span>{language === "zh" ? "AI 替代压力" : "AI Replacement Pressure"}</span>
-                <strong>{occupation ? formatNumber(universeMetrics?.aiReplacementPressure || 0, 0, language) : "--"}</strong>
-              </article>
-              <article>
-                <span>{language === "zh" ? "人的护城河" : "Human Moat"}</span>
-                <strong>{occupation ? formatNumber(universeMetrics?.humanMoatScore || 0, 0, language) : "--"}</strong>
-              </article>
-              <article>
-                <span>{language === "zh" ? "所在区域" : "Zone"}</span>
-                <strong>{universeMetrics?.quadrant.label || "--"}</strong>
-              </article>
-            </div>
-          </article>
-
-          <article data-numbered-box className="airs-result-panel">
-            <p className="airs-kicker">{language === "zh" ? "人的护城河" : "Human moat"}</p>
-            <div className="airs-status-score" style={getScoreTextStyle(universeMetrics?.humanMoatScore || 0, { highIsDangerous: false, theme })}>
-              {occupation ? formatNumber(universeMetrics?.humanMoatScore || 0, 0, language) : "--"}
-            </div>
-            <div className="airs-status-label">
-              {occupation ? `${language === "zh" ? "护城河等级" : "Moat level"} · ${universeMetrics?.humanMoatLabel}` : "--"}
-            </div>
-            <div className="airs-human-moat-list">
-              {humanMoatEntries.map((entry) => (
-                <div key={entry.key} className="airs-human-moat-row">
-                  <div>
-                    <span>{entry.label}</span>
-                    <strong>{formatNumber(entry.value, 0, language)}</strong>
-                  </div>
-                  <div className="airs-breakdown-track">
-                    <span style={{ width: `${Math.max(6, entry.value)}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
           </article>
 
           <article data-numbered-box className="airs-result-panel airs-result-panel--wide">
@@ -511,6 +479,29 @@ export function OccupationPage() {
           </article>
 
           <article data-numbered-box className="airs-result-panel">
+            <p className="airs-kicker">{language === "zh" ? "人的护城河" : "Human moat"}</p>
+            <div className="airs-status-score" style={getScoreTextStyle(universeMetrics?.humanMoatScore || 0, { highIsDangerous: false, theme })}>
+              {occupation ? formatNumber(universeMetrics?.humanMoatScore || 0, 0, language) : "--"}
+            </div>
+            <div className="airs-status-label">
+              {occupation ? `${language === "zh" ? "护城河等级" : "Moat level"} · ${universeMetrics?.humanMoatLabel}` : "--"}
+            </div>
+            <div className="airs-human-moat-list">
+              {humanMoatEntries.map((entry) => (
+                <div key={entry.key} className="airs-human-moat-row">
+                  <div>
+                    <span>{entry.label}</span>
+                    <strong>{formatNumber(entry.value, 0, language)}</strong>
+                  </div>
+                  <div className="airs-breakdown-track">
+                    <span style={{ width: `${Math.max(6, entry.value)}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article data-numbered-box className="airs-result-panel airs-result-panel--wide">
             <div className="airs-stat-list">
               <div>
                 <span>{language === "zh" ? "AI 替代压力" : "AI Replacement Pressure"}</span>
@@ -597,58 +588,6 @@ export function OccupationPage() {
               )}
             </div>
           </article>
-
-          <article data-numbered-box className="airs-result-panel">
-            <EditableText
-              editor={editor}
-              moduleId="occupation-breakdown"
-              fieldName="shareTitle"
-              language={language}
-              as="h2"
-              fallback={copy.shareModuleTitle}
-            />
-            <div className="airs-share-actions">
-              <button type="button" className="airs-button-primary" disabled={editor.isEditMode} onClick={() => void createShareImage()}>
-                {generating ? copy.loading : copy.shareGenerate}
-              </button>
-              {shareAsset && (
-                <a
-                  href={editor.isEditMode ? undefined : shareAsset.objectUrl}
-                  download={editor.isEditMode ? undefined : shareAsset.fileName}
-                  className="airs-button"
-                  onClick={(event) => {
-                    if (editor.isEditMode) event.preventDefault();
-                  }}
-                >
-                  {copy.shareSave}
-                </a>
-              )}
-            </div>
-            {shareAsset && (
-              <div className="airs-share-platforms">
-                {(["wechatMoments", "xiaohongshu", "weibo"] as SharePlatform[]).map((platform) => (
-                  <button
-                    key={platform}
-                    type="button"
-                    className="airs-button"
-                    disabled={editor.isEditMode}
-                    onClick={() => void handlePlatformShare(platform)}
-                  >
-                    {getSharePlatformLabel(platform, language)}
-                  </button>
-                ))}
-              </div>
-            )}
-            {shareError && <p className="airs-result-warning">{shareError}</p>}
-            {shareNotice && <p className="airs-result-muted">{shareNotice}</p>}
-            {shareAsset && (
-              <img
-                src={shareAsset.objectUrl}
-                alt={`${displayTitle} ${copy.sharePreviewTitle}`}
-                className="airs-share-preview"
-              />
-            )}
-          </article>
         </section>
 
         <NumberedBox>
@@ -656,35 +595,67 @@ export function OccupationPage() {
         </NumberedBox>
       </main>
 
-      <div className="airs-result-bottom-search">
-        <SearchCombobox
-          language={language}
-          placeholder={copy.detailSearchPlaceholder}
-          analyticsSource="desktop-detail"
-          buttonPlacement="inline"
-          buttonLabel="Thinking"
-          buttonLabelClassName="airs-thinking-label"
-          suggestionsPlacement="top"
-          onCommit={(query, selected, payload) => {
-            void trackSearchEvent({
-              query,
-              source: "desktop-detail",
-              language,
-              occupation: selected?.occupation,
-              searchLabel: selected?.label,
-              matchType: payload?.matchType || selected?.matchType,
-              matchedAlias: selected?.matchedAlias,
-              resultCount: payload?.resultCount,
-              isZeroResult: !payload?.primaryResult,
-              didClickResult: Boolean(selected)
-            });
-          }}
-          onSelect={(selection) => {
-            navigate(detailPathForSelection(selection.occupation.socCode, selection.label));
-          }}
-          className="airs-result-bottom-search__box"
-        />
-      </div>
+      {isShareModalOpen && (
+        <div className="airs-share-modal-backdrop" role="presentation" onClick={() => setIsShareModalOpen(false)}>
+          <section
+            className="airs-share-modal"
+            aria-modal="true"
+            role="dialog"
+            aria-label={language === "zh" ? "分享出去" : "Share"}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="airs-share-modal__close"
+              aria-label={language === "zh" ? "关闭" : "Close"}
+              onClick={() => setIsShareModalOpen(false)}
+            >
+              ×
+            </button>
+            <h2>{language === "zh" ? "分享出去" : "Share"}</h2>
+            {shareError && <p className="airs-result-warning">{shareError}</p>}
+            {shareNotice && !shareError && <p className="airs-result-muted">{shareNotice}</p>}
+            {generating && !shareAsset ? (
+              <p className="airs-result-muted">{copy.loading}</p>
+            ) : (
+              <>
+                {shareAsset && (
+                  <div className="airs-share-modal__actions">
+                    <a
+                      href={editor.isEditMode ? undefined : shareAsset.objectUrl}
+                      download={editor.isEditMode ? undefined : shareAsset.fileName}
+                      className="airs-button"
+                      onClick={(event) => {
+                        if (editor.isEditMode) event.preventDefault();
+                      }}
+                    >
+                      {copy.shareSave}
+                    </a>
+                    {(["wechatMoments", "xiaohongshu", "weibo"] as SharePlatform[]).map((platform) => (
+                      <button
+                        key={platform}
+                        type="button"
+                        className="airs-button"
+                        disabled={editor.isEditMode}
+                        onClick={() => void handlePlatformShare(platform)}
+                      >
+                        {getSharePlatformLabel(platform, language)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {shareAsset && (
+                  <img
+                    src={shareAsset.objectUrl}
+                    alt={`${displayTitle} ${copy.sharePreviewTitle}`}
+                    className="airs-share-preview"
+                  />
+                )}
+              </>
+            )}
+          </section>
+        </div>
+      )}
     </div>
   );
 }

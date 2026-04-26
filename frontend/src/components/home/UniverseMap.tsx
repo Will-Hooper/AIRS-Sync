@@ -4,7 +4,6 @@ import {
   AI_REPLACEMENT_PRESSURE_QUADRANT_THRESHOLD,
   HUMAN_MOAT_QUADRANT_THRESHOLD,
   getOccupationUniverseMetrics,
-  getQuadrantMetaByKey,
   type OccupationQuadrantKey
 } from "../../lib/human-moat";
 import { labelText } from "../../lib/i18n";
@@ -19,15 +18,11 @@ interface UniverseMapProps {
   onOpenOccupation?: (occupation: OccupationRow) => void;
   emptyText: string;
   labels: {
-    zoomIn: string;
-    zoomOut: string;
     resetView: string;
     fullscreenEnter: string;
     fullscreenExit: string;
     axisXTitle: string;
     axisYTitle: string;
-    axisX: string;
-    axisY: string;
     axisXStart: string;
     axisXEnd: string;
     axisYStart: string;
@@ -41,6 +36,31 @@ interface CameraState {
   x: number;
   y: number;
 }
+
+interface PointerSnapshot {
+  clientX: number;
+  clientY: number;
+  localX: number;
+  localY: number;
+}
+
+type GestureState =
+  | {
+      type: "pan";
+      pointerId: number;
+      startX: number;
+      startY: number;
+      cameraX: number;
+      cameraY: number;
+    }
+  | {
+      type: "pinch";
+      pointerIds: [number, number];
+      startDistance: number;
+      startScale: number;
+      worldX: number;
+      worldY: number;
+    };
 
 interface RenderPoint {
   row: OccupationRow;
@@ -94,12 +114,13 @@ export function UniverseMap({
   const [camera, setCamera] = useState<CameraState>({ scale: 1, x: 0, y: 0 });
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
   const [hoveredSocCode, setHoveredSocCode] = useState<string | null>(null);
-  const [dragState, setDragState] = useState<null | { startX: number; startY: number; cameraX: number; cameraY: number; pointerId: number }>(null);
+  const [isInteracting, setIsInteracting] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const cameraRef = useRef<CameraState>({ scale: 1, x: 0, y: 0 });
+  const pointerStateRef = useRef<Map<number, PointerSnapshot>>(new Map());
+  const gestureRef = useRef<GestureState | null>(null);
 
   const points = useMemo<RenderPoint[]>(() => {
-    const maxPostings = Math.max(...occupations.map((occupation) => occupation.postings || 0), 1);
-
     return occupations.map((row) => {
       const metrics = getOccupationUniverseMetrics(row, language);
       const xHash = stableHash(row.socCode);
@@ -142,6 +163,10 @@ export function UniverseMap({
       }
     );
   }, [points]);
+
+  useEffect(() => {
+    cameraRef.current = camera;
+  }, [camera]);
 
   useEffect(() => {
     const element = containerRef.current;
@@ -228,6 +253,34 @@ export function UniverseMap({
   const splitX = clamp(originX, Math.max(72, viewport.width * 0.2), Math.max(72, viewport.width * 0.8));
   const splitY = clamp(originY, Math.max(72, viewport.height * 0.18), Math.max(72, viewport.height * 0.82));
 
+  useEffect(() => {
+    if (!selectedSocCode || viewport.width <= 1 || viewport.height <= 1) return;
+    const point = points.find((entry) => entry.row.socCode === selectedSocCode);
+    if (!point) return;
+
+    setCamera((current) => {
+      const projectedX = point.x * current.scale + current.x;
+      const projectedY = point.y * current.scale + current.y;
+      const safeMarginX = Math.max(120, viewport.width * 0.18);
+      const safeMarginY = Math.max(120, viewport.height * 0.18);
+
+      if (
+        projectedX >= safeMarginX &&
+        projectedX <= viewport.width - safeMarginX &&
+        projectedY >= safeMarginY &&
+        projectedY <= viewport.height - safeMarginY
+      ) {
+        return current;
+      }
+
+      return {
+        ...current,
+        x: viewport.width / 2 - point.x * current.scale,
+        y: viewport.height / 2 - point.y * current.scale
+      };
+    });
+  }, [points, selectedSocCode, viewport.height, viewport.width]);
+
   const zoomAt = useCallback((factor: number, clientX: number, clientY: number) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -242,6 +295,69 @@ export function UniverseMap({
       };
     });
   }, []);
+
+  const getLocalPoint = useCallback((clientX: number, clientY: number) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) {
+      return { x: clientX, y: clientY };
+    }
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  }, []);
+
+  const beginPanGesture = useCallback((pointerId: number, point: PointerSnapshot, nextCamera: CameraState) => {
+    gestureRef.current = {
+      type: "pan",
+      pointerId,
+      startX: point.clientX,
+      startY: point.clientY,
+      cameraX: nextCamera.x,
+      cameraY: nextCamera.y
+    };
+    setIsInteracting(true);
+  }, []);
+
+  const beginPinchGesture = useCallback((nextCamera: CameraState) => {
+    const activePointers = [...pointerStateRef.current.entries()];
+    if (activePointers.length < 2) return;
+
+    const [[firstId, firstPointer], [secondId, secondPointer]] = activePointers;
+    const centerX = (firstPointer.localX + secondPointer.localX) / 2;
+    const centerY = (firstPointer.localY + secondPointer.localY) / 2;
+    const distance = Math.max(
+      Math.hypot(secondPointer.localX - firstPointer.localX, secondPointer.localY - firstPointer.localY),
+      1
+    );
+
+    gestureRef.current = {
+      type: "pinch",
+      pointerIds: [firstId, secondId],
+      startDistance: distance,
+      startScale: nextCamera.scale,
+      worldX: (centerX - nextCamera.x) / nextCamera.scale,
+      worldY: (centerY - nextCamera.y) / nextCamera.scale
+    };
+    setIsInteracting(true);
+  }, []);
+
+  const syncGestureAfterPointerRemoval = useCallback(() => {
+    const activePointers = [...pointerStateRef.current.entries()];
+    if (!activePointers.length) {
+      gestureRef.current = null;
+      setIsInteracting(false);
+      return;
+    }
+
+    if (activePointers.length === 1) {
+      const [[pointerId, point]] = activePointers;
+      beginPanGesture(pointerId, point, cameraRef.current);
+      return;
+    }
+
+    beginPinchGesture(cameraRef.current);
+  }, [beginPanGesture, beginPinchGesture]);
 
   const toggleFullscreen = async () => {
     const host = panelRef.current;
@@ -268,21 +384,10 @@ export function UniverseMap({
       ref={panelRef}
       className={`airs-panel overflow-hidden ${isFullscreen ? "airs-map-host flex h-full flex-col rounded-none border-transparent" : ""}`}
     >
-      <div className="airs-map-axis-cards grid gap-3 border-b border-white/8 px-5 py-4 md:grid-cols-2 md:px-6 xl:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)]">
-        <div className="min-h-[108px] rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
-          <p className="text-sm font-medium text-white/72">{labels.axisXTitle}</p>
-          <p className="mt-2 text-sm leading-6 text-white/55">{labels.axisX}</p>
-        </div>
-        <div className="min-h-[108px] rounded-[22px] border border-white/8 bg-black/10 px-4 py-4">
-          <p className="text-sm font-medium text-white/72">{labels.axisYTitle}</p>
-          <p className="mt-2 text-sm leading-6 text-white/55">{labels.axisY}</p>
-        </div>
-      </div>
-
       <div
         ref={containerRef}
         className={`airs-map-stage relative isolate touch-none overflow-hidden overscroll-contain ${isFullscreen ? "min-h-0 flex-1" : "h-[540px] lg:h-[580px]"}`}
-        style={{ cursor: dragState ? "grabbing" : "grab" }}
+        style={{ cursor: isInteracting ? "grabbing" : "grab" }}
         onWheelCapture={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -296,37 +401,81 @@ export function UniverseMap({
         onPointerDown={(event) => {
           if ((event.target as HTMLElement).closest("button")) return;
           if ((event.target as Element).closest?.("[data-map-point='true']")) return;
+          const localPoint = getLocalPoint(event.clientX, event.clientY);
+          const snapshot: PointerSnapshot = {
+            clientX: event.clientX,
+            clientY: event.clientY,
+            localX: localPoint.x,
+            localY: localPoint.y
+          };
           event.currentTarget.setPointerCapture(event.pointerId);
-          setDragState({
-            startX: event.clientX,
-            startY: event.clientY,
-            cameraX: camera.x,
-            cameraY: camera.y,
-            pointerId: event.pointerId
-          });
+          pointerStateRef.current.set(event.pointerId, snapshot);
+
+          if (pointerStateRef.current.size >= 2) {
+            beginPinchGesture(cameraRef.current);
+            return;
+          }
+
+          beginPanGesture(event.pointerId, snapshot, cameraRef.current);
         }}
         onPointerMove={(event) => {
-          if (!dragState || dragState.pointerId !== event.pointerId) return;
-          setCamera((current) => ({
-            ...current,
-            x: dragState.cameraX + (event.clientX - dragState.startX),
-            y: dragState.cameraY + (event.clientY - dragState.startY)
-          }));
+          if (!pointerStateRef.current.has(event.pointerId)) return;
+
+          const localPoint = getLocalPoint(event.clientX, event.clientY);
+          pointerStateRef.current.set(event.pointerId, {
+            clientX: event.clientX,
+            clientY: event.clientY,
+            localX: localPoint.x,
+            localY: localPoint.y
+          });
+
+          const gesture = gestureRef.current;
+          if (!gesture) return;
+
+          if (gesture.type === "pan") {
+            if (gesture.pointerId !== event.pointerId) return;
+            setCamera((current) => ({
+              ...current,
+              x: gesture.cameraX + (event.clientX - gesture.startX),
+              y: gesture.cameraY + (event.clientY - gesture.startY)
+            }));
+            return;
+          }
+
+          const firstPointer = pointerStateRef.current.get(gesture.pointerIds[0]);
+          const secondPointer = pointerStateRef.current.get(gesture.pointerIds[1]);
+          if (!firstPointer || !secondPointer) return;
+
+          const centerX = (firstPointer.localX + secondPointer.localX) / 2;
+          const centerY = (firstPointer.localY + secondPointer.localY) / 2;
+          const distance = Math.max(
+            Math.hypot(secondPointer.localX - firstPointer.localX, secondPointer.localY - firstPointer.localY),
+            1
+          );
+          const nextScale = clamp((distance / gesture.startDistance) * gesture.startScale, 0.28, 4.5);
+
+          setCamera({
+            scale: nextScale,
+            x: centerX - gesture.worldX * nextScale,
+            y: centerY - gesture.worldY * nextScale
+          });
         }}
         onPointerUp={(event) => {
           if (event.currentTarget.hasPointerCapture(event.pointerId)) {
             event.currentTarget.releasePointerCapture(event.pointerId);
           }
-          setDragState(null);
+          pointerStateRef.current.delete(event.pointerId);
+          syncGestureAfterPointerRemoval();
         }}
         onPointerCancel={(event) => {
           if (event.currentTarget.hasPointerCapture(event.pointerId)) {
             event.currentTarget.releasePointerCapture(event.pointerId);
           }
-          setDragState(null);
+          pointerStateRef.current.delete(event.pointerId);
+          syncGestureAfterPointerRemoval();
         }}
         onPointerLeave={() => {
-          if (!dragState) {
+          if (!isInteracting) {
             setHoveredSocCode(null);
           }
         }}
@@ -337,7 +486,6 @@ export function UniverseMap({
       >
         <div className="airs-map-quadrants pointer-events-none absolute inset-0 z-0">
           {quadrantCards.map((quadrantKey) => {
-            const quadrant = getQuadrantMetaByKey(quadrantKey, language);
             const style =
               quadrantKey === "human_moat_zone"
                 ? { left: 0, top: 0, width: `${splitX}px`, height: `${splitY}px` }
@@ -346,12 +494,7 @@ export function UniverseMap({
                   : quadrantKey === "automation_zone"
                     ? { left: 0, top: `${splitY}px`, width: `${splitX}px`, bottom: 0 }
                     : { left: `${splitX}px`, top: `${splitY}px`, right: 0, bottom: 0 };
-            return (
-              <div key={quadrantKey} className={`airs-map-quadrant airs-map-quadrant--${quadrantKey}`} style={style}>
-                <div className="airs-map-quadrant__badge">{quadrant.label}</div>
-                <p>{quadrant.description}</p>
-              </div>
-            );
+            return <div key={quadrantKey} className={`airs-map-quadrant airs-map-quadrant--${quadrantKey}`} style={style} />;
           })}
         </div>
 
@@ -359,12 +502,6 @@ export function UniverseMap({
           <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-end gap-2 rounded-[24px] border border-white/8 bg-black/20 p-2 shadow-[0_18px_60px_rgba(2,8,23,0.18)] backdrop-blur-xl">
             <button type="button" className="airs-button" onClick={() => void toggleFullscreen()}>
               {isFullscreen ? labels.fullscreenExit : labels.fullscreenEnter}
-            </button>
-            <button type="button" className="airs-button" onClick={() => zoomAt(1.18, viewport.width / 2, viewport.height / 2)}>
-              {labels.zoomIn}
-            </button>
-            <button type="button" className="airs-button" onClick={() => zoomAt(1 / 1.18, viewport.width / 2, viewport.height / 2)}>
-              {labels.zoomOut}
             </button>
             <button
               type="button"
@@ -378,15 +515,6 @@ export function UniverseMap({
             </button>
             <span className="airs-chip">{formatNumber(camera.scale * 100, 0, language)}%</span>
           </div>
-        </div>
-
-        <div className="pointer-events-none absolute inset-x-5 bottom-4 z-20 flex items-center justify-between gap-4">
-          <span className="airs-map-axis-pill">{labels.axisXStart}</span>
-          <span className="airs-map-axis-pill airs-map-axis-pill--danger">{labels.axisXEnd}</span>
-        </div>
-        <div className="pointer-events-none absolute left-4 top-5 z-20 flex flex-col gap-3">
-          <span className="airs-map-axis-pill airs-map-axis-pill--safe">{labels.axisYStart}</span>
-          <span className="airs-map-axis-pill">{labels.axisYEnd}</span>
         </div>
 
         <svg className="relative z-10 h-full w-full" shapeRendering="geometricPrecision">

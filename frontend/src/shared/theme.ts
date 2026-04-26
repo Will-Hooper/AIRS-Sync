@@ -11,11 +11,6 @@ export function normalizeTheme(value: string | null | undefined): AppTheme {
 export function getInitialTheme() {
   const fromStorage = typeof window !== "undefined" ? window.localStorage.getItem(STORAGE_KEY) : null;
   if (fromStorage === "light" || fromStorage === "dark") return fromStorage;
-
-  if (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: light)").matches) {
-    return "light";
-  }
-
   return "dark";
 }
 

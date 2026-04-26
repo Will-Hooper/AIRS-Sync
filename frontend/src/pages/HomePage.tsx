@@ -180,8 +180,8 @@ export function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState(0);
+  const [isNarrowViewport, setIsNarrowViewport] = useState(() => (typeof window !== "undefined" ? window.innerWidth <= 820 : false));
   const [searchProgress, setSearchProgress] = useState(0);
-  const [isResultTransitioning, setIsResultTransitioning] = useState(false);
   const [introAnimationKey, setIntroAnimationKey] = useState(0);
   const [browseAnimationKey, setBrowseAnimationKey] = useState(0);
   const [animatedAverageAirs, setAnimatedAverageAirs] = useState(1);
@@ -189,7 +189,6 @@ export function HomePage() {
   const trackedDesktopQueryRef = useRef("");
   const skipNextQuerySyncRef = useRef(false);
   const randomCardsReadyRef = useRef(false);
-  const resultTransitionTimerRef = useRef<number | null>(null);
   const introAnimationPlayedRef = useRef(false);
   const browseAnimationPlayedRef = useRef(false);
   const searchProgressRef = useRef(0);
@@ -221,6 +220,13 @@ export function HomePage() {
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setIsNarrowViewport(window.innerWidth <= 820);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useLayoutEffect(() => {
@@ -258,7 +264,7 @@ export function HomePage() {
           if (current && listPayload.occupations.some((occupation) => occupation.socCode === current)) {
             return current;
           }
-          return listPayload.occupations[0]?.socCode || null;
+          return null;
         });
         if (!randomCardsReadyRef.current && listPayload.occupations.length) {
           randomCardsReadyRef.current = true;
@@ -365,14 +371,6 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
-    return () => {
-      if (resultTransitionTimerRef.current !== null) {
-        window.clearTimeout(resultTransitionTimerRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     if (activeSection >= 1 && !introAnimationPlayedRef.current) {
       introAnimationPlayedRef.current = true;
       setIntroAnimationKey((current) => current + 1);
@@ -396,7 +394,6 @@ export function HomePage() {
     editor.isEditMode
   ]);
 
-  const selectedOccupation = occupations.find((occupation) => occupation.socCode === selectedSocCode) || occupations[0] || null;
   const averageAirs = clamp(Number(summary?.avgAirs || 0), 0, 100);
   const erosionShare = 100 - averageAirs;
   const scoreOrbitStyle = {
@@ -449,13 +446,7 @@ export function HomePage() {
     (occupation: OccupationRow, label?: string) => {
       if (editor.isEditMode) return;
       skipNextQuerySyncRef.current = true;
-      setIsResultTransitioning(true);
-      if (resultTransitionTimerRef.current !== null) {
-        window.clearTimeout(resultTransitionTimerRef.current);
-      }
-      resultTransitionTimerRef.current = window.setTimeout(() => {
-        navigate(buildOccupationPath(occupation, label));
-      }, 430);
+      navigate(buildOccupationPath(occupation, label));
     },
     [buildOccupationPath, editor.isEditMode, navigate]
   );
@@ -473,8 +464,11 @@ export function HomePage() {
   const searchPlaceholder = language === "zh" ? "输入你的工作，搜搜看" : "Enter your job and see";
   const heroTitle = language === "zh" ? "你的工作会被AI取代吗？" : "Will AI replace your job?";
   const floatingSearchStyle = {
+    left: isNarrowViewport ? "1rem" : "50%",
+    right: isNarrowViewport ? "1rem" : undefined,
+    width: isNarrowViewport ? "auto" : undefined,
     top: `${45 - searchProgress * 35}vh`,
-    transform: `translate3d(-50%, -50%, 0) scale(${1 - searchProgress * 0.14})`
+    transform: `${isNarrowViewport ? "translate3d(0, -50%, 0)" : "translate3d(-50%, -50%, 0)"} scale(${1 - searchProgress * 0.14})`
   } as CSSProperties;
 
   const renderSearch = (suggestionsPlacement: "bottom" | "top" = "bottom") => (
@@ -509,7 +503,7 @@ export function HomePage() {
   );
 
   return (
-    <div className={`airs-apple-home ${editor.isEditMode ? "airs-editor-active" : ""} ${isResultTransitioning ? "is-folding" : ""}`.trim()}>
+    <div className={`airs-apple-home ${editor.isEditMode ? "airs-editor-active" : ""}`.trim()}>
       <EditorChrome editor={editor} language={language} />
 
       <div className="airs-home-brand">AIRS</div>
@@ -778,20 +772,16 @@ export function HomePage() {
                   <UniverseMap
                     occupations={occupations}
                     language={language}
-                    selectedSocCode={selectedOccupation?.socCode}
+                    selectedSocCode={selectedSocCode || undefined}
                     onSelect={(occupation) => setSelectedSocCode(occupation?.socCode || null)}
                     onOpenOccupation={(occupation) => openOccupation(occupation)}
                     emptyText={copy.noData}
                     labels={{
-                      zoomIn: copy.zoomIn,
-                      zoomOut: copy.zoomOut,
                       resetView: copy.resetView,
                       fullscreenEnter: copy.fullscreenEnter,
                       fullscreenExit: copy.fullscreenExit,
                       axisXTitle: copy.axisXTitle,
                       axisYTitle: copy.axisYTitle,
-                      axisX: copy.axisX,
-                      axisY: copy.axisY,
                       axisXStart: language === "zh" ? "压力较小" : "Lower pressure",
                       axisXEnd: language === "zh" ? "压力更大" : "Higher pressure",
                       axisYStart: language === "zh" ? "必须依赖人" : "Still needs humans",
