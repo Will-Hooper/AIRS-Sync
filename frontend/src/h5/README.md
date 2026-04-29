@@ -1,6 +1,22 @@
-# H5 Module Boundary
+# H5 Legacy Module
 
-`src/h5` is a standalone H5 module.
+`src/h5` is a standalone legacy H5 module.
+
+Status:
+- Frozen as of `2026-04-29`.
+- Keep it available for old H5 links and `m.airsindex.com`.
+- Do not use this directory for new product work.
+
+Still allowed:
+- Blank-screen fixes.
+- Broken-search fixes.
+- Failures that prevent opening the home page, occupation detail, moat map, or share-image flow.
+
+Not allowed:
+- New modules.
+- New interactions.
+- New visual optimization work.
+- Syncing desktop responsive feature work back into H5.
 
 Rules:
 - H5 pages, components, styles, animations, share logic, and route wiring must stay inside `src/h5`.

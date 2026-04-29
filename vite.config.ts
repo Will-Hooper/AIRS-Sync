@@ -19,6 +19,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: path.resolve(__dirname, "frontend/index.html"),
+        // Legacy/frozen standalone H5 entry. Keep building it for old /m links
+        // and m.airsindex.com until the responsive main site fully takes over.
         "m/index": path.resolve(__dirname, "frontend/m/index.html")
       }
     }

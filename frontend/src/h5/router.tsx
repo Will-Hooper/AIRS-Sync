@@ -1,7 +1,9 @@
 import { Suspense, lazy, type ReactNode } from "react";
 import { createHashRouter } from "react-router-dom";
 
-// H5-only route tree. Desktop routes live in src/router.tsx.
+// Legacy/frozen H5-only route tree. Keep it stable for compatibility, but do
+// not add new routes or new feature work here. Desktop/mobile mainline routes
+// now live in src/router.tsx.
 const MobileHomePage = lazy(() => import("./pages/MobileHomePage").then((module) => ({ default: module.MobileHomePage })));
 const MobileOccupationPage = lazy(() => import("./pages/MobileOccupationPage").then((module) => ({ default: module.MobileOccupationPage })));
 const MobileNotFoundPage = lazy(() => import("./pages/MobileNotFoundPage").then((module) => ({ default: module.MobileNotFoundPage })));

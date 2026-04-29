@@ -1,5 +1,10 @@
 # Static Deployment
 
+> H5 freeze note:
+> `m/` compatibility paths and the standalone H5 entry are now `legacy / frozen`.
+> Keep them reachable for old links and `m.airsindex.com`, but do not treat
+> them as the active product line. See [docs/H5_FREEZE_NOTICE.md](E:\Codex\docs\H5_FREEZE_NOTICE.md).
+
 ## 当前发布形态
 
 当前网站已经重构为：

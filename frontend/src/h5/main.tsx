@@ -8,6 +8,8 @@ import "./styles.css";
 
 const rootElement = document.getElementById("root")!;
 
+// Legacy/frozen H5 entry. Keep accessible for old links, but do not add new
+// product work here. Only blocker fixes should land in src/h5.
 document.body.dataset.airsEntry = "h5";
 rootElement.dataset.airsRoot = "h5";
 applyTheme(getInitialTheme());

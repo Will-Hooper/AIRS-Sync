@@ -48,7 +48,7 @@ export function MoatFilterBar({
 
   return (
     <div
-      className="rounded-[26px] border p-3.5 sm:p-4"
+      className="relative z-30 rounded-[26px] border p-3.5 sm:p-4"
       style={{
         borderColor: tokens.border,
         background: tokens.surface,
@@ -93,14 +93,14 @@ export function MoatFilterBar({
                 {language === "zh" ? "职业大类" : "Major group"}
               </span>
               <select
-                className="rounded-[18px] border px-4 py-2.5 text-sm outline-none"
+                className={`rounded-[18px] border px-4 py-2.5 text-sm outline-none ${compact ? "" : "airs-select"}`}
                 value={majorGroupValue}
                 onChange={(event) => onMajorGroupChange(event.target.value)}
-                style={{
+                style={compact ? {
                   color: tokens.textPrimary,
                   borderColor: tokens.border,
                   background: tokens.input
-                }}
+                } : undefined}
               >
                 <option value="all">{language === "zh" ? "全部" : "All"}</option>
                 {groupOptions.map((group) => (
@@ -116,14 +116,14 @@ export function MoatFilterBar({
                 {language === "zh" ? "主护城河类型" : "Dominant moat type"}
               </span>
               <select
-                className="rounded-[18px] border px-4 py-2.5 text-sm outline-none"
+                className={`rounded-[18px] border px-4 py-2.5 text-sm outline-none ${compact ? "" : "airs-select"}`}
                 value={dominantMoatValue}
                 onChange={(event) => onDominantMoatChange(event.target.value as DominantMoatType | "all")}
-                style={{
+                style={compact ? {
                   color: tokens.textPrimary,
                   borderColor: tokens.border,
                   background: tokens.input
-                }}
+                } : undefined}
               >
                 <option value="all">{language === "zh" ? "全部" : "All"}</option>
                 {MOAT_TYPE_ORDER.map((type) => (

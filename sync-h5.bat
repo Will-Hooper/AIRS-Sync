@@ -2,6 +2,10 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
+REM ===== Legacy frozen H5 sync script =====
+REM 默认不要把响应式主站的新功能同步到独立 H5。
+REM 仅在修复 H5 阻断问题时才使用本脚本处理历史仓库。
+
 REM ===== H5 仓库目录 =====
 set "REPO_DIR=E:\Codex\frontend-h5"
 

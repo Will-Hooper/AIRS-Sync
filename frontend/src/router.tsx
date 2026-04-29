@@ -1,7 +1,9 @@
 import { Suspense, lazy, type ReactNode } from "react";
 import { createHashRouter } from "react-router-dom";
 
-// Desktop-only route tree. H5 routes live in src/h5/router.tsx.
+// Primary responsive route tree. AIRS now treats this as the only active
+// product line for both desktop and mobile browsers. Legacy H5 routes remain
+// isolated in src/h5/router.tsx and should only receive blocker fixes.
 const HomePage = lazy(() => import("./pages/HomePage").then((module) => ({ default: module.HomePage })));
 const OccupationPage = lazy(() => import("./pages/OccupationPage").then((module) => ({ default: module.OccupationPage })));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));

@@ -39,7 +39,7 @@ import { getScoreAccentColors, getScoreTextStyle } from "../shared/score-color";
 import { useAirsTheme } from "../shared/theme";
 
 const HOME_SECTION_IDS = ["home-search", "home-intro", "home-browse", "home-universe"] as const;
-const HOME_NAV_LABELS = ["首页", "这是什么？", "随便逛逛", "护城河地图"];
+const HOME_NAV_LABELS = ["首页", "这是什么？", "随便逛逛", "One More Thing"];
 
 function buildFilters(params: URLSearchParams, query: string): OccupationQueryParams {
   return {

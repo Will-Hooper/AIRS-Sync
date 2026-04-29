@@ -2,12 +2,20 @@
 
 这是一个基于 `React + React Router + Tailwind + TypeScript` 的 AIRS 静态网站，当前架构分为两部分：
 
+- 响应式主站：当前唯一主线，后续桌面端与移动端浏览器的新功能统一在 [frontend](E:\Codex\frontend) / [frontend/src](E:\Codex\frontend\src) 开发
 - 前端 SPA：负责首页、职业详情页、交互视图与多语言界面
 - Node + TypeScript 数据同步 CLI：负责生成 `backend/data/*.json`
-- 独立移动端 H5：位于 [frontend/src/h5](E:\Codex\frontend\src\h5)，通过 [frontend/m/index.html](E:\Codex\frontend\m\index.html) 独立入口访问
+- 独立移动端 H5：已进入 `legacy / frozen` 状态，目录位于 [frontend/src/h5](E:\Codex\frontend\src\h5)，通过 [frontend/m/index.html](E:\Codex\frontend\m\index.html) 和 [m](E:\Codex\m) 保持旧链接可访问
 - 本地统计服务：位于 [services/analytics](E:\Codex\services\analytics)，负责搜索埋点、IP 地域识别、三天报表与邮件发送
 
 网站最终以纯静态形式发布，不依赖在线后端 API。
+
+## H5 冻结状态
+
+- 自 `2026-04-29` 起，AIRS 前端只继续开发响应式主站。
+- 独立 H5 只保留阻断问题修复，不再同步新模块、新交互和新视觉优化。
+- `m.airsindex.com` 和旧 H5 链接当前继续保留可访问，暂不删除、不立即重定向。
+- 详细说明见 [docs/H5_FREEZE_NOTICE.md](E:\Codex\docs\H5_FREEZE_NOTICE.md)。
 
 ## 当前结构
 

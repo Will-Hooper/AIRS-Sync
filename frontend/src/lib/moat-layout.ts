@@ -2,6 +2,8 @@ import { MOAT_TYPE_ORDER, type OccupationMoatNode } from "./moat";
 
 export interface PositionedOccupationMoatNode {
   node: OccupationMoatNode;
+  groupKey: string;
+  groupLabel: string;
   x: number;
   y: number;
   size: number;
@@ -106,6 +108,8 @@ export function buildMoatGridLayout(nodes: OccupationMoatNode[], groupOrder: str
       const row = Math.floor(index / columns);
       return {
         node,
+        groupKey: group,
+        groupLabel: sortedNodes[0]?.majorGroupCn || group,
         size: nodeSize,
         column,
         row,
