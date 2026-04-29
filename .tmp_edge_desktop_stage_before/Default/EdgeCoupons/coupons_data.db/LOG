@@ -1,0 +1,5 @@
+2026/04/27-23:31:55.501 4e18 Creating DB E:\Codex\.tmp_edge_desktop_stage_before\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/04/27-23:31:55.795 4e18 Reusing MANIFEST E:\Codex\.tmp_edge_desktop_stage_before\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/04/27-23:31:59.022 26f8 Level-0 table #5: started
+2026/04/27-23:31:59.151 26f8 Level-0 table #5: 682121 bytes OK
+2026/04/27-23:31:59.196 26f8 Delete type=0 #3

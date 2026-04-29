@@ -1,0 +1,5 @@
+2026/04/27-23:38:25.877 860 Creating DB E:\Codex\.tmp_edge_verify_desktop_after\Default\Asset Store\assets.db since it was missing.
+2026/04/27-23:38:30.369 860 Reusing MANIFEST E:\Codex\.tmp_edge_verify_desktop_after\Default\Asset Store\assets.db/MANIFEST-000001
+2026/04/27-23:38:51.465 3c2c Level-0 table #5: started
+2026/04/27-23:38:51.564 3c2c Level-0 table #5: 332815 bytes OK
+2026/04/27-23:38:51.699 3c2c Delete type=0 #3

@@ -1,0 +1,6 @@
+{"logTime": "0427/152424", {"lineNo":0,"logLevel":2,"message":"MaybeOrchestrateMigration: MaybeOrchestrateMigration","source":"Workspace Migration","timestamp":"2026-04-27T15:24:24.200Z"}}
+{"logTime": "0427/152424", {"lineNo":0,"logLevel":2,"message":"Migrate_FeatureCheck: Migrate_FeatureCheck","source":"Workspace Migration","timestamp":"2026-04-27T15:24:24.201Z"}}
+{"logTime": "0427/152424", {"lineNo":0,"logLevel":2,"message":"MaybeWaitForPrefsToSync: Waiting for prefs to sync.","source":"Workspace Migration","timestamp":"2026-04-27T15:24:24.201Z"}}
+{"logTime": "0427/152424", {"lineNo":0,"logLevel":2,"message":"MaybeOrchestrateMigration: ~MaybeOrchestrateMigration","source":"Workspace Migration","timestamp":"2026-04-27T15:24:24.201Z"}}
+{"logTime": "0427/152924", {"lineNo":0,"logLevel":2,"message":"Migrate_MaybeHavePrefs: Migrate_MaybeHavePrefs","source":"Workspace Migration","timestamp":"2026-04-27T15:29:24.209Z"}}
+{"logTime": "0427/152924", {"lineNo":0,"logLevel":4,"message":"LogError: Migrate_MaybeHavePrefs timed out","source":"Workspace Migration","timestamp":"2026-04-27T15:29:24.210Z"}}

@@ -1,10 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getSummary } from "../../lib/api";
+import { MoatDetailDrawer } from "../../components/moat/MoatDetailDrawer";
+import { MoatFilterBar } from "../../components/moat/MoatFilterBar";
+import { MoatLandscapeMap } from "../../components/moat/MoatLandscapeMap";
+import { MoatSearchField } from "../../components/moat/MoatSearchField";
+import { MoatSummaryCards } from "../../components/moat/MoatSummaryCards";
+import { getOccupations, getSummary } from "../../lib/api";
 import { trackSearchEvent } from "../../lib/analytics";
 import { getReadOnlyConfigText, useReadOnlyPageConfig } from "../../editor/readOnly";
 import { formatDateTime, formatNumber } from "../../lib/format";
-import type { SummaryPayload } from "../../lib/types";
+import { buildMoatGridLayout } from "../../lib/moat-layout";
+import { createOccupationMoatNodes, type DominantMoatType } from "../../lib/moat";
+import { getMoatThemeTokens } from "../../lib/moat-color";
+import { calculateMoatSummary } from "../../lib/moat-summary";
+import type { OccupationRow, SummaryPayload } from "../../lib/types";
 import { MobileBottomHero } from "../components/MobileBottomHero";
 import { H5Footer } from "../components/H5Footer";
 import { H5LanguageSwitch } from "../components/H5LanguageSwitch";
@@ -26,12 +35,19 @@ export function MobileHomePage() {
     normalizeH5Language(searchParams.get("lang") || getInitialH5Language(window.location.search))
   );
   const [summary, setSummary] = useState<SummaryPayload | null>(null);
+  const [occupations, setOccupations] = useState<OccupationRow[]>([]);
   const [summaryError, setSummaryError] = useState<string | null>(null);
+  const [selectedSocCode, setSelectedSocCode] = useState<string | null>(null);
+  const [moatSearchQuery, setMoatSearchQuery] = useState("");
+  const [moatMajorGroup, setMoatMajorGroup] = useState("all");
+  const [moatDominantType, setMoatDominantType] = useState<DominantMoatType | "all">("all");
+  const [moatSearchNoResult, setMoatSearchNoResult] = useState<string | null>(null);
   const [now, setNow] = useState(() => new Date());
   const [theme, setTheme] = useAirsTheme();
   const pageConfig = useReadOnlyPageConfig("home");
 
   const copy = getH5Copy(language);
+  const moatThemeTokens = getMoatThemeTokens(theme);
   const homeTitle = getReadOnlyConfigText(pageConfig, "home-hero", "title", language, copy.homeTitle);
   const sourceNote = getReadOnlyConfigText(pageConfig, "home-data-panel", "note", language, copy.sourceNote);
 
@@ -44,16 +60,18 @@ export function MobileHomePage() {
 
   useEffect(() => {
     let cancelled = false;
-    getSummary()
-      .then((payload) => {
+    Promise.all([getSummary(), getOccupations()])
+      .then(([summaryPayload, listPayload]) => {
         if (!cancelled) {
-          setSummary(payload);
+          setSummary(summaryPayload);
+          setOccupations(listPayload.occupations);
           setSummaryError(null);
         }
       })
       .catch((reason: unknown) => {
         if (!cancelled) {
           setSummary(null);
+          setOccupations([]);
           setSummaryError(reason instanceof Error ? reason.message : copy.loadError);
         }
       });
@@ -72,7 +90,53 @@ export function MobileHomePage() {
     [language, now]
   );
 
-  useH5NumberedBoxes(pageRef, [language, summary?.avgAirs, summary?.generatedAt, summary?.datasetVersion, summaryError]);
+  const moatTitle = language === "zh" ? "职业护城河全景图" : "Human Moat Landscape Map";
+  const moatSubtitle = language === "zh"
+    ? "这不是一个总分榜，而是一张职业世界中人仍然不可替代在哪里的地图。"
+    : "This is not a ranking. It is a map of where humans still remain hard to replace across occupations.";
+  const moatEmptyText = language === "zh" ? "暂无符合条件的职业，请调整筛选条件。" : "No occupations match the current filter. Please adjust the filters.";
+  const moatSearchNoResultText = language === "zh"
+    ? "暂未找到该职业，可以尝试输入更通用的职业名称。"
+    : "No matching occupation yet. Try a broader occupation name.";
+  const moatDataNote = language === "zh"
+    ? "护城河展示的是职业中更依赖人的能力结构，不代表职业安全排名，也不等同于 AIRS 分数。"
+    : "The moat view shows which human capabilities occupations still depend on. It is not a job safety ranking and it is not the same as the AIRS score.";
+  const moatNodes = useMemo(() => createOccupationMoatNodes(occupations), [occupations]);
+  const moatLayout = useMemo(() => buildMoatGridLayout(moatNodes), [moatNodes]);
+  const moatGroupOptions = useMemo(
+    () => [...new Set(moatNodes.map((node) => node.majorGroup))].map((group) => ({
+      value: group,
+      label: language === "zh"
+        ? moatNodes.find((node) => node.majorGroup === group)?.majorGroupCn || group
+        : group
+    })),
+    [language, moatNodes]
+  );
+  const moatVisibleNodes = useMemo(
+    () => (moatMajorGroup === "all" ? moatNodes : moatNodes.filter((node) => node.majorGroup === moatMajorGroup)),
+    [moatMajorGroup, moatNodes]
+  );
+  const moatMatchedNodes = useMemo(
+    () => (
+      moatDominantType === "all"
+        ? moatVisibleNodes
+        : moatVisibleNodes.filter((node) => node.dominantMoatType === moatDominantType)
+    ),
+    [moatDominantType, moatVisibleNodes]
+  );
+  const moatSummaryItems = useMemo(() => calculateMoatSummary(moatMatchedNodes), [moatMatchedNodes]);
+  const selectedMoatNode = useMemo(
+    () => moatNodes.find((node) => node.occupationId === selectedSocCode) || null,
+    [moatNodes, selectedSocCode]
+  );
+
+  useEffect(() => {
+    if (selectedSocCode && !moatVisibleNodes.some((node) => node.occupationId === selectedSocCode)) {
+      setSelectedSocCode(null);
+    }
+  }, [moatVisibleNodes, selectedSocCode]);
+
+  useH5NumberedBoxes(pageRef, [language, summary?.avgAirs, summary?.generatedAt, summary?.datasetVersion, summaryError, occupations.length, selectedSocCode]);
 
   return (
     <div className="h5-shell">
@@ -152,6 +216,110 @@ export function MobileHomePage() {
               <H5Footer language={language} embedded />
             </div>
           </H5NumberedBox>
+        </section>
+
+        <section data-h5-numbered-box className="h5-numbered h5-panel overflow-hidden px-4 py-5">
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <p className="h5-kicker">{language === "zh" ? "职业护城河地图" : "Human moat landscape"}</p>
+              <h2 className="text-3xl font-semibold leading-tight tracking-[-0.05em] text-white">{moatTitle}</h2>
+              <p className="text-sm leading-7 text-white/55">{moatSubtitle}</p>
+              <div
+                className="rounded-[20px] border px-4 py-3 text-[13px] leading-6"
+                style={{
+                  color: moatThemeTokens.textSecondary,
+                  borderColor: moatThemeTokens.border,
+                  background: moatThemeTokens.surfaceAlt
+                }}
+              >
+                {moatDataNote}
+              </div>
+            </div>
+
+            {summaryError ? (
+              <div className="h5-empty-state">{summaryError}</div>
+            ) : (
+              <div className="space-y-3">
+                <MoatSummaryCards items={moatSummaryItems} language={language} theme={theme} />
+                <MoatFilterBar
+                  language={language}
+                  theme={theme}
+                  compact
+                  searchSlot={(
+                    <MoatSearchField
+                      language={language}
+                      theme={theme}
+                      nodes={moatNodes}
+                      compact
+                      placeholder={language === "zh" ? "搜索职业名称" : "Search occupation name"}
+                      value={moatSearchQuery}
+                      noResultText={moatSearchNoResultText}
+                      onQueryChange={setMoatSearchQuery}
+                      onNoResultChange={setMoatSearchNoResult}
+                      onSelect={(selection) => {
+                        setMoatSearchNoResult(null);
+                        setMoatSearchQuery(selection.label);
+                        setMoatMajorGroup("all");
+                        setMoatDominantType("all");
+                        setSelectedSocCode(selection.node.occupationId);
+                        void trackSearchEvent({
+                          query: moatSearchQuery.trim() || selection.label,
+                          source: "h5-home",
+                          language,
+                          occupation: selection.node.occupation,
+                          searchLabel: selection.label,
+                          matchType: selection.matchType,
+                          matchedAlias: selection.matchedAlias,
+                          resultCount: 1,
+                          isZeroResult: false,
+                          didClickResult: true
+                        });
+                      }}
+                    />
+                  )}
+                  groupOptions={moatGroupOptions}
+                  majorGroupValue={moatMajorGroup}
+                  dominantMoatValue={moatDominantType}
+                  onMajorGroupChange={setMoatMajorGroup}
+                  onDominantMoatChange={setMoatDominantType}
+                  matchedCount={moatMatchedNodes.length}
+                  totalCount={moatNodes.length}
+                  noResultText={moatSearchNoResult}
+                />
+
+                {!moatMatchedNodes.length ? (
+                  <div className="h5-empty-state">{moatEmptyText}</div>
+                ) : (
+                  <div className="relative">
+                    <MoatLandscapeMap
+                      layout={moatLayout}
+                      language={language}
+                      theme={theme}
+                      selectedOccupationId={selectedSocCode}
+                      visibleMajorGroup={moatMajorGroup}
+                      dominantMoatFilter={moatDominantType}
+                      emptyText={moatEmptyText}
+                      resetViewLabel={language === "zh" ? "回到全局视图" : "Reset view"}
+                      onSelect={(node) => {
+                        setMoatSearchNoResult(null);
+                        setSelectedSocCode(node.occupationId);
+                      }}
+                      onClearSelection={() => setSelectedSocCode(null)}
+                    />
+                    <MoatDetailDrawer
+                      node={selectedMoatNode}
+                      language={language}
+                      theme={theme}
+                      onClose={() => setSelectedSocCode(null)}
+                      onOpenOccupation={(node) => {
+                        navigate(`/occupation/${encodeURIComponent(node.occupation.socCode)}?lang=${language}`);
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </section>
       </div>
     </div>

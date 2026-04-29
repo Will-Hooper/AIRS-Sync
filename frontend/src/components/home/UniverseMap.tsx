@@ -517,7 +517,14 @@ export function UniverseMap({
           </div>
         </div>
 
-        <svg className="relative z-10 h-full w-full" shapeRendering="geometricPrecision">
+        <svg
+          className="absolute inset-0 z-10 block"
+          width={Math.max(viewport.width, 1)}
+          height={Math.max(viewport.height, 1)}
+          viewBox={`0 0 ${Math.max(viewport.width, 1)} ${Math.max(viewport.height, 1)}`}
+          preserveAspectRatio="none"
+          shapeRendering="geometricPrecision"
+        >
           <line
             x1={0}
             x2={viewport.width}

@@ -10,7 +10,11 @@ import {
   type CSSProperties
 } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { UniverseMap } from "../components/home/UniverseMap";
+import { MoatDetailDrawer } from "../components/moat/MoatDetailDrawer";
+import { MoatFilterBar } from "../components/moat/MoatFilterBar";
+import { MoatLandscapeMap } from "../components/moat/MoatLandscapeMap";
+import { MoatSearchField } from "../components/moat/MoatSearchField";
+import { MoatSummaryCards } from "../components/moat/MoatSummaryCards";
 import { LanguageSwitch } from "../components/shared/LanguageSwitch";
 import { NumberedBox } from "../components/shared/NumberedBox";
 import { SearchCombobox } from "../components/shared/SearchCombobox";
@@ -24,6 +28,10 @@ import { trackSearchEvent } from "../lib/analytics";
 import { applyDesktopShareMetadata } from "../lib/desktop-metadata";
 import { formatDateTime, formatNumber, formatPercent } from "../lib/format";
 import { getInitialLanguage, groupText, labelText, messages, normalizeLanguage, persistLanguage, type AppLanguage } from "../lib/i18n";
+import { buildMoatGridLayout } from "../lib/moat-layout";
+import { createOccupationMoatNodes, type DominantMoatType } from "../lib/moat";
+import { getMoatThemeTokens } from "../lib/moat-color";
+import { calculateMoatSummary } from "../lib/moat-summary";
 import type { OccupationQueryParams, OccupationRow, SummaryPayload } from "../lib/types";
 import { useNumberedBoxes } from "../lib/useNumberedBoxes";
 import { useVantaDots } from "../lib/vanta";
@@ -31,7 +39,7 @@ import { getScoreAccentColors, getScoreTextStyle } from "../shared/score-color";
 import { useAirsTheme } from "../shared/theme";
 
 const HOME_SECTION_IDS = ["home-search", "home-intro", "home-browse", "home-universe"] as const;
-const HOME_NAV_LABELS = ["首页", "这是什么？", "随便逛逛", "职业宇宙图"];
+const HOME_NAV_LABELS = ["首页", "这是什么？", "随便逛逛", "护城河地图"];
 
 function buildFilters(params: URLSearchParams, query: string): OccupationQueryParams {
   return {
@@ -172,10 +180,13 @@ export function HomePage() {
   const [summary, setSummary] = useState<SummaryPayload | null>(null);
   const [occupations, setOccupations] = useState<OccupationRow[]>([]);
   const [randomOccupations, setRandomOccupations] = useState<OccupationRow[]>([]);
-  const [labels, setLabels] = useState<string[]>([]);
   const [groups, setGroups] = useState<string[]>([]);
   const [selectedSocCode, setSelectedSocCode] = useState<string | null>(null);
   const [query, setQuery] = useState(searchParams.get("q") || "");
+  const [moatSearchQuery, setMoatSearchQuery] = useState("");
+  const [moatMajorGroup, setMoatMajorGroup] = useState("all");
+  const [moatDominantType, setMoatDominantType] = useState<DominantMoatType | "all">("all");
+  const [moatSearchNoResult, setMoatSearchNoResult] = useState<string | null>(null);
   const [now, setNow] = useState(() => new Date());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -204,6 +215,7 @@ export function HomePage() {
   });
 
   const copy = messages[language];
+  const moatThemeTokens = getMoatThemeTokens(theme);
   const deferredQuery = useDeferredValue(query);
   const searchParamQuery = searchParams.get("q") || "";
   const filters = useMemo(() => buildFilters(searchParams, deferredQuery), [deferredQuery, searchParams]);
@@ -258,7 +270,6 @@ export function HomePage() {
         if (cancelled) return;
         setSummary(nextSummary);
         setOccupations(listPayload.occupations);
-        setLabels(listPayload.labels);
         setGroups(listPayload.groups);
         setSelectedSocCode((current) => {
           if (current && listPayload.occupations.some((occupation) => occupation.socCode === current)) {
@@ -463,6 +474,20 @@ export function HomePage() {
 
   const searchPlaceholder = language === "zh" ? "输入你的工作，搜搜看" : "Enter your job and see";
   const heroTitle = language === "zh" ? "你的工作会被AI取代吗？" : "Will AI replace your job?";
+  const moatTitle = language === "zh" ? "职业护城河全景图" : "Human Moat Landscape Map";
+  const moatSubtitle = language === "zh"
+    ? "这不是一个总分榜，而是一张职业世界中人仍然不可替代在哪里的地图。"
+    : "This is not a ranking. It is a map of where humans still remain hard to replace across occupations.";
+  const moatExplanation = language === "zh"
+    ? "颜色代表这个职业最主要的人类护城河类型。滚轮缩放并拖拽地图，可以查看全部职业的结构分布。"
+    : "Color marks the dominant human moat for each occupation. Zoom and pan the grid to inspect the full landscape.";
+  const moatEmptyText = language === "zh" ? "暂无符合条件的职业，请调整筛选条件。" : "No occupations match the current filter. Please adjust the filters.";
+  const moatSearchNoResultText = language === "zh"
+    ? "暂未找到该职业，可以尝试输入更通用的职业名称。"
+    : "No matching occupation yet. Try a broader occupation name.";
+  const moatDataNote = language === "zh"
+    ? "护城河展示的是职业中更依赖人的能力结构，不代表职业安全排名，也不等同于 AIRS 分数。"
+    : "The moat view shows which human capabilities occupations still depend on. It is not a job safety ranking and it is not the same as the AIRS score.";
   const floatingSearchStyle = {
     left: isNarrowViewport ? "1rem" : "50%",
     right: isNarrowViewport ? "1rem" : undefined,
@@ -499,6 +524,68 @@ export function HomePage() {
       }}
       onSelect={(selection) => openOccupation(selection.occupation, selection.label)}
       className="airs-apple-search"
+    />
+  );
+
+  const moatNodes = useMemo(() => createOccupationMoatNodes(occupations), [occupations]);
+  const moatLayout = useMemo(() => buildMoatGridLayout(moatNodes, groups), [groups, moatNodes]);
+  const moatGroupOptions = useMemo(
+    () => groups.map((group) => ({ value: group, label: groupText(language, group) })),
+    [groups, language]
+  );
+  const moatVisibleNodes = useMemo(
+    () => (moatMajorGroup === "all" ? moatNodes : moatNodes.filter((node) => node.majorGroup === moatMajorGroup)),
+    [moatMajorGroup, moatNodes]
+  );
+  const moatMatchedNodes = useMemo(
+    () => (
+      moatDominantType === "all"
+        ? moatVisibleNodes
+        : moatVisibleNodes.filter((node) => node.dominantMoatType === moatDominantType)
+    ),
+    [moatDominantType, moatVisibleNodes]
+  );
+  const moatSummaryItems = useMemo(() => calculateMoatSummary(moatMatchedNodes), [moatMatchedNodes]);
+  const selectedMoatNode = useMemo(
+    () => moatNodes.find((node) => node.occupationId === selectedSocCode) || null,
+    [moatNodes, selectedSocCode]
+  );
+
+  useEffect(() => {
+    if (selectedSocCode && !moatVisibleNodes.some((node) => node.occupationId === selectedSocCode)) {
+      setSelectedSocCode(null);
+    }
+  }, [moatVisibleNodes, selectedSocCode]);
+
+  const renderMoatSearch = (
+    <MoatSearchField
+      language={language}
+      theme={theme}
+      nodes={moatNodes}
+      placeholder={language === "zh" ? "搜索职业名称" : "Search occupation name"}
+      value={moatSearchQuery}
+      noResultText={moatSearchNoResultText}
+      onQueryChange={setMoatSearchQuery}
+      onNoResultChange={setMoatSearchNoResult}
+      onSelect={(selection) => {
+        setMoatSearchNoResult(null);
+        setMoatSearchQuery(selection.label);
+        setMoatMajorGroup("all");
+        setMoatDominantType("all");
+        setSelectedSocCode(selection.node.occupationId);
+        void trackSearchEvent({
+          query: moatSearchQuery.trim() || selection.label,
+          source: "desktop-home",
+          language,
+          occupation: selection.node.occupation,
+          searchLabel: selection.label,
+          matchType: selection.matchType,
+          matchedAlias: selection.matchedAlias,
+          resultCount: 1,
+          isZeroResult: false,
+          didClickResult: true
+        });
+      }}
     />
   );
 
@@ -692,27 +779,25 @@ export function HomePage() {
         >
           <div className="airs-section-content airs-universe-section">
             <div className="airs-universe-header">
-              <div>
-                <p className="airs-universe-note">
-                  {language === "zh"
-                    ? "按照美国劳工部的标准职业分类，这里呈现了800多种职业的 AI 替代压力与人的护城河分布。"
-                    : "Using the U.S. Department of Labor standard occupation taxonomy, this map plots more than 800 jobs by AI pressure and human moat."}
-                </p>
-                <h2 className="airs-universe-title">
-                  {language === "zh"
-                    ? "职业 AI 生存地图"
-                    : "AI Career Survival Map"}
-                </h2>
-                <p className="airs-universe-subtitle">
-                  {language === "zh"
-                    ? "横向看 AI 替代压力，越往右越危险；纵向看人的护城河，越往上越难被完全替代。"
-                    : "Read AI replacement pressure horizontally and human moat vertically. The farther right, the more exposed; the higher up, the harder it is to replace the job completely."}
-                </p>
+              <div className="max-w-[48rem] space-y-2.5">
+                <p className="airs-universe-note">{moatSubtitle}</p>
+                <h2 className="airs-universe-title">{moatTitle}</h2>
+                <p className="airs-universe-subtitle">{moatExplanation}</p>
                 <p className="airs-universe-explanation">
                   {language === "zh"
-                    ? "越往右，AI 替代压力越大；越往下，人的护城河越弱。右下角，是最危险的位置。"
-                    : "The farther right, the stronger the AI replacement pressure. The lower the job sits, the weaker its human moat. The bottom-right corner is the danger zone."}
+                    ? "节点颜色表示主护城河类型，颜色深浅表示整体护城河强弱。点击节点会打开右侧详情抽屉。"
+                    : "Node color marks the dominant moat type, while shade reflects overall moat strength. Click a node to open the detail drawer."}
                 </p>
+                <div
+                  className="inline-flex max-w-[42rem] rounded-full border px-4 py-2 text-xs leading-6 sm:text-[13px]"
+                  style={{
+                    color: moatThemeTokens.textSecondary,
+                    borderColor: moatThemeTokens.border,
+                    background: moatThemeTokens.surfaceAlt
+                  }}
+                >
+                  {moatDataNote}
+                </div>
               </div>
               <div className="airs-universe-clock">
                 <span>{formatDateTime(now, language)}</span>
@@ -720,75 +805,58 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="airs-universe-toolbar">
-              <label>
-                <select
-                  aria-label={copy.group}
-                  className="airs-input airs-select appearance-none"
-                  value={searchParams.get("majorGroup") || "all"}
-                  onChange={(event) =>
-                    updateParamState(searchParams, setSearchParams, {
-                      majorGroup: event.target.value === "all" ? undefined : event.target.value
-                    })
-                  }
-                >
-                  <option value="all">{copy.allGroups}</option>
-                  {groups.map((group) => (
-                    <option key={group} value={group}>
-                      {groupText(language, group)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label>
-                <select
-                  aria-label={copy.label}
-                  className="airs-input airs-select appearance-none"
-                  value={searchParams.get("label") || "all"}
-                  onChange={(event) =>
-                    updateParamState(searchParams, setSearchParams, {
-                      label: event.target.value === "all" ? undefined : event.target.value
-                    })
-                  }
-                >
-                  <option value="all">{copy.allLabels}</option>
-                  {labels.map((value) => (
-                    <option key={value} value={value}>
-                      {labelText(language, value)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
+            {!loading && !error ? (
+              <div className="grid gap-3">
+                <MoatSummaryCards items={moatSummaryItems} language={language} theme={theme} />
+                <MoatFilterBar
+                  language={language}
+                  theme={theme}
+                  searchSlot={renderMoatSearch}
+                  groupOptions={moatGroupOptions}
+                  majorGroupValue={moatMajorGroup}
+                  dominantMoatValue={moatDominantType}
+                  onMajorGroupChange={setMoatMajorGroup}
+                  onDominantMoatChange={setMoatDominantType}
+                  matchedCount={moatMatchedNodes.length}
+                  totalCount={moatNodes.length}
+                  noResultText={moatSearchNoResult}
+                />
+              </div>
+            ) : null}
 
             <div className="airs-universe-grid">
-              <div className="airs-universe-map-shell">
+              <div className="airs-universe-map-shell relative">
                 {error ? (
                   <div className="airs-empty-state">{error}</div>
                 ) : loading ? (
                   <div className="airs-empty-state">{copy.loading}</div>
+                ) : !moatMatchedNodes.length ? (
+                  <div className="airs-empty-state">{moatEmptyText}</div>
                 ) : (
-                  <UniverseMap
-                    occupations={occupations}
-                    language={language}
-                    selectedSocCode={selectedSocCode || undefined}
-                    onSelect={(occupation) => setSelectedSocCode(occupation?.socCode || null)}
-                    onOpenOccupation={(occupation) => openOccupation(occupation)}
-                    emptyText={copy.noData}
-                    labels={{
-                      resetView: copy.resetView,
-                      fullscreenEnter: copy.fullscreenEnter,
-                      fullscreenExit: copy.fullscreenExit,
-                      axisXTitle: copy.axisXTitle,
-                      axisYTitle: copy.axisYTitle,
-                      axisXStart: language === "zh" ? "压力较小" : "Lower pressure",
-                      axisXEnd: language === "zh" ? "压力更大" : "Higher pressure",
-                      axisYStart: language === "zh" ? "必须依赖人" : "Still needs humans",
-                      axisYEnd: language === "zh" ? "容易被流程化" : "Easy to standardize",
-                      openDetail: copy.openDetail
-                    }}
-                  />
+                  <>
+                    <MoatLandscapeMap
+                      layout={moatLayout}
+                      language={language}
+                      theme={theme}
+                      selectedOccupationId={selectedSocCode}
+                      visibleMajorGroup={moatMajorGroup}
+                      dominantMoatFilter={moatDominantType}
+                      emptyText={moatEmptyText}
+                      resetViewLabel={copy.resetView}
+                      onSelect={(node) => {
+                        setMoatSearchNoResult(null);
+                        setSelectedSocCode(node.occupationId);
+                      }}
+                      onClearSelection={() => setSelectedSocCode(null)}
+                    />
+                    <MoatDetailDrawer
+                      node={selectedMoatNode}
+                      language={language}
+                      theme={theme}
+                      onClose={() => setSelectedSocCode(null)}
+                      onOpenOccupation={(node) => openOccupation(node.occupation)}
+                    />
+                  </>
                 )}
               </div>
             </div>
