@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { AppTheme } from "../../shared/theme";
-import { getMoatThemeTokens, getMoatNodeFill, getMoatNodeStroke, getMoatTypeColor, withAlpha } from "../../lib/moat-color";
+import { getMoatThemeTokens, getMoatNodeFill, getMoatNodeStroke, getMoatTypeColor, getMoatTypeGlow, withAlpha } from "../../lib/moat-color";
 import type { MoatGridLayout, MoatGroupLayout, PositionedOccupationMoatNode } from "../../lib/moat-layout";
 import { getMoatTypeLabel, getOccupationMoatDisplayName, type DominantMoatType, type MoatLanguage, type OccupationMoatNode } from "../../lib/moat";
 import { MoatMiniBars } from "./MoatMiniBars";
@@ -175,6 +175,27 @@ function boxesOverlap(left: OverlayBox, right: OverlayBox, gap = 8) {
   );
 }
 
+function getDominantGroupType(group: MoatGroupLayout): DominantMoatType {
+  const scores = new Map<DominantMoatType, number>(
+    ["complexJudgment", "humanTrust", "creativeExpression", "fieldAdaptability", "responsibility"].map((type) => [type as DominantMoatType, 0])
+  );
+
+  group.nodes.forEach(({ node }) => {
+    scores.set(node.dominantMoatType, (scores.get(node.dominantMoatType) || 0) + Math.max(node.moatAverage, 18));
+  });
+
+  let result: DominantMoatType = "fieldAdaptability";
+  let maxScore = Number.NEGATIVE_INFINITY;
+  scores.forEach((score, type) => {
+    if (score > maxScore) {
+      result = type;
+      maxScore = score;
+    }
+  });
+
+  return result;
+}
+
 function getGroupsBounds(groups: MoatGroupLayout[]) {
   if (!groups.length) {
     return { minX: -300, maxX: 300, minY: -220, maxY: 220 };
@@ -226,6 +247,10 @@ export function MoatLandscapeMap({
   );
   const renderedNodes = useMemo(() => renderedGroups.flatMap((group) => group.nodes), [renderedGroups]);
   const bounds = useMemo(() => getGroupsBounds(renderedGroups), [renderedGroups]);
+  const groupAccentByKey = useMemo(
+    () => new Map(renderedGroups.map((group) => [group.key, getMoatTypeColor(getDominantGroupType(group), theme)])),
+    [renderedGroups, theme]
+  );
   const nodesById = useMemo(
     () => new Map(layout.nodes.map((entry) => [entry.node.occupationId, entry])),
     [layout.nodes]
@@ -531,8 +556,8 @@ export function MoatLandscapeMap({
       }
     });
 
-    const cardWidth = isCompactViewport ? clamp(viewport.width - 30, 150, 176) : 196;
-    const cardHeight = isCompactViewport ? 118 : 142;
+    const cardWidth = isCompactViewport ? clamp(viewport.width - 36, 148, 168) : 184;
+    const cardHeight = isCompactViewport ? 110 : 132;
     const topBoundary = isCompactViewport ? 14 : 64;
     const placements: SemanticCardPlacement[] = [];
 
@@ -706,16 +731,16 @@ export function MoatLandscapeMap({
 
   return (
     <div
-      className="relative overflow-hidden rounded-[30px] border"
+      className="moat-map-shell relative overflow-hidden rounded-[30px] border"
       style={{
         borderColor: tokens.border,
         background: tokens.surface,
-        boxShadow: tokens.shadow
+        boxShadow: tokens.shadowStrong
       }}
     >
       <div
         ref={containerRef}
-        className="relative isolate min-h-[460px] touch-none overflow-hidden overscroll-contain lg:min-h-[620px]"
+        className="moat-map-stage relative isolate min-h-[460px] touch-none overflow-hidden overscroll-contain lg:min-h-[620px]"
         style={{
           background: tokens.mapBackground,
           cursor: isInteracting ? "grabbing" : "grab"
@@ -803,12 +828,28 @@ export function MoatLandscapeMap({
           onClearSelection?.();
         }}
       >
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: tokens.mapPattern,
+            backgroundSize: "48px 48px, 48px 48px, auto, auto",
+            backgroundPosition: `${camera.x * 0.04}px ${camera.y * 0.04}px, ${camera.x * 0.04}px ${camera.y * 0.04}px, center, center`,
+            opacity: theme === "dark" ? 0.42 : 0.34
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: `radial-gradient(circle at 18% 20%, ${withAlpha(getMoatTypeColor("complexJudgment", theme), theme === "dark" ? 0.08 : 0.05)}, transparent 28%), radial-gradient(circle at 78% 76%, ${withAlpha(getMoatTypeColor("responsibility", theme), theme === "dark" ? 0.07 : 0.05)}, transparent 24%), radial-gradient(circle at 48% 56%, ${withAlpha(getMoatTypeColor("humanTrust", theme), theme === "dark" ? 0.045 : 0.03)}, transparent 26%)`
+          }}
+        />
+
         <div className="pointer-events-none absolute inset-x-4 top-4 z-20 flex justify-end">
           <div
-            className="pointer-events-auto flex items-center gap-2 rounded-full border px-2 py-2 shadow-xl backdrop-blur-xl"
+            className="moat-map-toolbar pointer-events-auto flex items-center gap-2 rounded-full border px-2 py-2 shadow-xl backdrop-blur-xl"
             style={{
               borderColor: tokens.border,
-              background: tokens.surface
+              background: withAlpha(theme === "dark" ? "#08111d" : "#f8fbff", theme === "dark" ? 0.86 : 0.9)
             }}
           >
             <button
@@ -838,35 +879,59 @@ export function MoatLandscapeMap({
             const projectedWidth = group.width * camera.scale;
             const projectedHeight = group.height * camera.scale;
             const titleMetrics = getGroupTitleMetrics(group.label, projectedWidth, camera.scale);
+            const accent = groupAccentByKey.get(group.key) || tokens.textSecondary;
+            const isFocusedGroup = visibleMajorGroup !== "all" && group.key === visibleMajorGroup;
             const titleColor = visibleMajorGroup !== "all" && group.key === visibleMajorGroup
               ? tokens.textPrimary
-              : tokens.textSecondary;
+              : withAlpha(theme === "dark" ? "#f7fbff" : "#162235", 0.76);
+            const groupFill = withAlpha(accent, isFocusedGroup ? (theme === "dark" ? 0.08 : 0.07) : (theme === "dark" ? 0.045 : 0.035));
+            const groupStroke = withAlpha(accent, isFocusedGroup ? (theme === "dark" ? 0.24 : 0.2) : (theme === "dark" ? 0.13 : 0.11));
+            const chipHeight = projectedWidth < 90 ? 24 : 28;
 
             return (
               <g key={group.key}>
                 <rect
                   x={projectedLeft}
                   y={projectedTop}
-                  rx={18}
+                  rx={20}
                   width={projectedWidth}
                   height={projectedHeight}
-                  fill={withAlpha(theme === "dark" ? "#ffffff" : "#152235", theme === "dark" ? 0.025 : 0.035)}
-                  stroke={withAlpha(theme === "dark" ? "#ffffff" : "#152235", visibleMajorGroup !== "all" && group.key === visibleMajorGroup ? 0.2 : 0.08)}
-                  strokeWidth={1}
+                  fill={groupFill}
+                  stroke={groupStroke}
+                  strokeWidth={isFocusedGroup ? 1.15 : 0.9}
+                />
+                <rect
+                  x={projectedLeft + 6}
+                  y={projectedTop + 6}
+                  rx={16}
+                  width={Math.max(projectedWidth - 12, 0)}
+                  height={Math.max(projectedHeight - 12, 0)}
+                  fill="none"
+                  stroke={withAlpha(accent, theme === "dark" ? 0.06 : 0.05)}
+                  strokeDasharray={projectedWidth > 120 ? "7 9" : "4 6"}
+                  strokeWidth={0.8}
                 />
                 <rect
                   x={projectedLeft + 8}
                   y={projectedTop + 8}
-                  rx={12}
+                  rx={14}
                   width={titleMetrics.chipWidth}
-                  height={26}
-                  fill={withAlpha(theme === "dark" ? "#08111d" : "#f8fbff", theme === "dark" ? 0.74 : 0.86)}
-                  stroke={withAlpha(theme === "dark" ? "#ffffff" : "#152235", theme === "dark" ? 0.08 : 0.12)}
-                  strokeWidth={1}
+                  height={chipHeight}
+                  fill={withAlpha(accent, theme === "dark" ? 0.14 : 0.09)}
+                  stroke={withAlpha(accent, theme === "dark" ? 0.2 : 0.14)}
+                  strokeWidth={0.95}
+                />
+                <rect
+                  x={projectedLeft + 14}
+                  y={projectedTop + chipHeight + 12}
+                  rx={2}
+                  width={Math.min(Math.max(titleMetrics.chipWidth - 16, 18), Math.max(projectedWidth - 28, 18))}
+                  height={2}
+                  fill={withAlpha(accent, theme === "dark" ? 0.22 : 0.18)}
                 />
                 <text
                   x={projectedLeft + 16}
-                  y={projectedTop + 24.5}
+                  y={projectedTop + (chipHeight === 24 ? 23 : 25)}
                   fill={titleColor}
                   fontSize={titleMetrics.fontSize}
                   fontWeight={700}
@@ -885,28 +950,42 @@ export function MoatLandscapeMap({
                 {entry.isSelected ? (
                   <>
                     <rect
-                      x={entry.x - 8}
-                      y={entry.y - 8}
+                      className="moat-node-ring moat-node-ring--selected"
+                      x={entry.x - 6}
+                      y={entry.y - 6}
                       rx={Math.max(entry.size * 0.42, 7)}
-                      width={entry.size + 16}
-                      height={entry.size + 16}
-                      fill={withAlpha(entry.accent, theme === "dark" ? 0.22 : 0.14)}
-                      opacity={0.95}
+                      width={entry.size + 12}
+                      height={entry.size + 12}
+                      fill={getMoatTypeGlow(entry.entry.node.dominantMoatType, theme, theme === "dark" ? 0.14 : 0.1)}
+                      opacity={0.88}
                     />
                     <rect
+                      className="moat-node-ring moat-node-ring--selected moat-node-ring--pulse"
                       x={entry.x - 4}
                       y={entry.y - 4}
                       rx={Math.max(entry.size * 0.34, 5)}
                       width={entry.size + 8}
                       height={entry.size + 8}
                       fill="none"
-                      stroke={withAlpha(entry.accent, 0.94)}
-                      strokeWidth={2.2}
-                      opacity={0.98}
+                      stroke={withAlpha(entry.accent, theme === "dark" ? 0.78 : 0.62)}
+                      strokeWidth={1.9}
+                      opacity={0.9}
                     />
                   </>
+                ) : entry.isHovered ? (
+                  <rect
+                    className="moat-node-ring moat-node-ring--hover"
+                    x={entry.x - 3}
+                    y={entry.y - 3}
+                    rx={Math.max(entry.size * 0.32, 5)}
+                    width={entry.size + 6}
+                    height={entry.size + 6}
+                    fill={getMoatTypeGlow(entry.entry.node.dominantMoatType, theme, theme === "dark" ? 0.08 : 0.06)}
+                    opacity={0.8}
+                  />
                 ) : null}
                 <rect
+                  className={`moat-node ${entry.isSelected ? "is-selected" : ""} ${entry.isHovered ? "is-hovered" : ""} ${entry.opacity < 0.2 ? "is-dimmed" : ""}`.trim()}
                   x={entry.x}
                   y={entry.y}
                   data-moat-node="true"
@@ -919,6 +998,13 @@ export function MoatLandscapeMap({
                   opacity={entry.opacity}
                   stroke={entry.stroke}
                   strokeWidth={entry.isSelected ? 2.4 : entry.isHovered ? 1.45 : 0.9}
+                  style={{
+                    filter: entry.isSelected
+                      ? `drop-shadow(0 0 10px ${withAlpha(entry.accent, theme === "dark" ? 0.22 : 0.14)})`
+                      : entry.isHovered
+                        ? `drop-shadow(0 0 5px ${withAlpha(entry.accent, theme === "dark" ? 0.14 : 0.1)})`
+                        : undefined
+                  }}
                   onMouseEnter={() => setHoveredId(entry.entry.node.occupationId)}
                   onMouseLeave={() => setHoveredId((current) => (current === entry.entry.node.occupationId ? null : current))}
                   onClick={(event) => {
@@ -937,7 +1023,7 @@ export function MoatLandscapeMap({
               <div
                 key={label.id}
                 data-moat-semantic-label="true"
-                className="absolute rounded-full border px-2.5 text-center font-medium shadow-lg backdrop-blur-md"
+                className="moat-semantic-label absolute rounded-full border px-2.5 text-center font-medium shadow-lg backdrop-blur-md"
                 style={{
                   left: label.left,
                   top: label.top,
@@ -946,8 +1032,8 @@ export function MoatLandscapeMap({
                   lineHeight: `${label.height - 2}px`,
                   fontSize: label.fontSize,
                   color: tokens.textPrimary,
-                  borderColor: tokens.border,
-                  background: withAlpha(theme === "dark" ? "#08111d" : "#f8fbff", theme === "dark" ? 0.84 : 0.9)
+                  borderColor: tokens.borderStrong,
+                  background: withAlpha(theme === "dark" ? "#08111d" : "#f8fbff", theme === "dark" ? 0.9 : 0.94)
                 }}
               >
                 {label.text}
@@ -962,17 +1048,21 @@ export function MoatLandscapeMap({
               <div
                 key={card.id}
                 data-moat-semantic-card="true"
-                className="absolute overflow-hidden rounded-[22px] border p-3 shadow-2xl backdrop-blur-xl"
+                className="moat-semantic-card absolute overflow-hidden rounded-[22px] border p-3 shadow-2xl backdrop-blur-xl"
                 style={{
                   left: card.left,
                   top: card.top,
                   width: card.width,
                   minHeight: card.height,
-                  borderColor: withAlpha(card.accent, theme === "dark" ? 0.34 : 0.24),
-                  background: `linear-gradient(180deg, ${withAlpha(card.accent, theme === "dark" ? 0.2 : 0.1)}, ${tokens.surfaceStrong})`,
-                  boxShadow: `0 20px 48px ${withAlpha(card.accent, theme === "dark" ? 0.18 : 0.12)}`
+                  borderColor: withAlpha(card.accent, theme === "dark" ? 0.24 : 0.18),
+                  background: `linear-gradient(180deg, ${withAlpha(card.accent, theme === "dark" ? 0.12 : 0.07)}, ${tokens.surfaceStrong})`,
+                  boxShadow: `0 14px 30px ${withAlpha(card.accent, theme === "dark" ? 0.1 : 0.08)}`
                 }}
               >
+                <div
+                  className="pointer-events-none absolute inset-x-3 top-0 h-12 rounded-b-[22px] blur-2xl"
+                  style={{ background: withAlpha(card.accent, theme === "dark" ? 0.14 : 0.08) }}
+                />
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold tracking-[-0.03em]" style={{ color: tokens.textPrimary }}>
@@ -986,7 +1076,7 @@ export function MoatLandscapeMap({
                     className="shrink-0 rounded-full px-2 py-1 text-[10px] font-semibold"
                     style={{
                       color: theme === "dark" ? "#f8fbff" : "#ffffff",
-                      background: card.accent
+                      background: `linear-gradient(135deg, ${withAlpha(card.accent, theme === "dark" ? 0.76 : 0.84)}, ${card.accent})`
                     }}
                   >
                     {getMoatTypeLabel(card.entry.node.dominantMoatType, language, "short")}
@@ -1011,7 +1101,14 @@ export function MoatLandscapeMap({
         ) : null}
       </div>
 
-      <div className="border-t px-4 py-3 text-xs leading-6 sm:px-5" style={{ color: tokens.textSecondary, borderColor: tokens.border }}>
+      <div
+        className="border-t px-4 py-3 text-xs leading-6 sm:px-5"
+        style={{
+          color: tokens.textSecondary,
+          borderColor: tokens.border,
+          background: `linear-gradient(180deg, ${withAlpha(theme === "dark" ? "#08111d" : "#f8fbff", theme === "dark" ? 0.42 : 0.5)}, transparent)`
+        }}
+      >
         {language === "zh"
           ? "颜色表示主护城河类型，深浅表示护城河强弱。滚轮缩放会逐步显示职业名称与职业卡片，拖拽平移，双击回到全局。"
           : "Color marks the dominant moat type, while depth shows moat strength. Zoom in to reveal names and occupation cards, drag to pan, and double-click to reset."}

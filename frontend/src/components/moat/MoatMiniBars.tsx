@@ -28,8 +28,9 @@ export function MoatMiniBars({ node, language, theme, compact = false }: MoatMin
           <div
             key={type}
             className={compact
-              ? "grid grid-cols-[24px_minmax(0,1fr)] items-center gap-2"
+              ? "grid grid-cols-[24px_minmax(0,1fr)] items-center gap-2 rounded-[12px] px-1.5 py-1"
               : "grid grid-cols-[84px_minmax(0,1fr)_26px] items-center gap-3"}
+            style={compact ? { background: withAlpha(color, theme === "dark" ? 0.08 : 0.06) } : undefined}
           >
             <span
               className={compact ? "text-[10px] font-semibold tracking-[0.04em]" : "text-xs font-medium"}
@@ -46,7 +47,7 @@ export function MoatMiniBars({ node, language, theme, compact = false }: MoatMin
                 className="h-full rounded-full"
                 style={{
                   width: `${Math.max(value, 4)}%`,
-                  background: color
+                  background: `linear-gradient(90deg, ${withAlpha(color, theme === "dark" ? 0.84 : 0.92)}, ${color})`
                 }}
               />
             </div>

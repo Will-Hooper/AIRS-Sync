@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import type { AppTheme } from "../../shared/theme";
-import { getMoatThemeTokens } from "../../lib/moat-color";
+import { getMoatThemeTokens, withAlpha } from "../../lib/moat-color";
 import { MOAT_TYPE_ORDER, getMoatTypeLabel, type DominantMoatType, type MoatLanguage } from "../../lib/moat";
 import { MoatLegend } from "./MoatLegend";
 
@@ -48,24 +48,28 @@ export function MoatFilterBar({
 
   return (
     <div
-      className="relative z-30 rounded-[26px] border p-3.5 sm:p-4"
+      className="moat-filter-shell relative z-30 overflow-hidden rounded-[28px] border p-3.5 sm:p-4"
       style={{
         borderColor: tokens.border,
         background: tokens.surface,
         boxShadow: tokens.shadow
       }}
     >
+      <div
+        className="pointer-events-none absolute inset-x-6 top-0 h-px"
+        style={{ background: `linear-gradient(90deg, transparent, ${tokens.borderStrong}, transparent)` }}
+      />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0 flex-1">{searchSlot}</div>
           {compact ? (
             <button
               type="button"
-              className="inline-flex self-start rounded-full border px-4 py-2 text-sm font-medium"
+              className="inline-flex self-start rounded-full border px-4 py-2 text-sm font-medium shadow-lg transition hover:-translate-y-0.5"
               style={{
                 color: tokens.textPrimary,
                 borderColor: tokens.border,
-                background: tokens.surfaceAlt
+                background: tokens.surfaceRaised
               }}
               onClick={() => setMobileOpen((current) => !current)}
             >
@@ -77,19 +81,30 @@ export function MoatFilterBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs leading-5" style={{ color: noResultText ? "#ff8b8b" : tokens.textSecondary }}>
-          <span>{noResultText || summaryText}</span>
+          <span
+            className="inline-flex rounded-full border px-3 py-1"
+            style={{
+              borderColor: noResultText ? "rgba(255, 125, 125, 0.24)" : tokens.border,
+              background: noResultText ? "rgba(255, 106, 106, 0.08)" : tokens.surfaceAlt
+            }}
+          >
+            {noResultText || summaryText}
+          </span>
         </div>
 
         {showControls ? (
           <div
-            className={`grid gap-3 ${compact ? "rounded-[22px] border p-3" : ""} xl:grid-cols-[minmax(0,260px)_minmax(0,260px)_1fr] xl:items-start`}
+            className={`grid gap-3 ${compact ? "rounded-[22px] border p-3" : "rounded-[24px] border px-3.5 py-3"} xl:grid-cols-[minmax(0,260px)_minmax(0,260px)_1fr] xl:items-start`}
             style={compact ? {
               borderColor: tokens.border,
               background: tokens.surfaceAlt
-            } : undefined}
+            } : {
+              borderColor: tokens.border,
+              background: `linear-gradient(180deg, ${tokens.surfaceAlt}, ${withAlpha(theme === "dark" ? "#08111d" : "#ffffff", theme === "dark" ? 0.02 : 0.03)})`
+            }}
           >
             <label className="grid gap-2 text-sm">
-              <span style={{ color: tokens.textSecondary }}>
+              <span className="font-medium" style={{ color: tokens.textSecondary }}>
                 {language === "zh" ? "职业大类" : "Major group"}
               </span>
               <select
@@ -112,7 +127,7 @@ export function MoatFilterBar({
             </label>
 
             <label className="grid gap-2 text-sm">
-              <span style={{ color: tokens.textSecondary }}>
+              <span className="font-medium" style={{ color: tokens.textSecondary }}>
                 {language === "zh" ? "主护城河类型" : "Dominant moat type"}
               </span>
               <select
@@ -134,8 +149,8 @@ export function MoatFilterBar({
               </select>
             </label>
 
-            <div className="grid gap-2">
-              <span className="text-sm" style={{ color: tokens.textSecondary }}>
+            <div className="grid gap-2 rounded-[20px] border p-3" style={{ borderColor: tokens.border, background: tokens.surfaceAlt }}>
+              <span className="text-sm font-medium" style={{ color: tokens.textSecondary }}>
                 {language === "zh" ? "颜色代表该职业最主要的人类护城河类型。" : "Color shows the occupation's dominant human moat."}
               </span>
               <MoatLegend language={language} theme={theme} />

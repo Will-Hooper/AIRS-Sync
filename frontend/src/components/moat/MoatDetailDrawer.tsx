@@ -29,13 +29,17 @@ function DrawerBody({
 
   return (
     <div
-      className="flex h-full max-h-full flex-col overflow-y-auto rounded-[30px] border p-5 shadow-2xl backdrop-blur-xl"
+      className="moat-detail-drawer-panel relative flex h-full max-h-full flex-col overflow-y-auto rounded-[30px] border p-5 shadow-2xl backdrop-blur-xl"
       style={{
         color: tokens.textPrimary,
         borderColor: tokens.borderStrong,
-        background: tokens.surfaceStrong
+        background: `linear-gradient(180deg, ${tokens.surfaceRaised}, ${tokens.surfaceStrong})`
       }}
     >
+      <div
+        className="pointer-events-none absolute inset-x-5 top-0 h-24 rounded-b-[28px] blur-2xl"
+        style={{ background: getMoatTypeColor(node.dominantMoatType, theme), opacity: theme === "dark" ? 0.14 : 0.08 }}
+      />
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-[0.24em]" style={{ color: tokens.textSecondary }}>
@@ -69,7 +73,7 @@ function DrawerBody({
           className="rounded-[22px] border p-4"
           style={{
             borderColor: tokens.border,
-            background: tokens.surfaceAlt
+            background: `linear-gradient(135deg, ${tokens.surfaceAlt}, ${tokens.surfaceRaised})`
           }}
         >
           <div className="flex items-center justify-between gap-3">
@@ -96,15 +100,17 @@ function DrawerBody({
           className="rounded-[22px] border p-4"
           style={{
             borderColor: tokens.border,
-            background: tokens.surfaceAlt
+            background: `linear-gradient(180deg, ${tokens.surfaceRaised}, ${tokens.surfaceAlt})`
           }}
         >
           <MoatMiniBars node={node} language={language} theme={theme} />
         </div>
 
-        <p className="text-sm leading-7" style={{ color: tokens.textSecondary }}>
-          {buildOccupationMoatSummary(node, language)}
-        </p>
+        <div className="rounded-[22px] border p-4" style={{ borderColor: tokens.border, background: tokens.surfaceAlt }}>
+          <p className="text-sm leading-7" style={{ color: tokens.textSecondary }}>
+            {buildOccupationMoatSummary(node, language)}
+          </p>
+        </div>
       </div>
 
       <div className="mt-auto pt-5">
@@ -130,17 +136,17 @@ export function MoatDetailDrawer({ node, language, theme, onClose, onOpenOccupat
 
   return (
     <>
-      <div className="fixed inset-0 z-[1200] bg-black/35 lg:hidden" onClick={onClose} />
+      <div className="moat-detail-drawer-overlay fixed inset-0 z-[1200] bg-black/35 lg:hidden" onClick={onClose} />
 
       <div className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
-        <div className="pointer-events-auto absolute inset-y-4 right-4 w-[min(368px,35vw)]">
+        <div className="moat-detail-drawer-enter pointer-events-auto absolute inset-y-4 right-4 w-[min(368px,35vw)]">
           <DrawerBody node={node} language={language} theme={theme} onClose={onClose} onOpenOccupation={onOpenOccupation} />
         </div>
       </div>
 
       <div className="fixed inset-x-3 bottom-3 z-[1300] lg:hidden">
         <div
-          className="mx-auto w-full max-w-[520px] rounded-[32px] border p-1 shadow-2xl backdrop-blur-xl"
+          className="moat-detail-sheet-enter mx-auto w-full max-w-[520px] rounded-[32px] border p-1 shadow-2xl backdrop-blur-xl"
           style={{
             borderColor: tokens.borderStrong,
             background: tokens.overlay
